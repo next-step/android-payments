@@ -2,6 +2,7 @@ package nextstep.payments.ui.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -116,10 +118,21 @@ internal fun PaymentRegisterScreen(
                 )
                 PaymentTextField(
                     value = ownerName,
-                    onValueChange = onOwnerNameChange,
+                    onValueChange = {
+                        onOwnerNameChange(it.take(OWNER_NAME_MAX_LENGGTH))
+                    },
                     label = stringResource(id = R.string.payment_card_owner_name_label),
                     placeholder = stringResource(id = R.string.payment_card_owner_name_placeholder),
                     modifier = Modifier.fillMaxWidth(),
+                    supportingText = {
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "${ownerName.length} / $OWNER_NAME_MAX_LENGGTH",
+                                modifier = Modifier.align(Alignment.CenterEnd),
+                                style = MaterialTheme.typography.labelSmall,
+                            )
+                        }
+                    }
                 )
                 PaymentTextField(
                     value = cvc,
@@ -205,6 +218,8 @@ private fun PaymentTextField(
         visualTransformation = visualTransformation,
     )
 }
+
+private const val OWNER_NAME_MAX_LENGGTH = 30
 
 @Preview
 @Composable
