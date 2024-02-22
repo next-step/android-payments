@@ -207,11 +207,10 @@ private fun PaymentTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         label = {
-            if (value.isBlank()) {
-                Text(text = placeholder, color = Color(0xFFAAAAAA))
-            } else {
-                Text(text = label)
-            }
+            Text(text = label)
+        },
+        placeholder = {
+            Text(text = placeholder, color = Color(0xFFAAAAAA))
         },
         supportingText = supportingText,
         singleLine = true,
