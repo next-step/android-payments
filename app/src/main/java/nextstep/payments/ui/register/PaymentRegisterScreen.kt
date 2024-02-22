@@ -110,7 +110,7 @@ internal fun PaymentRegisterScreen(
             ) {
                 PaymentTextField(
                     value = cardNumber,
-                    onValueChange = { onCardNumberChange(it.take(CARD_NUMBER_MAX_LENGTH)) },
+                    onValueChange = onCardNumberChange,
                     label = stringResource(id = R.string.payment_card_number_label),
                     placeholder = stringResource(id = R.string.payment_card_number_placeholder),
                     modifier = Modifier.fillMaxWidth(),
@@ -118,11 +118,12 @@ internal fun PaymentRegisterScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done,
-                    )
+                    ),
+                    maxLength = CARD_NUMBER_MAX_LENGTH,
                 )
                 PaymentTextField(
                     value = expiredDate,
-                    onValueChange = { onExpiredDateChange(it.take(EXPIRED_DATE_MAX_LENGTH)) },
+                    onValueChange = onExpiredDateChange,
                     label = stringResource(id = R.string.payment_card_expired_date_label),
                     placeholder = stringResource(id = R.string.payment_card_expired_date_placeholder),
                     modifier = Modifier.fillMaxWidth(),
@@ -130,13 +131,12 @@ internal fun PaymentRegisterScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done,
-                    )
+                    ),
+                    maxLength = EXPIRED_DATE_MAX_LENGTH
                 )
                 PaymentTextField(
                     value = ownerName,
-                    onValueChange = {
-                        onOwnerNameChange(it.take(OWNER_NAME_MAX_LENGTH))
-                    },
+                    onValueChange = onOwnerNameChange,
                     label = stringResource(id = R.string.payment_card_owner_name_label),
                     placeholder = stringResource(id = R.string.payment_card_owner_name_placeholder),
                     modifier = Modifier.fillMaxWidth(),
@@ -148,7 +148,8 @@ internal fun PaymentRegisterScreen(
                                 style = MaterialTheme.typography.labelSmall,
                             )
                         }
-                    }
+                    },
+                    maxLength = OWNER_NAME_MAX_LENGTH,
                 )
                 PaymentTextField(
                     value = cvc,
@@ -160,7 +161,8 @@ internal fun PaymentRegisterScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done,
-                    )
+                    ),
+                    maxLength = CVC_MAX_LENGTH,
                 )
                 PaymentTextField(
                     value = password,
@@ -219,12 +221,13 @@ private fun PaymentTextField(
     placeholder: String,
     modifier: Modifier = Modifier,
     supportingText: @Composable (() -> Unit)? = null,
+    maxLength: Int = Int.MAX_VALUE,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { onValueChange(it.take(maxLength)) },
         modifier = modifier,
         label = {
             Text(text = label)
@@ -308,10 +311,10 @@ private fun expiredDateTransformation(text: AnnotatedString): TransformedText {
     return TransformedText(AnnotatedString(out), translator)
 }
 
-
 private const val OWNER_NAME_MAX_LENGTH = 30
 private const val CARD_NUMBER_MAX_LENGTH = 16
 private const val EXPIRED_DATE_MAX_LENGTH = 4
+private const val CVC_MAX_LENGTH = 3
 
 @Preview
 @Composable
