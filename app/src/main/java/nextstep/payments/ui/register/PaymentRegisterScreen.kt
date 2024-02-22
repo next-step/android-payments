@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
@@ -125,6 +127,7 @@ internal fun PaymentRegisterScreen(
                     label = stringResource(id = R.string.payment_card_cvc_label),
                     placeholder = stringResource(id = R.string.payment_card_cvc_placeholder),
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
                 )
                 PaymentTextField(
                     value = password,
@@ -132,6 +135,7 @@ internal fun PaymentRegisterScreen(
                     label = stringResource(id = R.string.payment_card_password_label),
                     placeholder = stringResource(id = R.string.payment_card_password_placeholder),
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
                 )
             }
 
@@ -183,6 +187,7 @@ private fun PaymentTextField(
     placeholder: String,
     modifier: Modifier = Modifier,
     supportingText: @Composable (() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     OutlinedTextField(
         value = value,
@@ -197,6 +202,7 @@ private fun PaymentTextField(
         },
         supportingText = supportingText,
         singleLine = true,
+        visualTransformation = visualTransformation,
     )
 }
 
