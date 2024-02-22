@@ -1,6 +1,7 @@
 package nextstep.payments.ui.register
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,12 +14,18 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -30,6 +37,39 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun PaymentRegisterScreen() {
+    var cardNumber: String by remember { mutableStateOf("") }
+    var expiredDate: String by remember { mutableStateOf("") }
+    var ownerName: String by remember { mutableStateOf("") }
+    var cvc: String by remember { mutableStateOf("") }
+    var password: String by remember { mutableStateOf("") }
+
+    PaymentRegisterScreen(
+        cardNumber = cardNumber,
+        onCardNumberChange = { cardNumber = it },
+        expiredDate = expiredDate,
+        onExpiredDateChange = { expiredDate = it },
+        ownerName = ownerName,
+        onOwnerNameChange = { ownerName = it },
+        cvc = cvc,
+        onCvcChange = { cvc = it },
+        password = password,
+        onPasswordChange = { password = it },
+    )
+}
+
+@Composable
+internal fun PaymentRegisterScreen(
+    cardNumber: String,
+    onCardNumberChange: (String) -> Unit,
+    expiredDate: String,
+    onExpiredDateChange: (String) -> Unit,
+    ownerName: String,
+    onOwnerNameChange: (String) -> Unit,
+    cvc: String,
+    onCvcChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
+) {
     Scaffold(
         topBar = {
             PaymentRegisterTopAppBar(
@@ -51,30 +91,52 @@ internal fun PaymentRegisterScreen() {
                     .width(208.dp)
                     .align(Alignment.CenterHorizontally),
             )
-            // 카드 번호
 
-            // 만료일
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                PaymentTextField(
+                    value = cardNumber,
+                    onValueChange = onCardNumberChange,
+                    label = stringResource(id = R.string.payment_card_number_label),
+                    placeholder = stringResource(id = R.string.payment_card_number_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                PaymentTextField(
+                    value = expiredDate,
+                    onValueChange = onExpiredDateChange,
+                    label = stringResource(id = R.string.payment_card_expired_date_label),
+                    placeholder = stringResource(id = R.string.payment_card_expired_date_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                PaymentTextField(
+                    value = ownerName,
+                    onValueChange = onOwnerNameChange,
+                    label = stringResource(id = R.string.payment_card_owner_name_label),
+                    placeholder = stringResource(id = R.string.payment_card_owner_name_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                PaymentTextField(
+                    value = cvc,
+                    onValueChange = onCvcChange,
+                    label = stringResource(id = R.string.payment_card_cvc_label),
+                    placeholder = stringResource(id = R.string.payment_card_cvc_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                PaymentTextField(
+                    value = password,
+                    onValueChange = onPasswordChange,
+                    label = stringResource(id = R.string.payment_card_password_label),
+                    placeholder = stringResource(id = R.string.payment_card_password_placeholder),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
 
-            // 카드 소유자 이름
-
-            // 보안코드
-
-            // 비밀번호
         }
     }
-}
-
-@Composable
-private fun CardImage(
-    painter: Painter,
-    modifier: Modifier = Modifier,
-) {
-    Image(
-        painter = painter,
-        contentDescription = "카드 이미지",
-        modifier = modifier,
-        contentScale = ContentScale.FillWidth,
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -100,10 +162,59 @@ private fun PaymentRegisterTopAppBar(
     )
 }
 
+@Composable
+private fun CardImage(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painter,
+        contentDescription = "카드 이미지",
+        modifier = modifier,
+        contentScale = ContentScale.FillWidth,
+    )
+}
+
+@Composable
+private fun PaymentTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    placeholder: String,
+    modifier: Modifier = Modifier,
+    supportingText: @Composable (() -> Unit)? = null,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        label = {
+            if (value.isBlank()) {
+                Text(text = placeholder, color = Color(0xFFAAAAAA))
+            } else {
+                Text(text = label)
+            }
+        },
+        supportingText = supportingText,
+        singleLine = true,
+    )
+}
+
 @Preview
 @Composable
 private fun PaymentRegisterPreview() {
     PaymentsTheme {
-        PaymentRegisterScreen()
+        PaymentRegisterScreen(
+            cardNumber = "",
+            onCardNumberChange = {},
+            expiredDate = "",
+            onExpiredDateChange = {},
+            ownerName = "",
+            onOwnerNameChange = {},
+            cvc = "",
+            onCvcChange = {},
+            password = "",
+            onPasswordChange = {},
+        )
     }
 }

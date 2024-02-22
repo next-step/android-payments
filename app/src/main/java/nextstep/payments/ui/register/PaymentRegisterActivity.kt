@@ -12,7 +12,7 @@ class PaymentRegisterActivity : ComponentActivity() {
 
         setContent {
             PaymentsTheme {
-                
+                PaymentRegisterScreen()
             }
         }
     }
