@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -32,7 +33,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -104,22 +110,32 @@ internal fun PaymentRegisterScreen(
             ) {
                 PaymentTextField(
                     value = cardNumber,
-                    onValueChange = onCardNumberChange,
+                    onValueChange = { onCardNumberChange(it.take(CARD_NUMBER_MAX_LENGTH)) },
                     label = stringResource(id = R.string.payment_card_number_label),
                     placeholder = stringResource(id = R.string.payment_card_number_placeholder),
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = { number -> cardNumberTransformation(number) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                    )
                 )
                 PaymentTextField(
                     value = expiredDate,
-                    onValueChange = onExpiredDateChange,
+                    onValueChange = { onExpiredDateChange(it.take(EXPIRED_DATE_MAX_LENGTH)) },
                     label = stringResource(id = R.string.payment_card_expired_date_label),
                     placeholder = stringResource(id = R.string.payment_card_expired_date_placeholder),
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = { number -> expiredDateTransformation(number) },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                    )
                 )
                 PaymentTextField(
                     value = ownerName,
                     onValueChange = {
-                        onOwnerNameChange(it.take(OWNER_NAME_MAX_LENGGTH))
+                        onOwnerNameChange(it.take(OWNER_NAME_MAX_LENGTH))
                     },
                     label = stringResource(id = R.string.payment_card_owner_name_label),
                     placeholder = stringResource(id = R.string.payment_card_owner_name_placeholder),
@@ -127,7 +143,7 @@ internal fun PaymentRegisterScreen(
                     supportingText = {
                         Box(modifier = Modifier.fillMaxWidth()) {
                             Text(
-                                text = "${ownerName.length} / $OWNER_NAME_MAX_LENGGTH",
+                                text = "${ownerName.length} / $OWNER_NAME_MAX_LENGTH",
                                 modifier = Modifier.align(Alignment.CenterEnd),
                                 style = MaterialTheme.typography.labelSmall,
                             )
@@ -141,6 +157,10 @@ internal fun PaymentRegisterScreen(
                     placeholder = stringResource(id = R.string.payment_card_cvc_placeholder),
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                    )
                 )
                 PaymentTextField(
                     value = password,
@@ -151,7 +171,6 @@ internal fun PaymentRegisterScreen(
                     visualTransformation = PasswordVisualTransformation(),
                 )
             }
-
         }
     }
 }
@@ -201,6 +220,7 @@ private fun PaymentTextField(
     modifier: Modifier = Modifier,
     supportingText: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     OutlinedTextField(
         value = value,
@@ -215,10 +235,83 @@ private fun PaymentTextField(
         supportingText = supportingText,
         singleLine = true,
         visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
     )
 }
 
-private const val OWNER_NAME_MAX_LENGGTH = 30
+/**
+ * https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/VisualTransformation#public-functions_1
+ */
+private fun cardNumberTransformation(text: AnnotatedString): TransformedText {
+
+    // Making XXXX-XXXX-XXXX-XXXX string.
+    val trimmed = if (text.text.length >= 16) text.text.substring(0..15) else text.text
+    var out = ""
+    for (i in trimmed.indices) {
+        out += trimmed[i]
+        if (i % 4 == 3 && i != 15) out += "-"
+    }
+
+    /**
+     * The offset translator should ignore the hyphen characters, so conversion from
+     *  original offset to transformed text works like
+     *  - The 4th char of the original text is 5th char in the transformed text.
+     *  - The 13th char of the original text is 15th char in the transformed text.
+     *  Similarly, the reverse conversion works like
+     *  - The 5th char of the transformed text is 4th char in the original text.
+     *  - The 12th char of the transformed text is 10th char in the original text.
+     */
+    val creditCardOffsetTranslator = object : OffsetMapping {
+        override fun originalToTransformed(offset: Int): Int {
+            if (offset <= 3) return offset
+            if (offset <= 7) return offset + 1
+            if (offset <= 11) return offset + 2
+            if (offset <= 16) return offset + 3
+            return 19
+        }
+
+        override fun transformedToOriginal(offset: Int): Int {
+            if (offset <= 4) return offset
+            if (offset <= 9) return offset - 1
+            if (offset <= 14) return offset - 2
+            if (offset <= 19) return offset - 3
+            return 16
+        }
+    }
+
+    return TransformedText(AnnotatedString(out), creditCardOffsetTranslator)
+}
+
+private fun expiredDateTransformation(text: AnnotatedString): TransformedText {
+
+    val trimmed = text.text.take(4)
+    var out = ""
+
+    for (i in trimmed.indices) {
+        out += trimmed[i]
+        if (i == 1) out += " / "
+    }
+    val translator = object : OffsetMapping {
+        override fun originalToTransformed(offset: Int): Int {
+            if (offset <= 1) return offset
+            if (offset <= 4) return offset + 3
+            return 7
+        }
+
+        override fun transformedToOriginal(offset: Int): Int {
+            if (offset <= 2) return offset
+            if (offset <= 5) return offset - 1
+            return 4
+        }
+    }
+
+    return TransformedText(AnnotatedString(out), translator)
+}
+
+
+private const val OWNER_NAME_MAX_LENGTH = 30
+private const val CARD_NUMBER_MAX_LENGTH = 16
+private const val EXPIRED_DATE_MAX_LENGTH = 4
 
 @Preview
 @Composable
