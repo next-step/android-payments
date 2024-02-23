@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Payments</string>
+
+    <string name="input_field_text_length_format">%d/%d</string>
 </resources>
