@@ -13,7 +13,6 @@ fun CardExpireDateInputField(
     onValueChanged: (String) -> Unit,
 ) {
     InputField(
-        modifier = Modifier.fillMaxWidth(),
         label = stringResource(id = R.string.input_field_card_expire_date_label),
         hint = stringResource(id = R.string.input_field_card_expire_date_hint),
         value = value,
