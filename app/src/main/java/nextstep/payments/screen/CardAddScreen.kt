@@ -86,8 +86,41 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                         cvc = value
                     }
                 )
+                var password by remember { mutableStateOf("") }
+                PasswordTextField(
+                    password = password,
+                    onPasswordChange = { value ->
+                        password = value
+                    }
+                )
             }
         }
+    )
+}
+
+@Composable
+private fun PasswordTextField(
+    password: String,
+    onPasswordChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp),
+        value = password,
+        onValueChange = { value ->
+            onPasswordChange(value)
+        },
+        label = {
+            Text(text = "비밀번호")
+        },
+        placeholder = {
+            Text(text = "000")
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.NumberPassword
+        ),
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
