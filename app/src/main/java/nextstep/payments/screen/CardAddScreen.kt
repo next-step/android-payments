@@ -20,9 +20,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +55,36 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                     .verticalScroll(state = rememberScrollState())
             ) {
                 CardImage(modifier = Modifier.padding(top = 14.dp))
+                var cardNumber by remember { mutableStateOf("") }
+                CardNumberTextField(
+                    cardNumber = cardNumber,
+                    onCardNumberChange = { value ->
+                        cardNumber = value
+                    }
+                )
             }
+        }
+    )
+}
+
+@Composable
+private fun CardNumberTextField(
+    cardNumber: String,
+    onCardNumberChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 40.dp),
+        value = cardNumber,
+        onValueChange = { value ->
+            onCardNumberChange(value)
+        },
+        label = {
+            Text(text = "카드 번호")
+        },
+        placeholder = {
+            Text(text = "0000 - 0000 - 0000 - 0000")
         }
     )
 }
