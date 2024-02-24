@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -76,8 +79,41 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                         owner = value
                     }
                 )
+                var cvc by remember { mutableStateOf("") }
+                CVCTextField(
+                    cvc = cvc,
+                    onCVCChange = { value ->
+                        cvc = value
+                    }
+                )
             }
         }
+    )
+}
+
+@Composable
+private fun CVCTextField(
+    cvc: String,
+    onCVCChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp),
+        value = cvc,
+        onValueChange = { value ->
+            onCVCChange(value)
+        },
+        label = {
+            Text(text = "보안 코드")
+        },
+        placeholder = {
+            Text(text = "000")
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.NumberPassword,
+        ),
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
