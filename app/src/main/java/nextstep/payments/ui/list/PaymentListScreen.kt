@@ -9,9 +9,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import nextstep.payments.ui.domain.model.Card
 import nextstep.payments.ui.list.component.PaymentListCardList
 import nextstep.payments.ui.list.component.PaymentListTopAppBar
 import nextstep.payments.ui.theme.PaymentsTheme
+import java.time.LocalDate
 
 @Composable
 internal fun PaymentListScreen(viewModel: PaymentListViewModel) {
@@ -39,7 +43,7 @@ internal fun PaymentListScreen(
             showAdd = uiState is PaymentListUiState.Many,
             onAddClick = onAddClick,
         )
-        
+
         PaymentListCardList(
             uiState = uiState,
             onAddCardClick = onAddCardClick,
@@ -48,11 +52,27 @@ internal fun PaymentListScreen(
     }
 }
 
+private class PaymentListUiStatePreviewProvider : PreviewParameterProvider<PaymentListUiState> {
+    override val values: Sequence<PaymentListUiState> = sequenceOf(
+        PaymentListUiState.Empty,
+        PaymentListUiState.One(
+            card = Card(
+                id = "1",
+                cardNumber = "1111222233334444",
+                ownerName = "CREW",
+                expiredDate = LocalDate.of(2021, 4, 1),
+                imageUrl = "",
+            )
+        ),
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun PaymentListScreenPreview() {
+private fun PaymentListScreenPreview(
+    @PreviewParameter(PaymentListUiStatePreviewProvider::class) uiState: PaymentListUiState,
+) {
     PaymentsTheme {
-        val uiState = PaymentListUiState.Empty
         PaymentListScreen(
             uiState = uiState,
             onAddClick = {},
