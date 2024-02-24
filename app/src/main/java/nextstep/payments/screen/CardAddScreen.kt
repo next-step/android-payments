@@ -62,7 +62,36 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                         cardNumber = value
                     }
                 )
+                var expirationDate by remember { mutableStateOf("") }
+                ExpirationDateTextField(
+                    expirationDate = expirationDate,
+                    onExpirationDateChange = { value ->
+                        expirationDate = value
+                    }
+                )
             }
+        }
+    )
+}
+
+@Composable
+private fun ExpirationDateTextField(
+    expirationDate: String,
+    onExpirationDateChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp),
+        value = expirationDate,
+        onValueChange = { value ->
+            onExpirationDateChange(value)
+        },
+        label = {
+            Text(text = "만료일")
+        },
+        placeholder = {
+            Text(text = "MM / YY")
         }
     )
 }
