@@ -69,7 +69,36 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                         expirationDate = value
                     }
                 )
+                var owner by remember { mutableStateOf("") }
+                CardOwnerTextField(
+                    owner = owner,
+                    onOwnerChange = { value ->
+                        owner = value
+                    }
+                )
             }
+        }
+    )
+}
+
+@Composable
+private fun CardOwnerTextField(
+    owner: String,
+    onOwnerChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp),
+        value = owner,
+        onValueChange = { value ->
+            onOwnerChange(value)
+        },
+        label = {
+            Text(text = "카드 소유자 이름 (선택)")
+        },
+        placeholder = {
+            Text(text = "카드에 표시된 이름을 입력하세요.")
         }
     )
 }
