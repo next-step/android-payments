@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Payments</string>
+    <string name="go_back">뒤로가기</string>
+    <string name="add_card">카드 추가</string>
+    <string name="add">추가</string>
+    <string name="card_number">카드 번호</string>
+    <string name="hint_card_number">0000 – 0000 – 0000 – 0000</string>
+    <string name="expiration_date">만료일</string>
+    <string name="hint_expiration_date">MM / YY</string>
+    <string name="card_owner">카드 소유자 이름 (선택)</string>
+    <string name="hint_card_owner">카드에 표시된 이름을 입력하세요.</string>
+    <string name="cvc">보안 코드</string>
+    <string name="hint_password">000</string>
+    <string name="password">비밀번호</string>
 </resources>

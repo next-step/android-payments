@@ -37,11 +37,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.R
 
 @Composable
 fun CardAddScreen(modifier: Modifier = Modifier) {
@@ -112,10 +114,10 @@ private fun PasswordTextField(
             onPasswordChange(value)
         },
         label = {
-            Text(text = "비밀번호")
+            Text(text = stringResource(id = R.string.password))
         },
         placeholder = {
-            Text(text = "000")
+            Text(text = stringResource(id = R.string.hint_password))
         },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.NumberPassword
@@ -138,10 +140,10 @@ private fun CVCTextField(
             onCVCChange(value)
         },
         label = {
-            Text(text = "보안 코드")
+            Text(text = stringResource(id = R.string.cvc))
         },
         placeholder = {
-            Text(text = "000")
+            Text(text = stringResource(id = R.string.hint_password))
         },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.NumberPassword,
@@ -164,10 +166,10 @@ private fun CardOwnerTextField(
             onOwnerChange(value)
         },
         label = {
-            Text(text = "카드 소유자 이름 (선택)")
+            Text(text = stringResource(id = R.string.card_owner))
         },
         placeholder = {
-            Text(text = "카드에 표시된 이름을 입력하세요.")
+            Text(text = stringResource(id = R.string.hint_card_owner))
         }
     )
 }
@@ -186,10 +188,10 @@ private fun ExpirationDateTextField(
             onExpirationDateChange(value)
         },
         label = {
-            Text(text = "만료일")
+            Text(text = stringResource(id = R.string.expiration_date))
         },
         placeholder = {
-            Text(text = "MM / YY")
+            Text(text = stringResource(id = R.string.hint_expiration_date))
         }
     )
 }
@@ -208,10 +210,10 @@ private fun CardNumberTextField(
             onCardNumberChange(value)
         },
         label = {
-            Text(text = "카드 번호")
+            Text(text = stringResource(id = R.string.card_number))
         },
         placeholder = {
-            Text(text = "0000 - 0000 - 0000 - 0000")
+            Text(text = stringResource(id = R.string.hint_card_number))
         }
     )
 }
@@ -281,13 +283,13 @@ private fun CardTopBar(modifier: Modifier = Modifier) {
                 .size(size = 48.dp)
                 .padding(all = 12.dp),
             imageVector = Icons.Filled.ArrowBack,
-            contentDescription = "뒤로가기"
+            contentDescription = stringResource(id = R.string.go_back)
         )
         Text(
             modifier = Modifier
                 .padding(horizontal = 4.dp)
                 .weight(weight = 1f),
-            text = "카드 추가",
+            text = stringResource(id = R.string.add_card),
             fontSize = 22.sp
         )
         Image(
@@ -296,7 +298,7 @@ private fun CardTopBar(modifier: Modifier = Modifier) {
                 .size(size = 48.dp)
                 .padding(all = 12.dp),
             imageVector = Icons.Filled.Check,
-            contentDescription = "추가"
+            contentDescription = stringResource(id = R.string.add)
         )
     }
 }
