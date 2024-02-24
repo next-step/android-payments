@@ -24,6 +24,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
+import nextstep.payments.ui.component.CreditCardVisualTransformation
+import nextstep.payments.ui.component.ExpirationDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.component.PaymentInputField
 
@@ -62,14 +64,16 @@ fun AddCardScreen(
                 text = cardNumber,
                 onTextChange = { cardNumber = it },
                 label = stringResource(id = R.string.card_number_label),
-                hint = stringResource(id = R.string.card_number_hint)
+                hint = stringResource(id = R.string.card_number_hint),
+                visualTransformation = CreditCardVisualTransformation()
             )
 
             PaymentInputField(
                 text = expirationDate,
                 onTextChange = { expirationDate = it },
                 label = stringResource(id = R.string.card_expiration_date_label),
-                hint = stringResource(id = R.string.card_expiration_date_hint)
+                hint = stringResource(id = R.string.card_expiration_date_hint),
+                visualTransformation = ExpirationDateVisualTransformation()
             )
             PaymentInputField(
                 modifier = Modifier.fillMaxWidth(),
