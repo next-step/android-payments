@@ -25,6 +25,9 @@
         </activity>
 
         <activity android:name=".ui.register.PaymentRegisterActivity" />
+
+        <activity android:name=".ui.list.PaymentListActivity" />
+
     </application>
 
 </manifest>
