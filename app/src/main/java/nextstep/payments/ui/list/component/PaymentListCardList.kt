@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ internal fun PaymentListCardList(
     LazyColumn(
         contentPadding = PaddingValues(32.dp),
         verticalArrangement = Arrangement.spacedBy(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
         when (uiState) {
@@ -42,7 +44,14 @@ internal fun PaymentListCardList(
                     )
                 }
             }
-            is PaymentListUiState.Many -> Unit
+            is PaymentListUiState.Many -> {
+                items(uiState.cards) { card ->
+                    PaymentListCardListItem(
+                        card = card,
+                        modifier = Modifier.width(208.dp),
+                    )
+                }
+            }
         }
     }
 }

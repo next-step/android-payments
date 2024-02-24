@@ -61,4 +61,34 @@ internal class PaymentListScreenTest {
             .onNodeWithTag("카드 추가")
             .assertIsDisplayed()
     }
+
+    @Test
+    fun 카드_목록에_카드가_여러_개_있을_때의_카드_추가_UI는_상단바에_노출된다() {
+        // given
+        val uiState = PaymentListUiState.Many(
+            cards = List(3) {
+                Card(
+                    id = "1",
+                    ownerName = "홍길동",
+                    cardNumber = "1111222233334444",
+                    expiredDate = LocalDate.of(2024, 2, 24),
+                    imageUrl = "",
+                )
+            }
+        )
+
+        // when
+        composeTestRule.setContent {
+            PaymentListScreen(
+                uiState = uiState,
+                onAddClick = {},
+                onAddCardClick = {},
+            )
+        }
+
+        // then
+        composeTestRule
+            .onNodeWithText("추가")
+            .assertIsDisplayed()
+    }
 }

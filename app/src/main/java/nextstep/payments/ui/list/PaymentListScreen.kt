@@ -64,6 +64,17 @@ private class PaymentListUiStatePreviewProvider : PreviewParameterProvider<Payme
                 imageUrl = "",
             )
         ),
+        PaymentListUiState.Many(
+            cards = List(5) {
+                Card(
+                    id = it.toString(),
+                    cardNumber = "1111222233334444",
+                    ownerName = "CREW",
+                    expiredDate = LocalDate.of(2021, 4, it + 1),
+                    imageUrl = "",
+                )
+            }
+        ),
     )
 }
 
