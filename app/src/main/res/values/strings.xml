@@ -19,5 +19,6 @@
 
     <string name="payment_list_title">Payments</string>
     <string name="payment_list_add">추가</string>
+    <string name="payment_list_empty_title">새로운 카드를 등록해주세요</string>
     
 </resources>
