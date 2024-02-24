@@ -52,7 +52,7 @@ internal fun PaymentListCardListItem(
                             modifier = Modifier.align(Alignment.CenterStart),
                         )
                     }
-                    val formatter = DateTimeFormatter.ofPattern("MM / dd")
+                    val formatter = DateTimeFormatter.ofPattern("MM / yy")
                     Text(
                         text = formatter.format(card.expiredDate),
                         modifier = Modifier.align(Alignment.CenterEnd)

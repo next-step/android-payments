@@ -29,6 +29,18 @@ internal class PaymentListViewModel(
         }
     }
 
+    fun refresh() {
+        viewModelScope.launch {
+            val cards = cardRepository.getCardList()
+
+            _uiState.value = when {
+                cards.isEmpty() -> PaymentListUiState.Empty
+                cards.size == 1 -> PaymentListUiState.One(cards.first())
+                else -> PaymentListUiState.Many(cards)
+            }
+        }
+    }
+
     class Factory : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return PaymentListViewModel(CardRepositoryImpl()) as T

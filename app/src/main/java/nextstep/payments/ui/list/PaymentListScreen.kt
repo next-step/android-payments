@@ -18,13 +18,16 @@ import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.LocalDate
 
 @Composable
-internal fun PaymentListScreen(viewModel: PaymentListViewModel) {
+internal fun PaymentListScreen(
+    viewModel: PaymentListViewModel,
+    onAddCardClick: () -> Unit,
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     PaymentListScreen(
         uiState = uiState,
-        onAddClick = {},
-        onAddCardClick = {},
+        onAddClick = onAddCardClick,
+        onAddCardClick = onAddCardClick,
     )
 }
 
