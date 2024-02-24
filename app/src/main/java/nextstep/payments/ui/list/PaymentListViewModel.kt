@@ -14,13 +14,18 @@ internal class PaymentListViewModel(
     private val cardRepository: CardRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PaymentListUiState(emptyList()))
+    private val _uiState = MutableStateFlow<PaymentListUiState>(PaymentListUiState.Empty)
     val uiState: StateFlow<PaymentListUiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             val cards = cardRepository.getCardList()
-            _uiState.value = PaymentListUiState(cards)
+
+            _uiState.value = when {
+                cards.isEmpty() -> PaymentListUiState.Empty
+                cards.size == 1 -> PaymentListUiState.One(cards.first())
+                else -> PaymentListUiState.Many(cards)
+            }
         }
     }
 
