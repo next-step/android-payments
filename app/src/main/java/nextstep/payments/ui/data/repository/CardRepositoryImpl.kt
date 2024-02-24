@@ -5,7 +5,6 @@ import nextstep.payments.ui.domain.model.CardRegistrationForm
 import nextstep.payments.ui.domain.repository.CardRepository
 
 internal class CardRepositoryImpl : CardRepository {
-    private var cachedCards: List<Card> = emptyList()
 
     override suspend fun getCardList(): List<Card> {
         return cachedCards
@@ -24,6 +23,7 @@ internal class CardRepositoryImpl : CardRepository {
     }
 
     companion object {
+        private var cachedCards: List<Card> = emptyList()
         private var cardId: Int = 0
 
         private fun nextId(): Int {

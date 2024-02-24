@@ -22,10 +22,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,24 +44,24 @@ import nextstep.payments.R
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-internal fun PaymentRegisterScreen() {
-    var cardNumber: String by remember { mutableStateOf("") }
-    var expiredDate: String by remember { mutableStateOf("") }
-    var ownerName: String by remember { mutableStateOf("") }
-    var cvc: String by remember { mutableStateOf("") }
-    var password: String by remember { mutableStateOf("") }
-
+internal fun PaymentRegisterScreen(
+    viewModel: PaymentRegisterViewModel,
+    onBackClick: () -> Unit,
+) {
+    val uiState by viewModel.uiState.collectAsState()
     PaymentRegisterScreen(
-        cardNumber = cardNumber,
-        onCardNumberChange = { cardNumber = it },
-        expiredDate = expiredDate,
-        onExpiredDateChange = { expiredDate = it },
-        ownerName = ownerName,
-        onOwnerNameChange = { ownerName = it },
-        cvc = cvc,
-        onCvcChange = { cvc = it },
-        password = password,
-        onPasswordChange = { password = it },
+        cardNumber = uiState.cardNumber,
+        onCardNumberChange = { viewModel.updateCardNumber(it) },
+        expiredDate = uiState.expiredDate,
+        onExpiredDateChange = { viewModel.updateExpiredDate(it) },
+        ownerName = uiState.ownerName,
+        onOwnerNameChange = { viewModel.updateOwnerName(it) },
+        cvc = uiState.cvc,
+        onCvcChange = { viewModel.updateCvc(it) },
+        password = uiState.password,
+        onPasswordChange = { viewModel.updatePassword(it) },
+        onBackClick = onBackClick,
+        onCheckClick = { viewModel.registerCard() }
     )
 }
 
@@ -79,12 +77,14 @@ internal fun PaymentRegisterScreen(
     onCvcChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onCheckClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
             PaymentRegisterTopAppBar(
-                onBackClick = {},
-                onCheckClick = {},
+                onBackClick = onBackClick,
+                onCheckClick = onCheckClick,
             )
         }
     ) { innerPadding ->
@@ -331,6 +331,8 @@ private fun PaymentRegisterPreview() {
             onCvcChange = {},
             password = "",
             onPasswordChange = {},
+            onBackClick = {},
+            onCheckClick = {},
         )
     }
 }
