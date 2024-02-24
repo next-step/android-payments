@@ -3,6 +3,8 @@ package nextstep.payments.ui.add
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -53,6 +55,7 @@ fun AddCardScreen(
                 .padding(innerPadding)
                 .fillMaxWidth()
                 .padding(15.dp)
+                .verticalScroll(state = rememberScrollState())
         ) {
             PaymentCard(
                 modifier = Modifier
