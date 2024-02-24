@@ -62,6 +62,7 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                 CardImage(modifier = Modifier.padding(top = 14.dp))
                 var cardNumber by remember { mutableStateOf("") }
                 CardNumberTextField(
+                    modifier = Modifier.padding(top = 30.dp),
                     cardNumber = cardNumber,
                     onCardNumberChange = { value ->
                         cardNumber = value
@@ -69,6 +70,7 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                 )
                 var expirationDate by remember { mutableStateOf("") }
                 ExpirationDateTextField(
+                    modifier = Modifier.padding(top = 30.dp),
                     expirationDate = expirationDate,
                     onExpirationDateChange = { value ->
                         expirationDate = value
@@ -76,6 +78,7 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                 )
                 var owner by remember { mutableStateOf("") }
                 CardOwnerTextField(
+                    modifier = Modifier.padding(top = 30.dp),
                     owner = owner,
                     onOwnerChange = { value ->
                         owner = value
@@ -83,6 +86,7 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                 )
                 var cvc by remember { mutableStateOf("") }
                 CVCTextField(
+                    modifier = Modifier.padding(top = 30.dp),
                     cvc = cvc,
                     onCVCChange = { value ->
                         cvc = value
@@ -90,6 +94,7 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
                 )
                 var password by remember { mutableStateOf("") }
                 PasswordTextField(
+                    modifier = Modifier.padding(top = 40.dp),
                     password = password,
                     onPasswordChange = { value ->
                         password = value
@@ -102,13 +107,12 @@ fun CardAddScreen(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PasswordTextField(
+    modifier: Modifier = Modifier,
     password: String,
     onPasswordChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 30.dp),
+        modifier = modifier.fillMaxWidth(),
         value = password,
         onValueChange = { value ->
             onPasswordChange(value)
@@ -128,13 +132,12 @@ private fun PasswordTextField(
 
 @Composable
 private fun CVCTextField(
+    modifier: Modifier = Modifier,
     cvc: String,
     onCVCChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 30.dp),
+        modifier = modifier.fillMaxWidth(),
         value = cvc,
         onValueChange = { value ->
             onCVCChange(value)
@@ -154,13 +157,12 @@ private fun CVCTextField(
 
 @Composable
 private fun CardOwnerTextField(
+    modifier: Modifier = Modifier,
     owner: String,
     onOwnerChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 30.dp),
+        modifier = modifier.fillMaxWidth(),
         value = owner,
         onValueChange = { value ->
             onOwnerChange(value)
@@ -176,13 +178,12 @@ private fun CardOwnerTextField(
 
 @Composable
 private fun ExpirationDateTextField(
+    modifier: Modifier = Modifier,
     expirationDate: String,
     onExpirationDateChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 30.dp),
+        modifier = modifier.fillMaxWidth(),
         value = expirationDate,
         onValueChange = { value ->
             onExpirationDateChange(value)
@@ -198,13 +199,12 @@ private fun ExpirationDateTextField(
 
 @Composable
 private fun CardNumberTextField(
+    modifier: Modifier = Modifier,
     cardNumber: String,
     onCardNumberChange: (String) -> Unit
 ) {
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 40.dp),
+        modifier = modifier.fillMaxWidth(),
         value = cardNumber,
         onValueChange = { value ->
             onCardNumberChange(value)
