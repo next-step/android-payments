@@ -21,7 +21,7 @@ fun InputField(
     value: String,
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isInputPassword: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     inputTextMaxLength: Int = Int.MAX_VALUE,
     showInputValueLength: Boolean = false,
 ) {
@@ -46,10 +46,7 @@ fun InputField(
             }
         },
         onValueChange = onValueChanged,
-        visualTransformation = when (isInputPassword) {
-            true -> PasswordVisualTransformation()
-            false -> VisualTransformation.None
-        },
+        visualTransformation = visualTransformation,
     )
 }
 
@@ -115,6 +112,6 @@ private fun InputFieldPreview_Password() {
         hint = "this is hint",
         value = "Filled",
         onValueChanged = {},
-        isInputPassword = true,
+        visualTransformation = PasswordVisualTransformation(),
     )
 }
