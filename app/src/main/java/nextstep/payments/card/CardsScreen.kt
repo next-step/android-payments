@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.card.add.CardsScreenUiState
-import nextstep.payments.card.component.AddingCardScreenTopBar
+import nextstep.payments.card.component.CardScreenTopBar
 import nextstep.payments.card.component.cards.EmptyCardsContent
 import nextstep.payments.card.component.cards.MultipleCardsContent
 import nextstep.payments.card.component.cards.SingleCardContent
@@ -40,7 +40,10 @@ private fun CardsScreen(
 ) {
     Scaffold(
         topBar = {
-            AddingCardScreenTopBar()
+            CardScreenTopBar(
+                showAddButton = cardsUiState is CardsScreenUiState.MultipleCards,
+                onAddButtonClick = onAddCardClick,
+            )
         },
     ) { innerPadding ->
         Column(
@@ -56,12 +59,14 @@ private fun CardsScreen(
                 )
 
                 is CardsScreenUiState.SingleCard -> SingleCardContent(
+                    modifier = Modifier.padding(top = 12.dp),
                     card = cardsUiState.card,
                     onCardClick = { onCardClick(it) },
                     onAddCardClick = onAddCardClick
                 )
 
                 is CardsScreenUiState.MultipleCards -> MultipleCardsContent(
+                    modifier = Modifier.padding(top = 12.dp),
                     cards = cardsUiState.cards,
                     onCardClick = { onCardClick(it) }
                 )
