@@ -21,4 +21,5 @@
     <string name="adding_card_screen_top_bar_title">카드 추가</string>
 
     <string name="cards_screen_top_bar_title">Payments</string>
+    <string name="cards_screen_empty_card_title">새로운 카드를 등록해주세요</string>
 </resources>
