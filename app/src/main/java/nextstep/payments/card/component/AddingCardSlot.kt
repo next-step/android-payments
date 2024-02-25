@@ -1,6 +1,7 @@
 package nextstep.payments.card.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +22,7 @@ fun AddingCardSlot(
 ) {
     Box(
         modifier = modifier
+            .clickable(onClick = onClick)
             .size(
                 width = 208.dp,
                 height = 124.dp,
