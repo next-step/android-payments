@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import nextstep.payments.ui.add.AddCardScreen
+import androidx.navigation.compose.rememberNavController
+import nextstep.payments.ui.AppNavHost
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AddCardScreen({}, {})
+                    AppNavHost(navHostController = rememberNavController())
                 }
             }
         }
