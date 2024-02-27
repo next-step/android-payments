@@ -16,11 +16,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,16 +31,21 @@ import nextstep.payments.R
 import nextstep.payments.ui.component.CreditCardVisualTransformation
 import nextstep.payments.ui.component.EmptyPaymentCard
 import nextstep.payments.ui.component.ExpirationDateVisualTransformation
-import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.component.PaymentInputField
 
 @Composable
 fun AddCardScreenRoute(
     onBackClick: () -> Unit,
-    onBackWithAddCompleted: () -> Unit,
+    onBackWithAddCompleted: (String) -> Unit,
     viewModel: AddCardViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val addCompleted by viewModel.addCompleted.collectAsState()
+    LaunchedEffect(key1 = addCompleted, block = {
+        if (addCompleted.isNotEmpty()) {
+            onBackWithAddCompleted(addCompleted)
+        }
+    })
     AddCardScreen(
         uiState = uiState,
         onCardNumberChange = { viewModel.updateCardNumber(it) },
@@ -53,7 +56,6 @@ fun AddCardScreenRoute(
         onBackClick = onBackClick,
         onAddCardClick = {
             viewModel.addPayment()
-            onBackWithAddCompleted()
         },
     )
 }

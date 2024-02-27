@@ -23,8 +23,7 @@ class PaymentCardsViewModel(
 
     fun loadCardPayments() {
         viewModelScope.launch {
-            val paymentCards = paymentRepository.getPayments()
-            _uiState.value = paymentCards.toUiState()
+            _uiState.value = paymentRepository.getPayments().toUiState()
         }
     }
 

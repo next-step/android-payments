@@ -17,9 +17,13 @@ class AddCardViewModel(
     private val _uiState = MutableStateFlow(AddCardUiState())
     val uiState: StateFlow<AddCardUiState> = _uiState.asStateFlow()
 
+    private val _addCompleted = MutableStateFlow("")
+    val addCompleted: StateFlow<String> = _addCompleted.asStateFlow()
+
     fun addPayment() {
         viewModelScope.launch {
             paymentRepository.addPaymentCard(uiState.value.toPaymentCard())
+                .also { newPaymentId -> _addCompleted.value = newPaymentId }
         }
     }
 
