@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -23,6 +24,7 @@ fun AddingCardSlot(
 ) {
     Box(
         modifier = modifier
+            .testTag("AddingCardSlot")
             .size(
                 width = 208.dp,
                 height = 124.dp,
