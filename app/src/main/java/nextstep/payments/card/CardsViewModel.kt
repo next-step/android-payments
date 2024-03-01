@@ -28,10 +28,6 @@ class CardsViewModel(
     }
 
     private fun resolveCardsScreenUiState(cards: List<Card>): CardsScreenUiState {
-        return when {
-            cards.isEmpty() -> CardsScreenUiState.Empty
-            cards.size == 1 -> CardsScreenUiState.SingleCard(cards[0])
-            else -> CardsScreenUiState.MultipleCards(cards)
-        }
+        return CardsScreenUiState(cards)
     }
 }
