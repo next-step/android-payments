@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.card.add.CardsScreenUiState
@@ -78,35 +80,25 @@ private fun CardsScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun CardsScreenPreview_Empty() {
+private fun CardsScreenPreview(
+    @PreviewParameter(CardsScreenPreviewParameters::class) cardsUiState: CardsScreenUiState
+) {
     CardsScreen(
-        cardsUiState = CardsScreenUiState.Empty,
+        cardsUiState = cardsUiState,
         onAddCardClick = {},
         onCardClick = {},
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun CardsScreenPreview_SingleCard() {
-    CardsScreen(
-        cardsUiState = CardsScreenUiState.SingleCard(
+private class CardsScreenPreviewParameters : PreviewParameterProvider<CardsScreenUiState> {
+    override val values: Sequence<CardsScreenUiState> = sequenceOf(
+        CardsScreenUiState.Empty,
+        CardsScreenUiState.SingleCard(
             card = StubCard,
         ),
-        onAddCardClick = {},
-        onCardClick = {},
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CardsScreenPreview() {
-    CardsScreen(
-        cardsUiState = CardsScreenUiState.MultipleCards(
+        CardsScreenUiState.MultipleCards(
             cards = listOf(StubCard, StubCard, StubCard)
         ),
-        onAddCardClick = {},
-        onCardClick = {},
     )
 }
 
