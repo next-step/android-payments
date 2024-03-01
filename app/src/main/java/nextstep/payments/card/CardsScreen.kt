@@ -16,6 +16,7 @@ import nextstep.payments.card.component.CardScreenTopBar
 import nextstep.payments.card.component.cards.EmptyCardsContent
 import nextstep.payments.card.component.cards.MultipleCardsContent
 import nextstep.payments.card.component.cards.SingleCardContent
+import java.util.Date
 
 @Composable
 fun CardsScreen(
@@ -111,7 +112,7 @@ private fun CardsScreenPreview() {
 
 private val StubCard = Card(
     cardNumber = "1111 - 2222 - 3333 - 4444",
-    expireDate = "04/21",
+    expireDate = Date(1713625200000), // "2024/04/21",
     ownerName = "Crew",
     cvcNumber = "000",
     password = "1234",

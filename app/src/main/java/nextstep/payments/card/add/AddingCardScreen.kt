@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.card.Card
+import nextstep.payments.card.CardExpireDateFormatter
 import nextstep.payments.card.DefaultCardRepository
 import nextstep.payments.card.add.component.AddingCardScreenTopBar
 import nextstep.payments.card.add.component.CardCvcInputField
@@ -43,10 +44,13 @@ fun AddingCardScreen() {
             AddingCardScreenTopBar(
                 onBackButtonClick = { finish(context) },
                 onSaveButtonClick = {
+                    val cardExpireDate = CardExpireDateFormatter.toDate(getCardExpireDate)
+                        ?: return@AddingCardScreenTopBar
+
                     DefaultCardRepository.addCard(
                         Card(
                             cardNumber = getCardNumber,
-                            expireDate = getCardExpireDate,
+                            expireDate = cardExpireDate,
                             ownerName = getCardOwnerName,
                             cvcNumber = getCardCvc,
                             password = getCardPassword,

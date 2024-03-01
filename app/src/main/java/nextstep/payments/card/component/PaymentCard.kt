@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.card.Card
+import nextstep.payments.card.CardDateFormatter
+import nextstep.payments.card.CardExpireDateFormatter
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun PaymentCard(
@@ -75,6 +81,7 @@ private fun IcChip(
 private fun CardInfo(
     card: Card,
     modifier: Modifier = Modifier,
+    cardDateFormatter: CardDateFormatter = CardExpireDateFormatter,
 ) {
     Column(
         modifier = modifier,
@@ -99,7 +106,7 @@ private fun CardInfo(
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = card.expireDate,
+                text = cardDateFormatter.toFormatString(card.expireDate),
                 color = Color.White,
                 fontSize = 12.sp,
                 letterSpacing = 0.5.sp,
@@ -123,7 +130,7 @@ private fun PaymentCardPreview_withCard() {
         cardColor = Color(0xFF333333),
         card = Card(
             cardNumber = "1111 - 2222 - 3333 - 4444",
-            expireDate = "04/21",
+            expireDate = Date(1713625200000), // "2024/04/21",
             ownerName = "Crew",
             cvcNumber = "000",
             password = "1234",

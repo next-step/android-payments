@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.card.Card
 import nextstep.payments.card.component.AddingCardSlot
 import nextstep.payments.card.component.PaymentCard
+import java.util.Date
 
 @Composable
 fun SingleCardContent(
@@ -43,7 +44,7 @@ private fun SingleCardContentPreview() {
     SingleCardContent(
         card = Card(
             cardNumber = "1111 - 2222 - 3333 - 4444",
-            expireDate = "04/21",
+            expireDate = Date(1713625200000), // "2024/04/21",
             ownerName = "Crew",
             cvcNumber = "000",
             password = "1234",
