@@ -41,7 +41,7 @@ fun PaymentCardsScreenRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PaymentCardsScreen(
+internal fun PaymentCardsScreen(
     uiState: PaymentCardsUiState,
     onAddCardClick: () -> Unit
 ) {

@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nextstep.payments.data.CachedPaymentRepository
-import nextstep.payments.domain.PaymentCard
 import nextstep.payments.domain.PaymentRepository
 
 class PaymentCardsViewModel(
@@ -23,13 +22,8 @@ class PaymentCardsViewModel(
 
     fun loadCardPayments() {
         viewModelScope.launch {
-            _uiState.value = paymentRepository.getPayments().toUiState()
+            val cards = paymentRepository.getPayments()
+            _uiState.value = PaymentCardsUiState.from(cards)
         }
-    }
-
-    private fun List<PaymentCard>.toUiState(): PaymentCardsUiState = when {
-        this.isEmpty() -> PaymentCardsUiState.Empty
-        this.size == 1 -> PaymentCardsUiState.One(this.first())
-        else -> PaymentCardsUiState.Many(this)
     }
 }
