@@ -2,6 +2,7 @@ package nextstep.payments.card.add.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,8 @@ fun InputField(
     value: String,
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isInputPassword: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     inputTextMaxLength: Int = Int.MAX_VALUE,
     showInputValueLength: Boolean = false,
 ) {
@@ -46,10 +48,8 @@ fun InputField(
             }
         },
         onValueChange = onValueChanged,
-        visualTransformation = when (isInputPassword) {
-            true -> PasswordVisualTransformation()
-            false -> VisualTransformation.None
-        },
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
     )
 }
 
@@ -115,6 +115,6 @@ private fun InputFieldPreview_Password() {
         hint = "this is hint",
         value = "Filled",
         onValueChanged = {},
-        isInputPassword = true,
+        visualTransformation = PasswordVisualTransformation(),
     )
 }

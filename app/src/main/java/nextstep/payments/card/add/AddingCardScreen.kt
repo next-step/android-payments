@@ -1,5 +1,7 @@
 package nextstep.payments.card.add
 
+import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -13,8 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.card.Card
+import nextstep.payments.card.CardExpireDateFormatter
+import nextstep.payments.card.DefaultCardRepository
 import nextstep.payments.card.add.component.AddingCardScreenTopBar
 import nextstep.payments.card.add.component.CardCvcInputField
 import nextstep.payments.card.add.component.CardExpireDateInputField
@@ -25,6 +31,7 @@ import nextstep.payments.card.component.PaymentCard
 
 @Composable
 fun AddingCardScreen() {
+    val context = LocalContext.current
 
     val (getCardNumber, setCardNumber) = remember { mutableStateOf("") }
     val (getCardExpireDate, setCardExpireDate) = remember { mutableStateOf("") }
@@ -35,8 +42,22 @@ fun AddingCardScreen() {
     Scaffold(
         topBar = {
             AddingCardScreenTopBar(
-                onBackButtonClick = {},
-                onSaveButtonClick = {},
+                onBackButtonClick = { finish(context) },
+                onSaveButtonClick = {
+                    val cardExpireDate = CardExpireDateFormatter.toDate(getCardExpireDate)
+                        ?: return@AddingCardScreenTopBar
+
+                    DefaultCardRepository.addCard(
+                        Card(
+                            cardNumber = getCardNumber,
+                            expireDate = cardExpireDate,
+                            ownerName = getCardOwnerName,
+                            cvcNumber = getCardCvc,
+                            password = getCardPassword,
+                        )
+                    )
+                    finish(context)
+                },
             )
         }
     ) { innerPadding ->
@@ -66,6 +87,10 @@ fun AddingCardScreen() {
             CardPasswordInputField(value = getCardPassword, onValueChanged = setCardPassword)
         }
     }
+}
+
+private fun finish(context: Context) {
+    (context as? Activity)?.finish()
 }
 
 @Preview(showBackground = true)
