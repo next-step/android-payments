@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,8 @@ fun PaymentInputField(
     hint: String,
     modifier: Modifier = Modifier,
     maxLength: Int = Int.MAX_VALUE,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     OutlinedTextField(
         value = text.take(maxLength),
@@ -34,7 +36,8 @@ fun PaymentInputField(
             Text(text = hint, color = Color.LightGray)
         },
         singleLine = true,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions
     )
 }
 

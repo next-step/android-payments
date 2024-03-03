@@ -2,6 +2,10 @@
     <string name="app_name">Payments</string>
     <string name="app_on_back_click">뒤로 가기</string>
 
+    <string name="payments_title">Payments</string>
+    <string name="payments_add_card">추가</string>
+    <string name="payments_add_card_title">새로운 카드를 등록해주세요</string>
+
     <string name="add_card_title">카드 추가</string>
 
     <string name="card_number_label">카드 번호</string>
