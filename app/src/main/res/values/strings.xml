@@ -18,4 +18,9 @@
     <string name="brand_lotte">롯데카드</string>
     <string name="brand_hana">하나카드</string>
     <string name="brand_kb">국민카드</string>
+    <string name="cretdit_card_empty_title">새로운 카드를 등록해주세요</string>
+    <string name="top_bar_back_content_description">뒤로 가기</string>
+    <string name="title_new_card">카드 추가</string>
+    <string name="content_description_register_card">제출</string>
+    <string name="title_credit_card">Payments</string>
 </resources>

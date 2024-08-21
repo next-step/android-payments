@@ -29,6 +29,7 @@ import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -62,9 +63,11 @@ internal fun NewCardScreen(
 ) {
     Scaffold(
         topBar = {
-            NewCardTopBar(
+            PaymentsTopBar(
+                title = stringResource(id = R.string.title_new_card),
                 onBackClick = { TODO() },
-                onSaveClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) },
+                onActionClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) },
+                actionContentDescription = stringResource(id = R.string.content_description_register_card)
             )
         },
         modifier = modifier,
