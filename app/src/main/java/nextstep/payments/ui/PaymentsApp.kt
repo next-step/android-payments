@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import nextstep.payments.ui.list.navigation.ARG_SHOULD_FETCH_CARDS
 import nextstep.payments.ui.list.navigation.PAYMENT_LIST_ROUTE
 import nextstep.payments.ui.list.navigation.paymentListScreen
 import nextstep.payments.ui.newcard.navigation.newCardGScreen
@@ -25,12 +26,18 @@ private fun PaymentsNav(
         startDestination = startDestination,
         modifier = modifier,
     ) {
+        paymentListScreen()
+
         newCardGScreen(
             navigateUp = { shouldFetchCards ->
-                TODO()
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.set(
+                        key = ARG_SHOULD_FETCH_CARDS,
+                        value = shouldFetchCards,
+                    )
+                navController.popBackStack()
             },
         )
-
-        paymentListScreen()
     }
 }
