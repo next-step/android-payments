@@ -1,17 +1,17 @@
-package nextstep.payments.ui.list.navigation
+package nextstep.payments.ui.creditcard.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import nextstep.payments.ui.list.PaymentListScreen
+import nextstep.payments.ui.creditcard.CreditCardScreen
 
-const val PAYMENT_LIST_ROUTE = "payment_list"
+const val CREDIT_CARD_ROUTE = "credit_card"
 const val ARG_SHOULD_FETCH_CARDS = "shouldFetchCards"
 
-fun NavGraphBuilder.paymentListScreen() {
+fun NavGraphBuilder.creditCardScreen() {
     composable(
-        route = PAYMENT_LIST_ROUTE,
+        route = CREDIT_CARD_ROUTE,
         arguments =
             listOf(
                 navArgument(ARG_SHOULD_FETCH_CARDS) {
@@ -20,6 +20,6 @@ fun NavGraphBuilder.paymentListScreen() {
                 },
             ),
     ) {
-        PaymentListScreen()
+        CreditCardScreen()
     }
 }

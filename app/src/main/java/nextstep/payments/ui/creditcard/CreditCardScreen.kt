@@ -1,8 +1,8 @@
-package nextstep.payments.ui.list
+package nextstep.payments.ui.creditcard
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun PaymentListScreen(modifier: Modifier = Modifier) {
+fun CreditCardScreen(modifier: Modifier = Modifier) {
 }
