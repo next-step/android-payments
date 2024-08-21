@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -138,7 +139,10 @@ private fun EmptyCreditCardContent(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
-        AddCreditCardBox(onClick = onAddCardClick)
+        AddCreditCardBox(
+            onClick = onAddCardClick,
+            modifier = Modifier.size(width = 208.dp, height = 124.dp),
+        )
     }
 }
 
@@ -159,7 +163,10 @@ private fun OneCreditCardContent(
             ownerName = card.ownerName,
             expiredDate = card.expiredDate,
         )
-        AddCreditCardBox(onClick = onAddCardClick)
+        AddCreditCardBox(
+            onClick = onAddCardClick,
+            modifier = Modifier.size(width = 208.dp, height = 124.dp),
+        )
     }
 }
 

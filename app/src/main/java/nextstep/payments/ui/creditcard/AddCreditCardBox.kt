@@ -11,14 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
 internal fun AddCreditCardBox(
-    width: Dp = 208.dp,
-    height: Dp = 124.dp,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -26,7 +23,6 @@ internal fun AddCreditCardBox(
         contentAlignment = Alignment.Center,
         modifier =
             modifier
-                .then(Modifier.size(width = width, height = height))
                 .clip(shape = RoundedCornerShape(5.dp))
                 .background(Color(0xFFE5E5E5))
                 .clickable(onClick = onClick),
