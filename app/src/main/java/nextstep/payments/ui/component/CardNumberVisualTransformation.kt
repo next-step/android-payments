@@ -7,39 +7,49 @@ import androidx.compose.ui.text.input.VisualTransformation
 
 class CardNumberVisualTransformation(
     private val delimiter: Char = '-',
+    private val delimiterSpacing: Int = 1,
+    private val mask: Char? = null,
 ) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        // 1234567890123456 -> 1234 - 5678 - 9012 - 3456
-        val trimmed = text.text.replace(" $delimiter ", "").take(16)
-        val formatted =
+        val trimmed = text.text.take(CARD_NUMBER_LENGTH)
+        val spacing = " ".repeat(delimiterSpacing)
+
+        val transformed =
             buildString {
-                trimmed.forEachIndexed { index, c ->
-                    append(c)
-                    if ((index + 1) % DIGIT_GROUP_SIZE == 0 && index < trimmed.length - 1) {
-                        append(" $delimiter ")
+                trimmed.forEachIndexed { index, char ->
+                    when (index) {
+                        in 0 until DIGIT_SIZE,
+                        in DIGIT_SIZE until DIGIT_SIZE * 2,
+                        -> append(char)
+
+                        in DIGIT_SIZE * 2 until CARD_NUMBER_LENGTH -> append(mask ?: char)
+                    }
+
+                    if ((index + 1) % DIGIT_SIZE == 0 && index < CARD_NUMBER_LENGTH - 1) {
+                        append("$spacing$delimiter$spacing")
                     }
                 }
             }
 
         return TransformedText(
-            AnnotatedString(formatted),
+            AnnotatedString(transformed),
             offsetMapping =
                 object : OffsetMapping {
                     override fun originalToTransformed(offset: Int): Int {
-                        val delimiterCount = offset / DIGIT_GROUP_SIZE
-                        return offset + (delimiterCount * DELIMITER_SPACING)
+                        val delimiterCount = offset / DIGIT_SIZE
+                        return offset + delimiterCount * (delimiterSpacing * 2 + 1)
                     }
 
                     override fun transformedToOriginal(offset: Int): Int {
-                        val delimiterCount = offset / (DIGIT_GROUP_SIZE + DELIMITER_SPACING)
-                        return offset - (delimiterCount * DELIMITER_SPACING)
+                        val delimiterCount = offset / (DIGIT_SIZE + delimiterSpacing * 2 + 1)
+                        return offset - delimiterCount * (delimiterSpacing * 2 + 1)
                     }
                 },
         )
     }
 
     companion object {
-        private const val DIGIT_GROUP_SIZE = 4
-        private const val DELIMITER_SPACING = 3
+        private const val CARD_NUMBER_LENGTH = 16
+        private const val DIGIT_SIZE = 4
     }
 }
