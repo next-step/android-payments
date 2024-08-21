@@ -48,6 +48,22 @@ class CardNumberVisualTransformation(
         )
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CardNumberVisualTransformation) return false
+
+        return delimiter == other.delimiter &&
+            mask == other.mask &&
+            delimiterSpacing == other.delimiterSpacing
+    }
+
+    override fun hashCode(): Int {
+        var result = delimiter.hashCode()
+        result = 31 * result + (mask?.hashCode() ?: 0)
+        result = 31 * result + delimiterSpacing
+        return result
+    }
+
     companion object {
         private const val CARD_NUMBER_LENGTH = 16
         private const val DIGIT_SIZE = 4
