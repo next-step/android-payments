@@ -11,38 +11,38 @@ class CardNumberVisualTransformation(
     private val mask: Char? = null,
 ) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = text.text.take(CARD_NUMBER_LENGTH)
-        val spacing = " ".repeat(delimiterSpacing)
-
-        val transformed =
+        val trimmed = text.text.filter { it.isDigit() }.take(CARD_NUMBER_LENGTH)
+        val formatted =
             buildString {
                 trimmed.forEachIndexed { index, char ->
-                    when (index) {
-                        in 0 until DIGIT_SIZE,
-                        in DIGIT_SIZE until DIGIT_SIZE * 2,
-                        -> append(char)
-
-                        in DIGIT_SIZE * 2 until CARD_NUMBER_LENGTH -> append(mask ?: char)
-                    }
-
-                    if ((index + 1) % DIGIT_SIZE == 0 && index < CARD_NUMBER_LENGTH - 1) {
-                        append("$spacing$delimiter$spacing")
+                    append(if (index >= DIGIT_SIZE * 2 && mask != null) mask else char)
+                    if ((index + 1) % DIGIT_SIZE == 0 && index < trimmed.length - 1) {
+                        append(
+                            " ".repeat(delimiterSpacing) + delimiter +
+                                " ".repeat(
+                                    delimiterSpacing,
+                                ),
+                        )
                     }
                 }
             }
 
         return TransformedText(
-            AnnotatedString(transformed),
+            AnnotatedString(formatted),
             offsetMapping =
                 object : OffsetMapping {
                     override fun originalToTransformed(offset: Int): Int {
-                        val delimiterCount = offset / DIGIT_SIZE
-                        return offset + delimiterCount * (delimiterSpacing * 2 + 1)
+                        if (offset >= trimmed.length) return formatted.length
+
+                        val delimiterCount = (offset / DIGIT_SIZE)
+                        return offset + delimiterCount * (delimiterSpacing + 1)
                     }
 
                     override fun transformedToOriginal(offset: Int): Int {
-                        val delimiterCount = offset / (DIGIT_SIZE + delimiterSpacing * 2 + 1)
-                        return offset - delimiterCount * (delimiterSpacing * 2 + 1)
+                        if (offset >= formatted.length) return trimmed.length
+
+                        val delimiterCount = (offset / (DIGIT_SIZE + delimiterSpacing + 1))
+                        return offset - delimiterCount * (delimiterSpacing + 1)
                     }
                 },
         )
