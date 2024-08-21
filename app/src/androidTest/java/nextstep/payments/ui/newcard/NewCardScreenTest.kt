@@ -67,14 +67,15 @@ class NewCardScreenTest {
     }
 
     @Test
-    fun 카드번호_4자리_이하_입력되면_숫자_4자리만_입력된다() {
+    fun 카드번호_3자리만_입력되면_숫자_3자리만_입력된다() {
         // given
-        val cardNumber = "1234"
-        val expectedFormattedCardNumber = "1234"
+        val cardNumber = "123"
+        val expectedFormattedCardNumber = "123"
 
         // when
         uiState = uiState.copy(cardNumber = cardNumber)
 
+        composeTestRule.waitForIdle()
         // then
         composeTestRule
             .onNodeWithText(expectedFormattedCardNumber)
