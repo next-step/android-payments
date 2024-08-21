@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import nextstep.payments.ui.newcard.NewCardRoute
+import nextstep.payments.ui.PaymentsApp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class NewCardActivity : ComponentActivity() {
@@ -20,7 +20,7 @@ class NewCardActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    NewCardRoute()
+                    PaymentsApp()
                 }
             }
         }
