@@ -38,9 +38,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun NewCardRoute(
+    navigateUp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
-    navigateUp: (Boolean) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -54,6 +54,7 @@ internal fun NewCardRoute(
 
     NewCardScreen(
         uiState = uiState,
+        navigateUp = navigateUp,
         onNewCardScreenEvent = viewModel::dispatchEvent,
         modifier = modifier,
     )
@@ -62,6 +63,7 @@ internal fun NewCardRoute(
 @Composable
 internal fun NewCardScreen(
     uiState: NewCardUiState,
+    navigateUp: (Boolean) -> Unit,
     onNewCardScreenEvent: (NewCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -69,7 +71,7 @@ internal fun NewCardScreen(
         topBar = {
             PaymentsTopBar(
                 title = stringResource(id = R.string.title_new_card),
-                onBackClick = { TODO() },
+                onBackClick = { navigateUp(false) },
                 actions = {
                     IconButton(onClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) }) {
                         Icon(
@@ -172,6 +174,7 @@ private fun NewCardScreenPreview(
     PaymentsTheme {
         NewCardScreen(
             uiState = uiState,
+            navigateUp = {},
             onNewCardScreenEvent = {},
         )
     }
