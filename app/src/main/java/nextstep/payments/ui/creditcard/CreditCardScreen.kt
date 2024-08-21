@@ -1,15 +1,9 @@
 package nextstep.payments.ui.creditcard
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,15 +12,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.model.Brand
+import nextstep.payments.model.Card
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -54,7 +52,7 @@ internal fun CreditCardScreen(
         topBar = {
             PaymentsTopBar(
                 title = stringResource(id = R.string.title_credit_card),
-                onBackClick = { TODO() },
+                titleTextAlign = TextAlign.Center,
                 onActionClick =
                     if (uiState is CreditCardUiState.Many) {
                         { TODO() }
@@ -77,8 +75,19 @@ internal fun CreditCardScreen(
                 )
             }
 
-            is CreditCardUiState.One -> TODO()
-            is CreditCardUiState.Many -> TODO()
+            is CreditCardUiState.One -> {
+                OneCreditCardContent(
+                    card = uiState.card,
+                    onAddCardClick = onAddCardClick,
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                            .padding(top = 32.dp, start = 73.dp, end = 73.dp),
+                )
+            }
+
+            is CreditCardUiState.Many -> {}
         }
     }
 }
@@ -90,6 +99,7 @@ private fun EmptyCreditCardContent(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(32.dp),
         modifier = modifier,
     ) {
         Text(
@@ -98,32 +108,82 @@ private fun EmptyCreditCardContent(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
-        Spacer(modifier = Modifier.height(32.dp))
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier =
-                Modifier
-                    .size(width = 208.dp, height = 124.dp)
-                    .clip(shape = RoundedCornerShape(5.dp))
-                    .background(Color(0xFFE5E5E5))
-                    .clickable(onClick = onAddCardClick),
-        ) {
-            Text(
-                text = "+",
-                fontSize = 32.sp,
-                modifier = Modifier.size(width = 20.dp, height = 40.dp),
-            )
-        }
+        AddCreditCardBox(onClick = onAddCardClick)
+    }
+}
+
+@Composable
+private fun OneCreditCardContent(
+    card: Card,
+    onAddCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(36.dp),
+        modifier = modifier,
+    ) {
+        PaymentCard(
+            brand = card.brand,
+            cardNumber = card.cardNumber,
+            ownerName = card.ownerName,
+            expiredDate = card.expiredDate,
+        )
+        AddCreditCardBox(onClick = onAddCardClick)
     }
 }
 
 @Preview
 @Composable
-private fun CreditCardScreenPreview() {
+private fun CreditCardScreenPreview(
+    @PreviewParameter(CreditCardProvider::class) uiState: CreditCardUiState,
+) {
     PaymentsTheme {
         CreditCardScreen(
-            uiState = CreditCardUiState.Empty,
+            uiState = uiState,
             onAddCardClick = {},
         )
     }
+}
+
+private class CreditCardProvider : PreviewParameterProvider<CreditCardUiState> {
+    override val values: Sequence<CreditCardUiState>
+        get() =
+            sequenceOf(
+                CreditCardUiState.Empty,
+                CreditCardUiState.One(
+                    Card(
+                        brand = Brand.BC,
+                        cardNumber = "1234567812345678",
+                        ownerName = "홍길동",
+                        expiredDate = "1234",
+                        password = "1234",
+                    ),
+                ),
+                CreditCardUiState.Many(
+                    listOf(
+                        Card(
+                            brand = Brand.BC,
+                            cardNumber = "1234567812345678",
+                            ownerName = "홍길동",
+                            expiredDate = "1234",
+                            password = "1234",
+                        ),
+                        Card(
+                            brand = Brand.SHINHAN,
+                            cardNumber = "1234567812345678",
+                            ownerName = "홍길동",
+                            expiredDate = "1234",
+                            password = "1234",
+                        ),
+                        Card(
+                            brand = Brand.KAKAO_BANK,
+                            cardNumber = "1234567812345678",
+                            ownerName = "홍길동",
+                            expiredDate = "1234",
+                            password = "1234",
+                        ),
+                    ),
+                ),
+            )
 }
