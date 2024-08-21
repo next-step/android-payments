@@ -13,13 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.model.OwnerNameValidResult
+import nextstep.payments.ui.component.CardNumberVisualTransformation
+import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -28,16 +34,10 @@ internal fun NewCardRoute(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        uiState = uiState,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
@@ -48,10 +48,7 @@ internal fun NewCardRoute(
 
 @Composable
 internal fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+    uiState: NewCardScreenUiState,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -82,36 +79,49 @@ internal fun NewCardScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = cardNumber,
+                value = uiState.cardNumber,
                 onValueChange = onCardNumberChange,
                 label = { Text(stringResource(id = R.string.label_card_number)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
-                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = CardNumberVisualTransformation(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag("cardNumber"),
             )
 
             OutlinedTextField(
-                value = expiredDate,
+                value = uiState.expiredDate,
                 onValueChange = onExpiredDateChange,
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag("expiredDate"),
             )
 
             OutlinedTextField(
-                value = ownerName,
+                value = uiState.ownerName,
                 onValueChange = onOwnerNameChange,
                 label = { Text(stringResource(id = R.string.label_owner_name)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag("ownerName"),
             )
 
             OutlinedTextField(
-                value = password,
+                value = uiState.password,
                 onValueChange = onPasswordChange,
                 label = { Text(stringResource(id = R.string.label_passwrod)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
-                modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag("password"),
             )
         }
     }
@@ -119,17 +129,36 @@ internal fun NewCardScreen(
 
 @Preview
 @Composable
-private fun NewCardScreenPreview() {
+private fun NewCardScreenPreview(
+    @PreviewParameter(NewCardScreenProvider::class) uiState: NewCardScreenUiState,
+) {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "1234 - 5678 - 1234 - 5678",
-            expiredDate = "12 / 34",
-            ownerName = "홍길동",
-            password = "1234",
+            uiState = uiState,
             onCardNumberChange = {},
             onExpiredDateChange = {},
             onOwnerNameChange = {},
             onPasswordChange = {},
         )
     }
+}
+
+private class NewCardScreenProvider : PreviewParameterProvider<NewCardScreenUiState> {
+    override val values: Sequence<NewCardScreenUiState> =
+        sequenceOf(
+            NewCardScreenUiState(
+                cardNumber = "1234567812345678",
+                expiredDate = "1234",
+                ownerName = "홍길동",
+                password = "1234",
+                ownerNameValidResult = OwnerNameValidResult.VALID,
+            ),
+            NewCardScreenUiState(
+                cardNumber = "1234567812345678",
+                expiredDate = "1234",
+                ownerName = "홍길동",
+                password = "1234567890123456789012345678901",
+                ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
+            ),
+        )
 }
