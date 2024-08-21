@@ -1,1 +1,2 @@
-# android-payments
+## STEP-1
+- 카드 추가 화면 구현
