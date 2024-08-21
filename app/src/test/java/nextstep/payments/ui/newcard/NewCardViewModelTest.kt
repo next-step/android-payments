@@ -25,8 +25,8 @@ class NewCardViewModelTest {
             newCardViewModel.setOwnerName(ownerName)
 
             // then
-            newCardViewModel.ownerNameValidResult.test {
-                assertEquals(awaitItem(), OwnerNameValidResult.VALID)
+            newCardViewModel.uiState.test {
+                assertEquals(awaitItem().ownerNameValidResult, OwnerNameValidResult.VALID)
             }
         }
 
@@ -40,8 +40,8 @@ class NewCardViewModelTest {
             newCardViewModel.setOwnerName(ownerName)
 
             // then
-            newCardViewModel.ownerNameValidResult.test {
-                assertEquals(awaitItem(), OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH)
+            newCardViewModel.uiState.test {
+                assertEquals(awaitItem().ownerNameValidResult, OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH)
             }
         }
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.model.Brand
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
@@ -48,7 +49,7 @@ internal fun NewCardRoute(
 
 @Composable
 internal fun NewCardScreen(
-    uiState: NewCardScreenUiState,
+    uiState: NewCardUiState,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -137,7 +138,7 @@ internal fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview(
-    @PreviewParameter(NewCardScreenProvider::class) uiState: NewCardScreenUiState,
+    @PreviewParameter(NewCardScreenProvider::class) uiState: NewCardUiState,
 ) {
     PaymentsTheme {
         NewCardScreen(
@@ -150,21 +151,24 @@ private fun NewCardScreenPreview(
     }
 }
 
-private class NewCardScreenProvider : PreviewParameterProvider<NewCardScreenUiState> {
-    override val values: Sequence<NewCardScreenUiState> =
+private class NewCardScreenProvider : PreviewParameterProvider<NewCardUiState> {
+    override val values: Sequence<NewCardUiState> =
         sequenceOf(
-            NewCardScreenUiState(
+            NewCardUiState(
+                brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
             ),
-            NewCardScreenUiState(
+            NewCardUiState(
+                brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
-                ownerName = "홍길동",
-                password = "1234567890123456789012345678901",
+                ownerName =
+                    "김수한무 거북이와 두루미 삼천갑자 동방삭 치치카포 사리사리센타 워리워리 세브리깡 무두셀라 구름이 허리케인에 담벼락 담벼락에 서생원 서생원에 고양이 고양이엔 바둑이 바둑이는 돌돌이",
+                password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
             ),
         )

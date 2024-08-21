@@ -15,7 +15,7 @@ import org.junit.Test
 class NewCardScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-    private var uiState by mutableStateOf(NewCardScreenUiState.NONE)
+    private var uiState by mutableStateOf(NewCardUiState.NONE)
 
     @Before
     fun setUp() {
