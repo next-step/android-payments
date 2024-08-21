@@ -9,11 +9,10 @@ class ExpiredDateVisualTransformation(
     private val delimiter: Char = '/',
 ) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = text.text.replace(" $delimiter ", "")
-
+        val trimmed = text.text.filter { it.isDigit() }.take(4)
         val formatted =
-            when {
-                trimmed.length <= 2 -> trimmed
+            when (trimmed.length) {
+                in 0..2 -> trimmed
                 else -> "${trimmed.substring(0, 2)} $delimiter ${trimmed.substring(2)}"
             }
 
@@ -24,13 +23,15 @@ class ExpiredDateVisualTransformation(
                     override fun originalToTransformed(offset: Int): Int =
                         when {
                             offset <= 2 -> offset
-                            else -> offset + DELIMITER_SPACING
+                            offset in 3..4 -> offset + DELIMITER_SPACING
+                            else -> formatted.length
                         }
 
                     override fun transformedToOriginal(offset: Int): Int =
                         when {
                             offset <= 2 -> offset
-                            else -> offset - DELIMITER_SPACING
+                            offset in (3 + DELIMITER_SPACING)..(4 + DELIMITER_SPACING) -> offset - DELIMITER_SPACING
+                            else -> trimmed.length
                         }
                 },
         )

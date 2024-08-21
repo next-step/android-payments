@@ -31,6 +31,7 @@ class NewCardScreenTest {
             }
             NewCardScreen(
                 uiState = uiState,
+                navigateUp = {},
                 onNewCardScreenEvent = eventListener,
             )
         }
@@ -117,6 +118,21 @@ class NewCardScreenTest {
         // given
         val expiredDate = "12"
         val expectedFormattedExpiredDate = "12"
+
+        // when
+        uiState = uiState.copy(expiredDate = expiredDate)
+
+        // then
+        composeTestRule
+            .onNodeWithText(expectedFormattedExpiredDate)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun 만료일_5글자_입력해도_4글자만_노출된다() {
+        // given
+        val expiredDate = "12345"
+        val expectedFormattedExpiredDate = "12 / 34"
 
         // when
         uiState = uiState.copy(expiredDate = expiredDate)
