@@ -19,7 +19,7 @@
 - [v] ProductCard 입력 된 카드 정보 노출
   - [v] ProductCard UI Test
   - [v] ProductCard 입력 정보 추가
-- [] 카드 등록 정보 model 생성
+- [v] 카드 정보 model 생성
 - [] 카드 아이템 싱크
     - [] 새로운 카드가 추가되었을 때 카드 목록 업데이트
 - [] 카드 목록 상태에 따른 UI 변경사항 반영
