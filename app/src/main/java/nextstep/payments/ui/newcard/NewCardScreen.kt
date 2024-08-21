@@ -106,6 +106,12 @@ internal fun NewCardScreen(
                 onValueChange = onOwnerNameChange,
                 label = { Text(stringResource(id = R.string.label_owner_name)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
+                supportingText = {
+                    if (uiState.ownerNameValidResult.isError()) {
+                        Text(text = stringResource(id = R.string.error_owner_name_length))
+                    }
+                },
+                isError = uiState.ownerNameValidResult.isError(),
                 modifier =
                     Modifier
                         .fillMaxWidth()
