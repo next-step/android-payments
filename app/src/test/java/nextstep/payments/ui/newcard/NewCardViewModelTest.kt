@@ -22,7 +22,7 @@ class NewCardViewModelTest {
             val ownerName = "123456789012345678901234567890"
 
             // when
-            newCardViewModel.setOwnerName(ownerName)
+            newCardViewModel.dispatchEvent(NewCardScreenEvent.OnOwnerNameChanged(ownerName))
 
             // then
             newCardViewModel.uiState.test {
@@ -37,11 +37,14 @@ class NewCardViewModelTest {
             val ownerName = "1234567890123456789012345678901"
 
             // when
-            newCardViewModel.setOwnerName(ownerName)
+            newCardViewModel.dispatchEvent(NewCardScreenEvent.OnOwnerNameChanged(ownerName))
 
             // then
             newCardViewModel.uiState.test {
-                assertEquals(awaitItem().ownerNameValidResult, OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH)
+                assertEquals(
+                    awaitItem().ownerNameValidResult,
+                    OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
+                )
             }
         }
 }

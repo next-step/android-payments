@@ -11,19 +11,29 @@ class NewCardViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(NewCardUiState.NONE)
     val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
 
-    fun setCardNumber(cardNumber: String) {
+    fun dispatchEvent(event: NewCardScreenEvent) {
+        when (event) {
+            is NewCardScreenEvent.OnCardNumberChanged -> setCardNumber(event.cardNumber)
+            is NewCardScreenEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
+            is NewCardScreenEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
+            is NewCardScreenEvent.OnPasswordChanged -> setPassword(event.password)
+            is NewCardScreenEvent.OnRegisterCardClicked -> TODO()
+        }
+    }
+
+    private fun setCardNumber(cardNumber: String) {
         _uiState.update {
             it.copy(cardNumber = cardNumber)
         }
     }
 
-    fun setExpiredDate(expiredDate: String) {
+    private fun setExpiredDate(expiredDate: String) {
         _uiState.update {
             it.copy(expiredDate = expiredDate)
         }
     }
 
-    fun setOwnerName(ownerName: String) {
+    private fun setOwnerName(ownerName: String) {
         val result = validateOwnerName(ownerName)
         _uiState.update {
             it.copy(
@@ -39,7 +49,7 @@ class NewCardViewModel : ViewModel() {
             else -> OwnerNameValidResult.VALID
         }
 
-    fun setPassword(password: String) {
+    private fun setPassword(password: String) {
         _uiState.update {
             it.copy(password = password)
         }

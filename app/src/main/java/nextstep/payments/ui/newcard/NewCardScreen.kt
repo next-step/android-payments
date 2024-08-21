@@ -39,10 +39,7 @@ internal fun NewCardRoute(
 
     NewCardScreen(
         uiState = uiState,
-        onCardNumberChange = viewModel::setCardNumber,
-        onExpiredDateChange = viewModel::setExpiredDate,
-        onOwnerNameChange = viewModel::setOwnerName,
-        onPasswordChange = viewModel::setPassword,
+        onNewCardScreenEvent = viewModel::dispatchEvent,
         modifier = modifier,
     )
 }
@@ -50,17 +47,14 @@ internal fun NewCardRoute(
 @Composable
 internal fun NewCardScreen(
     uiState: NewCardUiState,
-    onCardNumberChange: (String) -> Unit,
-    onExpiredDateChange: (String) -> Unit,
-    onOwnerNameChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
+    onNewCardScreenEvent: (NewCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             NewCardTopBar(
                 onBackClick = { TODO() },
-                onSaveClick = { TODO() },
+                onSaveClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) },
             )
         },
         modifier = modifier,
@@ -81,7 +75,9 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = uiState.cardNumber,
-                onValueChange = onCardNumberChange,
+                onValueChange = {
+                    onNewCardScreenEvent(NewCardScreenEvent.OnCardNumberChanged(it))
+                },
                 label = { Text(stringResource(id = R.string.label_card_number)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
                 visualTransformation = CardNumberVisualTransformation(),
@@ -94,7 +90,9 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = uiState.expiredDate,
-                onValueChange = onExpiredDateChange,
+                onValueChange = {
+                    onNewCardScreenEvent(NewCardScreenEvent.OnExpiredDateChanged(it))
+                },
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
                 visualTransformation = ExpiredDateVisualTransformation(),
@@ -107,7 +105,9 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = uiState.ownerName,
-                onValueChange = onOwnerNameChange,
+                onValueChange = {
+                    onNewCardScreenEvent(NewCardScreenEvent.OnOwnerNameChanged(it))
+                },
                 label = { Text(stringResource(id = R.string.label_owner_name)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
                 supportingText = {
@@ -125,7 +125,9 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = uiState.password,
-                onValueChange = onPasswordChange,
+                onValueChange = {
+                    onNewCardScreenEvent(NewCardScreenEvent.OnPasswordChanged(it))
+                },
                 label = { Text(stringResource(id = R.string.label_passwrod)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
                 visualTransformation = PasswordVisualTransformation(),
@@ -147,10 +149,7 @@ private fun NewCardScreenPreview(
     PaymentsTheme {
         NewCardScreen(
             uiState = uiState,
-            onCardNumberChange = {},
-            onExpiredDateChange = {},
-            onOwnerNameChange = {},
-            onPasswordChange = {},
+            onNewCardScreenEvent = {},
         )
     }
 }
