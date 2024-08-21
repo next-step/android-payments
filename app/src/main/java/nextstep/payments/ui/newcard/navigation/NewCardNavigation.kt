@@ -6,7 +6,7 @@ import nextstep.payments.ui.newcard.NewCardRoute
 
 const val NEW_CARD_ROUTE = "new_card"
 
-fun NavGraphBuilder.newCardGScreen() {
+fun NavGraphBuilder.newCardGScreen(navigateUp: (Boolean) -> Unit) {
     composable(route = NEW_CARD_ROUTE) {
         NewCardRoute()
     }

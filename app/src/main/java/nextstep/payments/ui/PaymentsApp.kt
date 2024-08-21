@@ -24,6 +24,10 @@ private fun PaymentsNav(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        newCardGScreen()
+        newCardGScreen(
+            navigateUp = { shouldFetchCards ->
+                TODO()
+            },
+        )
     }
 }

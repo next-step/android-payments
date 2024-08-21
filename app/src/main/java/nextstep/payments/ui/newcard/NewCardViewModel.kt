@@ -1,15 +1,24 @@
 package nextstep.payments.ui.newcard
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.Card
 import nextstep.payments.model.OwnerNameValidResult
 
 class NewCardViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(NewCardUiState.NONE)
     val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
+
+    private val _effect = MutableSharedFlow<NewCardScreenEffect>()
+    val effect = _effect.asSharedFlow()
 
     fun dispatchEvent(event: NewCardScreenEvent) {
         when (event) {
@@ -17,7 +26,7 @@ class NewCardViewModel : ViewModel() {
             is NewCardScreenEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
             is NewCardScreenEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
             is NewCardScreenEvent.OnPasswordChanged -> setPassword(event.password)
-            is NewCardScreenEvent.OnRegisterCardClicked -> TODO()
+            is NewCardScreenEvent.OnRegisterCardClicked -> registerCard()
         }
     }
 
@@ -52,6 +61,23 @@ class NewCardViewModel : ViewModel() {
     private fun setPassword(password: String) {
         _uiState.update {
             it.copy(password = password)
+        }
+    }
+
+    private fun registerCard() {
+        viewModelScope.launch {
+            val card =
+                Card(
+                    brand = _uiState.value.brand,
+                    cardNumber = _uiState.value.cardNumber,
+                    expiredDate = _uiState.value.expiredDate,
+                    ownerName = _uiState.value.ownerName,
+                    password = _uiState.value.password,
+                )
+            PaymentCardsRepository.addCard(card)
+            _effect.emit(
+                NewCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
+            )
         }
     }
 }

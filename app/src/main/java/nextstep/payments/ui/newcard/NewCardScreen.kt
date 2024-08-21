@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +35,17 @@ import nextstep.payments.ui.theme.PaymentsTheme
 internal fun NewCardRoute(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
+    navigateUp: (Boolean) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect {
+            when (it) {
+                is NewCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
+            }
+        }
+    }
 
     NewCardScreen(
         uiState = uiState,
