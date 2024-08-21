@@ -85,6 +85,7 @@ internal fun NewCardScreen(
                 label = { Text(stringResource(id = R.string.label_card_number)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
                 visualTransformation = CardNumberVisualTransformation(),
+                singleLine = true,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -97,6 +98,7 @@ internal fun NewCardScreen(
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
                 visualTransformation = ExpiredDateVisualTransformation(),
+                singleLine = true,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -114,6 +116,7 @@ internal fun NewCardScreen(
                     }
                 },
                 isError = uiState.ownerNameValidResult.isError(),
+                singleLine = true,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -126,6 +129,7 @@ internal fun NewCardScreen(
                 label = { Text(stringResource(id = R.string.label_passwrod)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
                 visualTransformation = PasswordVisualTransformation(),
+                singleLine = true,
                 modifier =
                     Modifier
                         .fillMaxWidth()
