@@ -11,8 +11,8 @@
       - [] 카드 소유자 유효성 상세 구현
     - [] 카드 번호와 만료일의 경우 입력할 때 자동으로 기호(-, /) 가 삽입된다
     - [] 카드 번호 입력 시 자동으로 기호가 삽입된다.
-- [] NewCardScreen test
-  - [] UI Test
+- [v] NewCardScreen Test
+  - [v] UI Test
   - [v] ViewModel Test
 
 ## 🚀 2단계 - 페이먼츠(카드 목록)
