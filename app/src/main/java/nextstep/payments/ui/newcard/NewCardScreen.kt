@@ -95,6 +95,7 @@ internal fun NewCardScreen(
                 onValueChange = onExpiredDateChange,
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
+                visualTransformation = ExpiredDateVisualTransformation(),
                 modifier =
                     Modifier
                         .fillMaxWidth()
