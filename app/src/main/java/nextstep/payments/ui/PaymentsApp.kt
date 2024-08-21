@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import nextstep.payments.ui.creditcard.navigation.ARG_SHOULD_FETCH_CARDS
 import nextstep.payments.ui.creditcard.navigation.CREDIT_CARD_ROUTE
 import nextstep.payments.ui.creditcard.navigation.creditCardScreen
+import nextstep.payments.ui.newcard.navigation.NEW_CARD_ROUTE
 import nextstep.payments.ui.newcard.navigation.newCardGScreen
 
 @Composable
@@ -26,7 +27,11 @@ private fun PaymentsNav(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        creditCardScreen()
+        creditCardScreen(
+            onAddCardClick = {
+                navController.navigate(NEW_CARD_ROUTE)
+            },
+        )
 
         newCardGScreen(
             navigateUp = { shouldFetchCards ->
