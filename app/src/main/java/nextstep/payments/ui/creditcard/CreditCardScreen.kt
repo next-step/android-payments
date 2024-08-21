@@ -2,16 +2,21 @@ package nextstep.payments.ui.creditcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
@@ -31,13 +37,23 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun CreditCardRoute(
     modifier: Modifier = Modifier,
-    viewModel: CreditCardViewModel = viewModel(),
+    onAddCardClick: () -> Unit,
+    viewModel: CreditCardViewModel =
+        viewModel(
+            factory = CreditCardViewModelFactory(LocalSavedStateRegistryOwner.current),
+        ),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel.shouldFetchCards) {
+        viewModel.shouldFetchCards.collect {
+            viewModel.fetchCards()
+        }
+    }
 
     CreditCardScreen(
         uiState = uiState,
-        onAddCardClick = { TODO() },
+        onAddCardClick = onAddCardClick,
         modifier = modifier,
     )
 }
@@ -53,12 +69,18 @@ internal fun CreditCardScreen(
             PaymentsTopBar(
                 title = stringResource(id = R.string.title_credit_card),
                 titleTextAlign = TextAlign.Center,
-                onActionClick =
+                actions = {
                     if (uiState is CreditCardUiState.Many) {
-                        { TODO() }
-                    } else {
-                        null
-                    },
+                        TextButton(onClick = onAddCardClick) {
+                            Text(
+                                text = stringResource(id = R.string.tob_bar_action_add),
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                            )
+                        }
+                    }
+                },
             )
         },
         modifier = modifier,
@@ -87,7 +109,15 @@ internal fun CreditCardScreen(
                 )
             }
 
-            is CreditCardUiState.Many -> {}
+            is CreditCardUiState.Many -> {
+                ManyCreditCardContent(
+                    cards = uiState.cards,
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding),
+                )
+            }
         }
     }
 }
@@ -130,6 +160,32 @@ private fun OneCreditCardContent(
             expiredDate = card.expiredDate,
         )
         AddCreditCardBox(onClick = onAddCardClick)
+    }
+}
+
+@Composable
+private fun ManyCreditCardContent(
+    cards: List<Card>,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+        contentPadding =
+            PaddingValues(
+                vertical = 12.dp,
+                horizontal = 76.dp,
+            ),
+        modifier = modifier,
+    ) {
+        items(cards) { card ->
+            PaymentCard(
+                brand = card.brand,
+                cardNumber = card.cardNumber,
+                ownerName = card.ownerName,
+                expiredDate = card.expiredDate,
+            )
+        }
     }
 }
 

@@ -1,9 +1,9 @@
 package nextstep.payments.ui.component
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,8 +22,7 @@ fun PaymentsTopBar(
     modifier: Modifier = Modifier,
     titleTextAlign: TextAlign = TextAlign.Start,
     onBackClick: (() -> Unit)? = null,
-    onActionClick: (() -> Unit)? = null,
-    actionContentDescription: String? = null,
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
         title = {
@@ -43,16 +42,7 @@ fun PaymentsTopBar(
                 }
             }
         },
-        actions = {
-            if (onActionClick != null) {
-                IconButton(onClick = { onActionClick() }) {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = actionContentDescription,
-                    )
-                }
-            }
-        },
+        actions = actions,
         modifier = modifier,
     )
 }
