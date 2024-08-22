@@ -165,7 +165,11 @@ private fun AddCreditCard(
         modifier = modifier.clickable { onAddClick() },
         backgroundColor = Color(0xFFE5E5E5)
     ) {
-        Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.credit_card_add), modifier = Modifier.align(Alignment.Center))
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = stringResource(R.string.credit_card_add),
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
 
