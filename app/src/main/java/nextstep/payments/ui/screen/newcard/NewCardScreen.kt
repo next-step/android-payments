@@ -79,7 +79,11 @@ internal fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                cardNumber = "1111222233334444",
+                cardOwnerName = "이지훈",
+                cardExpiredDate = "22 / 33"
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
