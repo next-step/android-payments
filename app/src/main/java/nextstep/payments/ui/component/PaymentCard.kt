@@ -29,11 +29,11 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
+    modifier: Modifier = Modifier,
     brand: Brand = Brand.NONE,
     cardNumber: String = "",
     expiredDate: String = "",
     ownerName: String = "",
-    modifier: Modifier = Modifier,
 ) {
     val cardVisualTransformation =
         remember {
