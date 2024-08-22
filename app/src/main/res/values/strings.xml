@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Payments</string>
+    <string name="card_list_empty_title">새로운 카드를 등록해주세요</string>
 </resources>
