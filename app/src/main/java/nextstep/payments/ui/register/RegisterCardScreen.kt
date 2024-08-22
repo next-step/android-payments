@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -96,7 +97,6 @@ internal fun RegisterCardScreen(
         modifier = modifier,
     ) { innerPadding ->
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier =
                 Modifier
                     .padding(innerPadding)
@@ -108,6 +108,7 @@ internal fun RegisterCardScreen(
 
             PaymentCard(
                 brand = uiState.brand,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
 
             Spacer(modifier = Modifier.height(28.dp))
@@ -140,7 +141,7 @@ internal fun RegisterCardScreen(
                 singleLine = true,
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .width(146.dp)
                         .testTag("expiredDate"),
             )
 
@@ -177,7 +178,7 @@ internal fun RegisterCardScreen(
                 singleLine = true,
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .width(146.dp)
                         .testTag("password"),
             )
         }
