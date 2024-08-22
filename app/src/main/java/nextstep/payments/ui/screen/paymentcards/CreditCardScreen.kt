@@ -1,5 +1,9 @@
 package nextstep.payments.ui.screen.paymentcards
 
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.ui.component.BasicCard
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.screen.newcard.NewCardActivity
 import nextstep.payments.ui.screen.paymentcards.model.CreditCard
 
 @Composable
@@ -38,9 +44,20 @@ fun CreditCardRoute(
     viewModel: CreditCardViewModel = viewModel(),
 ) {
     val state by viewModel.paymentCardsUiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            viewModel.fetchCards()
+        }
+    }
 
     CreditCardScreen(
         modifier = modifier,
+        onAddClick = {
+            val intent = Intent(context, NewCardActivity::class.java)
+            launcher.launch(intent)
+
+        },
         state = state,
     )
 }
@@ -48,12 +65,16 @@ fun CreditCardRoute(
 @Composable
 internal fun CreditCardScreen(
     state: CreditCardUiState,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            CreditCardTopBar(isShowActionButton = state.isManyCard()) {}
+            CreditCardTopBar(
+                isShowActionButton = state.isManyCard(),
+                onAddClick = onAddClick
+            )
         }
     ) { innerPadding ->
         val maxScreenModifier = Modifier
@@ -61,7 +82,10 @@ internal fun CreditCardScreen(
             .fillMaxSize()
         when {
             state.isEmptyCard() -> {
-                EmptySection(modifier = maxScreenModifier)
+                EmptySection(
+                    modifier = maxScreenModifier,
+                    onAddClick = onAddClick
+                )
             }
 
             state.isOneCard() -> {
@@ -83,7 +107,8 @@ internal fun CreditCardScreen(
 
 @Composable
 private fun EmptySection(
-    modifier: Modifier = Modifier
+    onAddClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(top = 32.dp),
@@ -97,9 +122,8 @@ private fun EmptySection(
 
         AddCreditCard(
             modifier = Modifier.padding(top = 32.dp),
-        ) {
-            // TODO
-        }
+            onAddClick = onAddClick
+        )
     }
 }
 
@@ -124,12 +148,12 @@ private fun OneCardSection(
 }
 
 @Composable
-fun AddCreditCard(
+private fun AddCreditCard(
     modifier: Modifier = Modifier,
-    onCardClick: () -> Unit
+    onAddClick: () -> Unit
 ) {
     BasicCard(
-        modifier = modifier.clickable { onCardClick() },
+        modifier = modifier.clickable { onAddClick() },
         backgroundColor = Color(0xFFE5E5E5)
     ) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "", modifier = Modifier.align(Alignment.Center))
@@ -137,7 +161,7 @@ fun AddCreditCard(
 }
 
 @Composable
-fun ManyCardSection(
+private fun ManyCardSection(
     modifier: Modifier = Modifier,
     cards: List<CreditCard>
 ) {
@@ -201,7 +225,8 @@ private val previewDummyCreditCard = CreditCard(
 @Composable
 fun CreditCardZeroScreenPreview() {
     CreditCardScreen(
-        state = CreditCardUiState()
+        state = CreditCardUiState(),
+        onAddClick = { }
     )
 }
 
@@ -210,8 +235,9 @@ fun CreditCardZeroScreenPreview() {
 fun CreditCardOneScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
-            cards = listOf(previewDummyCreditCard)
-        )
+            cards = listOf(previewDummyCreditCard),
+        ),
+        onAddClick = { }
     )
 }
 
@@ -221,6 +247,7 @@ fun CreditCardManyScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
             cards = List(5) { previewDummyCreditCard }
-        )
+        ),
+        onAddClick = { }
     )
 }

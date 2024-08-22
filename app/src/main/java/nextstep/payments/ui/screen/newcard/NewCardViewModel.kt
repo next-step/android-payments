@@ -19,6 +19,9 @@ class NewCardViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _cardAdded = MutableStateFlow<Boolean>(false)
+    val cardAdded = _cardAdded.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }

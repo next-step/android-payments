@@ -12,6 +12,10 @@ class CreditCardViewModel : ViewModel() {
     val paymentCardsUiState = _paymentCardsUiState.asStateFlow()
 
     init {
+        fetchCards()
+    }
+
+    fun fetchCards() {
         val cards = PaymentCardsRepository.cards.map { it.toCreditCard() }
         _paymentCardsUiState.value = _paymentCardsUiState.value.copy(cards = cards)
     }
