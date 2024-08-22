@@ -1,9 +1,10 @@
-package nextstep.payments.ui.component
+package nextstep.payments.ui.component.text
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.ui.utils.toTransformedCardNumber
 
 @Composable
 fun CardNumberText(
@@ -12,12 +13,14 @@ fun CardNumberText(
 ) {
     Text(
         modifier = modifier,
-        text = cardNumber.maskCardNumber(),
+        text = cardNumber.toTransformedCardNumber(
+            maxLength = 16,
+            maskStartIndex = 12,
+            maskChar = '*',
+            groupSize = 4,
+            separator = "-"
+        ),
     )
-}
-
-private fun String.maskCardNumber(): String {
-    return "${this.take(4)} - ${this.substring(4, 8)} - **** - ****"
 }
 
 @Preview(showBackground = true)

@@ -20,7 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.component.text.CardNumberText
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.utils.toFormattedExpirationDate
 
 @Composable
 fun PaymentCard(
@@ -64,7 +66,10 @@ fun PaymentCard(
                         color = Color.White,
                     )
                     Text(
-                        text = cardExpiredDate,
+                        text = cardExpiredDate.toFormattedExpirationDate(
+                            maxLength = 4,
+                            separator = "/"
+                        ),
                         color = Color.White,
                     )
                 }
