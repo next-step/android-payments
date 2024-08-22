@@ -56,7 +56,6 @@ fun CreditCardRoute(
         onAddClick = {
             val intent = Intent(context, NewCardActivity::class.java)
             launcher.launch(intent)
-
         },
         state = state,
     )
@@ -91,6 +90,7 @@ internal fun CreditCardScreen(
             state.isOneCard() -> {
                 OneCardSection(
                     creditCard = state.cards.first(),
+                    onAddClick = onAddClick,
                     modifier = maxScreenModifier
                 )
             }
@@ -130,6 +130,7 @@ private fun EmptySection(
 @Composable
 private fun OneCardSection(
     creditCard: CreditCard,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -141,9 +142,8 @@ private fun OneCardSection(
 
         AddCreditCard(
             modifier = Modifier.padding(top = 32.dp),
-        ) {
-            // TODO
-        }
+            onAddClick = onAddClick
+        )
     }
 }
 
