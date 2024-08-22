@@ -3,4 +3,9 @@
     <string name="credit_card_top_bar_title">Payments</string>
     <string name="credit_card_top_bar_action_text">추가</string>
     <string name="credit_card_add_new_card_title">새로운 카드를 등록해주세요</string>
+    <string name="credit_card_add">크레딧 카드 추가 버튼</string>
+
+    <string name="credit_card_section_zero">등록 카드가 0개일 때 화면</string>
+    <string name="credit_card_section_one">등록 카드가 1개일 때 화면</string>
+    <string name="credit_card_section_many">등록 카드가 2개 이상일 때 화면</string>
 </resources>

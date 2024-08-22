@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -67,6 +69,7 @@ internal fun CreditCardScreen(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -82,8 +85,10 @@ internal fun CreditCardScreen(
         when {
             state.isEmptyCard() -> {
                 EmptySection(
-                    modifier = maxScreenModifier,
-                    onAddClick = onAddClick
+                    onAddClick = onAddClick,
+                    modifier = maxScreenModifier.semantics {
+                        contentDescription = context.getString(R.string.credit_card_section_zero)
+                    },
                 )
             }
 
@@ -91,14 +96,18 @@ internal fun CreditCardScreen(
                 OneCardSection(
                     creditCard = state.cards.first(),
                     onAddClick = onAddClick,
-                    modifier = maxScreenModifier
+                    modifier = maxScreenModifier.semantics {
+                        contentDescription = context.getString(R.string.credit_card_section_one)
+                    }
                 )
             }
 
             state.isManyCard() -> {
                 ManyCardSection(
                     cards = state.cards,
-                    modifier = maxScreenModifier
+                    modifier = maxScreenModifier.semantics {
+                        contentDescription = context.getString(R.string.credit_card_section_many)
+                    }
                 )
             }
         }
@@ -156,7 +165,7 @@ private fun AddCreditCard(
         modifier = modifier.clickable { onAddClick() },
         backgroundColor = Color(0xFFE5E5E5)
     ) {
-        Icon(imageVector = Icons.Filled.Add, contentDescription = "", modifier = Modifier.align(Alignment.Center))
+        Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.credit_card_add), modifier = Modifier.align(Alignment.Center))
     }
 }
 
