@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
