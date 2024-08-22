@@ -1,5 +1,6 @@
 package nextstep.payments.ui.register
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -74,6 +75,7 @@ internal fun RegisterCardScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedBrand by remember { mutableStateOf(Brand.NONE) }
+    var showBottomSheet by remember { mutableStateOf(true) }
     Scaffold(
         topBar = {
             PaymentsTopBar(
@@ -172,14 +174,20 @@ internal fun RegisterCardScreen(
                         .testTag("password"),
             )
         }
+        if (showBottomSheet) {
+            BankSelectBottomSheet(
+                selectedBrand = selectedBrand,
+                onBrandSelected = {
+                    selectedBrand = it
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnBrandSelected(it))
+                },
+                onDismiss = {
+                    Log.d("RegisterCardScreen", "onDismissRequest")
+                    showBottomSheet = false
+                },
+            )
+        }
     }
-    BankSelectBottomSheet(
-        selectedBrand = selectedBrand,
-        onBrandSelected = {
-            selectedBrand = it
-            onNewCardScreenEvent(RegisterCardScreenEvent.OnBrandSelected(it))
-        },
-    )
 }
 
 @Preview

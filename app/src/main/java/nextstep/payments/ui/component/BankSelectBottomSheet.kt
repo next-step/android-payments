@@ -19,8 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -39,6 +37,7 @@ private const val ROW_COUNT = 2
 @Composable
 fun BankSelectBottomSheet(
     onBrandSelected: (Brand) -> Unit,
+    onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     selectedBrand: Brand = Brand.NONE,
     modalBottomSheetState: SheetState =
@@ -49,13 +48,14 @@ fun BankSelectBottomSheet(
     LaunchedEffect(key1 = selectedBrand) {
         if (selectedBrand != Brand.NONE) {
             modalBottomSheetState.hide()
+            onDismiss()
         }
     }
 
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
-        onDismissRequest = { },
-        modifier = Modifier.height(352.dp),
+        onDismissRequest = onDismiss,
+        modifier = modifier.height(352.dp),
     ) {
         BankSelectRow(
             brands = Brand.entries.drop(1),
