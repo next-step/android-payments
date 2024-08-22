@@ -34,22 +34,12 @@ fun PaymentCard(
     cardNumber: String = "",
     expiredDate: String = "",
     ownerName: String = "",
+    cardNumberVisualTransformation: CardNumberVisualTransformation = CardNumberVisualTransformation.ASTERISK_MASKED,
+    expiredDateVisualTransformation: ExpiredDateVisualTransformation = ExpiredDateVisualTransformation.DEFAULT,
 ) {
-    val cardVisualTransformation =
-        remember {
-            CardNumberVisualTransformation(
-                mask = '*',
-                delimiterSpacing = 2,
-            )
-        }
-
     val transformedCardNumber =
         remember(cardNumber) {
-            cardVisualTransformation.filter(AnnotatedString(cardNumber)).text
-        }
-    val expiredDateVisualTransformation =
-        remember {
-            ExpiredDateVisualTransformation()
+            cardNumberVisualTransformation.filter(AnnotatedString(cardNumber)).text
         }
     val transformedExpiredDate =
         remember(expiredDate) {
