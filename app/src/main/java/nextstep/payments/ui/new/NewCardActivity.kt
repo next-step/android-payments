@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.new
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,15 +7,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import nextstep.payments.ui.NewCardScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                val viewModel : NewCardViewModel = viewModel()
+                NewCardScreen(
+                    viewModel = viewModel,
+                    navigateToCardList = {
+                        setResult(RESULT_OK)
+                        finish()
+                    },
+                )
             }
         }
     }
