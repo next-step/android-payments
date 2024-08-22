@@ -3,6 +3,7 @@ package nextstep.payments.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import nextstep.payments.ui.main.PaymentMain
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -10,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                PaymentMain(listOf())
+//                PaymentMain(listOf())
             }
         }
     }
