@@ -9,10 +9,12 @@ class NewCardActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             PaymentsTheme {
                 NewCardRoute(
+                    onBackClick = {
+                        finish()
+                    },
                     navigateToCardList = {
                         setResult(RESULT_OK)
                         finish()

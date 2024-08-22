@@ -21,12 +21,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.component.NewCardTopBar
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.text.CreditCardVisualTransformation
+import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardRoute(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
+    onBackClick: () -> Unit,
     navigateToCardList: () -> Unit,
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -45,8 +48,8 @@ fun NewCardRoute(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        onBackClick = {},
-        onSaveClick = {},
+        onBackClick = onBackClick,
+        onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -87,9 +90,9 @@ internal fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                cardNumber = "1111222233334444",
-                cardOwnerName = "이지훈",
-                cardExpiredDate = "22 / 33"
+                cardNumber = cardNumber,
+                cardOwnerName = ownerName,
+                cardExpiredDate = expiredDate
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -99,6 +102,7 @@ internal fun NewCardScreen(
                 onValueChange = setCardNumber,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
+                visualTransformation = CreditCardVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -107,6 +111,7 @@ internal fun NewCardScreen(
                 onValueChange = setExpiredDate,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
+                visualTransformation = ExpirationDateVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -135,7 +140,7 @@ internal fun NewCardScreen(
 private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "0000 - 0000 - 0000 - 0000",
+            cardNumber = "1111222233334444",
             expiredDate = "22 / 33",
             ownerName = "이지훈",
             password = "12345678",
