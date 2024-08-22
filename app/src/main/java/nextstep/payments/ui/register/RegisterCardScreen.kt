@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,22 +37,22 @@ import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-internal fun NewCardRoute(
+internal fun RegisterCardRoute(
     navigateUp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: RegisterCardViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect {
             when (it) {
-                is NewCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
+                is RegisterCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
             }
         }
     }
 
-    NewCardScreen(
+    RegisterCardScreen(
         uiState = uiState,
         navigateUp = navigateUp,
         onNewCardScreenEvent = viewModel::dispatchEvent,
@@ -61,10 +61,10 @@ internal fun NewCardRoute(
 }
 
 @Composable
-internal fun NewCardScreen(
-    uiState: NewCardUiState,
+internal fun RegisterCardScreen(
+    uiState: RegisterCardUiState,
     navigateUp: (Boolean) -> Unit,
-    onNewCardScreenEvent: (NewCardScreenEvent) -> Unit,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -73,7 +73,7 @@ internal fun NewCardScreen(
                 title = stringResource(id = R.string.title_new_card),
                 onBackClick = { navigateUp(false) },
                 actions = {
-                    IconButton(onClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) }) {
+                    IconButton(onClick = { onNewCardScreenEvent(RegisterCardScreenEvent.OnRegisterCardClicked) }) {
                         Icon(
                             imageVector = Icons.Filled.Check,
                             contentDescription = stringResource(id = R.string.content_description_register_card),
@@ -101,7 +101,7 @@ internal fun NewCardScreen(
             OutlinedTextField(
                 value = uiState.cardNumber,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnCardNumberChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnCardNumberChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_card_number)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
@@ -116,7 +116,7 @@ internal fun NewCardScreen(
             OutlinedTextField(
                 value = uiState.expiredDate,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnExpiredDateChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnExpiredDateChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
@@ -131,7 +131,7 @@ internal fun NewCardScreen(
             OutlinedTextField(
                 value = uiState.ownerName,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnOwnerNameChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnOwnerNameChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_owner_name)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
@@ -151,7 +151,7 @@ internal fun NewCardScreen(
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnPasswordChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnPasswordChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_passwrod)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
@@ -169,10 +169,10 @@ internal fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview(
-    @PreviewParameter(NewCardScreenProvider::class) uiState: NewCardUiState,
+    @PreviewParameter(RegisterCardScreenProvider::class) uiState: RegisterCardUiState,
 ) {
     PaymentsTheme {
-        NewCardScreen(
+        RegisterCardScreen(
             uiState = uiState,
             navigateUp = {},
             onNewCardScreenEvent = {},
@@ -180,10 +180,10 @@ private fun NewCardScreenPreview(
     }
 }
 
-private class NewCardScreenProvider : PreviewParameterProvider<NewCardUiState> {
-    override val values: Sequence<NewCardUiState> =
+private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCardUiState> {
+    override val values: Sequence<RegisterCardUiState> =
         sequenceOf(
-            NewCardUiState(
+            RegisterCardUiState(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
@@ -191,7 +191,7 @@ private class NewCardScreenProvider : PreviewParameterProvider<NewCardUiState> {
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
             ),
-            NewCardUiState(
+            RegisterCardUiState(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",

@@ -1,21 +1,21 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
-sealed interface NewCardScreenEvent {
+sealed interface RegisterCardScreenEvent {
     data class OnCardNumberChanged(
         val cardNumber: String,
-    ) : NewCardScreenEvent
+    ) : RegisterCardScreenEvent
 
     data class OnExpiredDateChanged(
         val expiredDate: String,
-    ) : NewCardScreenEvent
+    ) : RegisterCardScreenEvent
 
     data class OnOwnerNameChanged(
         val ownerName: String,
-    ) : NewCardScreenEvent
+    ) : RegisterCardScreenEvent
 
     data class OnPasswordChanged(
         val password: String,
-    ) : NewCardScreenEvent
+    ) : RegisterCardScreenEvent
 
-    data object OnRegisterCardClicked : NewCardScreenEvent
+    data object OnRegisterCardClicked : RegisterCardScreenEvent
 }
