@@ -26,7 +26,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun 카드가_0개_일때_비어있는_안내_화면이_떠야한다() {
+    fun 카드가_0개일_때_비어있는_안내_화면이_보여야_한다() {
         state.value = CreditCardUiState(cards = emptyList())
 
         composeTestRule
@@ -41,7 +41,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun 카드가_1개_일때_1개의_카드가_보이고_크레딧카드_추가_버튼이_보인다() {
+    fun 카드가_1개일_때_해당_카드와_크레딧카드_추가_버튼이_보여야_한다() {
         state.value = CreditCardUiState(
             cards = listOf(
                 CreditCard(
@@ -64,7 +64,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun 카드가_2개_이상일때_카드들만_보여야한다() {
+    fun 카드가_2개_이상일_때_카드들만_보여야_하고_추가_버튼이_없어야_한다() {
         state.value = CreditCardUiState(
             cards = List(2) {
                 CreditCard(

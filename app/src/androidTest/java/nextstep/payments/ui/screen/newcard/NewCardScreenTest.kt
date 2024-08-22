@@ -30,29 +30,28 @@ internal class NewCardScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun 카드번호가_입력되면_카드번호_8자리까지는_숫자로_그이후는_별표_형식으로_표시된다() {
+    fun 카드번호가_입력되면_처음_8자리는_숫자로_나머지는_별표로_표시된다() {
         cardNumber.value = "1111222233334444"
 
         composeTestRule.onNodeWithText("1111 - 2222 - **** - ****").assertExists()
     }
 
     @Test
-    fun 카드번호가_16자가_초과한_입력은_무시하고_먼저_입력된을_기준으로_출력된다() {
+    fun 카드번호가_16자를_초과하면_초과된_숫자는_무시된다() {
         cardNumber.value = "1111222233334444555555"
 
         composeTestRule.onNodeWithText("1111 - 2222 - **** - ****").assertExists()
     }
 
-
     @Test
-    fun 만료일자가_입력되면_MM_YY_형식으로_표시된다() {
+    fun 만료일이_입력되면_MM_YY_형식으로_표시된다() {
         expiredData.value = "1234"
 
         composeTestRule.onNodeWithText("12 / 34").assertExists()
     }
 
     @Test
-    fun 만료일자가_초과해도_무시하고_먼저_입력된을_기준으로_출력된다() {
+    fun 만료일이_4자를_초과해도_초과된_부분은_무시된다() {
         expiredData.value = "1234555666"
 
         composeTestRule.onNodeWithText("12 / 34").assertExists()
