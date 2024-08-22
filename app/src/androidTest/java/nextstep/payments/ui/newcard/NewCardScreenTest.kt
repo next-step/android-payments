@@ -20,19 +20,10 @@ class NewCardScreenTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            val eventListener: (NewCardScreenEvent) -> Unit = { event ->
-                when (event) {
-                    is NewCardScreenEvent.OnCardNumberChanged -> {}
-                    is NewCardScreenEvent.OnExpiredDateChanged -> {}
-                    is NewCardScreenEvent.OnOwnerNameChanged -> {}
-                    is NewCardScreenEvent.OnPasswordChanged -> {}
-                    is NewCardScreenEvent.OnRegisterCardClicked -> {}
-                }
-            }
             NewCardScreen(
                 uiState = uiState,
                 navigateUp = {},
-                onNewCardScreenEvent = eventListener,
+                onNewCardScreenEvent = {},
             )
         }
     }
