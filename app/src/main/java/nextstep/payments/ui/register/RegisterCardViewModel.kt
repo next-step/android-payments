@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.model.OwnerNameValidResult
 
@@ -27,6 +28,7 @@ class RegisterCardViewModel : ViewModel() {
             is RegisterCardScreenEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
             is RegisterCardScreenEvent.OnPasswordChanged -> setPassword(event.password)
             is RegisterCardScreenEvent.OnRegisterCardClicked -> registerCard()
+            is RegisterCardScreenEvent.OnBrandSelected -> setBrand(event.brand)
         }
     }
 
@@ -78,6 +80,12 @@ class RegisterCardViewModel : ViewModel() {
             _effect.emit(
                 RegisterCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
             )
+        }
+    }
+
+    private fun setBrand(brand: Brand) {
+        _uiState.update {
+            it.copy(brand = brand)
         }
     }
 }

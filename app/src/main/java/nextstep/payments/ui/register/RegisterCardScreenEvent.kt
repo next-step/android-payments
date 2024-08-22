@@ -1,5 +1,7 @@
 package nextstep.payments.ui.register
 
+import nextstep.payments.model.Brand
+
 sealed interface RegisterCardScreenEvent {
     data class OnCardNumberChanged(
         val cardNumber: String,
@@ -18,4 +20,8 @@ sealed interface RegisterCardScreenEvent {
     ) : RegisterCardScreenEvent
 
     data object OnRegisterCardClicked : RegisterCardScreenEvent
+
+    data class OnBrandSelected(
+        val brand: Brand,
+    ) : RegisterCardScreenEvent
 }
