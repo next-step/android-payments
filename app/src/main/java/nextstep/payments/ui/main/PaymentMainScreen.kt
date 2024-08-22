@@ -62,12 +62,12 @@ fun PaymentMain(
 
             if (cards.isEmpty() || cards.size == 1) {
                 item {
-                    AddCardButton(Modifier) {
-
-                    }
+                    AddCardButton(
+                        modifier = modifier,
+                        onClick = onAddClick
+                    )
                 }
             }
-
         }
     }
 }

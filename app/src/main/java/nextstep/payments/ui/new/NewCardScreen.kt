@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nextstep.payments.data.Card
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -31,10 +32,15 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(
+            onBackClick = onBackClick,
+            onSaveClick = onSaveClick
+        ) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -110,6 +116,8 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onBackClick = { navigateToCardList() },
+        onSaveClick = { viewModel.addCard(Card(cardNumber, expiredDate, ownerName, password)) },
         modifier = modifier
     )
 }
@@ -126,7 +134,9 @@ private fun StatelessNewCardScreenPreview() {
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
-            setPassword = {}
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {}
         )
     }
 }
