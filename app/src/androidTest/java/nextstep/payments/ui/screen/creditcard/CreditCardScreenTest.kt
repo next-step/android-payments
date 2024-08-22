@@ -1,12 +1,10 @@
-package nextstep.payments.ui.screen
+package nextstep.payments.ui.screen.creditcard
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.onNodeWithContentDescription
 import nextstep.payments.BaseComposeTest
 import nextstep.payments.R
-import nextstep.payments.ui.screen.paymentcards.CreditCardScreen
-import nextstep.payments.ui.screen.paymentcards.CreditCardUiState
-import nextstep.payments.ui.screen.paymentcards.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CreditCard
 import org.junit.Before
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package nextstep.payments.ui.screen.paymentcards
+package nextstep.payments.ui.screen.creditcard
 
 import android.app.Activity
 import android.content.Intent
@@ -38,7 +38,7 @@ import nextstep.payments.R
 import nextstep.payments.ui.component.BasicCard
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.screen.newcard.NewCardActivity
-import nextstep.payments.ui.screen.paymentcards.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CreditCard
 
 @Composable
 fun CreditCardRoute(

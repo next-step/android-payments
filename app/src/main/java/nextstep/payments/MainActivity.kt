@@ -3,7 +3,7 @@ package nextstep.payments
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import nextstep.payments.ui.screen.paymentcards.CreditCardRoute
+import nextstep.payments.ui.screen.creditcard.CreditCardRoute
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {

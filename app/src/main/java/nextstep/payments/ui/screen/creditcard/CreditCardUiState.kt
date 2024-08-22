@@ -1,6 +1,6 @@
-package nextstep.payments.ui.screen.paymentcards
+package nextstep.payments.ui.screen.creditcard
 
-import nextstep.payments.ui.screen.paymentcards.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CreditCard
 
 data class CreditCardUiState(
     val cards: List<CreditCard> = emptyList()
