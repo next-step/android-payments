@@ -1,12 +1,11 @@
-package nextstep.payments
+package nextstep.payments.ui.card.newcard
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import nextstep.payments.ui.NewCardScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class MainActivity : ComponentActivity() {
+class NewCardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
