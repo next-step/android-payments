@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -16,6 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -30,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.OwnerNameValidResult
+import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
@@ -60,6 +65,7 @@ internal fun RegisterCardRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun RegisterCardScreen(
     uiState: RegisterCardUiState,
@@ -67,6 +73,7 @@ internal fun RegisterCardScreen(
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var selectedBrand by remember { mutableStateOf(Brand.NONE) }
     Scaffold(
         topBar = {
             PaymentsTopBar(
@@ -94,7 +101,9 @@ internal fun RegisterCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                brand = uiState.brand,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -164,6 +173,13 @@ internal fun RegisterCardScreen(
             )
         }
     }
+    BankSelectBottomSheet(
+        selectedBrand = selectedBrand,
+        onBrandSelected = {
+            selectedBrand = it
+            onNewCardScreenEvent(RegisterCardScreenEvent.OnBrandSelected(it))
+        },
+    )
 }
 
 @Preview
