@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
-import nextstep.payments.ui.component.BasicCard
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.card.BasicCard
+import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.screen.newcard.NewCardActivity
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
 
