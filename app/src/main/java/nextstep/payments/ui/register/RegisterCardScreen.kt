@@ -1,12 +1,14 @@
 package nextstep.payments.ui.register
 
 import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -94,20 +96,21 @@ internal fun RegisterCardScreen(
         modifier = modifier,
     ) { innerPadding ->
         Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier =
                 Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 24.dp),
+                    .imePadding()
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState()),
         ) {
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             PaymentCard(
                 brand = uiState.brand,
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             OutlinedTextField(
                 value = uiState.cardNumber,
@@ -124,6 +127,8 @@ internal fun RegisterCardScreen(
                         .testTag("cardNumber"),
             )
 
+            Spacer(modifier = Modifier.height(18.dp))
+
             OutlinedTextField(
                 value = uiState.expiredDate,
                 onValueChange = {
@@ -138,6 +143,8 @@ internal fun RegisterCardScreen(
                         .fillMaxWidth()
                         .testTag("expiredDate"),
             )
+
+            Spacer(modifier = Modifier.height(18.dp))
 
             OutlinedTextField(
                 value = uiState.ownerName,
