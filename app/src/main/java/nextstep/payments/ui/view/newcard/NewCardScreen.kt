@@ -1,5 +1,6 @@
 package nextstep.payments.ui.view.newcard
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,14 +11,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.component.PaymentCard
 
 @Composable
@@ -29,6 +33,13 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val activity = LocalContext.current as? Activity
+
+    LaunchedEffect(Unit) {
+        viewModel.finishEvent.collectLatest {
+            activity?.finish()
+        }
+    }
 
     NewCardScreen(
         modifier = modifier,
@@ -40,6 +51,8 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onBackClick = { activity?.finish() },
+        onSaveClick = viewModel::saveCard,
     )
 }
 
@@ -53,10 +66,17 @@ private fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick,
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -120,5 +140,7 @@ private fun NewCardScreenPreviewStateless() {
         setExpiredDate = {},
         setOwnerName = {},
         setPassword = {},
+        onBackClick = {},
+        onSaveClick = {},
     )
 }
