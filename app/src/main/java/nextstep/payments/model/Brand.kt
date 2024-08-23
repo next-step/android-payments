@@ -2,6 +2,7 @@ package nextstep.payments.model
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import nextstep.payments.R
@@ -50,9 +51,9 @@ fun Brand.toName(): String =
     )
 
 @Composable
-fun Brand.toIcon() =
+fun Brand.toIcon(): Painter =
     when (this) {
-        Brand.NONE -> null
+        Brand.NONE -> R.drawable.credit_card
         Brand.BC -> R.drawable.bc_card
         Brand.SHINHAN -> R.drawable.shinhan_card
         Brand.KAKAO_BANK -> R.drawable.kb_card
@@ -61,4 +62,4 @@ fun Brand.toIcon() =
         Brand.LOTTE -> R.drawable.lotte_card
         Brand.HANA -> R.drawable.hana_card
         Brand.KB -> R.drawable.kb_card
-    }?.let { painterResource(id = it) }
+    }.let { painterResource(id = it) }
