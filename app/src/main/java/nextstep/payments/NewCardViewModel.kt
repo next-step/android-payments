@@ -46,4 +46,8 @@ class NewCardViewModel(
         repository.addCard(card)
         _cardAdded.value = true
     }
+
+    fun fetchCards() {
+
+    }
 }

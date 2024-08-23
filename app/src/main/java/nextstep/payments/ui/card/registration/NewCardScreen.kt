@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.card.registration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,18 +21,27 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
+import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 // Stateful
 @Composable
 fun NewCardScreen(
     modifier: Modifier = Modifier,
+    navigateToCardList: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) navigateToCardList()
+    }
 
     NewCardScreen(
         cardNumber = cardNumber,
@@ -117,6 +127,8 @@ private fun NewCardScreen(
 private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
+            modifier = Modifier,
+            navigateToCardList = {},
             viewModel = NewCardViewModel().apply {
                 setCardNumber("0000 - 0000 - 0000 -0000")
                 setExpiredDate("02/26")
