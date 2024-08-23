@@ -29,7 +29,7 @@ fun PaymentCardRegister(
             .size(width = CardConstant.CARD_WIDTH.dp, height = CardConstant.CARD_HEIGHT.dp)
             .clip(RoundedCornerShape(5.dp))
             .background(color = Color(0xFFE5E5E5))
-            .clickable { onClick() }
+            .clickable(onClick = onClick)
     ) {
         Icon(
             modifier = Modifier.align(Alignment.Center),
