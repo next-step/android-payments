@@ -20,14 +20,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 val viewModel : NewCardViewModel = viewModel()
-                val cards by viewModel.cards.collectAsState()
+                val cardUiState by viewModel.cardUiState.collectAsState()
 
                 val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == Activity.RESULT_OK) {
+                    if (it.resultCode == RESULT_OK) {
                         viewModel.fetchCards()
                     }
                 }
-                PaymentMain(cards = cards) {
+                PaymentMain(cardUiState = cardUiState) {
                     val intent = Intent(this, NewCardActivity::class.java)
                     launcher.launch(intent)
                 }

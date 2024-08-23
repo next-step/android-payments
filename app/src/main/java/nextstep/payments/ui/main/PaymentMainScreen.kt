@@ -24,18 +24,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.data.Card
+import nextstep.payments.ui.state.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.titleBoldStyle
 
 @Composable
 fun PaymentMain(
     modifier: Modifier = Modifier,
-    cards: List<Card>,
+    cardUiState: CardUiState,
     onAddClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            PaymentMainTopBar(cards.size, onAddClick)
+            PaymentMainTopBar(cardUiState, onAddClick)
         },
     ) { innerPadding ->
         LazyColumn(
@@ -46,21 +47,30 @@ fun PaymentMain(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(36.dp)
         ) {
-            if (cards.isEmpty()) {
-                item {
-                    Text(
-                        text = "새로운 카드를 등록해주세요",
-                        modifier = Modifier.padding(top = 32.dp),
-                        style = titleBoldStyle,
-                        maxLines = 1)
+            when (cardUiState) {
+                is CardUiState.Empty -> {
+                    item {
+                        Text(
+                            text = "새로운 카드를 등록해주세요",
+                            modifier = Modifier.padding(top = 32.dp),
+                            style = titleBoldStyle,
+                            maxLines = 1
+                        )
+                    }
                 }
-            } else {
-                items(cards) { card ->
-                    PopulatedPaymentCard(card = card, Modifier.padding(top = 12.dp))
+                is CardUiState.One -> {
+                    item {
+                        PopulatedPaymentCard(card = cardUiState.card, Modifier.padding(top = 12.dp))
+                    }
+                }
+                is CardUiState.Many -> {
+                    items(cardUiState.cards) { card ->
+                        PopulatedPaymentCard(card = card, Modifier.padding(top = 12.dp))
+                    }
                 }
             }
 
-            if (cards.isEmpty() || cards.size == 1) {
+            if (cardUiState !is CardUiState.Many) {
                 item {
                     AddCardButton(
                         modifier = modifier,
@@ -109,20 +119,20 @@ private fun PaymentMainPreview() {
     PaymentsTheme {
 //        PaymentMain(listOf(), Modifier)
         val items : List<Card> = listOf(
-//            Card(
-//                "1234-5678-9012-3456",
-//                "12/34",
-//                "홍길동",
-//                "1234"
-//            ),
-//            Card(
-//                "1234-5678-9012-3456",
-//                "12/34",
-//                "홍길동",
-//                "1234"
-//            )
+            Card(
+                "1234-5678-9012-3456",
+                "12/34",
+                "홍길동",
+                "1234"
+            ),
+            Card(
+                "1234-5678-9012-3456",
+                "12/34",
+                "홍길동",
+                "1234"
+            )
         )
-        PaymentMain(cards = items) {
+        PaymentMain(cardUiState = CardUiState.Many(items)) {
 
         }
     }

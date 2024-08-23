@@ -12,12 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.state.CardUiState
 import nextstep.payments.ui.theme.titleBoldStyle
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun PaymentMainTopBar(
-    size: Int,
+    cardUiState: CardUiState,
     onAddClick: () -> Unit
 ) {
     TopAppBar(
@@ -29,7 +30,7 @@ internal fun PaymentMainTopBar(
             )
         },
         actions = {
-            if (size > 1) {
+            if (cardUiState is CardUiState.Many) {
                 IconButton(
                     onClick = onAddClick,
                     modifier = Modifier.size(64.dp)
@@ -53,6 +54,6 @@ internal fun PaymentMainTopBar(
 @Preview
 @Composable
 private fun PaymentMainTopBarPreview() {
-    PaymentMainTopBar(size = 2) {
+    PaymentMainTopBar(cardUiState = CardUiState.Empty) {
     }
 }
