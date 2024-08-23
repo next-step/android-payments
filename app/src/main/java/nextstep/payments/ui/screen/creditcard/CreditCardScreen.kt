@@ -36,9 +36,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.ui.component.card.BasicCard
+import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
-import nextstep.payments.ui.screen.newcard.NewCardActivity
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.newcard.NewCardActivity
 
 @Composable
 fun CreditCardRoute(
@@ -163,7 +164,7 @@ private fun AddCreditCard(
 ) {
     BasicCard(
         modifier = modifier.clickable { onAddClick() },
-        backgroundColor = Color(0xFFE5E5E5)
+        colors = BasicCardDefaults.colors(backgroundColor = Color(0xFFE5E5E5)),
     ) {
         Icon(
             imageVector = Icons.Filled.Add,

@@ -34,7 +34,9 @@ fun PaymentCard(
 ) {
     BasicCard(modifier = modifier) {
         Column(
-            modifier = Modifier.align(Alignment.BottomStart).fillMaxWidth(),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom,
         ) {
             Box(
@@ -48,7 +50,6 @@ fun PaymentCard(
             )
 
             CompositionLocalProvider(
-                LocalContentColor provides Color.White,
                 LocalTextStyle provides MaterialTheme.typography.labelMedium
             ) {
                 CardNumberText(
@@ -62,16 +63,12 @@ fun PaymentCard(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp, top = 2.dp)
                 ) {
-                    Text(
-                        text = cardOwnerName,
-                        color = Color.White,
-                    )
+                    Text(text = cardOwnerName)
                     Text(
                         text = cardExpiredDate.toFormattedExpirationDate(
                             maxLength = 4,
                             separator = "/"
                         ),
-                        color = Color.White,
                     )
                 }
             }
