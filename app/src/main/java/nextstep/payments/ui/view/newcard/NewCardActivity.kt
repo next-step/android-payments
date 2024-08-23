@@ -8,7 +8,8 @@ import nextstep.payments.base.BaseComposeActivity
 import nextstep.payments.model.PaymentCardModel
 
 class NewCardActivity : BaseComposeActivity() {
-    override val content: @Composable () -> Unit = {
+    @Composable
+    override fun Content() {
         NewCardScreen()
     }
 

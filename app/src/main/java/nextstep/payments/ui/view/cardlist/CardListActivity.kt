@@ -5,7 +5,8 @@ import nextstep.payments.base.BaseComposeActivity
 import nextstep.payments.ui.view.newcard.NewCardActivity
 
 class CardListActivity : BaseComposeActivity() {
-    override val content: @Composable () -> Unit = {
+    @Composable
+    override fun Content() {
         CardListScreen(
             onShowPaymentCardDetail = {
                 startActivity(NewCardActivity.newIntent(this, it))
