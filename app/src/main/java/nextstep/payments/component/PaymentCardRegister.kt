@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.consts.CardConstant
+import nextstep.payments.consts.CardDefaults
 
 @Composable
 fun PaymentCardRegister(
@@ -26,7 +26,7 @@ fun PaymentCardRegister(
     Box(
         modifier = modifier
             .shadow(8.dp)
-            .size(width = CardConstant.CARD_WIDTH.dp, height = CardConstant.CARD_HEIGHT.dp)
+            .size(size = CardDefaults.CARD_SIZE)
             .clip(RoundedCornerShape(5.dp))
             .background(color = Color(0xFFE5E5E5))
             .clickable(onClick = onClick)
