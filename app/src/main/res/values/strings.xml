@@ -8,4 +8,7 @@
     <string name="placeholder_card_owner_name">카드에 표시된 이름을 입력하세요.</string>
     <string name="text_password">비밀번호</string>
     <string name="placeholder_password">0000</string>
+
+    <string name="test_tag_card_img">cardImage</string>
+    <string name="test_tag_comment">textComment</string>
 </resources>

@@ -8,4 +8,8 @@ object PaymentCardsRepository {
     fun addCard(card: Card) {
         _cards.add(card)
     }
+
+    fun removeAllCard() {
+        _cards.clear()
+    }
 }
