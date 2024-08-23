@@ -79,30 +79,37 @@ fun BankSelectRow(
         maxItemsInEachRow = COLUMN_COUNT,
     ) {
         repeat(ROW_COUNT * COLUMN_COUNT) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+            val brand = brands[it]
+            BankCard(
+                brand = brand,
                 modifier =
                     Modifier
                         .size(80.dp)
-                        .clickable { onClick(brands[it]) },
-            ) {
-                brands[it]
-                    .toIcon()
-                    ?.let { icon ->
-                        Image(
-                            painter = icon,
-                            contentDescription = stringResource(id = R.string.brand_icon_content_description),
-                        )
-                    }
-                Spacer(modifier = Modifier.height(9.dp))
-                Text(
-                    text = brands[it].toName(),
-                    style =
-                        MaterialTheme.typography.titleMedium,
-                )
-            }
+                        .clickable { onClick(brand) },
+            )
         }
+    }
+}
+
+@Composable
+private fun BankCard(
+    brand: Brand,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        Image(
+            painter = brand.toIcon(),
+            contentDescription = stringResource(id = R.string.brand_icon_content_description),
+        )
+        Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = brand.toName(),
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
 }
 
