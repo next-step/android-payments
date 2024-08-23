@@ -84,7 +84,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun 상단_바에_카드_추가_버튼을_누르면_카드_추가_화면으로_이동하는_로직이_실행된다() {
+    fun 카드가2개_이상이면_상단_바에_카드_추가_버튼을_누를수있다() {
         state.value = CreditCardUiState(
             cards = List(3) {
                 CreditCard(
@@ -95,14 +95,13 @@ internal class CreditCardScreenTest : BaseComposeTest() {
             }
         )
 
-        addCard
-            .performClick()
+        addCard.performClick()
 
         assert(onAddClickCount == 1)
     }
 
     @Test
-    fun 카드_목록의_추가_버튼을_누르면_카드_추가_화면으로_이동하는_로직이_실행된다() {
+    fun 카드가2개_이하이면_카드_목록의_추가_버튼_누를수있다() {
         state.value = CreditCardUiState(cards = emptyList())
 
         addCardAction.performClick()
