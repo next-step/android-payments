@@ -113,15 +113,9 @@ internal fun RegisterCardScreen(
 
             Spacer(modifier = Modifier.height(28.dp))
 
-            OutlinedTextField(
-                value = uiState.cardNumber,
-                onValueChange = {
-                    onNewCardScreenEvent(RegisterCardScreenEvent.OnCardNumberChanged(it))
-                },
-                label = { Text(stringResource(id = R.string.label_card_number)) },
-                placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
-                visualTransformation = CardNumberVisualTransformation(),
-                singleLine = true,
+            CardNumberTextField(
+                cardNumber = uiState.cardNumber,
+                onNewCardScreenEvent = onNewCardScreenEvent,
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -130,15 +124,9 @@ internal fun RegisterCardScreen(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            OutlinedTextField(
-                value = uiState.expiredDate,
-                onValueChange = {
-                    onNewCardScreenEvent(RegisterCardScreenEvent.OnExpiredDateChanged(it))
-                },
-                label = { Text(stringResource(id = R.string.label_expired_date)) },
-                placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
-                visualTransformation = ExpiredDateVisualTransformation(),
-                singleLine = true,
+            ExpiredDateTextField(
+                expiredDate = uiState.expiredDate,
+                onNewCardScreenEvent = onNewCardScreenEvent,
                 modifier =
                     Modifier
                         .width(146.dp)
@@ -147,35 +135,19 @@ internal fun RegisterCardScreen(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            OutlinedTextField(
-                value = uiState.ownerName,
-                onValueChange = {
-                    onNewCardScreenEvent(RegisterCardScreenEvent.OnOwnerNameChanged(it))
-                },
-                label = { Text(stringResource(id = R.string.label_owner_name)) },
-                placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
-                supportingText = {
-                    if (uiState.ownerNameValidResult.isError()) {
-                        Text(text = stringResource(id = R.string.error_owner_name_length))
-                    }
-                },
-                isError = uiState.ownerNameValidResult.isError(),
-                singleLine = true,
+            OwnerNameTextField(
+                ownerName = uiState.ownerName,
+                ownerNameValidResult = uiState.ownerNameValidResult,
+                onNewCardScreenEvent = onNewCardScreenEvent,
                 modifier =
-                    Modifier
+                    modifier
                         .fillMaxWidth()
                         .testTag("ownerName"),
             )
 
-            OutlinedTextField(
-                value = uiState.password,
-                onValueChange = {
-                    onNewCardScreenEvent(RegisterCardScreenEvent.OnPasswordChanged(it))
-                },
-                label = { Text(stringResource(id = R.string.label_passwrod)) },
-                placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                singleLine = true,
+            PasswordTextField(
+                password = uiState.password,
+                onNewCardScreenEvent = onNewCardScreenEvent,
                 modifier =
                     Modifier
                         .width(146.dp)
@@ -196,6 +168,88 @@ internal fun RegisterCardScreen(
             )
         }
     }
+}
+
+@Composable
+private fun PasswordTextField(
+    password: String,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = password,
+        onValueChange = {
+            onNewCardScreenEvent(RegisterCardScreenEvent.OnPasswordChanged(it))
+        },
+        label = { Text(stringResource(id = R.string.label_passwrod)) },
+        placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
+        visualTransformation = PasswordVisualTransformation(),
+        singleLine = true,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ExpiredDateTextField(
+    expiredDate: String,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = expiredDate,
+        onValueChange = {
+            onNewCardScreenEvent(RegisterCardScreenEvent.OnExpiredDateChanged(it))
+        },
+        label = { Text(stringResource(id = R.string.label_expired_date)) },
+        placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
+        visualTransformation = ExpiredDateVisualTransformation(),
+        singleLine = true,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun CardNumberTextField(
+    cardNumber: String,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = cardNumber,
+        onValueChange = {
+            onNewCardScreenEvent(RegisterCardScreenEvent.OnCardNumberChanged(it))
+        },
+        label = { Text(stringResource(id = R.string.label_card_number)) },
+        placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
+        visualTransformation = CardNumberVisualTransformation(),
+        singleLine = true,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun OwnerNameTextField(
+    ownerName: String,
+    ownerNameValidResult: OwnerNameValidResult,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = ownerName,
+        onValueChange = {
+            onNewCardScreenEvent(RegisterCardScreenEvent.OnOwnerNameChanged(it))
+        },
+        label = { Text(stringResource(id = R.string.label_owner_name)) },
+        placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
+        supportingText = {
+            if (ownerNameValidResult.isError()) {
+                Text(text = stringResource(id = R.string.error_owner_name_length))
+            }
+        },
+        isError = ownerNameValidResult.isError(),
+        singleLine = true,
+        modifier = modifier,
+    )
 }
 
 @Preview
