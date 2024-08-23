@@ -73,9 +73,7 @@ internal fun CreditCardScreen(
             state.isEmptyCard() -> {
                 EmptySection(
                     onAddClick = onAddClick,
-                    modifier = maxScreenModifier.semantics {
-                        contentDescription = context.getString(R.string.credit_card_section_zero)
-                    },
+                    modifier = maxScreenModifier
                 )
             }
 
@@ -83,18 +81,14 @@ internal fun CreditCardScreen(
                 OneCardSection(
                     creditCard = state.cards.first(),
                     onAddClick = onAddClick,
-                    modifier = maxScreenModifier.semantics {
-                        contentDescription = context.getString(R.string.credit_card_section_one)
-                    }
+                    modifier = maxScreenModifier
                 )
             }
 
             state.isManyCard() -> {
                 ManyCardSection(
                     cards = state.cards,
-                    modifier = maxScreenModifier.semantics {
-                        contentDescription = context.getString(R.string.credit_card_section_many)
-                    }
+                    modifier = maxScreenModifier
                 )
             }
         }
@@ -106,8 +100,13 @@ private fun EmptySection(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Column(
-        modifier = modifier.padding(top = 32.dp),
+        modifier = modifier
+            .padding(top = 32.dp)
+            .semantics {
+                contentDescription = context.getString(R.string.credit_card_section_zero)
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -129,7 +128,10 @@ private fun OneCardSection(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    val context = LocalContext.current
+    Column(modifier = modifier.semantics {
+        contentDescription = context.getString(R.string.credit_card_section_one)
+    }, horizontalAlignment = Alignment.CenterHorizontally) {
         PaymentCard(
             cardNumber = creditCard.cardNumber,
             cardOwnerName = creditCard.cardOwnerName,
@@ -165,9 +167,13 @@ private fun ManyCardSection(
     modifier: Modifier = Modifier,
     cards: List<CreditCard>
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier
-            .padding(top = 12.dp),
+            .padding(top = 12.dp)
+            .semantics {
+                contentDescription = context.getString(R.string.credit_card_section_many)
+            },
         verticalArrangement = Arrangement.spacedBy(36.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
