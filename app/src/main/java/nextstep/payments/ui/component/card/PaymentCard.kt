@@ -26,10 +26,10 @@ import nextstep.payments.ui.utils.toFormattedExpirationDate
 
 @Composable
 fun PaymentCard(
-    modifier: Modifier = Modifier,
     cardNumber: String,
     cardOwnerName: String,
     cardExpiredDate: String,
+    modifier: Modifier = Modifier,
 ) {
     BasicCard(modifier = modifier) {
         Column(
