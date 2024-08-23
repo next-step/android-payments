@@ -2,6 +2,7 @@ package nextstep.payments.ui.creditcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,9 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun EmptyCreditCardContent(
@@ -33,6 +36,17 @@ internal fun EmptyCreditCardContent(
         AddCreditCardBox(
             onClick = onAddCardClick,
             modifier = Modifier.size(width = 208.dp, height = 124.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyCardContentPreview() {
+    PaymentsTheme {
+        EmptyCreditCardContent(
+            onAddCardClick = {},
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
