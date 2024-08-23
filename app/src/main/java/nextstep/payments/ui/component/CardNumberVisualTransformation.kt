@@ -1,5 +1,6 @@
 package nextstep.payments.ui.component
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
@@ -67,5 +68,15 @@ class CardNumberVisualTransformation(
     companion object {
         private const val CARD_NUMBER_LENGTH = 16
         private const val DIGIT_SIZE = 4
+
+        @Stable
+        val DEFAULT = CardNumberVisualTransformation()
+
+        @Stable
+        val ASTERISK_MASKED =
+            CardNumberVisualTransformation(
+                mask = '*',
+                delimiterSpacing = 2,
+            )
     }
 }

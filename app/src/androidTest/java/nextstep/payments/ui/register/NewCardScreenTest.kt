@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,24 +15,15 @@ import org.junit.Test
 class NewCardScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-    private var uiState by mutableStateOf(NewCardUiState.NONE)
+    private var uiState by mutableStateOf(RegisterCardUiState.NONE)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            val eventListener: (NewCardScreenEvent) -> Unit = { event ->
-                when (event) {
-                    is NewCardScreenEvent.OnCardNumberChanged -> {}
-                    is NewCardScreenEvent.OnExpiredDateChanged -> {}
-                    is NewCardScreenEvent.OnOwnerNameChanged -> {}
-                    is NewCardScreenEvent.OnPasswordChanged -> {}
-                    is NewCardScreenEvent.OnRegisterCardClicked -> {}
-                }
-            }
-            NewCardScreen(
+            RegisterCardScreen(
                 uiState = uiState,
                 navigateUp = {},
-                onNewCardScreenEvent = eventListener,
+                onNewCardScreenEvent = {},
             )
         }
     }

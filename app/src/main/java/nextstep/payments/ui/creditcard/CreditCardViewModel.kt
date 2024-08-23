@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ui.creditcard.navigation.ARG_SHOULD_FETCH_CARDS
 
@@ -37,12 +38,13 @@ class CreditCardViewModel(
 
     fun fetchCards() {
         val cards = PaymentCardsRepository.cards
-        _uiState.value =
+        _uiState.update {
             when (cards.size) {
                 0 -> CreditCardUiState.Empty
                 1 -> CreditCardUiState.One(cards.first())
                 else -> CreditCardUiState.Many(cards)
             }
+        }
     }
 }
 

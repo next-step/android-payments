@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,23 +10,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.model.OwnerNameValidResult
 
-class NewCardViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(NewCardUiState.NONE)
-    val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
+class RegisterCardViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(RegisterCardUiState.NONE)
+    val uiState: StateFlow<RegisterCardUiState> = _uiState.asStateFlow()
 
-    private val _effect = MutableSharedFlow<NewCardScreenEffect>()
+    private val _effect = MutableSharedFlow<RegisterCardScreenEffect>()
     val effect = _effect.asSharedFlow()
 
-    fun dispatchEvent(event: NewCardScreenEvent) {
+    fun dispatchEvent(event: RegisterCardScreenEvent) {
         when (event) {
-            is NewCardScreenEvent.OnCardNumberChanged -> setCardNumber(event.cardNumber)
-            is NewCardScreenEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
-            is NewCardScreenEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
-            is NewCardScreenEvent.OnPasswordChanged -> setPassword(event.password)
-            is NewCardScreenEvent.OnRegisterCardClicked -> registerCard()
+            is RegisterCardScreenEvent.OnCardNumberChanged -> setCardNumber(event.cardNumber)
+            is RegisterCardScreenEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
+            is RegisterCardScreenEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
+            is RegisterCardScreenEvent.OnPasswordChanged -> setPassword(event.password)
+            is RegisterCardScreenEvent.OnRegisterCardClicked -> registerCard()
+            is RegisterCardScreenEvent.OnBrandSelected -> setBrand(event.brand)
         }
     }
 
@@ -76,8 +78,14 @@ class NewCardViewModel : ViewModel() {
                 )
             PaymentCardsRepository.addCard(card)
             _effect.emit(
-                NewCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
+                RegisterCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
             )
+        }
+    }
+
+    private fun setBrand(brand: Brand) {
+        _uiState.update {
+            it.copy(brand = brand)
         }
     }
 }

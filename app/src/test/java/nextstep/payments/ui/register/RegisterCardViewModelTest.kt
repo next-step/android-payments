@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
@@ -7,12 +7,12 @@ import nextstep.payments.model.OwnerNameValidResult
 import org.junit.Before
 import org.junit.Test
 
-class NewCardViewModelTest {
-    private lateinit var newCardViewModel: NewCardViewModel
+class RegisterCardViewModelTest {
+    private lateinit var registerCardViewModel: RegisterCardViewModel
 
     @Before
     fun setUp() {
-        newCardViewModel = NewCardViewModel()
+        registerCardViewModel = RegisterCardViewModel()
     }
 
     @Test
@@ -22,10 +22,10 @@ class NewCardViewModelTest {
             val ownerName = "123456789012345678901234567890"
 
             // when
-            newCardViewModel.dispatchEvent(NewCardScreenEvent.OnOwnerNameChanged(ownerName))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged(ownerName))
 
             // then
-            newCardViewModel.uiState.test {
+            registerCardViewModel.uiState.test {
                 assertEquals(awaitItem().ownerNameValidResult, OwnerNameValidResult.VALID)
             }
         }
@@ -37,10 +37,10 @@ class NewCardViewModelTest {
             val ownerName = "1234567890123456789012345678901"
 
             // when
-            newCardViewModel.dispatchEvent(NewCardScreenEvent.OnOwnerNameChanged(ownerName))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged(ownerName))
 
             // then
-            newCardViewModel.uiState.test {
+            registerCardViewModel.uiState.test {
                 assertEquals(
                     awaitItem().ownerNameValidResult,
                     OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,

@@ -1,5 +1,6 @@
 package nextstep.payments.ui.component
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
@@ -48,5 +49,8 @@ class ExpiredDateVisualTransformation(
 
     companion object {
         private const val DELIMITER_SPACING = 3
+
+        @Stable
+        val DEFAULT = ExpiredDateVisualTransformation()
     }
 }

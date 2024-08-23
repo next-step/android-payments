@@ -1,13 +1,18 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
-import androidx.compose.foundation.layout.Arrangement
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -16,6 +21,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -30,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.OwnerNameValidResult
+import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
@@ -37,22 +46,22 @@ import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-internal fun NewCardRoute(
+internal fun RegisterCardRoute(
     navigateUp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: RegisterCardViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect {
             when (it) {
-                is NewCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
+                is RegisterCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
             }
         }
     }
 
-    NewCardScreen(
+    RegisterCardScreen(
         uiState = uiState,
         navigateUp = navigateUp,
         onNewCardScreenEvent = viewModel::dispatchEvent,
@@ -60,20 +69,23 @@ internal fun NewCardRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NewCardScreen(
-    uiState: NewCardUiState,
+internal fun RegisterCardScreen(
+    uiState: RegisterCardUiState,
     navigateUp: (Boolean) -> Unit,
-    onNewCardScreenEvent: (NewCardScreenEvent) -> Unit,
+    onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var selectedBrand by remember { mutableStateOf(Brand.NONE) }
+    var showBottomSheet by remember { mutableStateOf(true) }
     Scaffold(
         topBar = {
             PaymentsTopBar(
                 title = stringResource(id = R.string.title_new_card),
                 onBackClick = { navigateUp(false) },
                 actions = {
-                    IconButton(onClick = { onNewCardScreenEvent(NewCardScreenEvent.OnRegisterCardClicked) }) {
+                    IconButton(onClick = { onNewCardScreenEvent(RegisterCardScreenEvent.OnRegisterCardClicked) }) {
                         Icon(
                             imageVector = Icons.Filled.Check,
                             contentDescription = stringResource(id = R.string.content_description_register_card),
@@ -85,23 +97,26 @@ internal fun NewCardScreen(
         modifier = modifier,
     ) { innerPadding ->
         Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
             modifier =
                 Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 24.dp),
+                    .imePadding()
+                    .padding(horizontal = 24.dp)
+                    .verticalScroll(rememberScrollState()),
         ) {
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            PaymentCard()
+            PaymentCard(
+                brand = uiState.brand,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             OutlinedTextField(
                 value = uiState.cardNumber,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnCardNumberChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnCardNumberChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_card_number)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
@@ -113,10 +128,12 @@ internal fun NewCardScreen(
                         .testTag("cardNumber"),
             )
 
+            Spacer(modifier = Modifier.height(18.dp))
+
             OutlinedTextField(
                 value = uiState.expiredDate,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnExpiredDateChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnExpiredDateChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_expired_date)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
@@ -124,14 +141,16 @@ internal fun NewCardScreen(
                 singleLine = true,
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .width(146.dp)
                         .testTag("expiredDate"),
             )
+
+            Spacer(modifier = Modifier.height(18.dp))
 
             OutlinedTextField(
                 value = uiState.ownerName,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnOwnerNameChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnOwnerNameChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_owner_name)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_owner_name)) },
@@ -151,7 +170,7 @@ internal fun NewCardScreen(
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = {
-                    onNewCardScreenEvent(NewCardScreenEvent.OnPasswordChanged(it))
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnPasswordChanged(it))
                 },
                 label = { Text(stringResource(id = R.string.label_passwrod)) },
                 placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
@@ -159,8 +178,21 @@ internal fun NewCardScreen(
                 singleLine = true,
                 modifier =
                     Modifier
-                        .fillMaxWidth()
+                        .width(146.dp)
                         .testTag("password"),
+            )
+        }
+        if (showBottomSheet) {
+            BankSelectBottomSheet(
+                selectedBrand = selectedBrand,
+                onBrandSelected = {
+                    selectedBrand = it
+                    onNewCardScreenEvent(RegisterCardScreenEvent.OnBrandSelected(it))
+                },
+                onDismiss = {
+                    Log.d("RegisterCardScreen", "onDismissRequest")
+                    showBottomSheet = false
+                },
             )
         }
     }
@@ -169,10 +201,10 @@ internal fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview(
-    @PreviewParameter(NewCardScreenProvider::class) uiState: NewCardUiState,
+    @PreviewParameter(RegisterCardScreenProvider::class) uiState: RegisterCardUiState,
 ) {
     PaymentsTheme {
-        NewCardScreen(
+        RegisterCardScreen(
             uiState = uiState,
             navigateUp = {},
             onNewCardScreenEvent = {},
@@ -180,10 +212,10 @@ private fun NewCardScreenPreview(
     }
 }
 
-private class NewCardScreenProvider : PreviewParameterProvider<NewCardUiState> {
-    override val values: Sequence<NewCardUiState> =
+private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCardUiState> {
+    override val values: Sequence<RegisterCardUiState> =
         sequenceOf(
-            NewCardUiState(
+            RegisterCardUiState(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
@@ -191,7 +223,7 @@ private class NewCardScreenProvider : PreviewParameterProvider<NewCardUiState> {
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
             ),
-            NewCardUiState(
+            RegisterCardUiState(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",

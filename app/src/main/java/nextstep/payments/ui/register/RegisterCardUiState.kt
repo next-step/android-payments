@@ -1,9 +1,9 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.register
 
 import nextstep.payments.model.Brand
 import nextstep.payments.model.OwnerNameValidResult
 
-data class NewCardUiState(
+data class RegisterCardUiState(
     val brand: Brand,
     val cardNumber: String,
     val expiredDate: String,
@@ -13,7 +13,7 @@ data class NewCardUiState(
 ) {
     companion object {
         val NONE =
-            NewCardUiState(
+            RegisterCardUiState(
                 brand = Brand.NONE,
                 cardNumber = "",
                 expiredDate = "",
