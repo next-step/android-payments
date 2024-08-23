@@ -1,11 +1,35 @@
-package nextstep.payments.data
+package nextstep.payments.ui.new
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import nextstep.payments.data.Card
+import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.ui.state.CardUiState
 
-class NewCardViewModel : ViewModel() {
+class NewCardViewModel(
+    private val repository: PaymentCardsRepository = PaymentCardsRepository
+) : ViewModel() {
+
+    private val _cardAdded = MutableStateFlow<Boolean>(false)
+    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+
+    private val _cardUiState = MutableStateFlow<CardUiState>(CardUiState.Empty)
+    val cardUiState: StateFlow<CardUiState> = _cardUiState
+
+    fun addCard(card: Card) {
+        repository.addCard(card)
+        _cardAdded.value = true
+    }
+    fun fetchCards()  {
+        val cards = repository.cards
+        _cardUiState.value = when {
+            cards.isEmpty() -> CardUiState.Empty
+            cards.size == 1 -> CardUiState.One(cards.first())
+            else -> CardUiState.Many(cards)
+        }
+    }
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
