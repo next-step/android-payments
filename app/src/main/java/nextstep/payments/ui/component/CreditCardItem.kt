@@ -31,7 +31,7 @@ import nextstep.payments.ui.theme.CardChipColor
 
 
 @Composable
-fun CreditCard(
+fun CreditCardItem(
     cardNumber: String,
     cardOwnerName: String,
     cardExpiredDate: String,
@@ -85,9 +85,9 @@ fun CreditCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun CreditCardPreview() {
+private fun CreditCardItemPreview() {
     Box {
-        CreditCard(
+        CreditCardItem(
             cardNumber = "1111 - 2222 - **** - ****",
             cardOwnerName = "Park",
             cardExpiredDate = "04 / 21"

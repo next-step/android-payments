@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,8 +20,31 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
+// Stateful
+@Composable
+fun NewCardScreen(
+    modifier: Modifier = Modifier,
+    viewModel: NewCardViewModel = viewModel(),
+) {
+    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
+    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
+    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
+
+    NewCardScreen(
+        cardNumber = cardNumber,
+        expiredDate = expiredDate,
+        ownerName = ownerName,
+        password = password,
+        setCardNumber = viewModel::setCardNumber,
+        setExpiredDate = viewModel::setExpiredDate,
+        setOwnerName = viewModel::setOwnerName,
+        setPassword = viewModel::setPassword
+    )
+}
 
 // Stateless
 @Composable
@@ -87,29 +110,6 @@ fun NewCardScreen(
             )
         }
     }
-}
-
-// Stateful
-@Composable
-fun NewCardScreen(
-    modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
-) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-
-    NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
-    )
 }
 
 @Preview
