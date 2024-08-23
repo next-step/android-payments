@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,20 +35,19 @@ fun PopulatedPaymentCard(
         PaymentCard()
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
                 .padding(horizontal = 14.dp)
                 .padding(bottom = 16.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
             MaskedCardNumberText(
                 cardNumber = card.cardNumber,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             )
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = card.ownerName,
+                    text = card.ownerName.uppercase(),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )

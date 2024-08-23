@@ -29,14 +29,19 @@ import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.titleBoldStyle
 
 @Composable
-fun PaymentMain(
-    modifier: Modifier = Modifier,
+fun PaymentCardList(
     cardUiState: CardUiState,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
-            PaymentMainTopBar(cardUiState, onAddClick)
+            PaymentCardListTopBar {
+                AddButton(
+                    cardUiState = cardUiState,
+                    onAddClick = onAddClick
+                )
+            }
         },
     ) { innerPadding ->
         LazyColumn(
@@ -115,7 +120,36 @@ fun AddCardButton(
 
 @Preview
 @Composable
-private fun PaymentMainPreview() {
+private fun PaymentCardListEmptyPreview() {
+    PaymentsTheme {
+        PaymentCardList(
+            cardUiState = CardUiState.Empty,
+            onAddClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PaymentCardListOnePreview() {
+    PaymentsTheme {
+//        PaymentMain(listOf(), Modifier)
+        val item = Card(
+            "1234-5678-9012-3456",
+            "12/34",
+            "홍길동",
+            "1234"
+        )
+        PaymentCardList(
+            cardUiState = CardUiState.One(item),
+            onAddClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PaymentCardListManyPreview() {
     PaymentsTheme {
 //        PaymentMain(listOf(), Modifier)
         val items : List<Card> = listOf(
@@ -132,8 +166,9 @@ private fun PaymentMainPreview() {
                 "1234"
             )
         )
-        PaymentMain(cardUiState = CardUiState.Many(items)) {
-
-        }
+        PaymentCardList(
+            cardUiState = CardUiState.Many(items),
+            onAddClick = {}
+            )
     }
 }
