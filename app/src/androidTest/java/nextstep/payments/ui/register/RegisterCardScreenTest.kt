@@ -1,24 +1,26 @@
 package nextstep.payments.ui.register
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.model.OwnerNameValidResult
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class NewCardScreenTest {
+class RegisterCardScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-    private var uiState by mutableStateOf(RegisterCardUiState.NONE)
 
-    @Before
-    fun setUp() {
+    @Test
+    fun 카드번호를_입력하면_카드번호_형식에_맞게_변형되어_노출된다() {
+        // given
+        val cardNumber = "1234567890123456"
+        val expectedFormattedCardNumber = "1234 - 5678 - 9012 - 3456"
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(cardNumber = cardNumber)
+
         composeTestRule.setContent {
             RegisterCardScreen(
                 uiState = uiState,
@@ -26,18 +28,8 @@ class NewCardScreenTest {
                 onNewCardScreenEvent = {},
             )
         }
-    }
 
-    @Test
-    fun 카드번호를_입력하면_카드번호_형식에_맞게_변형되어_노출된다() {
-        // given
-        val cardNumber = "1234567890123456"
-        val expectedFormattedCardNumber = "1234 - 5678 - 9012 - 3456"
-
-        // when
-        uiState = uiState.copy(cardNumber = cardNumber)
-
-        // then
+        // when & then
         composeTestRule
             .onNodeWithText(expectedFormattedCardNumber)
             .assertIsDisplayed()
@@ -48,9 +40,17 @@ class NewCardScreenTest {
         // given
         val cardNumber = "12345"
         val expectedFormattedCardNumber = "1234 - 5"
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(cardNumber = cardNumber)
 
-        // when
-        uiState = uiState.copy(cardNumber = cardNumber)
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
@@ -64,8 +64,17 @@ class NewCardScreenTest {
         val cardNumber = "1234"
         val expectedFormattedCardNumber = "1234"
 
-        // when
-        uiState = uiState.copy(cardNumber = cardNumber)
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(cardNumber = cardNumber)
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         composeTestRule.waitForIdle()
         // then
@@ -80,8 +89,17 @@ class NewCardScreenTest {
         val expiredDate = "1234"
         val expectedFormattedExpiredDate = "12 / 34"
 
-        // when
-        uiState = uiState.copy(expiredDate = expiredDate)
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(expiredDate = expiredDate)
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
@@ -95,8 +113,17 @@ class NewCardScreenTest {
         val expiredDate = "121"
         val expectedFormattedExpiredDate = "12 / 1"
 
-        // when
-        uiState = uiState.copy(expiredDate = expiredDate)
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(expiredDate = expiredDate)
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
@@ -110,8 +137,17 @@ class NewCardScreenTest {
         val expiredDate = "12"
         val expectedFormattedExpiredDate = "12"
 
-        // when
-        uiState = uiState.copy(expiredDate = expiredDate)
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(expiredDate = expiredDate)
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
@@ -125,8 +161,17 @@ class NewCardScreenTest {
         val expiredDate = "12345"
         val expectedFormattedExpiredDate = "12 / 34"
 
-        // when
-        uiState = uiState.copy(expiredDate = expiredDate)
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(expiredDate = expiredDate)
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
@@ -140,12 +185,20 @@ class NewCardScreenTest {
         val ownerName = "123456789012345678901234567890"
         val validationResult = OwnerNameValidResult.VALID
 
-        // when
-        uiState =
-            uiState.copy(
-                ownerName = ownerName,
-                ownerNameValidResult = validationResult,
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(
+                    ownerName = ownerName,
+                    ownerNameValidResult = validationResult,
+                )
+
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
             )
+        }
 
         // then
         composeTestRule
@@ -159,21 +212,25 @@ class NewCardScreenTest {
         val ownerName = "1234567890123456789012345678901"
         val validationResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
 
-        // when
-        uiState =
-            uiState.copy(
-                ownerName = ownerName,
-                ownerNameValidResult = validationResult,
-            )
+        val uiState =
+            RegisterCardUiState.NONE
+                .copy(
+                    ownerName = ownerName,
+                    ownerNameValidResult = validationResult,
+                )
 
-        composeTestRule.waitForIdle()
+        composeTestRule.setContent {
+            RegisterCardScreen(
+                uiState = uiState,
+                navigateUp = {},
+                onNewCardScreenEvent = {},
+            )
+        }
 
         // then
         composeTestRule
             .onNodeWithText(ERROR_OWNER_NAME_LENGTH)
             .assertIsDisplayed()
-
-        composeTestRule.waitForIdle()
     }
 
     companion object {
