@@ -23,7 +23,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     private val creditCardAddDescription = resourceTestRule.getString(R.string.credit_card_add)
     private val creditCardAddActionText = resourceTestRule.getString(R.string.credit_card_top_bar_action_text)
 
-    private val addCard get() = composeTestRule.onNodeWithContentDescription(creditCardAddDescription)
+    private val addCardComponent get() = composeTestRule.onNodeWithContentDescription(creditCardAddDescription)
     private val addCardAction get() = composeTestRule.onNodeWithText(creditCardAddActionText)
 
     @Before
@@ -41,8 +41,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
         composeTestRule
             .onNodeWithContentDescription(emptySectionDescription)
             .assertIsDisplayed()
-        addCardAction.assertIsDisplayed()
-        addCard.assertIsDisplayed()
+        addCardComponent.assertIsDisplayed()
+        addCardAction.assertIsNotDisplayed()
     }
 
     @Test
@@ -60,8 +60,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
         composeTestRule
             .onNodeWithContentDescription(oneItemSectionDescription)
             .assertIsDisplayed()
-        addCardAction.assertIsDisplayed()
-        addCard.assertIsNotDisplayed()
+        addCardAction.assertIsNotDisplayed()
+        addCardComponent.assertIsDisplayed()
     }
 
     @Test
@@ -79,8 +79,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
         composeTestRule
             .onNodeWithContentDescription(manyItemSectionDescription)
             .assertIsDisplayed()
-        addCardAction.assertIsNotDisplayed()
-        addCard.assertIsDisplayed()
+        addCardAction.assertIsDisplayed()
+        addCardComponent.assertIsNotDisplayed()
     }
 
     @Test
@@ -95,7 +95,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
             }
         )
 
-        addCard.performClick()
+        addCardAction.performClick()
 
         assert(onAddClickCount == 1)
     }
@@ -104,7 +104,7 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     fun 카드가2개_이하이면_카드_목록의_추가_버튼_누를수있다() {
         state.value = CreditCardUiState(cards = emptyList())
 
-        addCardAction.performClick()
+        addCardComponent.performClick()
         assert(onAddClickCount == 1)
     }
 }

@@ -1,9 +1,5 @@
 package nextstep.payments.ui.screen.creditcard
 
-import android.app.Activity
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,33 +29,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.ui.component.card.BasicCard
 import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
-import nextstep.payments.ui.screen.newcard.NewCardActivity
 
 @Composable
 fun CreditCardRoute(
+    viewModel: CreditCardViewModel,
     modifier: Modifier = Modifier,
-    viewModel: CreditCardViewModel = viewModel(),
+    onAddClick: () -> Unit,
 ) {
     val state by viewModel.paymentCardsUiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            viewModel.fetchCards()
-        }
-    }
 
     CreditCardScreen(
         modifier = modifier,
-        onAddClick = {
-            val intent = Intent(context, NewCardActivity::class.java)
-            launcher.launch(intent)
-        },
+        onAddClick = onAddClick,
         state = state,
     )
 }
