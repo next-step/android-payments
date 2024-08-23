@@ -9,16 +9,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import nextstep.payments.consts.CardConstant
 
 @Composable
@@ -51,38 +51,23 @@ fun PaymentCard(
         Column(
             modifier = Modifier.align(Alignment.BottomStart)
         ) {
-            if (!cardNumber.isNullOrBlank()) {
-                Text(
-                    text = cardNumber,
-                    fontWeight = FontWeight.W500,
-                    fontSize = 12.sp,
-                    letterSpacing = 1.sp,
+            ProvideTextStyle(
+                value = MaterialTheme.typography.labelMedium.copy(
                     color = Color.White,
-                    lineHeight = 1.sp
                 )
-            }
-            Spacer(modifier = Modifier.height(2.dp))
-            Row {
-                if (!ownerName.isNullOrBlank()) {
-                    Text(
-                        text = ownerName,
-                        fontWeight = FontWeight.W500,
-                        fontSize = 12.sp,
-                        letterSpacing = 1.sp,
-                        color = Color.White,
-                        lineHeight = 1.sp
-                    )
+            ) {
+                if (!cardNumber.isNullOrBlank()) {
+                    Text(text = cardNumber)
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                if(!expiredDate.isNullOrBlank()) {
-                    Text(
-                        text = expiredDate,
-                        fontWeight = FontWeight.W500,
-                        fontSize = 12.sp,
-                        letterSpacing = 1.sp,
-                        color = Color.White,
-                        lineHeight = 1.sp
-                    )
+                Spacer(modifier = Modifier.height(2.dp))
+                Row {
+                    if (!ownerName.isNullOrBlank()) {
+                        Text(text = ownerName)
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (!expiredDate.isNullOrBlank()) {
+                        Text(text = expiredDate)
+                    }
                 }
             }
         }
