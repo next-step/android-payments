@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.base
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,11 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.UiComposable
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.ui.NewCardScreen
 
-class MainActivity : ComponentActivity() {
+abstract class BaseComposeActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,17 +21,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NewCardScreen()
+                    Content()
                 }
             }
         }
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PaymentsTheme {
-        NewCardScreen()
-    }
+    @Composable
+    abstract fun Content()
 }
