@@ -1,4 +1,4 @@
-package nextstep.payments.ui.card.list.component
+package nextstep.payments.ui.card.list.component.card
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

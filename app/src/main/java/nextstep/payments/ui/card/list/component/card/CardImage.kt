@@ -1,4 +1,4 @@
-package nextstep.payments.ui.card.list.component
+package nextstep.payments.ui.card.list.component.card
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,8 +21,7 @@ fun CardImage(card: Card, cardColor: Color, modifier: Modifier = Modifier) {
         colors = CardDefaults.cardColors(
             containerColor = cardColor,
         ),
-        modifier = Modifier
-            .size(width = 208.dp, height = 124.dp)
+        modifier = modifier
     ) {
         IntegratedCircuit(
             modifier = Modifier
@@ -64,7 +63,9 @@ private fun CardImagePreview() {
                 password = "123",
                 cardCompany = BcCard
             ),
-            cardColor = Color(0xff333333)
+            cardColor = Color(0xff333333),
+            modifier = Modifier
+                .size(width = 208.dp, height = 124.dp)
         )
     }
 }
