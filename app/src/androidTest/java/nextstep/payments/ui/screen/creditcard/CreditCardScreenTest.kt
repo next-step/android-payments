@@ -1,6 +1,8 @@
 package nextstep.payments.ui.screen.creditcard
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -35,13 +37,13 @@ internal class CreditCardScreenTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(emptySectionDescription)
-            .assertExists()
+            .assertIsDisplayed()
         composeTestRule
             .onNodeWithContentDescription(creditCardAddDescription)
-            .assertExists()
+            .assertIsDisplayed()
         composeTestRule
             .onNodeWithText(creditCardAddActionText)
-            .assertDoesNotExist()
+            .assertIsDisplayed()
     }
 
     @Test
@@ -58,13 +60,13 @@ internal class CreditCardScreenTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(oneItemSectionDescription)
-            .assertExists()
+            .assertIsDisplayed()
         composeTestRule
             .onNodeWithContentDescription(creditCardAddDescription)
-            .assertExists()
+            .assertIsDisplayed()
         composeTestRule
             .onNodeWithText(creditCardAddActionText)
-            .assertDoesNotExist()
+            .assertIsNotDisplayed()
     }
 
     @Test
@@ -81,13 +83,13 @@ internal class CreditCardScreenTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(manyItemSectionDescription)
-            .assertExists()
+            .assertIsDisplayed()
         composeTestRule
             .onNodeWithContentDescription(creditCardAddDescription)
-            .assertDoesNotExist()
+            .assertIsNotDisplayed()
         composeTestRule
             .onNodeWithText(creditCardAddActionText)
-            .assertExists()
+            .assertIsDisplayed()
     }
 
     @Test
