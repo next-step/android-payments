@@ -46,6 +46,7 @@ class NewCardViewModel : ViewModel() {
                 cardNumber = _cardNumber.value,
                 cardOwnerName = _ownerName.value,
                 cardExpiredDate = _expiredDate.value,
+                cardPassword = _password.value
             )
         )
         _cardAdded.value = true
