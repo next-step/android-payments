@@ -142,7 +142,7 @@ private fun NewCardScreen(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
