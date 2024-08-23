@@ -39,7 +39,7 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val activity = LocalContext.current as? Activity
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
         viewModel.finishEvent.collectLatest {
             activity?.finish()
         }
