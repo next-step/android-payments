@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.ext.cardDefaultSize
 import nextstep.payments.ui.theme.EmptyCardBgColor
 
 
@@ -41,6 +42,6 @@ fun EmptyCardItem(
 private fun EmptyCardItemPreview() {
     EmptyCardItem(
         onClickItem = {},
-        modifier = Modifier.size(208.dp, 124.dp)
+        modifier = Modifier.cardDefaultSize()
     )
 }
