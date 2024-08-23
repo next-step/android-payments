@@ -39,6 +39,7 @@ fun BankSelectBottomSheet(
     onBrandSelected: (Brand) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    brands: List<Brand> = Brand.entries.drop(1),
     selectedBrand: Brand = Brand.NONE,
     modalBottomSheetState: SheetState =
         rememberModalBottomSheetState(
@@ -55,12 +56,15 @@ fun BankSelectBottomSheet(
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
         onDismissRequest = onDismiss,
-        modifier = modifier.height(352.dp),
+        modifier = modifier,
     ) {
         BankSelectRow(
-            brands = Brand.entries.drop(1),
+            brands = brands,
             onClick = onBrandSelected,
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
         )
     }
 }
