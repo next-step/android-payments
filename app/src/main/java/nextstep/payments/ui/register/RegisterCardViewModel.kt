@@ -58,37 +58,56 @@ class RegisterCardViewModel(
     }
 
     private fun setCardNumber(cardNumber: String) {
+        if (cardNumber.length > CARD_NUMBER_MAX_LENGTH) return
         _uiState.update {
-            it.copy(cardNumber = cardNumber)
+            val state = it.copy(cardNumber = cardNumber)
+            val enabled = checkRegisterEnabled(state)
+            state.copy(registerEnabled = enabled)
         }
     }
 
     private fun setExpiredDate(expiredDate: String) {
+        if (expiredDate.length > EXPIRED_DATE_MAX_LENGTH) return
         _uiState.update {
-            it.copy(expiredDate = expiredDate)
+            val state = it.copy(expiredDate = expiredDate)
+            val enabled = checkRegisterEnabled(state)
+            state.copy(registerEnabled = enabled)
         }
     }
 
     private fun setOwnerName(ownerName: String) {
         val result = validateOwnerName(ownerName)
         _uiState.update {
-            it.copy(
-                ownerName = ownerName,
-                ownerNameValidResult = result,
-            )
+            val state =
+                it.copy(
+                    ownerName = ownerName,
+                    ownerNameValidResult = result,
+                )
+            val enabled = checkRegisterEnabled(state)
+            state.copy(registerEnabled = enabled)
         }
     }
 
     private fun validateOwnerName(ownerName: String): OwnerNameValidResult =
         when {
-            ownerName.length > 30 -> OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
+            ownerName.length > OWNER_NAME_MAX_LENGTH -> OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
             else -> OwnerNameValidResult.VALID
         }
 
     private fun setPassword(password: String) {
-        if (password.length > 4) return
+        if (password.length > PASSWORD_MAX_LENGTH) return
         _uiState.update {
-            it.copy(password = password)
+            val state = it.copy(password = password)
+            val enabled = checkRegisterEnabled(state)
+            state.copy(registerEnabled = enabled)
+        }
+    }
+
+    private fun setBrand(brand: Brand) {
+        _uiState.update {
+            val state = it.copy(brand = brand)
+            val enabled = checkRegisterEnabled(state)
+            state.copy(registerEnabled = enabled)
         }
     }
 
@@ -109,9 +128,40 @@ class RegisterCardViewModel(
         }
     }
 
-    private fun setBrand(brand: Brand) {
-        _uiState.update {
-            it.copy(brand = brand)
+    private fun checkRegisterEnabled(uiState: RegisterCardUiState): Boolean =
+        if (uiState.mode.isRegister()) {
+            isRegisterEnabled(uiState)
+        } else {
+            isModified(uiState) && isRegisterEnabled(uiState)
         }
+
+    private fun isRegisterEnabled(uiState: RegisterCardUiState): Boolean =
+        uiState.cardNumber.length == CARD_NUMBER_MAX_LENGTH &&
+            uiState.expiredDate.length == EXPIRED_DATE_MAX_LENGTH &&
+            uiState.password.length == PASSWORD_MAX_LENGTH &&
+            uiState.brand != Brand.NONE &&
+            uiState.ownerNameValidResult != OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
+
+    private fun isModified(uiState: RegisterCardUiState): Boolean {
+        val id = cardId ?: return false
+        val originalCard = PaymentCardsRepository.getCardById(id) ?: return false
+        return isCardModified(originalCard, uiState)
+    }
+
+    private fun isCardModified(
+        originalCard: Card,
+        uiState: RegisterCardUiState,
+    ): Boolean =
+        originalCard.brand != uiState.brand ||
+            originalCard.cardNumber != uiState.cardNumber ||
+            originalCard.expiredDate != uiState.expiredDate ||
+            originalCard.ownerName != uiState.ownerName ||
+            originalCard.password != uiState.password
+
+    companion object {
+        private const val CARD_NUMBER_MAX_LENGTH = 16
+        private const val EXPIRED_DATE_MAX_LENGTH = 4
+        private const val PASSWORD_MAX_LENGTH = 4
+        private const val OWNER_NAME_MAX_LENGTH = 30
     }
 }

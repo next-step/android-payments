@@ -89,7 +89,11 @@ internal fun RegisterCardScreen(
                 title = stringResource(id = R.string.title_new_card),
                 onBackClick = { navigateUp(false) },
                 actions = {
-                    IconButton(onClick = { onNewCardScreenEvent(RegisterCardScreenEvent.OnRegisterCardClicked) }) {
+                    IconButton(
+                        onClick = { onNewCardScreenEvent(RegisterCardScreenEvent.OnRegisterCardClicked) },
+                        enabled = uiState.registerEnabled,
+                        modifier = Modifier.testTag("RegisterCardButton"),
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.Check,
                             contentDescription = stringResource(id = R.string.content_description_register_card),
@@ -291,6 +295,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
                 mode = Mode.REGISTER,
+                registerEnabled = true,
             ),
             RegisterCardUiState(
                 brand = Brand.NONE,
@@ -301,6 +306,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
                 mode = Mode.MODIFY,
+                registerEnabled = false,
             ),
         )
 }
