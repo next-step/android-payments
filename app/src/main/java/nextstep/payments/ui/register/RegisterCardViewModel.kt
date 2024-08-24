@@ -1,6 +1,5 @@
 package nextstep.payments.ui.register
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,7 +28,6 @@ class RegisterCardViewModel(
     private val cardId: Long? = savedStateHandle.get<String>(ARG_CARD_ID)?.toLongOrNull()
 
     init {
-        Log.d("RegisterCardViewModel", "cardId: $cardId")
         if (cardId != null) {
             PaymentCardsRepository
                 .getCardById(cardId)
