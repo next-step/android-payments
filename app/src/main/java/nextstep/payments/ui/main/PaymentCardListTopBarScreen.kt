@@ -18,7 +18,7 @@ import nextstep.payments.ui.theme.titleBoldStyle
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun PaymentCardListTopBar(
-    addButton: @Composable () -> Unit
+    actionContent: @Composable () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -29,7 +29,7 @@ internal fun PaymentCardListTopBar(
             )
         },
         actions = {
-            addButton()
+            actionContent()
         },
         navigationIcon = {
             Box(modifier = Modifier.size(64.dp))

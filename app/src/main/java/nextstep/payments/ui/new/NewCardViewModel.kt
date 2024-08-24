@@ -1,5 +1,6 @@
 package nextstep.payments.ui.new
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,8 @@ class NewCardViewModel(
         repository.addCard(card)
         _cardAdded.value = true
     }
-    fun fetchCards()  {
+
+    fun fetchCards() {
         val cards = repository.cards
         _cardUiState.value = when {
             cards.isEmpty() -> CardUiState.Empty
@@ -30,6 +32,12 @@ class NewCardViewModel(
             else -> CardUiState.Many(cards)
         }
     }
+
+    private val _cardCompany = MutableStateFlow("")
+    val cardCompany: StateFlow<String> = _cardCompany.asStateFlow()
+
+    private val _cardColor = MutableStateFlow(Color.Black)
+    val cardColor: StateFlow<Color> = _cardColor.asStateFlow()
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -42,6 +50,14 @@ class NewCardViewModel(
 
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
+
+    fun setCardCompany(cardCompany: String) {
+        _cardCompany.value = cardCompany
+    }
+
+    fun setCardColor(color: Color) {
+        _cardColor.value = color
+    }
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber

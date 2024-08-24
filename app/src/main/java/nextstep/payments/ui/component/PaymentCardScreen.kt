@@ -5,31 +5,43 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
+    cardCompany: String,
     modifier: Modifier = Modifier,
+    cardColor: Color = Color(0xFF333333),
 ) {
     Box(
-        contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = cardColor,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
+        Text(
+            text = cardCompany,
+            style = MaterialTheme.typography.bodySmall,
+            color = if (cardColor.luminance() > 0.5) Color.Black else Color.White,
+            modifier = Modifier
+                .padding(start = 14.dp, top = 15.dp)
+        )
         Box(
             modifier = Modifier
+                .align(Alignment.CenterStart)
                 .padding(start = 14.dp, bottom = 10.dp)
                 .size(width = 40.dp, height = 26.dp)
                 .background(
@@ -44,6 +56,6 @@ fun PaymentCard(
 @Composable
 fun GreetingPreview() {
     PaymentsTheme {
-        PaymentCard()
+        PaymentCard(cardCompany = "롯데카드", cardColor = Color.White)
     }
 }

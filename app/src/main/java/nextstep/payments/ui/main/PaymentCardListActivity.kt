@@ -18,14 +18,15 @@ class PaymentCardListActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                val viewModel : NewCardViewModel = viewModel()
+                val viewModel: NewCardViewModel = viewModel()
                 val cardUiState by viewModel.cardUiState.collectAsStateWithLifecycle()
 
-                val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == RESULT_OK) {
-                        viewModel.fetchCards()
+                val launcher =
+                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                        if (it.resultCode == RESULT_OK) {
+                            viewModel.fetchCards()
+                        }
                     }
-                }
                 PaymentCardList(
                     cardUiState = cardUiState,
                     onAddClick = {
@@ -37,5 +38,3 @@ class PaymentCardListActivity : ComponentActivity() {
         }
     }
 }
-
-
