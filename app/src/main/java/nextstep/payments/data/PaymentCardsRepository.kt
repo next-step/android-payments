@@ -10,6 +10,13 @@ object PaymentCardsRepository {
         _cards.add(card.copy(id = nextId()))
     }
 
+    fun updateCard(card: Card) {
+        _cards
+            .indexOfFirst { it.id == card.id }
+            .takeIf { it != -1 }
+            ?.let { _cards[it] = card }
+    }
+
     fun getCardById(id: Long): Card? = _cards.find { it.id == id }
 
     private fun nextId(): Long = _cards.maxOfOrNull { it.id }?.plus(1) ?: 1

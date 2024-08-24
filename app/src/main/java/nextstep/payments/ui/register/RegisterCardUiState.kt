@@ -15,7 +15,7 @@ data class RegisterCardUiState(
 ) {
     enum class Mode {
         REGISTER,
-        MODIFY,
+        UPDATE,
         ;
 
         fun isRegister() = this == REGISTER

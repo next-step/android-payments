@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardRegisterResult
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 
@@ -39,7 +40,7 @@ class RegisterCardViewModel(
                             expiredDate = card.expiredDate,
                             ownerName = card.ownerName,
                             password = card.password,
-                            mode = RegisterCardUiState.Mode.MODIFY,
+                            mode = RegisterCardUiState.Mode.UPDATE,
                         )
                     }
                 }
@@ -112,18 +113,41 @@ class RegisterCardViewModel(
     }
 
     private fun registerCard() {
+        val uiState = _uiState.value
+        val card =
+            Card(
+                brand = uiState.brand,
+                cardNumber = uiState.cardNumber,
+                expiredDate = uiState.expiredDate,
+                ownerName = uiState.ownerName,
+                password = uiState.password,
+            )
+        if (uiState.mode.isRegister()) {
+            registerNewCard(card)
+        } else {
+            updateCard(card)
+        }
+    }
+
+    private fun registerNewCard(card: Card) {
         viewModelScope.launch {
-            val card =
-                Card(
-                    brand = _uiState.value.brand,
-                    cardNumber = _uiState.value.cardNumber,
-                    expiredDate = _uiState.value.expiredDate,
-                    ownerName = _uiState.value.ownerName,
-                    password = _uiState.value.password,
-                )
             PaymentCardsRepository.addCard(card)
             _effect.emit(
-                RegisterCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
+                RegisterCardScreenEffect.NavigateToCardListScreen(
+                    result = CardRegisterResult.REGISTERED,
+                ),
+            )
+        }
+    }
+
+    private fun updateCard(card: Card) {
+        viewModelScope.launch {
+            val id = cardId ?: return@launch
+            PaymentCardsRepository.updateCard(card.copy(id = id))
+            _effect.emit(
+                RegisterCardScreenEffect.NavigateToCardListScreen(
+                    result = CardRegisterResult.UPDATED,
+                ),
             )
         }
     }
