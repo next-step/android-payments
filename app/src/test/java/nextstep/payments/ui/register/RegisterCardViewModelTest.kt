@@ -152,4 +152,278 @@ class RegisterCardViewModelTest {
             }
         }
     }
+
+    @Test
+    fun 유효한_카드_정보를_모두_입력했다면_등록_버튼이_활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnBrandSelected(Brand.BC))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, true)
+            }
+        }
+
+    @Test
+    fun 소유주_이름_입력을_제외한_카드_정보를_모두_입력했다면_등록_버튼이_활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnBrandSelected(Brand.BC))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, true)
+            }
+        }
+
+    @Test
+    fun 카드_번호_12자_미만인_경우_등록_버튼이_활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("123456789012"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnBrandSelected(Brand.BC))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 만료일_4자_미만인_경우_등록_버튼이_비활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("123"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 소유주_이름_30자_초과인_경우_등록_버튼이_비활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("1234567890123456789012345678901"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 패스워드_4자_미만인_경우_등록_버튼이_비활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("123"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 브랜드_미설정_시_등록_버튼이_비활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 카드_정보_수정_시_카드_정보_변경이_없으면_버튼이_비활성화_된다() =
+        runTest {
+            // given
+            val cardId: Long = 1
+            PaymentCardsRepository.addCard(
+                Card(
+                    id = cardId,
+                    brand = Brand.BC,
+                    cardNumber = "1234567812345678",
+                    ownerName = "홍길동",
+                    expiredDate = "1234",
+                    password = "1234",
+                ),
+            )
+            savedStateHandle[ARG_CARD_ID] = cardId.toString()
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567812345678"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 카드_정보_수정_시_카드_정보_변경이_있으면_버튼이_활성화_된다() =
+        runTest {
+            // given
+            val cardId: Long = 1
+            PaymentCardsRepository.addCard(
+                Card(
+                    id = cardId,
+                    brand = Brand.BC,
+                    cardNumber = "1234567812345678",
+                    ownerName = "홍길동",
+                    expiredDate = "1234",
+                    password = "1234",
+                ),
+            )
+            savedStateHandle[ARG_CARD_ID] = cardId.toString()
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567812345678"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("4567"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, true)
+            }
+        }
+
+    @Test
+    fun 카드_번호_16자_초과_입력할_수_없다() {
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567812345678"))
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("12345678123456781"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().cardNumber.length, 16)
+            }
+        }
+    }
+
+    @Test
+    fun 만료일_4자_초과_입력할_수_없다() {
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1234"))
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("12345"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().expiredDate.length, 4)
+            }
+        }
+    }
+
+    @Test
+    fun 비밀번호_4자_초과_입력할_수_없다() {
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("12345"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().password.length, 4)
+            }
+        }
+    }
 }

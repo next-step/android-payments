@@ -74,7 +74,7 @@ class RegisterCardScreenTest {
         // given
         val uiState =
             RegisterCardUiState.NONE
-                .copy(submitEnabled = true)
+                .copy(registerEnabled = true)
 
         composeTestRule.setContent {
             RegisterCardScreen(
@@ -95,7 +95,7 @@ class RegisterCardScreenTest {
         // given
         val uiState =
             RegisterCardUiState.NONE
-                .copy(submitEnabled = false)
+                .copy(registerEnabled = false)
 
         composeTestRule.setContent {
             RegisterCardScreen(
