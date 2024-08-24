@@ -11,6 +11,7 @@ data class RegisterCardUiState(
     val password: String,
     val ownerNameValidResult: OwnerNameValidResult,
     val mode: Mode,
+    val submitEnabled: Boolean,
 ) {
     enum class Mode {
         REGISTER,
@@ -30,6 +31,7 @@ data class RegisterCardUiState(
                 password = "",
                 ownerNameValidResult = OwnerNameValidResult.NONE,
                 mode = Mode.REGISTER,
+                submitEnabled = false,
             )
     }
 }
