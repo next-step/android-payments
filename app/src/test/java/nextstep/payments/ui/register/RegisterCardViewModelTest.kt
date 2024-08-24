@@ -132,4 +132,24 @@ class RegisterCardViewModelTest {
                 assertEquals(awaitItem(), RegisterCardScreenEffect.NavigateToCardListScreen(true))
             }
         }
+
+    @Test
+    fun 패스워드_4글자_초과_입력할_수_없다() {
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("12345"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().password.length, 4)
+            }
+        }
+    }
 }

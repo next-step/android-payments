@@ -86,6 +86,7 @@ class RegisterCardViewModel(
         }
 
     private fun setPassword(password: String) {
+        if (password.length > 4) return
         _uiState.update {
             it.copy(password = password)
         }
