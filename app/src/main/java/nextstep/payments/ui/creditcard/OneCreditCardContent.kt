@@ -17,6 +17,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 internal fun OneCreditCardContent(
     card: Card,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -29,6 +30,7 @@ internal fun OneCreditCardContent(
             cardNumber = card.cardNumber,
             ownerName = card.ownerName,
             expiredDate = card.expiredDate,
+            onClick = { onCardClick(card) },
         )
         AddCreditCardBox(
             onClick = onAddCardClick,
@@ -51,6 +53,7 @@ private fun OneCreditCardContentPreview() {
                     password = "1234",
                 ),
             onAddCardClick = {},
+            onCardClick = {},
             modifier = Modifier.size(width = 360.dp, height = 640.dp),
         )
     }

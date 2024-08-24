@@ -18,6 +18,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun ManyCreditCardContent(
     cards: List<Card>,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -36,6 +37,7 @@ internal fun ManyCreditCardContent(
                 cardNumber = card.cardNumber,
                 ownerName = card.ownerName,
                 expiredDate = card.expiredDate,
+                onClick = { onCardClick(card) },
             )
         }
     }
@@ -70,6 +72,7 @@ private fun ManyCreditCardContentPreview() {
                         password = "1234",
                     ),
                 ),
+            onCardClick = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

@@ -1,5 +1,6 @@
 package nextstep.payments.ui
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -8,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import nextstep.payments.ui.creditcard.navigation.ARG_SHOULD_FETCH_CARDS
 import nextstep.payments.ui.creditcard.navigation.CREDIT_CARD_ROUTE
 import nextstep.payments.ui.creditcard.navigation.creditCardScreen
+import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 import nextstep.payments.ui.register.navigation.REGISTER_CARD_ROUTE
 import nextstep.payments.ui.register.navigation.registerCardScreen
 
@@ -28,8 +30,15 @@ private fun PaymentsNav(
         modifier = modifier,
     ) {
         creditCardScreen(
-            onAddCardClick = {
-                navController.navigate(REGISTER_CARD_ROUTE)
+            navigateToRegister = { cardId ->
+                val route =
+                    if (cardId == null) {
+                        REGISTER_CARD_ROUTE
+                    } else {
+                        REGISTER_CARD_ROUTE.replace("{$ARG_CARD_ID}", cardId)
+                    }
+                Log.d("PaymentsNav", "Navigate to $route")
+                navController.navigate(route)
             },
         )
 

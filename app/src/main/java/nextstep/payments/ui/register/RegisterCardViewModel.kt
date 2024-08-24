@@ -1,5 +1,7 @@
 package nextstep.payments.ui.register
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,13 +15,38 @@ import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.model.OwnerNameValidResult
+import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 
-class RegisterCardViewModel : ViewModel() {
+class RegisterCardViewModel(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(RegisterCardUiState.NONE)
     val uiState: StateFlow<RegisterCardUiState> = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<RegisterCardScreenEffect>()
     val effect = _effect.asSharedFlow()
+
+    private val cardId: Long? = savedStateHandle.get<String>(ARG_CARD_ID)?.toLongOrNull()
+
+    init {
+        Log.d("RegisterCardViewModel", "cardId: $cardId")
+        if (cardId != null) {
+            PaymentCardsRepository
+                .getCardById(cardId)
+                ?.let { card ->
+                    _uiState.update {
+                        it.copy(
+                            brand = card.brand,
+                            cardNumber = card.cardNumber,
+                            expiredDate = card.expiredDate,
+                            ownerName = card.ownerName,
+                            password = card.password,
+                            mode = RegisterCardUiState.Mode.MODIFY,
+                        )
+                    }
+                }
+        }
+    }
 
     fun dispatchEvent(event: RegisterCardScreenEvent) {
         when (event) {

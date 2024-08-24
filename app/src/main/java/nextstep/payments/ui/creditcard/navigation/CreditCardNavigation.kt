@@ -9,7 +9,7 @@ import nextstep.payments.ui.creditcard.CreditCardRoute
 const val CREDIT_CARD_ROUTE = "credit_card"
 const val ARG_SHOULD_FETCH_CARDS = "shouldFetchCards"
 
-fun NavGraphBuilder.creditCardScreen(onAddCardClick: () -> Unit) {
+fun NavGraphBuilder.creditCardScreen(navigateToRegister: (String?) -> Unit) {
     composable(
         route = CREDIT_CARD_ROUTE,
         arguments =
@@ -21,7 +21,7 @@ fun NavGraphBuilder.creditCardScreen(onAddCardClick: () -> Unit) {
             ),
     ) {
         CreditCardRoute(
-            onAddCardClick = onAddCardClick,
+            navigateToRegister = navigateToRegister,
         )
     }
 }

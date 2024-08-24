@@ -1,5 +1,6 @@
 package nextstep.payments.ui.register
 
+import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
@@ -12,7 +13,10 @@ class RegisterCardViewModelTest {
 
     @Before
     fun setUp() {
-        registerCardViewModel = RegisterCardViewModel()
+        registerCardViewModel =
+            RegisterCardViewModel(
+                savedStateHandle = SavedStateHandle(),
+            )
     }
 
     @Test

@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ fun PaymentCard(
     ownerName: String = "",
     cardNumberVisualTransformation: CardNumberVisualTransformation = CardNumberVisualTransformation.ASTERISK_MASKED,
     expiredDateVisualTransformation: ExpiredDateVisualTransformation = ExpiredDateVisualTransformation.DEFAULT,
+    onClick: () -> Unit = {},
 ) {
     val transformedCardNumber =
         remember(cardNumber) {
@@ -55,7 +57,8 @@ fun PaymentCard(
                 .background(
                     color = brand.toColor(),
                     shape = RoundedCornerShape(5.dp),
-                ).padding(vertical = 14.dp, horizontal = 14.dp),
+                ).padding(vertical = 14.dp, horizontal = 14.dp)
+                .clickable(onClick = onClick),
     ) {
         Text(
             text = brand.toName(),
@@ -116,6 +119,7 @@ private fun PaymentCardPreview() {
             cardNumber = "1234567890123456",
             expiredDate = "1234",
             ownerName = "홍길동",
+            onClick = {},
         )
     }
 }

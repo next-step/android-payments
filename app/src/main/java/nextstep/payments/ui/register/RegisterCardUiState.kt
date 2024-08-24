@@ -10,7 +10,16 @@ data class RegisterCardUiState(
     val ownerName: String,
     val password: String,
     val ownerNameValidResult: OwnerNameValidResult,
+    val mode: Mode,
 ) {
+    enum class Mode {
+        REGISTER,
+        MODIFY,
+        ;
+
+        fun isRegister() = this == REGISTER
+    }
+
     companion object {
         val NONE =
             RegisterCardUiState(
@@ -20,6 +29,7 @@ data class RegisterCardUiState(
                 ownerName = "",
                 password = "",
                 ownerNameValidResult = OwnerNameValidResult.NONE,
+                mode = Mode.REGISTER,
             )
     }
 }

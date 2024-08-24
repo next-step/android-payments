@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.OwnerNameValidResult
@@ -43,13 +44,16 @@ import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.component.PaymentsTopBar
+import nextstep.payments.ui.register.RegisterCardUiState.Mode
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun RegisterCardRoute(
+    backStackEntry: NavBackStackEntry,
     navigateUp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RegisterCardViewModel = viewModel(),
+    viewModel: RegisterCardViewModel =
+        viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -106,10 +110,20 @@ internal fun RegisterCardScreen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            PaymentCard(
-                brand = uiState.brand,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-            )
+            if (uiState.mode.isRegister()) {
+                PaymentCard(
+                    brand = uiState.brand,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                )
+            } else {
+                PaymentCard(
+                    brand = uiState.brand,
+                    cardNumber = uiState.cardNumber,
+                    expiredDate = uiState.expiredDate,
+                    ownerName = uiState.ownerName,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                )
+            }
 
             Spacer(modifier = Modifier.height(28.dp))
 
@@ -154,7 +168,7 @@ internal fun RegisterCardScreen(
                         .testTag("password"),
             )
         }
-        if (showBottomSheet) {
+        if (uiState.mode.isRegister() && showBottomSheet) {
             BankSelectBottomSheet(
                 selectedBrand = selectedBrand,
                 onBrandSelected = {
@@ -276,6 +290,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 ownerName = "홍길동",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
+                mode = Mode.REGISTER,
             ),
             RegisterCardUiState(
                 brand = Brand.NONE,
@@ -285,6 +300,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                     "김수한무 거북이와 두루미 삼천갑자 동방삭 치치카포 사리사리센타 워리워리 세브리깡 무두셀라 구름이 허리케인에 담벼락 담벼락에 서생원 서생원에 고양이 고양이엔 바둑이 바둑이는 돌돌이",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
+                mode = Mode.MODIFY,
             ),
         )
 }
