@@ -86,7 +86,7 @@ internal fun RegisterCardScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedBrand by remember { mutableStateOf(Brand.NONE) }
-    var showBottomSheet by remember { mutableStateOf(true) }
+    var showBottomSheet by remember { mutableStateOf(uiState.mode.isRegister()) }
     Scaffold(
         topBar = {
             PaymentsTopBar(
@@ -122,6 +122,9 @@ internal fun RegisterCardScreen(
                 PaymentCard(
                     brand = uiState.brand,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onClick = {
+                        showBottomSheet = true
+                    },
                 )
             } else {
                 PaymentCard(
@@ -130,6 +133,7 @@ internal fun RegisterCardScreen(
                     expiredDate = uiState.expiredDate,
                     ownerName = uiState.ownerName,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    onClick = { showBottomSheet = true },
                 )
             }
 
@@ -175,7 +179,7 @@ internal fun RegisterCardScreen(
                         .testTag("password"),
             )
         }
-        if (uiState.mode.isRegister() && showBottomSheet) {
+        if (showBottomSheet) {
             BankSelectBottomSheet(
                 selectedBrand = selectedBrand,
                 onBrandSelected = {
