@@ -14,6 +14,7 @@ import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardRegisterResult
+import nextstep.payments.model.ExpiredDateMonthValidResult
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 
@@ -69,10 +70,26 @@ class RegisterCardViewModel(
 
     private fun setExpiredDate(expiredDate: String) {
         if (expiredDate.length > EXPIRED_DATE_MAX_LENGTH) return
+        val result = validateExpiredDate(expiredDate)
         _uiState.update {
-            val state = it.copy(expiredDate = expiredDate)
+            val state =
+                it.copy(
+                    expiredDate = expiredDate,
+                    expiredDateMonthValidResult = result,
+                )
             val enabled = checkRegisterEnabled(state)
             state.copy(registerEnabled = enabled)
+        }
+    }
+
+    private fun validateExpiredDate(expiredDate: String): ExpiredDateMonthValidResult {
+        if (expiredDate.length < 2) return ExpiredDateMonthValidResult.NONE
+
+        val month = expiredDate.substring(0, 2).toIntOrNull() ?: return ExpiredDateMonthValidResult.NONE
+        return if (month !in 1..12) {
+            ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE
+        } else {
+            ExpiredDateMonthValidResult.VALID
         }
     }
 
@@ -164,7 +181,8 @@ class RegisterCardViewModel(
             uiState.expiredDate.length == EXPIRED_DATE_MAX_LENGTH &&
             uiState.password.length == PASSWORD_MAX_LENGTH &&
             uiState.brand != Brand.NONE &&
-            uiState.ownerNameValidResult != OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
+            uiState.ownerNameValidResult.isError().not() &&
+            uiState.expiredDateMonthValidResult.isError().not()
 
     private fun isModified(uiState: RegisterCardUiState): Boolean {
         val id = cardId ?: return false

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -25,8 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -37,6 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.CardRegisterResult
+import nextstep.payments.model.ExpiredDateMonthValidResult
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.CardNumberVisualTransformation
@@ -141,14 +148,13 @@ internal fun RegisterCardScreen(
 
             ExpiredDateTextField(
                 expiredDate = uiState.expiredDate,
+                expiredDateMonthValidResult = uiState.expiredDateMonthValidResult,
                 onNewCardScreenEvent = onNewCardScreenEvent,
                 modifier =
                     Modifier
                         .width(146.dp)
                         .testTag("expiredDate"),
             )
-
-            Spacer(modifier = Modifier.height(18.dp))
 
             OwnerNameTextField(
                 ownerName = uiState.ownerName,
@@ -190,6 +196,7 @@ private fun PasswordTextField(
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = password,
         onValueChange = {
@@ -199,6 +206,15 @@ private fun PasswordTextField(
         placeholder = { Text(stringResource(id = R.string.placeholder_password)) },
         visualTransformation = PasswordVisualTransformation(),
         singleLine = true,
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Done,
+            ),
+        keyboardActions =
+            KeyboardActions(
+                onDone = { focusManager.clearFocus(true) },
+            ),
         modifier = modifier,
     )
 }
@@ -206,9 +222,11 @@ private fun PasswordTextField(
 @Composable
 private fun ExpiredDateTextField(
     expiredDate: String,
+    expiredDateMonthValidResult: ExpiredDateMonthValidResult,
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = expiredDate,
         onValueChange = {
@@ -217,7 +235,22 @@ private fun ExpiredDateTextField(
         label = { Text(stringResource(id = R.string.label_expired_date)) },
         placeholder = { Text(stringResource(id = R.string.placeholder_expired_date)) },
         visualTransformation = ExpiredDateVisualTransformation(),
+        isError = expiredDateMonthValidResult.isError(),
+        supportingText = {
+            if (expiredDateMonthValidResult.isError()) {
+                Text(text = stringResource(id = R.string.error_expired_date_month_range))
+            }
+        },
         singleLine = true,
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
+        keyboardActions =
+            KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) },
+            ),
         modifier = modifier,
     )
 }
@@ -228,6 +261,7 @@ private fun CardNumberTextField(
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = cardNumber,
         onValueChange = {
@@ -236,6 +270,15 @@ private fun CardNumberTextField(
         label = { Text(stringResource(id = R.string.label_card_number)) },
         placeholder = { Text(stringResource(id = R.string.placeholder_card_number)) },
         visualTransformation = CardNumberVisualTransformation(),
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next,
+            ),
+        keyboardActions =
+            KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) },
+            ),
         singleLine = true,
         modifier = modifier,
     )
@@ -248,6 +291,7 @@ private fun OwnerNameTextField(
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = ownerName,
         onValueChange = {
@@ -262,6 +306,15 @@ private fun OwnerNameTextField(
         },
         isError = ownerNameValidResult.isError(),
         singleLine = true,
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next,
+            ),
+        keyboardActions =
+            KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) },
+            ),
         modifier = modifier,
     )
 }
@@ -290,6 +343,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 ownerName = "홍길동",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
+                expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
                 mode = Mode.REGISTER,
                 registerEnabled = true,
             ),
@@ -301,6 +355,19 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                     "김수한무 거북이와 두루미 삼천갑자 동방삭 치치카포 사리사리센타 워리워리 세브리깡 무두셀라 구름이 허리케인에 담벼락 담벼락에 서생원 서생원에 고양이 고양이엔 바둑이 바둑이는 돌돌이",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
+                expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
+                mode = Mode.UPDATE,
+                registerEnabled = false,
+            ),
+            RegisterCardUiState(
+                brand = Brand.NONE,
+                cardNumber = "1234567812345678",
+                expiredDate = "3456",
+                ownerName =
+                    "김수한무 거북이와 두루미 삼천갑자 동방삭 치치카포 사리사리센타 워리워리 세브리깡 무두셀라 구름이 허리케인에 담벼락 담벼락에 서생원 서생원에 고양이 고양이엔 바둑이 바둑이는 돌돌이",
+                password = "1234",
+                ownerNameValidResult = OwnerNameValidResult.VALID,
+                expiredDateMonthValidResult = ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE,
                 mode = Mode.UPDATE,
                 registerEnabled = false,
             ),

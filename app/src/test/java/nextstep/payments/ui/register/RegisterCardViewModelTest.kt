@@ -12,6 +12,7 @@ import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardRegisterResult
+import nextstep.payments.model.ExpiredDateMonthValidResult
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 import org.junit.Before
@@ -271,6 +272,69 @@ class RegisterCardViewModelTest {
             // when
             registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
             registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("123"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                assertEquals(awaitItem().registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 유효하지_않은_달_입력시_만료일_달_범위_에러가_발생한다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("13"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                val item = awaitItem()
+                assertEquals(item.expiredDateMonthValidResult, ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE)
+                assertEquals(item.registerEnabled, false)
+            }
+        }
+
+    @Test
+    fun 유효하지_않은_달_입력시_만료일_달_범위_에러가_발생한다2() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1323"))
+
+            // then
+            registerCardViewModel.uiState.test {
+                val item = awaitItem()
+                assertEquals(item.expiredDateMonthValidResult, ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE)
+            }
+        }
+
+    @Test
+    fun 유효하지_않은_월을_입력_시_등록_버튼이_비활성화된다() =
+        runTest {
+            // given
+            registerCardViewModel =
+                RegisterCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                )
+
+            // when
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnCardNumberChanged("1234567890123456"))
+            registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnExpiredDateChanged("1323"))
             registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnOwnerNameChanged("홍길동"))
             registerCardViewModel.dispatchEvent(RegisterCardScreenEvent.OnPasswordChanged("1234"))
 
