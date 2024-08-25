@@ -17,12 +17,12 @@ enum class CardCompany(
     val color: Color,
     @DrawableRes val imageRes: Int
 ) {
-    BC("BC", BcColor, R.drawable.bc),
-    HANA("HANA", HanaColor, R.drawable.hana),
-    HYUNDAI("Hyundai", HyundaiColor, R.drawable.hyundai),
-    KAKAO("Kakao", KakaoColor, R.drawable.kakao),
-    KB("KB", KbColor, R.drawable.kb),
-    LOTTE("Lotte", LotteColor, R.drawable.lotte),
-    SHINHAN("Shinhan", ShinhanColor, R.drawable.shinhan),
-    WOORI("Woori", WooriColor, R.drawable.woori);
+    BC("BC카드", BcColor, R.drawable.bc),
+    HANA("하나카드", HanaColor, R.drawable.hana),
+    HYUNDAI("현대카드", HyundaiColor, R.drawable.hyundai),
+    KAKAO("카카오뱅크", KakaoColor, R.drawable.kakao),
+    KB("국민카드", KbColor, R.drawable.kb),
+    LOTTE("롯데카드", LotteColor, R.drawable.lotte),
+    SHINHAN("신한카드", ShinhanColor, R.drawable.shinhan),
+    WOORI("우리카드", WooriColor, R.drawable.woori);
 }
