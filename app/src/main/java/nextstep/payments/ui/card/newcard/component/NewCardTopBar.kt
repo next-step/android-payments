@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.card.newcard.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

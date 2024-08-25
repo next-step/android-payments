@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.card.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,10 +19,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.ui.card.newcard.component.NewCardTopBar
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
+    modifier: Modifier = Modifier,
+    viewModel: NewCardViewModel = viewModel(),
+    backToCardList: () -> Unit,
+) {
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
+    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
+    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
+    val password by viewModel.password.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) backToCardList()
+    }
+
+    NewCardScreen(
+        cardNumber = cardNumber,
+        expiredDate = expiredDate,
+        ownerName = ownerName,
+        password = password,
+        setCardNumber = viewModel::setCardNumber,
+        setExpiredDate = viewModel::setExpiredDate,
+        setOwnerName = viewModel::setOwnerName,
+        setPassword = viewModel::setPassword,
+        onClickSave = viewModel::addCard,
+        onClickBack = backToCardList,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -30,10 +64,12 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onClickSave: () -> Unit,
+    onClickBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = onClickBack, onSaveClick = onClickSave) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -85,29 +121,6 @@ fun NewCardScreen(
     }
 }
 
-@Composable
-fun NewCardScreen(
-    modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
-) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-
-    NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
-        modifier = modifier,
-    )
-}
-
 @Preview
 @Composable
 private fun NewCardScreenPreview() {
@@ -118,7 +131,8 @@ private fun NewCardScreenPreview() {
                 setExpiredDate("00 / 00")
                 setOwnerName("강지회")
                 setPassword("1234")
-            }
+            },
+            backToCardList = {},
         )
     }
 }
@@ -136,6 +150,8 @@ private fun StatelessNewCardScreenPreview() {
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
+            onClickBack = {},
+            onClickSave = {},
         )
     }
 }
