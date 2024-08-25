@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.SecureFlagPolicy
 import nextstep.payments.ui.screen.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -38,9 +41,15 @@ fun CardCompanyModalBottomSheet(
 ) {
     ModalBottomSheet(
         modifier = modifier,
+        properties = ModalBottomSheetProperties(
+            securePolicy = SecureFlagPolicy.Inherit,
+            isFocusable = true,
+            shouldDismissOnBackPress = false
+        ),
         onDismissRequest = { onDismissRequest() }
     ) {
         CardCompanyContents(
+            modifier = Modifier.navigationBarsPadding(),
             cardCompanyList = cardCompanyList,
             onCardCompanySelected = onCardCompanySelected
         )

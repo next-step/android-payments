@@ -21,14 +21,14 @@ object BasicCardDefaults {
         backgroundColor: Color = Color(0xFF333333),
         contentColor: Color = Color.White
     ): BasicCardColors = BasicCardColors(
-        backgroundColor = backgroundColor,
+        containerColor = backgroundColor,
         contentColor = contentColor
     )
 }
 
 @Stable
 data class BasicCardColors(
-    val backgroundColor: Color,
+    val containerColor: Color,
     val contentColor: Color
 )
 
@@ -43,7 +43,7 @@ fun PaymentCardLayout(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = colors.backgroundColor,
+                color = colors.containerColor,
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(horizontal = 14.dp)

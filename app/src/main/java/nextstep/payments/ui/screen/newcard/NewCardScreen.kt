@@ -1,30 +1,41 @@
 package nextstep.payments.ui.screen.newcard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
+import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.NewCardTopBar
+import nextstep.payments.ui.component.card.BasicCardColors
+import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
+import nextstep.payments.ui.screen.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardRoute(
     modifier: Modifier = Modifier,
@@ -37,9 +48,22 @@ fun NewCardRoute(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
+    val cardCompanyModalBottomSheetState = rememberModalBottomSheetState()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
+    }
+
+    if (cardCompanyModalBottomSheetState.isVisible) {
+        CardCompanyModalBottomSheet(
+            cardCompanyList = CardCompany.entries,
+            onDismissRequest = {
+                coroutineScope.launch { cardCompanyModalBottomSheetState.hide() }
+            },
+            onCardCompanySelected = viewModel::setSelectedCard
+        )
     }
 
     NewCardScreen(
@@ -48,7 +72,13 @@ fun NewCardRoute(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        selectedCard = selectedCard,
         onBackClick = onBackClick,
+        onCardClick = {
+            coroutineScope.launch {
+                cardCompanyModalBottomSheetState.show()
+            }
+        },
         onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -63,12 +93,14 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    onBackClick: () -> Unit,
+    selectedCard: CardCompany?,
     onSaveClick: () -> Unit,
+    onBackClick: () -> Unit,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -90,9 +122,14 @@ internal fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
+                modifier = Modifier.clickable { onCardClick() },
                 cardNumber = cardNumber,
                 cardOwnerName = ownerName,
-                cardExpiredDate = expiredDate
+                cardExpiredDate = expiredDate,
+                colors = BasicCardColors(
+                    containerColor = selectedCard?.color ?: BasicCardDefaults.colors().containerColor,
+                    contentColor = Color.White
+                )
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -144,8 +181,10 @@ private fun NewCardScreenPreview() {
             expiredDate = "22 / 33",
             ownerName = "이지훈",
             password = "12345678",
+            selectedCard = CardCompany.BC,
             onBackClick = {},
             onSaveClick = {},
+            onCardClick = {},
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
