@@ -17,9 +17,8 @@ import nextstep.payments.ui.theme.titleBoldStyle
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-internal fun PaymentMainTopBar(
-    cardUiState: CardUiState,
-    onAddClick: () -> Unit
+internal fun PaymentCardListTopBar(
+    actionContent: @Composable () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -30,19 +29,7 @@ internal fun PaymentMainTopBar(
             )
         },
         actions = {
-            if (cardUiState is CardUiState.Many) {
-                IconButton(
-                    onClick = onAddClick,
-                    modifier = Modifier.size(64.dp)
-                ) {
-                    Text(
-                        text = "추가",
-                        style = titleBoldStyle
-                    )
-                }
-            } else {
-                Box(modifier = Modifier.size(64.dp))
-            }
+            actionContent()
         },
         navigationIcon = {
             Box(modifier = Modifier.size(64.dp))
@@ -51,9 +38,44 @@ internal fun PaymentMainTopBar(
     )
 }
 
+@Composable
+internal fun AddButton(
+    cardUiState: CardUiState,
+    onAddClick: () -> Unit
+) {
+    if (cardUiState is CardUiState.Many) {
+        IconButton(
+            onClick = onAddClick,
+            modifier = Modifier.size(64.dp)
+        ) {
+            Text(
+                text = "추가",
+                style = titleBoldStyle
+            )
+        }
+    } else {
+        Box(modifier = Modifier.size(64.dp))
+    }
+}
+
 @Preview
 @Composable
 private fun PaymentMainTopBarPreview() {
-    PaymentMainTopBar(cardUiState = CardUiState.Empty) {
+    PaymentCardListTopBar {
+        AddButton(
+            cardUiState = CardUiState.Empty,
+            onAddClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PaymentMainTopBarManyPreview() {
+    PaymentCardListTopBar {
+        AddButton(
+            cardUiState = CardUiState.Many(listOf()),
+            onAddClick = {}
+        )
     }
 }

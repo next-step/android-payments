@@ -6,11 +6,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun MaskedCardNumberText(cardNumber: String, modifier: Modifier = Modifier) {
+fun MaskedCardNumberText(
+    cardNumber: String,
+    cardColor: Color,
+    modifier: Modifier = Modifier
+) {
     val formattedNumber = formatCardNumber(cardNumber)
     val maskedNumber = maskCardNumber(formattedNumber)
 
@@ -20,7 +25,7 @@ fun MaskedCardNumberText(cardNumber: String, modifier: Modifier = Modifier) {
                 Text(
                     text = "-",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.White,
+                    color = if (cardColor.luminance() > 0.5) Color.Black else Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.weight(1f)
 
@@ -29,7 +34,7 @@ fun MaskedCardNumberText(cardNumber: String, modifier: Modifier = Modifier) {
             Text(
                 text = part,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.White
+                color = if (cardColor.luminance() > 0.5) Color.Black else Color.White
             )
         }
     }
@@ -50,8 +55,8 @@ fun maskCardNumber(formattedNumber: String): String {
     }.joinToString(" ")
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun MaskedCardNumberTextPreview() {
-    MaskedCardNumberText("1234567890123456")
+    MaskedCardNumberText("1234567890123456", Color.White)
 }

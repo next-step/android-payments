@@ -12,13 +12,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import nextstep.payments.data.Bank
 import nextstep.payments.data.Card
+import nextstep.payments.data.bank.BankRepository
+import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -28,6 +35,8 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    cardCompany: String,
+    cardColor: Color,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -37,10 +46,12 @@ fun NewCardScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(
-            onBackClick = onBackClick,
-            onSaveClick = onSaveClick
-        ) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -52,7 +63,10 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                cardCompany = cardCompany,
+                cardColor = cardColor
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -95,6 +109,7 @@ fun NewCardScreen(
 @Composable
 fun NewCardScreen(
     viewModel: NewCardViewModel,
+    bankRepository: BankRepository,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -107,17 +122,46 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardCompany by viewModel.cardCompany.collectAsStateWithLifecycle()
+    val cardColor by viewModel.cardColor.collectAsStateWithLifecycle()
+
+    var selectedBank by remember { mutableStateOf<Bank?>(null) }
+
+    if (selectedBank == null) {
+        BankSelectBottomSheet(
+            banks = bankRepository.getBanks(),
+            onDismiss = { bank ->
+                selectedBank = bank
+                viewModel.setCardCompany(bank.name)
+                viewModel.setCardColor(bank.color)
+            }
+        )
+    }
+
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        cardCompany = cardCompany,
+        cardColor = cardColor,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = { navigateToCardList() },
-        onSaveClick = { viewModel.addCard(Card(cardNumber, expiredDate, ownerName, password)) },
+        onSaveClick = {
+            viewModel.addCard(
+                Card(
+                    cardNumber,
+                    expiredDate,
+                    ownerName,
+                    password,
+                    cardCompany,
+                    cardColor
+                )
+            )
+        },
         modifier = modifier
     )
 }
@@ -131,6 +175,8 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "00 / 00",
             ownerName = "윤성현",
             password = "1234",
+            cardCompany = "롯데카드",
+            cardColor = Color.White,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
