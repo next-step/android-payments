@@ -1,16 +1,8 @@
 package nextstep.payments.ui.screen.newcard.model
 
+import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import nextstep.payments.ui.icons.Bc
-import nextstep.payments.ui.icons.Hana
-import nextstep.payments.ui.icons.Hyundai
-import nextstep.payments.ui.icons.Kakao
-import nextstep.payments.ui.icons.Kb
-import nextstep.payments.ui.icons.Lotte
-import nextstep.payments.ui.icons.MyIconPack
-import nextstep.payments.ui.icons.Shinhan
-import nextstep.payments.ui.icons.Woori
+import nextstep.payments.R
 import nextstep.payments.ui.theme.BcColor
 import nextstep.payments.ui.theme.HanaColor
 import nextstep.payments.ui.theme.HyundaiColor
@@ -23,14 +15,14 @@ import nextstep.payments.ui.theme.WooriColor
 enum class CardCompany(
     val companyName: String,
     val color: Color,
-    val image: ImageVector
+    @DrawableRes val imageRes: Int
 ) {
-    BC("BC", BcColor, MyIconPack.Bc),
-    HANA("HANA", HanaColor, MyIconPack.Hana),
-    HYUNDAI("Hyundai", HyundaiColor, MyIconPack.Hyundai),
-    KAKAO("Kakao", KakaoColor, MyIconPack.Kakao),
-    KB("KB", KbColor, MyIconPack.Kb),
-    LOTTE("Lotte", LotteColor, MyIconPack.Lotte),
-    SHINHAN("Shinhan", ShinhanColor, MyIconPack.Shinhan),
-    WOORI("Woori", WooriColor, MyIconPack.Woori);
+    BC("BC", BcColor, R.drawable.bc),
+    HANA("HANA", HanaColor, R.drawable.hana),
+    HYUNDAI("Hyundai", HyundaiColor, R.drawable.hyundai),
+    KAKAO("Kakao", KakaoColor, R.drawable.kakao),
+    KB("KB", KbColor, R.drawable.kb),
+    LOTTE("Lotte", LotteColor, R.drawable.lotte),
+    SHINHAN("Shinhan", ShinhanColor, R.drawable.shinhan),
+    WOORI("Woori", WooriColor, R.drawable.woori);
 }
