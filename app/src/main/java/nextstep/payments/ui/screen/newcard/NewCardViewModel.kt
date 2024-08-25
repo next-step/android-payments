@@ -29,7 +29,7 @@ class NewCardViewModel : ViewModel() {
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded = _cardAdded.asStateFlow()
 
-    private val _selectedCard = MutableStateFlow<CardCompany?>(null)
+    private val _selectedCard = MutableStateFlow<CardCompany>(CardCompany.NOT_SELECTED)
     val selectedCard = _selectedCard.asStateFlow()
 
     private val _snackbarMessages = MutableSharedFlow<String>()
@@ -56,7 +56,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun addCard() {
-        if (selectedCard.value != null) {
+        if (selectedCard.value != CardCompany.NOT_SELECTED) {
             PaymentCardsRepository.addCard(
                 card = Card(
                     cardNumber = _cardNumber.value,

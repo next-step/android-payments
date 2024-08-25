@@ -16,7 +16,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,12 +37,14 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun CardCompanyModalBottomSheet(
     cardCompanyList: List<CardCompany>,
+    sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onCardCompanySelected: (CardCompany) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ModalBottomSheet(
         modifier = modifier,
+        sheetState = sheetState,
         properties = ModalBottomSheetProperties(
             securePolicy = SecureFlagPolicy.Inherit,
             isFocusable = true,
@@ -80,11 +84,13 @@ private fun CardCompanyContents(
                     },
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    modifier = Modifier.size(37.dp),
-                    painter = painterResource(id = company.imageRes),
-                    contentDescription = company.companyName
-                )
+                company.imageRes?.let {
+                    Image(
+                        modifier = Modifier.size(37.dp),
+                        painter = painterResource(id = it),
+                        contentDescription = company.companyName
+                    )
+                }
 
                 Text(
                     modifier = Modifier.padding(top = 9.dp),
@@ -108,6 +114,7 @@ private fun CardCompanyContentsPreview() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun CardCompanyModalBottomSheetPreview() {
@@ -125,6 +132,7 @@ private fun CardCompanyModalBottomSheetPreview() {
 
         if (showBottomSheet) {
             CardCompanyModalBottomSheet(
+                sheetState = rememberModalBottomSheetState(),
                 cardCompanyList = CardCompany.entries,
                 onDismissRequest = { showBottomSheet = false },
                 onCardCompanySelected = {}

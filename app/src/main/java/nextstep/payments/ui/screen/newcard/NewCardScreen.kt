@@ -1,5 +1,6 @@
 package nextstep.payments.ui.screen.newcard
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,14 +13,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.NewCardTopBar
 import nextstep.payments.ui.component.card.BasicCardColors
-import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
@@ -54,8 +53,10 @@ fun NewCardRoute(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    val cardCompanyModalBottomSheetState = rememberModalBottomSheetState()
-    val coroutineScope = rememberCoroutineScope()
+    var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
+    val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -67,11 +68,18 @@ fun NewCardRoute(
         }
     }
 
-    if (cardCompanyModalBottomSheetState.isVisible) {
+    LaunchedEffect(selectedCard) {
+        if (selectedCard != CardCompany.NOT_SELECTED) {
+            showCardCompanyBottomSheet = false
+        }
+    }
+
+    if (showCardCompanyBottomSheet) {
         CardCompanyModalBottomSheet(
-            cardCompanyList = CardCompany.entries,
+            sheetState = cardCompanyModalBottomSheetState,
+            cardCompanyList = remember { CardCompany.getCardBrandList() },
             onDismissRequest = {
-                coroutineScope.launch { cardCompanyModalBottomSheetState.hide() }
+                showCardCompanyBottomSheet = false
             },
             onCardCompanySelected = viewModel::setSelectedCard
         )
@@ -87,9 +95,8 @@ fun NewCardRoute(
         selectedCard = selectedCard,
         onBackClick = onBackClick,
         onCardClick = {
-            coroutineScope.launch {
-                cardCompanyModalBottomSheetState.show()
-            }
+            Log.d("TAG", "NewCardRoute: cardCompanyModalBottomSheetState.show()")
+            showCardCompanyBottomSheet = true
         },
         onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
@@ -106,7 +113,7 @@ internal fun NewCardScreen(
     ownerName: String,
     password: String,
     snackbarHostState: SnackbarHostState,
-    selectedCard: CardCompany?,
+    selectedCard: CardCompany,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -143,7 +150,7 @@ internal fun NewCardScreen(
                 cardOwnerName = ownerName,
                 cardExpiredDate = expiredDate,
                 colors = BasicCardColors(
-                    containerColor = selectedCard?.color ?: BasicCardDefaults.colors().containerColor,
+                    containerColor = selectedCard.color,
                     contentColor = Color.White
                 )
             )
