@@ -21,6 +21,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
+import nextstep.payments.data.BcCard
+import nextstep.payments.data.Card
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -30,6 +32,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun NewCardScreen(
     modifier: Modifier = Modifier,
     navigateToCardList: () -> Unit,
+    onBackClick: () -> Unit = {},
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -52,6 +55,8 @@ fun NewCardScreen(
         setExpiredDatedNumber = viewModel::setExpiredDate,
         setOwnerNamedNumber = viewModel::setOwnerName,
         setPasswordNumber = viewModel::setPassword,
+        onBackClick = onBackClick,
+        onSaveClick = viewModel::addCard,
         modifier = modifier
     )
 }
@@ -67,10 +72,27 @@ private fun NewCardScreen(
     setExpiredDatedNumber: (String) -> Unit,
     setOwnerNamedNumber: (String) -> Unit,
     setPasswordNumber: (String) -> Unit,
+    onBackClick: () -> Unit = {},
+    onSaveClick: (Card) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = {
+                    onSaveClick(
+                        Card(
+                            cardNumber = cardNumber,
+                            expiredDate = expiredDate,
+                            ownerName = ownerName,
+                            password = password,
+                            cardCompany = BcCard
+                        )
+                    )
+                }
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(

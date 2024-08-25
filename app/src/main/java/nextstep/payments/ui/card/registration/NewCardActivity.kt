@@ -21,6 +21,9 @@ class NewCardActivity : ComponentActivity() {
                         setResult(RESULT_OK)
                         finish()
                     },
+                    onBackClick = {
+                        finish()
+                    }
                 )
             }
         }

@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
@@ -19,14 +22,20 @@ import nextstep.payments.ui.card.list.component.card.EmptyCardImage
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun CardListScreen(modifier: Modifier = Modifier) {
+fun CardListScreen(
+    viewModel: CardListViewModel = viewModel(),
+    onAddCard: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    val cards by viewModel.cardList.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = { CardListTopBar() }
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (PaymentCardsRepository.cards.isEmpty()) {
+            if (cards.cardList.isEmpty()) {
                 CardRegistrationComment(
                     comment = "새로운 카드를 등록해주세요.",
                     modifier = Modifier
@@ -34,10 +43,11 @@ fun CardListScreen(modifier: Modifier = Modifier) {
                         .padding(horizontal = 73.dp)
                 )
             } else {
-                CardLazyColumn()
+                CardLazyColumn(cards)
             }
             EmptyCardImage(
                 cardColor = Color(0xFFE5E5E5),
+                onAddCard = onAddCard,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -74,8 +84,14 @@ private fun CardListScreenExistPreview() {
             cardCompany = BcCard
         )
     )
+
+    val viewModel = CardListViewModel()
+
     PaymentsTheme {
-        CardListScreen()
+        CardListScreen(
+            viewModel = viewModel,
+            onAddCard = {}
+        )
     }
 }
 
@@ -84,6 +100,8 @@ private fun CardListScreenExistPreview() {
 private fun CardListScreenNotExistPreview() {
     PaymentCardsRepository.removeAllCard()
     PaymentsTheme {
-        CardListScreen()
+        CardListScreen(
+            onAddCard = {}
+        )
     }
 }

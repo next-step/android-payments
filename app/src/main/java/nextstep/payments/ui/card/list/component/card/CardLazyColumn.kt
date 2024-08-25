@@ -6,13 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import nextstep.payments.data.Card
+import nextstep.payments.data.CardList
 import nextstep.payments.data.PaymentCardsRepository
 
 @Composable
-fun CardLazyColumn(modifier: Modifier = Modifier) {
+fun CardLazyColumn(cards: CardList, modifier: Modifier = Modifier) {
     LazyColumn {
         items(
-            count = PaymentCardsRepository.cards.size,
+            count = cards.cardList.size,
             key = { index -> PaymentCardsRepository.cards[index].cardNumber }
         ) {
             CardImage(

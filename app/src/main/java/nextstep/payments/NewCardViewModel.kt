@@ -26,6 +26,7 @@ class NewCardViewModel(
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -45,9 +46,5 @@ class NewCardViewModel(
     fun addCard(card: Card) {
         repository.addCard(card)
         _cardAdded.value = true
-    }
-
-    fun fetchCards() {
-
     }
 }
