@@ -12,7 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CardListScreenTest {
+class CreditCardScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
@@ -27,7 +27,10 @@ class CardListScreenTest {
         // when : cardListScreen을 setContent 한다.
         composeRule
             .setContent {
-                CardListScreen()
+                CardListScreen(
+                    cards = PaymentCardsRepository.cards,
+                    onAddCard = {}
+                )
             }
 
         // then : Payments 타이틀에 노출되어야한다.
@@ -61,7 +64,9 @@ class CardListScreenTest {
 
         // when : 화면을 렌더링한다.
         composeRule.setContent {
-            CardListScreen()
+            CardListScreen(
+                cards = PaymentCardsRepository.cards
+            )
         }
         val actual = composeRule
             .onAllNodesWithTag("cardImage")
@@ -75,7 +80,9 @@ class CardListScreenTest {
     fun 등록된_카드가_존재하지_않을_경우_해당_카드_이미지를_노출하지_않는다() {
         // when : 화면을 렌더링한다.
         composeRule.setContent {
-            CardListScreen()
+            CardListScreen(
+                cards = PaymentCardsRepository.cards
+            )
         }
 
         // then : 카드 이미지가 노출되지 않는다.
@@ -92,7 +99,9 @@ class CardListScreenTest {
         // when : 화면을 렌더링한다.
 //        cardImage
         composeRule.setContent {
-            CardListScreen()
+            CardListScreen(
+                cards = PaymentCardsRepository.cards
+            )
         }
 
         // then : 카드 추가 멘트가 노출된다.
@@ -116,7 +125,9 @@ class CardListScreenTest {
 
         // when : 화면을 렌더링한다.
         composeRule.setContent {
-            CardListScreen()
+            CardListScreen(
+                cards = PaymentCardsRepository.cards
+            )
         }
 
         // then : 카드 추가 멘트가 노출되지 않는다

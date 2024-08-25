@@ -27,7 +27,7 @@ fun CardListScreen(
     onAddCard: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    val cards by viewModel.cardList.collectAsStateWithLifecycle()
+    val cards by viewModel.creditCard.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = { CardListTopBar() }
