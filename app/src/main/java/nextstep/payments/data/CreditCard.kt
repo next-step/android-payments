@@ -9,5 +9,4 @@ data class CreditCard(val cardList: List<Card>) {
             else -> CreditCardUiState.Many(cardList)
         }
     }
-
 }

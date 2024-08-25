@@ -63,8 +63,10 @@ fun CardNumber(cardNumber: String, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true,
-    backgroundColor = 0xFF333333)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF333333
+)
 @Composable
 private fun CardNumberPreview() {
     PaymentsTheme {
