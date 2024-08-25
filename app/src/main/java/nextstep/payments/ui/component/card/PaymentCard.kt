@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,8 +29,12 @@ fun PaymentCard(
     cardOwnerName: String,
     cardExpiredDate: String,
     modifier: Modifier = Modifier,
+    colors: BasicCardColors = BasicCardDefaults.colors(),
 ) {
-    BasicCard(modifier = modifier) {
+    PaymentCardLayout(
+        modifier = modifier,
+        colors = colors
+    ) {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)

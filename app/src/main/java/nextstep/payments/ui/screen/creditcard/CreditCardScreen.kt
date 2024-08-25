@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.component.card.BasicCard
+import nextstep.payments.ui.component.card.PaymentCardLayout
 import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
@@ -150,7 +150,7 @@ private fun AddCreditCard(
     modifier: Modifier = Modifier,
     onAddClick: () -> Unit
 ) {
-    BasicCard(
+    PaymentCardLayout(
         modifier = modifier.clickable { onAddClick() },
         colors = BasicCardDefaults.colors(backgroundColor = Color(0xFFE5E5E5)),
     ) {

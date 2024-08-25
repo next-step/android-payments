@@ -33,7 +33,7 @@ data class BasicCardColors(
 )
 
 @Composable
-fun BasicCard(
+fun PaymentCardLayout(
     modifier: Modifier = Modifier,
     colors: BasicCardColors = BasicCardDefaults.colors(),
     content: @Composable BoxScope.() -> Unit
@@ -59,5 +59,5 @@ fun BasicCard(
 @Preview(showBackground = true)
 @Composable
 private fun BasicCardPreview() {
-    BasicCard {}
+    PaymentCardLayout {}
 }
