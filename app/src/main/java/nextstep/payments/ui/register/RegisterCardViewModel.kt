@@ -134,7 +134,7 @@ class RegisterCardViewModel(
             PaymentCardsRepository.addCard(card)
             _effect.emit(
                 RegisterCardScreenEffect.NavigateToCardListScreen(
-                    result = CardRegisterResult.REGISTERED,
+                    result = CardRegisterResult.SUCCESS,
                 ),
             )
         }
@@ -146,7 +146,7 @@ class RegisterCardViewModel(
             PaymentCardsRepository.updateCard(card.copy(id = id))
             _effect.emit(
                 RegisterCardScreenEffect.NavigateToCardListScreen(
-                    result = CardRegisterResult.UPDATED,
+                    result = CardRegisterResult.SUCCESS,
                 ),
             )
         }

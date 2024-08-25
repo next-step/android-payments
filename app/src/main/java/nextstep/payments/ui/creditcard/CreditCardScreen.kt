@@ -23,22 +23,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardRegisterResult
 import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun CreditCardRoute(
+    cardRegisterResult: CardRegisterResult?,
     modifier: Modifier = Modifier,
     navigateToRegister: (String?) -> Unit,
     viewModel: CreditCardViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(viewModel.shouldFetchCards) {
-        viewModel.shouldFetchCards.collect {
-            viewModel.fetchCards()
-        }
-    }
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect { effect ->
@@ -48,6 +44,10 @@ internal fun CreditCardRoute(
                 }
             }
         }
+    }
+
+    LaunchedEffect(cardRegisterResult) {
+        viewModel.handleCardRegisterResult(cardRegisterResult)
     }
 
     CreditCardScreen(

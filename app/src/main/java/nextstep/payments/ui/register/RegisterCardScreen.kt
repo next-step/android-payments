@@ -1,6 +1,5 @@
 package nextstep.payments.ui.register
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,9 +34,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import nextstep.payments.R
 import nextstep.payments.model.Brand
+import nextstep.payments.model.CardRegisterResult
 import nextstep.payments.model.OwnerNameValidResult
 import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.CardNumberVisualTransformation
@@ -49,25 +48,23 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun RegisterCardRoute(
-    backStackEntry: NavBackStackEntry,
-    navigateUp: (Boolean) -> Unit,
+    navigateToCredit: (CardRegisterResult) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RegisterCardViewModel =
-        viewModel(),
+    viewModel: RegisterCardViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewModel.effect) {
         viewModel.effect.collect {
             when (it) {
-                is RegisterCardScreenEffect.NavigateToCardListScreen -> navigateUp(it.shouldFetchCards)
+                is RegisterCardScreenEffect.NavigateToCardListScreen -> navigateToCredit(it.result)
             }
         }
     }
 
     RegisterCardScreen(
         uiState = uiState,
-        navigateUp = navigateUp,
+        navigateUp = navigateToCredit,
         onNewCardScreenEvent = viewModel::dispatchEvent,
         modifier = modifier,
     )
@@ -77,7 +74,7 @@ internal fun RegisterCardRoute(
 @Composable
 internal fun RegisterCardScreen(
     uiState: RegisterCardUiState,
-    navigateUp: (Boolean) -> Unit,
+    navigateUp: (CardRegisterResult) -> Unit,
     onNewCardScreenEvent: (RegisterCardScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -87,7 +84,7 @@ internal fun RegisterCardScreen(
         topBar = {
             PaymentsTopBar(
                 title = stringResource(id = R.string.title_new_card),
-                onBackClick = { navigateUp(false) },
+                onBackClick = { navigateUp(CardRegisterResult.FAILED) },
                 actions = {
                     IconButton(
                         onClick = { onNewCardScreenEvent(RegisterCardScreenEvent.OnRegisterCardClicked) },
@@ -180,7 +177,6 @@ internal fun RegisterCardScreen(
                     onNewCardScreenEvent(RegisterCardScreenEvent.OnBrandSelected(it))
                 },
                 onDismiss = {
-                    Log.d("RegisterCardScreen", "onDismissRequest")
                     showBottomSheet = false
                 },
             )
@@ -305,7 +301,7 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                     "김수한무 거북이와 두루미 삼천갑자 동방삭 치치카포 사리사리센타 워리워리 세브리깡 무두셀라 구름이 허리케인에 담벼락 담벼락에 서생원 서생원에 고양이 고양이엔 바둑이 바둑이는 돌돌이",
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
-                mode = Mode.MODIFY,
+                mode = Mode.UPDATE,
                 registerEnabled = false,
             ),
         )

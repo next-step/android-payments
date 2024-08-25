@@ -4,12 +4,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import nextstep.payments.model.CardRegisterResult
 import nextstep.payments.ui.register.RegisterCardRoute
 
 const val ARG_CARD_ID = "cardId"
 const val REGISTER_CARD_ROUTE = "register_card/{$ARG_CARD_ID}"
 
-fun NavGraphBuilder.registerCardScreen(navigateUp: (Boolean) -> Unit) {
+fun NavGraphBuilder.registerCardScreen(navigateToCredit: (CardRegisterResult) -> Unit) {
     composable(
         route = REGISTER_CARD_ROUTE,
         arguments =
@@ -19,10 +20,7 @@ fun NavGraphBuilder.registerCardScreen(navigateUp: (Boolean) -> Unit) {
                     nullable = true
                 },
             ),
-    ) { backStackEntry ->
-        RegisterCardRoute(
-            backStackEntry = backStackEntry,
-            navigateUp = navigateUp,
-        )
+    ) {
+        RegisterCardRoute(navigateToCredit = navigateToCredit)
     }
 }

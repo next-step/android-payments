@@ -132,7 +132,7 @@ class RegisterCardViewModelTest {
                 // then - 카드 목록 화면으로 이동
                 assertEquals(
                     awaitItem(),
-                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.REGISTERED),
+                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.SUCCESS),
                 )
             }
         }
@@ -169,7 +169,7 @@ class RegisterCardViewModelTest {
                 // then - 카드 목록 화면으로 이동
                 assertEquals(
                     awaitItem(),
-                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.UPDATED),
+                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.FAILED),
                 )
             }
         }
