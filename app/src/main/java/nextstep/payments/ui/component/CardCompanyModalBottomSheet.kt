@@ -66,7 +66,7 @@ private fun CardCompanyContents(
     FlowRow(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 36.dp),
+            .padding(vertical = 36.dp, horizontal = 40.dp),
         maxItemsInEachRow = 4,
         verticalArrangement = Arrangement.spacedBy(23.dp),
         horizontalArrangement = Arrangement.SpaceAround,
