@@ -30,16 +30,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.SecureFlagPolicy
-import nextstep.payments.ui.screen.newcard.model.CardCompany
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardCompanyModalBottomSheet(
-    cardCompanyList: List<CardCompany>,
+    bankTypeModelList: List<BankTypeModel>,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onCardCompanySelected: (CardCompany) -> Unit,
+    onCardCompanySelected: (BankTypeModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ModalBottomSheet(
@@ -54,7 +54,7 @@ fun CardCompanyModalBottomSheet(
     ) {
         CardCompanyContents(
             modifier = Modifier.navigationBarsPadding(),
-            cardCompanyList = cardCompanyList,
+            bankTypeModelList = bankTypeModelList,
             onCardCompanySelected = onCardCompanySelected
         )
     }
@@ -63,8 +63,8 @@ fun CardCompanyModalBottomSheet(
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
 private fun CardCompanyContents(
-    cardCompanyList: List<CardCompany>,
-    onCardCompanySelected: (CardCompany) -> Unit,
+    bankTypeModelList: List<BankTypeModel>,
+    onCardCompanySelected: (BankTypeModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -75,7 +75,7 @@ private fun CardCompanyContents(
         verticalArrangement = Arrangement.spacedBy(23.dp),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        cardCompanyList.forEach { company ->
+        bankTypeModelList.forEach { company ->
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -107,7 +107,7 @@ private fun CardCompanyContents(
 private fun CardCompanyContentsPreview() {
     PaymentsTheme {
         CardCompanyContents(
-            cardCompanyList = CardCompany.entries,
+            bankTypeModelList = BankTypeModel.entries,
             onCardCompanySelected = {}
         )
     }
@@ -133,7 +133,7 @@ private fun CardCompanyModalBottomSheetPreview() {
         if (showBottomSheet) {
             CardCompanyModalBottomSheet(
                 sheetState = rememberModalBottomSheetState(),
-                cardCompanyList = CardCompany.entries,
+                bankTypeModelList = BankTypeModel.entries,
                 onDismissRequest = { showBottomSheet = false },
                 onCardCompanySelected = {}
             )

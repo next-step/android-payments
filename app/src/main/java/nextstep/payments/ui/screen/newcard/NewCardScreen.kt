@@ -35,7 +35,7 @@ import nextstep.payments.ui.component.card.BasicCardColors
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
-import nextstep.payments.ui.screen.newcard.model.CardCompany
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +69,7 @@ fun NewCardRoute(
     }
 
     LaunchedEffect(selectedCard) {
-        if (selectedCard != CardCompany.NOT_SELECTED) {
+        if (selectedCard != BankTypeModel.NOT_SELECTED) {
             showCardCompanyBottomSheet = false
         }
     }
@@ -77,7 +77,7 @@ fun NewCardRoute(
     if (showCardCompanyBottomSheet) {
         CardCompanyModalBottomSheet(
             sheetState = cardCompanyModalBottomSheetState,
-            cardCompanyList = remember { CardCompany.getCardBrandList() },
+            bankTypeModelList = remember { BankTypeModel.getCardBrandList() },
             onDismissRequest = {
                 showCardCompanyBottomSheet = false
             },
@@ -113,7 +113,7 @@ internal fun NewCardScreen(
     ownerName: String,
     password: String,
     snackbarHostState: SnackbarHostState,
-    selectedCard: CardCompany,
+    selectedCard: BankTypeModel,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -204,7 +204,7 @@ private fun NewCardScreenPreview() {
             expiredDate = "22 / 33",
             ownerName = "이지훈",
             password = "12345678",
-            selectedCard = CardCompany.BC,
+            selectedCard = BankTypeModel.BC,
             snackbarHostState = SnackbarHostState(),
             onSaveClick = {},
             onBackClick = {},

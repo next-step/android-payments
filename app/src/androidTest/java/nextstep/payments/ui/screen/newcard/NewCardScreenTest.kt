@@ -4,7 +4,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.BaseComposeTest
-import nextstep.payments.ui.screen.newcard.model.CardCompany
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import org.junit.Before
 import org.junit.Test
 
@@ -28,7 +28,7 @@ internal class NewCardScreenTest : BaseComposeTest() {
                 setOwnerName = {},
                 setPassword = {},
                 onCardClick = {},
-                selectedCard = CardCompany.SHINHAN,
+                selectedCard = BankTypeModel.SHINHAN,
                 snackbarHostState = SnackbarHostState()
             )
         }

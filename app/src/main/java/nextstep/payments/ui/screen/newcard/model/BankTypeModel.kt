@@ -12,7 +12,7 @@ import nextstep.payments.ui.theme.LotteColor
 import nextstep.payments.ui.theme.ShinhanColor
 import nextstep.payments.ui.theme.WooriColor
 
-enum class CardCompany(
+enum class BankTypeModel(
     val companyName: String,
     val color: Color,
     @DrawableRes val imageRes: Int?
@@ -28,8 +28,8 @@ enum class CardCompany(
     WOORI("우리카드", WooriColor, R.drawable.woori);
 
     companion object {
-        fun getCardBrandList(): List<CardCompany> {
-            return CardCompany.entries.filter { it != NOT_SELECTED }
+        fun getCardBrandList(): List<BankTypeModel> {
+            return BankTypeModel.entries.filter { it != NOT_SELECTED }
         }
     }
 }

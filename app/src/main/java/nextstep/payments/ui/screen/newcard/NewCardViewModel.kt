@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
-import nextstep.payments.ui.screen.newcard.model.CardCompany
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
 class NewCardViewModel : ViewModel() {
 
@@ -29,7 +29,7 @@ class NewCardViewModel : ViewModel() {
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded = _cardAdded.asStateFlow()
 
-    private val _selectedCard = MutableStateFlow<CardCompany>(CardCompany.NOT_SELECTED)
+    private val _selectedCard = MutableStateFlow<BankTypeModel>(BankTypeModel.NOT_SELECTED)
     val selectedCard = _selectedCard.asStateFlow()
 
     private val _snackbarMessages = MutableSharedFlow<String>()
@@ -51,12 +51,12 @@ class NewCardViewModel : ViewModel() {
         _password.value = password
     }
 
-    fun setSelectedCard(cardCompany: CardCompany) {
-        _selectedCard.value = cardCompany
+    fun setSelectedCard(bankTypeModel: BankTypeModel) {
+        _selectedCard.value = bankTypeModel
     }
 
     fun addCard() {
-        if (selectedCard.value != CardCompany.NOT_SELECTED) {
+        if (selectedCard.value != BankTypeModel.NOT_SELECTED) {
             PaymentCardsRepository.addCard(
                 card = Card(
                     cardNumber = _cardNumber.value,

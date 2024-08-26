@@ -56,7 +56,6 @@ internal fun CreditCardScreen(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Scaffold(
         modifier = modifier,
         topBar = {
