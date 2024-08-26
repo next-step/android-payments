@@ -104,7 +104,7 @@ private fun CardCompanyContents(
 
 @Preview(showBackground = true)
 @Composable
-private fun CardCompanyContentsPreview() {
+private fun 카드회사_아이템_프리뷰() {
     PaymentsTheme {
         CardCompanyContents(
             bankTypeModelList = BankTypeModel.entries,
@@ -117,7 +117,7 @@ private fun CardCompanyContentsPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-private fun CardCompanyModalBottomSheetPreview() {
+private fun 카드회사_바텀시트_인터렉션용_프리뷰() {
     var showBottomSheet by remember { mutableStateOf(false) }
     PaymentsTheme {
         Column(
