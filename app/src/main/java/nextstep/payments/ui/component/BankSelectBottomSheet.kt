@@ -31,7 +31,6 @@ import nextstep.payments.model.toName
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
-private const val ROW_COUNT = 2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,8 +81,7 @@ fun BankSelectRow(
         horizontalArrangement = Arrangement.Center,
         maxItemsInEachRow = COLUMN_COUNT,
     ) {
-        repeat(ROW_COUNT * COLUMN_COUNT) {
-            val brand = brands[it]
+        brands.forEach { brand ->
             BankCard(
                 brand = brand,
                 modifier =
