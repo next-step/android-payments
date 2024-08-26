@@ -5,4 +5,5 @@ data class Card(
     val cardOwnerName: String,
     val cardExpiredDate: String,
     val cardPassword: String,
+    val bankType: BankType
 )

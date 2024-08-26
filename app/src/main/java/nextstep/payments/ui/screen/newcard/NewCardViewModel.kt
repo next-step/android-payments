@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
+import nextstep.payments.ui.screen.newcard.model.toData
 
 class NewCardViewModel : ViewModel() {
 
@@ -62,7 +63,8 @@ class NewCardViewModel : ViewModel() {
                     cardNumber = _cardNumber.value,
                     cardOwnerName = _ownerName.value,
                     cardExpiredDate = _expiredDate.value,
-                    cardPassword = _password.value
+                    cardPassword = _password.value,
+                    bankType = _selectedCard.value.toData()
                 )
             )
             _cardAdded.value = true

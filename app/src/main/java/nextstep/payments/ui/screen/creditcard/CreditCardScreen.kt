@@ -30,10 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.component.card.PaymentCardLayout
 import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
+import nextstep.payments.ui.component.card.PaymentCardLayout
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
 @Composable
 fun CreditCardRoute(
@@ -134,7 +135,10 @@ private fun OneCardSection(
         PaymentCard(
             cardNumber = creditCard.cardNumber,
             cardOwnerName = creditCard.cardOwnerName,
-            cardExpiredDate = creditCard.cardExpiredDate
+            cardExpiredDate = creditCard.cardExpiredDate,
+            colors = BasicCardDefaults.colors(
+                backgroundColor = creditCard.bankType.color
+            )
         )
 
         AddCreditCard(
@@ -180,7 +184,10 @@ private fun ManyCardSection(
             PaymentCard(
                 cardNumber = card.cardNumber,
                 cardOwnerName = card.cardOwnerName,
-                cardExpiredDate = card.cardExpiredDate
+                cardExpiredDate = card.cardExpiredDate,
+                colors = BasicCardDefaults.colors(
+                    backgroundColor = card.bankType.color
+                )
             )
         }
     }
@@ -223,7 +230,8 @@ private fun CreditCardTopBarPreview() {
 private val previewDummyCreditCard = CreditCard(
     cardNumber = "1111222233334444",
     cardOwnerName = "이지훈",
-    cardExpiredDate = "22 / 33"
+    cardExpiredDate = "22 / 33",
+    bankType = BankTypeModel.SHINHAN,
 )
 
 @Preview(showBackground = true, name = "카드가 0개 일때")

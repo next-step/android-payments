@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import nextstep.payments.BaseComposeTest
 import nextstep.payments.R
 import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import org.junit.Before
 import org.junit.Test
 
@@ -52,7 +53,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
                 CreditCard(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             )
         )
@@ -71,7 +73,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
                 CreditCard(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             }
         )
@@ -90,7 +93,8 @@ internal class CreditCardScreenTest : BaseComposeTest() {
                 CreditCard(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             }
         )
