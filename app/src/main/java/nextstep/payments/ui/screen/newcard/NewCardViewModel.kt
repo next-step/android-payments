@@ -30,7 +30,7 @@ class NewCardViewModel : ViewModel() {
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded = _cardAdded.asStateFlow()
 
-    private val _selectedBank = MutableStateFlow<BankTypeModel>(BankTypeModel.NOT_SELECTED)
+    private val _selectedBank = MutableStateFlow<BankTypeModel?>(null)
     val selectedCard = _selectedBank.asStateFlow()
 
     private val _snackbarMessages = MutableSharedFlow<String>()
@@ -40,7 +40,7 @@ class NewCardViewModel : ViewModel() {
     val cardBrands = _cardBrands.asStateFlow()
 
     init {
-        _cardBrands.value = BankTypeModel.getCardBrandList()
+        _cardBrands.value = BankTypeModel.entries
     }
 
     fun setCardNumber(cardNumber: String) {
@@ -64,18 +64,18 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun addCard() {
-        if (selectedCard.value != BankTypeModel.NOT_SELECTED) {
+        selectedCard.value?.let {
             PaymentCardsRepository.addCard(
                 card = CardData(
                     cardNumber = _cardNumber.value,
                     cardOwnerName = _ownerName.value,
                     cardExpiredDate = _expiredDate.value,
                     cardPassword = _password.value,
-                    bankType = _selectedBank.value.toData()
+                    bankType = it.toData()
                 )
             )
             _cardAdded.value = true
-        } else {
+        } ?: run {
             viewModelScope.launch {
                 _snackbarMessages.emit("카드를 클릭해서 카드 회사를 선택해주세요.")
             }

@@ -106,7 +106,7 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    bankType: BankTypeModel,
+    bankType: BankTypeModel?,
     snackbarHostState: SnackbarHostState,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,

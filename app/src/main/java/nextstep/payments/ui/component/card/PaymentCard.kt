@@ -35,12 +35,13 @@ fun PaymentCard(
     cardNumber: String,
     cardOwnerName: String,
     cardExpiredDate: String,
-    bankType: BankTypeModel,
+    bankType: BankTypeModel?,
     modifier: Modifier = Modifier,
 ) {
+    val containerColor = bankType?.color ?: Color(0xFF333333)
     val cardContentDescription = stringResource(
         id = R.string.payment_card_content_description,
-        bankType.companyName,
+        bankType?.companyName ?: "",
         cardOwnerName,
         cardNumber.chunkedCardNumber(),
         cardExpiredDate.toFormattedExpirationDate(
@@ -51,9 +52,9 @@ fun PaymentCard(
     PaymentCardLayout(
         modifier = modifier.semantics {
             contentDescription = cardContentDescription
-            backgroundColor = bankType.color
+            backgroundColor = containerColor
         },
-        colors = PaymentCardLayoutDefaults.colors(containerColor = bankType.color)
+        colors = PaymentCardLayoutDefaults.colors(containerColor = containerColor)
     ) {
         Column(
             modifier = Modifier

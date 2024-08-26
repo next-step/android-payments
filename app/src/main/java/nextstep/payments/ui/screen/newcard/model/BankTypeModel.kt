@@ -18,7 +18,6 @@ enum class BankTypeModel(
     val color: Color,
     @DrawableRes val imageRes: Int?
 ) {
-    NOT_SELECTED("", Color.Gray, null),
     BC("BC카드", BcColor, R.drawable.bc),
     HANA("하나카드", HanaColor, R.drawable.hana),
     HYUNDAI("현대카드", HyundaiColor, R.drawable.hyundai),
@@ -27,17 +26,10 @@ enum class BankTypeModel(
     LOTTE("롯데카드", LotteColor, R.drawable.lotte),
     SHINHAN("신한카드", ShinhanColor, R.drawable.shinhan),
     WOORI("우리카드", WooriColor, R.drawable.woori);
-
-    companion object {
-        fun getCardBrandList(): List<BankTypeModel> {
-            return BankTypeModel.entries.filter { it != NOT_SELECTED }
-        }
-    }
 }
 
 internal fun BankTypeModel.toData(): BankTypeData {
     return when (this) {
-        BankTypeModel.NOT_SELECTED -> BankTypeData.NOT_SELECTED
         BankTypeModel.BC -> BankTypeData.BC
         BankTypeModel.HANA -> BankTypeData.HANA
         BankTypeModel.HYUNDAI -> BankTypeData.HYUNDAI
@@ -51,7 +43,6 @@ internal fun BankTypeModel.toData(): BankTypeData {
 
 internal fun BankTypeData.toUiModel(): BankTypeModel {
     return when (this) {
-        BankTypeData.NOT_SELECTED -> BankTypeModel.NOT_SELECTED
         BankTypeData.BC -> BankTypeModel.BC
         BankTypeData.HANA -> BankTypeModel.HANA
         BankTypeData.HYUNDAI -> BankTypeModel.HYUNDAI
