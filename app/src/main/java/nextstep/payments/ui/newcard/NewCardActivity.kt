@@ -12,7 +12,13 @@ class NewCardActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                NewCardScreen(
+                    onBackClick = { finish() },
+                    navigateToCardList = {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
+                )
             }
         }
     }

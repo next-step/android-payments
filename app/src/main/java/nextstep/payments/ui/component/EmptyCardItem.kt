@@ -3,7 +3,6 @@ package nextstep.payments.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,8 +24,8 @@ fun EmptyCardItem(
 ) {
     Box(
         modifier = modifier
-            .background(EmptyCardBgColor)
             .clip(RoundedCornerShape(5.dp))
+            .background(EmptyCardBgColor)
             .clickable { onClickItem() }
     ) {
         Icon(

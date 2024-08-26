@@ -17,6 +17,15 @@ class CreditCardViewModel : ViewModel() {
     val creditCardUiState: StateFlow<CreditCardUiState> = _creditCardUiState.asStateFlow()
 
     init {
+        handleUiState()
+    }
+
+    fun fetchCards() {
+        _cards.value = PaymentCardsRepository.cards
+        handleUiState()
+    }
+
+    private fun handleUiState() {
         when (cards.value.size) {
             0 -> _creditCardUiState.value = CreditCardUiState.Empty
             1 -> _creditCardUiState.value = CreditCardUiState.One(cards.value.first())
