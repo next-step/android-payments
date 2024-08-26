@@ -48,6 +48,7 @@ fun CardCompanyModalBottomSheet(
     ModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
+        dragHandle = null,
         properties = ModalBottomSheetProperties(
             securePolicy = SecureFlagPolicy.Inherit,
             isFocusable = true,
