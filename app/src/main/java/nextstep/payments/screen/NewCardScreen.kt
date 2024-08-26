@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.component.card.PaymentCard
+import nextstep.payments.component.topbar.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
