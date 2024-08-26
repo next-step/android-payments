@@ -118,16 +118,18 @@ fun PaymentCard(
             }
         }
 
-        Icon(
-            painter = brand.toIcon(),
-            contentDescription = brand.toName(),
-            tint = Color.White,
-            modifier =
-                Modifier
-                    .padding(14.dp)
-                    .size(24.dp)
-                    .align(Alignment.TopEnd),
-        )
+        if (brand != Brand.NONE) {
+            Icon(
+                painter = brand.toIcon(),
+                contentDescription = brand.toName(),
+                tint = Color.White,
+                modifier =
+                    Modifier
+                        .padding(14.dp)
+                        .size(24.dp)
+                        .align(Alignment.TopEnd),
+            )
+        }
     }
 }
 
