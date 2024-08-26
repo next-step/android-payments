@@ -20,10 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.consts.CardDefaults
+import nextstep.payments.enums.CardCompanyCategory
 
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
+    cardCompanyCategory: CardCompanyCategory? = null,
     cardNumber: String? = null,
     expiredDate: String? = null,
     ownerName: String? = null,
@@ -33,11 +35,18 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(size = CardDefaults.CARD_SIZE)
             .background(
-                color = Color(0xFF333333),
+                color = Color(cardCompanyCategory?.cardBackgroundColor ?: 0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp)
     ) {
+        if (cardCompanyCategory != null) {
+            Text(
+                text = cardCompanyCategory.title,
+                color = Color.White,
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(bottom = 8.dp)

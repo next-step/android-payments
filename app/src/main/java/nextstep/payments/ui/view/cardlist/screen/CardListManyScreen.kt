@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.PaymentCardModel
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.enums.CardCompanyCategory
 
 @Composable
 fun CardListManyScreen(
@@ -26,6 +27,7 @@ fun CardListManyScreen(
                 modifier = Modifier.clickable {
                     onPaymentCardClick(paymentCard)
                 },
+                cardCompanyCategory = paymentCard.cardCompanyCategory,
                 cardNumber = paymentCard.cardNumber,
                 expiredDate = paymentCard.expiredDate,
                 ownerName = paymentCard.ownerName,
@@ -40,6 +42,7 @@ private fun CardListManyScreenPreview() {
     CardListManyScreen(
         items = List(size = 4) {
             PaymentCardModel(
+                cardCompanyCategory = CardCompanyCategory.KAKAOBANK,
                 cardNumber = "1234-5678-9012-3456",
                 expiredDate = "12/25",
                 ownerName = "SeokJun Jeong",

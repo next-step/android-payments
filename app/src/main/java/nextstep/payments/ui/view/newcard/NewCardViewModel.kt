@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.PaymentCardRepository
+import nextstep.payments.enums.CardCompanyCategory
 import nextstep.payments.model.PaymentCardModel
 
 class NewCardViewModel(
@@ -16,6 +17,11 @@ class NewCardViewModel(
 ) : ViewModel() {
 
     private val paymentCard = savedStateHandle.get<PaymentCardModel>(NewCardActivity.EXTRA_PAYMENT_CARD)
+
+    val isEdit = paymentCard != null
+
+    private val _cardCompanyCategory = MutableStateFlow(paymentCard?.cardCompanyCategory)
+    val cardCompanyCategory: StateFlow<CardCompanyCategory?> = _cardCompanyCategory.asStateFlow()
 
     private val _cardNumber = MutableStateFlow(paymentCard?.cardNumber.orEmpty())
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -31,6 +37,10 @@ class NewCardViewModel(
 
     private val _finishEvent = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val finishEvent = _finishEvent.asSharedFlow()
+
+    fun setCardCompany(cardCompanyCategory: CardCompanyCategory) {
+        _cardCompanyCategory.value = cardCompanyCategory
+    }
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
@@ -49,6 +59,7 @@ class NewCardViewModel(
     }
 
     fun saveCard() {
+        val cardCompanyCategory = _cardCompanyCategory.value ?: return run { _finishEvent.tryEmit(Unit) }
         val cardNumber = _cardNumber.value
         val expiredDate = _expiredDate.value
         val ownerName = _ownerName.value
@@ -59,6 +70,7 @@ class NewCardViewModel(
         ) {
             PaymentCardRepository.addCard(
                 PaymentCardModel(
+                    cardCompanyCategory = cardCompanyCategory,
                     cardNumber = cardNumber,
                     expiredDate = expiredDate,
                     ownerName = ownerName,
