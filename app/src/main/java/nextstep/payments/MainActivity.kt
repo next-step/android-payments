@@ -40,8 +40,7 @@ class MainActivity : ComponentActivity() {
                         onAddCard = {
                             val intent = Intent(this, NewCardActivity::class.java)
                             launcher.launch(intent)
-                        },
-                        modifier = Modifier
+                        }
                     )
                 }
             }
