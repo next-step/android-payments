@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.data.Card
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.ui.PaymentCard
 
 @Composable
 fun CardLazyColumn(cards: List<Card>) {
@@ -17,9 +18,9 @@ fun CardLazyColumn(cards: List<Card>) {
             count = cards.size,
             key = { index -> cards[index].cardNumber }
         ) {
-            CardImage(
+            PaymentCard(
                 card =  cards[it],
-                cardColor = Color(0xFFE5E5E5),
+                cardColor = Color(0xff333333),
                 modifier = Modifier.padding(
                     start = 73.dp,
                     end = 73.dp,
