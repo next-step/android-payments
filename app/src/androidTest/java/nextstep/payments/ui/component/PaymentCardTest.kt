@@ -2,6 +2,7 @@ package nextstep.payments.ui.component
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.test.core.app.ApplicationProvider
 import nextstep.payments.BaseComposeTest
@@ -65,9 +66,9 @@ class PaymentCardTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(shinhanCardDescription)
-            .assertBackgroundColor(shinhanBank.color)
+            .assertBackgroundColor(Color(0xFF0046FF))
         composeTestRule
             .onNodeWithContentDescription(kakaoCardDescription)
-            .assertBackgroundColor(kakaoBank.color)
+            .assertBackgroundColor(Color(0xFFFFE600))
     }
 }

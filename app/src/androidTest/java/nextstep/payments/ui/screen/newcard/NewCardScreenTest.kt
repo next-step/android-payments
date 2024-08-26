@@ -3,6 +3,7 @@ package nextstep.payments.ui.screen.newcard
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
@@ -94,7 +95,7 @@ internal class NewCardScreenTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(kakaoCardDescription)
-            .assertBackgroundColor(kakaoBank.color)
+            .assertBackgroundColor(Color(0xFFFFE600))
 
         val shinhanCardDescription = context.getString(
             R.string.payment_card_content_description,
@@ -111,6 +112,6 @@ internal class NewCardScreenTest : BaseComposeTest() {
 
         composeTestRule
             .onNodeWithContentDescription(shinhanCardDescription)
-            .assertBackgroundColor(shinhanBank.color)
+            .assertBackgroundColor(Color(0xFF0046FF))
     }
 }
