@@ -9,10 +9,10 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
 data class NewCardUiState(
-    var cardNumber: String = "",
-    var expiredDate: String = "",
-    var password: String = "",
-    var isInitialInput: Boolean = false
+    val cardNumber: String = "",
+    val expiredDate: String = "",
+    val password: String = "",
+    val isInitialInput: Boolean = false
 ) {
 
     private val cardNumberRegex = "^\\d{16}$"
