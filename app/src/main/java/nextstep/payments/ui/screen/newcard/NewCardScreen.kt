@@ -20,6 +20,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.NewCardTopBar
 import nextstep.payments.ui.component.card.PaymentCard
@@ -51,7 +55,7 @@ fun NewCardRoute(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val selectedBank by viewModel.selectedCard.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
+    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
@@ -66,12 +70,6 @@ fun NewCardRoute(
         }
     }
 
-    LaunchedEffect(selectedBank) {
-        if (selectedBank != BankTypeModel.NOT_SELECTED) {
-            showCardCompanyBottomSheet = false
-        }
-    }
-
     if (showCardCompanyBottomSheet) {
         CardCompanyModalBottomSheet(
             sheetState = cardCompanyModalBottomSheetState,
@@ -79,7 +77,10 @@ fun NewCardRoute(
             onDismissRequest = {
                 showCardCompanyBottomSheet = false
             },
-            onCardCompanySelected = viewModel::setSelectedCard
+            onCardCompanySelected = {
+                showCardCompanyBottomSheet = false
+                viewModel.setSelectedCard(it)
+            }
         )
     }
 
@@ -93,7 +94,6 @@ fun NewCardRoute(
         bankType = selectedBank,
         onBackClick = onBackClick,
         onCardClick = {
-            Log.d("TAG", "NewCardRoute: cardCompanyModalBottomSheetState.show()")
             showCardCompanyBottomSheet = true
         },
         onSaveClick = viewModel::addCard,
