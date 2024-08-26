@@ -1,6 +1,6 @@
 package nextstep.payments.data
 
-enum class BankType {
+enum class BankTypeData {
     NOT_SELECTED,
     BC,
     HANA,

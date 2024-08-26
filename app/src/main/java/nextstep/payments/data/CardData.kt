@@ -1,9 +1,9 @@
 package nextstep.payments.data
 
-data class Card(
+data class CardData(
     val cardNumber: String,
     val cardOwnerName: String,
     val cardExpiredDate: String,
     val cardPassword: String,
-    val bankType: BankType
+    val bankType: BankTypeData
 )

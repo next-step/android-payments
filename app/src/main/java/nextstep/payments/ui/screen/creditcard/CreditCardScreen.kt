@@ -33,7 +33,7 @@ import nextstep.payments.R
 import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.card.PaymentCardLayout
-import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CardModel
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
 @Composable
@@ -79,7 +79,7 @@ internal fun CreditCardScreen(
 
             state.isOneCard() -> {
                 OneCardSection(
-                    creditCard = state.cards.first(),
+                    cardModel = state.cards.first(),
                     onAddClick = onAddClick,
                     modifier = maxScreenModifier
                 )
@@ -124,7 +124,7 @@ private fun EmptySection(
 
 @Composable
 private fun OneCardSection(
-    creditCard: CreditCard,
+    cardModel: CardModel,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -133,11 +133,11 @@ private fun OneCardSection(
         contentDescription = context.getString(R.string.credit_card_section_one)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
         PaymentCard(
-            cardNumber = creditCard.cardNumber,
-            cardOwnerName = creditCard.cardOwnerName,
-            cardExpiredDate = creditCard.cardExpiredDate,
+            cardNumber = cardModel.cardNumber,
+            cardOwnerName = cardModel.cardOwnerName,
+            cardExpiredDate = cardModel.cardExpiredDate,
             colors = BasicCardDefaults.colors(
-                backgroundColor = creditCard.bankType.color
+                backgroundColor = cardModel.bankType.color
             )
         )
 
@@ -168,7 +168,7 @@ private fun AddCreditCard(
 @Composable
 private fun ManyCardSection(
     modifier: Modifier = Modifier,
-    cards: List<CreditCard>
+    cards: List<CardModel>
 ) {
     val context = LocalContext.current
     LazyColumn(
@@ -227,7 +227,7 @@ private fun CreditCardTopBarPreview() {
     CreditCardTopBar(isShowActionButton = true) {}
 }
 
-private val previewDummyCreditCard = CreditCard(
+private val previewDummyCardModel = CardModel(
     cardNumber = "1111222233334444",
     cardOwnerName = "이지훈",
     cardExpiredDate = "22 / 33",
@@ -248,7 +248,7 @@ fun CreditCardZeroScreenPreview() {
 fun CreditCardOneScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
-            cards = listOf(previewDummyCreditCard),
+            cards = listOf(previewDummyCardModel),
         ),
         onAddClick = { }
     )
@@ -259,7 +259,7 @@ fun CreditCardOneScreenPreview() {
 fun CreditCardManyScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
-            cards = List(5) { previewDummyCreditCard }
+            cards = List(5) { previewDummyCardModel }
         ),
         onAddClick = { }
     )

@@ -3,7 +3,7 @@ package nextstep.payments.ui.screen.newcard.model
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
-import nextstep.payments.data.BankType
+import nextstep.payments.data.BankTypeData
 import nextstep.payments.ui.theme.BcColor
 import nextstep.payments.ui.theme.HanaColor
 import nextstep.payments.ui.theme.HyundaiColor
@@ -35,30 +35,30 @@ enum class BankTypeModel(
     }
 }
 
-internal fun BankTypeModel.toData(): BankType {
+internal fun BankTypeModel.toData(): BankTypeData {
     return when (this) {
-        BankTypeModel.NOT_SELECTED -> BankType.NOT_SELECTED
-        BankTypeModel.BC -> BankType.BC
-        BankTypeModel.HANA -> BankType.HANA
-        BankTypeModel.HYUNDAI -> BankType.HYUNDAI
-        BankTypeModel.KAKAO -> BankType.KAKAO
-        BankTypeModel.KB -> BankType.KB
-        BankTypeModel.LOTTE -> BankType.LOTTE
-        BankTypeModel.SHINHAN -> BankType.SHINHAN
-        BankTypeModel.WOORI -> BankType.WOORI
+        BankTypeModel.NOT_SELECTED -> BankTypeData.NOT_SELECTED
+        BankTypeModel.BC -> BankTypeData.BC
+        BankTypeModel.HANA -> BankTypeData.HANA
+        BankTypeModel.HYUNDAI -> BankTypeData.HYUNDAI
+        BankTypeModel.KAKAO -> BankTypeData.KAKAO
+        BankTypeModel.KB -> BankTypeData.KB
+        BankTypeModel.LOTTE -> BankTypeData.LOTTE
+        BankTypeModel.SHINHAN -> BankTypeData.SHINHAN
+        BankTypeModel.WOORI -> BankTypeData.WOORI
     }
 }
 
-internal fun BankType.toUiModel(): BankTypeModel {
+internal fun BankTypeData.toUiModel(): BankTypeModel {
     return when (this) {
-        BankType.NOT_SELECTED -> BankTypeModel.NOT_SELECTED
-        BankType.BC -> BankTypeModel.BC
-        BankType.HANA -> BankTypeModel.HANA
-        BankType.HYUNDAI -> BankTypeModel.HYUNDAI
-        BankType.KAKAO -> BankTypeModel.KAKAO
-        BankType.KB -> BankTypeModel.KB
-        BankType.LOTTE -> BankTypeModel.LOTTE
-        BankType.SHINHAN -> BankTypeModel.SHINHAN
-        BankType.WOORI -> BankTypeModel.WOORI
+        BankTypeData.NOT_SELECTED -> BankTypeModel.NOT_SELECTED
+        BankTypeData.BC -> BankTypeModel.BC
+        BankTypeData.HANA -> BankTypeModel.HANA
+        BankTypeData.HYUNDAI -> BankTypeModel.HYUNDAI
+        BankTypeData.KAKAO -> BankTypeModel.KAKAO
+        BankTypeData.KB -> BankTypeModel.KB
+        BankTypeData.LOTTE -> BankTypeModel.LOTTE
+        BankTypeData.SHINHAN -> BankTypeModel.SHINHAN
+        BankTypeData.WOORI -> BankTypeModel.WOORI
     }
 }

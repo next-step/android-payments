@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import nextstep.payments.data.Card
+import nextstep.payments.data.CardData
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.screen.newcard.model.toData
@@ -59,7 +59,7 @@ class NewCardViewModel : ViewModel() {
     fun addCard() {
         if (selectedCard.value != BankTypeModel.NOT_SELECTED) {
             PaymentCardsRepository.addCard(
-                card = Card(
+                card = CardData(
                     cardNumber = _cardNumber.value,
                     cardOwnerName = _ownerName.value,
                     cardExpiredDate = _expiredDate.value,

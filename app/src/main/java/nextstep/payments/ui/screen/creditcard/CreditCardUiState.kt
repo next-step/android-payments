@@ -1,9 +1,9 @@
 package nextstep.payments.ui.screen.creditcard
 
-import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CardModel
 
 data class CreditCardUiState(
-    val cards: List<CreditCard> = emptyList()
+    val cards: List<CardModel> = emptyList()
 ) {
     fun isEmptyCard() = cards.isEmpty()
     fun isOneCard() = cards.size == 1
