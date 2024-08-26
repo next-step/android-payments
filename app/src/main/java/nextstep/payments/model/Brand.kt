@@ -56,7 +56,7 @@ fun Brand.toIcon(): Painter =
         Brand.NONE -> R.drawable.credit_card
         Brand.BC -> R.drawable.bc_card
         Brand.SHINHAN -> R.drawable.shinhan_card
-        Brand.KAKAO_BANK -> R.drawable.kb_card
+        Brand.KAKAO_BANK -> R.drawable.kakao_bank
         Brand.HYUNDAI -> R.drawable.hyundai_card
         Brand.WOORI -> R.drawable.woori_card
         Brand.LOTTE -> R.drawable.lotte_card

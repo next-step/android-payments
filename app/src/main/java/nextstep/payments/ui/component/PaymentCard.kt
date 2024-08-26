@@ -57,7 +57,7 @@ fun PaymentCard(
                 .background(
                     color = brand.toColor(),
                     shape = RoundedCornerShape(5.dp),
-                ).padding(vertical = 14.dp, horizontal = 14.dp)
+                ).padding(14.dp)
                 .clickable(onClick = onClick),
     ) {
         Text(
