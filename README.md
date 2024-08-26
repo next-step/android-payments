@@ -15,7 +15,6 @@
 - [x] 카드사와 매칭되는 class 구현
 - [x] 카드사 선택에 사용될 BottomSheet 구현
 - [x] 카드사 BottomSheet 연결 및 필수 선택 사항 옵션 적용
-  - [ ] ~~test: 카드사 옵션 필수 사항으로 적용이 되는지 확인 -> Route에 Snackbar와 State가 있다 보니 Screen 테스트로는 한계가 있음~~
+    - [ ] ~~test: 카드사 옵션 필수 사항으로 적용이 되는지 확인 -> Route에 Snackbar와 State가 있다 보니 Screen 테스트로는 한계가 있음~~
 - [x] 카드 목록에 카드사 정보 전달
-  - [ ] test: 카드사 옵션 변경되면 PaymentCard의 color에 반영이 되는지 확인
-- [ ] 카드 목록에 Color 값 반영
+- [x] test: PaymentCard의 color에 반영이 되는지 확인
