@@ -15,9 +15,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
+import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.card.CreditCardUiState
-import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
 import nextstep.payments.ui.card.list.component.card.CardListTopBarWithAdd
@@ -31,7 +31,19 @@ fun CardListScreen(
 ) {
     val cards by viewModel.registeredCreditCards.collectAsStateWithLifecycle()
 
-    when (cards.getState()) {
+    CardListScreen(
+        registeredCreditCards = cards,
+        onAddCard = onAddCard,
+    )
+}
+
+@Composable
+fun CardListScreen(
+    registeredCreditCards: RegisteredCreditCards = RegisteredCreditCards(mutableListOf()),
+    onAddCard: () -> Unit = {}
+) {
+
+    when (registeredCreditCards.getState()) {
         is CreditCardUiState.Empty -> {
             CardListScreenEmpty(
                 onAddCard = onAddCard,
@@ -40,14 +52,14 @@ fun CardListScreen(
 
         is CreditCardUiState.One -> {
             CardListScreenOne(
-                cards = cards,
+                cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
             )
         }
 
         is CreditCardUiState.Many -> {
             CardListScreenMany(
-                cards = cards,
+                cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
             )
         }
@@ -58,9 +70,7 @@ fun CardListScreen(
 fun CardListScreenEmpty(
     onAddCard: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = { CardListTopBar() }
-    ) { paddingValues ->
+    Scaffold(topBar = { CardListTopBar() }) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
@@ -77,10 +87,7 @@ fun CardListScreenEmpty(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 73.dp,
-                        end = 73.dp,
-                        top = 12.dp,
-                        bottom = 24.dp
+                        start = 73.dp, end = 73.dp, top = 12.dp, bottom = 24.dp
                     )
                     .size(width = 208.dp, height = 124.dp)
             )
@@ -90,12 +97,10 @@ fun CardListScreenEmpty(
 
 @Composable
 fun CardListScreenOne(
-    cards: RegisteredCreditCards,
+    cards: List<Card>,
     onAddCard: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = { CardListTopBar() }
-    ) { paddingValues ->
+    Scaffold(topBar = { CardListTopBar() }) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
@@ -107,10 +112,7 @@ fun CardListScreenOne(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 73.dp,
-                        end = 73.dp,
-                        top = 12.dp,
-                        bottom = 24.dp
+                        start = 73.dp, end = 73.dp, top = 12.dp, bottom = 24.dp
                     )
                     .size(width = 208.dp, height = 124.dp)
             )
@@ -120,16 +122,14 @@ fun CardListScreenOne(
 
 @Composable
 fun CardListScreenMany(
-    cards: RegisteredCreditCards,
+    cards: List<Card>,
     onAddCard: () -> Unit = {}
 ) {
-    Scaffold(
-        topBar = {
-            CardListTopBarWithAdd(
-                onClickAdd = onAddCard
-            )
-        }
-    ) { paddingValues ->
+    Scaffold(topBar = {
+        CardListTopBarWithAdd(
+            onClickAdd = onAddCard
+        )
+    }) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
@@ -144,66 +144,57 @@ private fun CardListScreenEmptyPreview() {
     PaymentCardsRepository.removeAllCard()
     PaymentsTheme {
         CardListScreen(
+            registeredCreditCards = RegisteredCreditCards(mutableListOf()),
             onAddCard = {}
         )
     }
 }
-
 
 @Preview
 @Composable
 private fun CardListScreenOnePreview() {
-    PaymentCardsRepository.addCard(
-        Card(
-            cardNumber = "1234-5678-1234-5678",
-            ownerName = "홍길동",
-            expiredDate = "12/24",
-            password = "123",
-            cardCompany = BcCard
-        )
-    )
-
-    val viewModel = CardListViewModel()
-
     PaymentsTheme {
         CardListScreen(
-            viewModel = viewModel,
+            registeredCreditCards = RegisteredCreditCards(
+                cardList = listOf(
+                    Card(
+                        cardNumber = "1234-5678-1234-6654",
+                        ownerName = "홍길동",
+                        expiredDate = "12/24",
+                        password = "123",
+                        cardCompany = BcCard
+                    )
+                )
+            ),
             onAddCard = {}
         )
     }
 }
 
-
 @Preview
 @Composable
 private fun CardListScreenManyPreview() {
-    PaymentCardsRepository.addCard(
-        Card(
-            cardNumber = "1234-5678-1234-6654",
-            ownerName = "홍길동",
-            expiredDate = "12/24",
-            password = "123",
-            cardCompany = BcCard
+    val registeredCreditCards = RegisteredCreditCards(
+        cardList = listOf(
+            Card(
+                cardNumber = "1234-5678-1234-6654",
+                ownerName = "홍길동",
+                expiredDate = "12/24",
+                password = "123",
+                cardCompany = BcCard
+            ),
+            Card(
+                cardNumber = "1234-5678-1234-1234",
+                ownerName = "홍길동",
+                expiredDate = "12/24",
+                password = "123",
+                cardCompany = BcCard
+            )
         )
     )
-
-    PaymentCardsRepository.addCard(
-        Card(
-            cardNumber = "1234-5678-1234-1234",
-            ownerName = "홍길동",
-            expiredDate = "12/24",
-            password = "123",
-            cardCompany = BcCard
-        )
-    )
-
-    val viewModel = CardListViewModel()
 
     PaymentsTheme {
-        CardListScreen(
-            viewModel = viewModel,
-            onAddCard = {}
-        )
+        CardListScreen(registeredCreditCards = registeredCreditCards, onAddCard = {})
     }
 }
 

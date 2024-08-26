@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.card.list.CardListScreen
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +29,7 @@ class RegisteredCreditCardsScreenTest {
         composeRule
             .setContent {
                 CardListScreen(
-                    cards = PaymentCardsRepository.cards,
+                    registeredCreditCards =  RegisteredCreditCards(mutableListOf()),
                     onAddCard = {}
                 )
             }
@@ -42,30 +43,29 @@ class RegisteredCreditCardsScreenTest {
     @Test
     fun 등록된_카드가_존재할_경우_해당_카드_수만큼_카드_이미지를_노출시키다() {
         // given : 두 개의 카드를 등록한다
-        PaymentCardsRepository.addCard(
-            Card(
-                cardNumber = "1234-5678-1234-5678",
-                ownerName = "홍길동",
-                expiredDate = "12/24",
-                password = "123",
-                cardCompany = BcCard
-            )
-        )
-
-        PaymentCardsRepository.addCard(
-            Card(
-                cardNumber = "1234-5678-1234-5628",
-                ownerName = "홍길동",
-                expiredDate = "12/24",
-                password = "123",
-                cardCompany = BcCard
+        val registeredCreditCards = RegisteredCreditCards(
+            mutableListOf(
+                Card(
+                    cardNumber = "1234-5678-1234-5678",
+                    ownerName = "홍길동",
+                    expiredDate = "12/24",
+                    password = "123",
+                    cardCompany = BcCard
+                ),
+                Card(
+                    cardNumber = "1234-5678-1234-5628",
+                    ownerName = "홍길동",
+                    expiredDate = "12/24",
+                    password = "123",
+                    cardCompany = BcCard
+                )
             )
         )
 
         // when : 화면을 렌더링한다.
         composeRule.setContent {
             CardListScreen(
-                cards = PaymentCardsRepository.cards
+                registeredCreditCards = registeredCreditCards
             )
         }
         val actual = composeRule
@@ -81,7 +81,7 @@ class RegisteredCreditCardsScreenTest {
         // when : 화면을 렌더링한다.
         composeRule.setContent {
             CardListScreen(
-                cards = PaymentCardsRepository.cards
+                registeredCreditCards = RegisteredCreditCards(mutableListOf())
             )
         }
 
@@ -100,7 +100,7 @@ class RegisteredCreditCardsScreenTest {
 //        cardImage
         composeRule.setContent {
             CardListScreen(
-                cards = PaymentCardsRepository.cards
+                registeredCreditCards = RegisteredCreditCards(mutableListOf())
             )
         }
 
@@ -122,11 +122,23 @@ class RegisteredCreditCardsScreenTest {
                 cardCompany = BcCard
             )
         )
+        val registeredCreditCards = RegisteredCreditCards(
+            mutableListOf(
+                Card(
+                    cardNumber = "1234-5678-1234-5628",
+                    ownerName = "홍길동",
+                    expiredDate = "12/24",
+                    password = "123",
+                    cardCompany = BcCard
+                )
+            )
+        )
+
 
         // when : 화면을 렌더링한다.
         composeRule.setContent {
             CardListScreen(
-                cards = PaymentCardsRepository.cards
+                registeredCreditCards = registeredCreditCards
             )
         }
 
