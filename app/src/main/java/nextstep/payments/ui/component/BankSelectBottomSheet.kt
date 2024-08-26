@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.model.Brand
-import nextstep.payments.model.toIcon
+import nextstep.payments.model.toLogo
 import nextstep.payments.model.toName
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -106,7 +106,7 @@ private fun BankCard(
         modifier = modifier,
     ) {
         Image(
-            painter = brand.toIcon(),
+            painter = brand.toLogo(),
             contentDescription = stringResource(id = R.string.brand_icon_content_description),
         )
         Spacer(modifier = Modifier.height(9.dp))

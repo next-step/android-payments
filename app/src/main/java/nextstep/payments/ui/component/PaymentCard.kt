@@ -11,20 +11,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Brand
+import nextstep.payments.model.Card
 import nextstep.payments.model.toColor
+import nextstep.payments.model.toIcon
 import nextstep.payments.model.toName
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -48,78 +54,109 @@ fun PaymentCard(
             expiredDateVisualTransformation.filter(AnnotatedString(expiredDate)).text
         }
 
-    Column(
-        modifier =
-            modifier
-                .shadow(8.dp)
-                .height(124.dp)
-                .widthIn(min = 0.dp, max = 208.dp)
-                .background(
-                    color = brand.toColor(),
-                    shape = RoundedCornerShape(5.dp),
-                ).padding(14.dp)
-                .clickable(onClick = onClick),
-    ) {
-        Text(
-            text = brand.toName(),
-            style = MaterialTheme.typography.labelMedium,
-            color = Color.White,
-            modifier = Modifier.testTag("cardBrand"),
-        )
-
-        Box(
+    Box {
+        Column(
             modifier =
-                Modifier
-                    .padding(top = 15.dp, bottom = 8.dp)
-                    .size(width = 40.dp, height = 26.dp)
+                modifier
+                    .shadow(8.dp)
+                    .height(124.dp)
+                    .widthIn(min = 0.dp, max = 208.dp)
                     .background(
-                        color = Color(0xFFCBBA64),
-                        shape = RoundedCornerShape(4.dp),
-                    ),
-        )
+                        color = brand.toColor(),
+                        shape = RoundedCornerShape(5.dp),
+                    ).padding(14.dp)
+                    .clickable(onClick = onClick),
+        ) {
+            Text(
+                text = brand.toName(),
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.White,
+                modifier = Modifier.weight(1f).testTag("cardBrand"),
+            )
 
-        Text(
-            text = transformedCardNumber,
-            color = Color.White,
-            style =
-                MaterialTheme.typography.labelMedium.copy(
-                    letterSpacing = 1.sp,
-                ),
-            lineHeight = 14.sp,
+            Box(
+                modifier =
+                    Modifier
+                        .padding(top = 15.dp, bottom = 8.dp)
+                        .size(width = 40.dp, height = 26.dp)
+                        .background(
+                            color = Color(0xFFCBBA64),
+                            shape = RoundedCornerShape(4.dp),
+                        ),
+            )
+
+            Text(
+                text = transformedCardNumber,
+                color = Color.White,
+                style =
+                    MaterialTheme.typography.labelMedium.copy(
+                        letterSpacing = 1.sp,
+                    ),
+                lineHeight = 14.sp,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .testTag("cardNumber"),
+            )
+            Row {
+                Text(
+                    text = ownerName,
+                    style = MaterialTheme.typography.labelSmall,
+                    lineHeight = 14.sp,
+                    color = Color.White,
+                    modifier = Modifier.weight(1f).testTag("ownerName"),
+                )
+                Text(
+                    text = transformedExpiredDate,
+                    style = MaterialTheme.typography.labelSmall,
+                    lineHeight = 14.sp,
+                    color = Color.White,
+                    modifier = Modifier.testTag("expiredDate"),
+                )
+            }
+        }
+
+        Icon(
+            painter = brand.toIcon(),
+            contentDescription = brand.toName(),
+            tint = Color.White,
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .testTag("cardNumber"),
+                    .padding(14.dp)
+                    .size(24.dp)
+                    .align(Alignment.TopEnd),
         )
-        Row {
-            Text(
-                text = ownerName,
-                style = MaterialTheme.typography.labelSmall,
-                lineHeight = 14.sp,
-                color = Color.White,
-                modifier = Modifier.weight(1f).testTag("ownerName"),
-            )
-            Text(
-                text = transformedExpiredDate,
-                style = MaterialTheme.typography.labelSmall,
-                lineHeight = 14.sp,
-                color = Color.White,
-                modifier = Modifier.testTag("expiredDate"),
-            )
-        }
     }
 }
 
 @Preview
 @Composable
-private fun PaymentCardPreview() {
+private fun PaymentCardPreview(
+    @PreviewParameter(PaymentCardPreviewProvider::class) card: Card,
+) {
     PaymentsTheme {
         PaymentCard(
-            brand = Brand.SHINHAN,
-            cardNumber = "1234567890123456",
-            expiredDate = "1234",
-            ownerName = "홍길동",
+            brand = card.brand,
+            cardNumber = card.cardNumber,
+            expiredDate = card.expiredDate,
+            ownerName = card.ownerName,
             onClick = {},
         )
     }
 }
+
+class PaymentCardPreviewProvider :
+    CollectionPreviewParameterProvider<Card>(
+        collection =
+            Brand.entries
+                .drop(1)
+                .map {
+                    Card(
+                        brand = it,
+                        cardNumber = "1234567890123456",
+                        expiredDate = "1234",
+                        ownerName = "홍길동",
+                        password = "1234",
+                    )
+                },
+    )

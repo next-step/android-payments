@@ -51,7 +51,7 @@ fun Brand.toName(): String =
     )
 
 @Composable
-fun Brand.toIcon(): Painter =
+fun Brand.toLogo(): Painter =
     when (this) {
         Brand.NONE -> R.drawable.credit_card
         Brand.BC -> R.drawable.bc_card
@@ -62,4 +62,18 @@ fun Brand.toIcon(): Painter =
         Brand.LOTTE -> R.drawable.lotte_card
         Brand.HANA -> R.drawable.hana_card
         Brand.KB -> R.drawable.kb_card
+    }.let { painterResource(id = it) }
+
+@Composable
+fun Brand.toIcon(): Painter =
+    when (this) {
+        Brand.NONE -> R.drawable.credit_card
+        Brand.BC -> R.drawable.ic_bc_card
+        Brand.SHINHAN -> R.drawable.ic_shinhan_card
+        Brand.KAKAO_BANK -> R.drawable.ic_kakao_bank
+        Brand.HYUNDAI -> R.drawable.ic_hyundai_card
+        Brand.WOORI -> R.drawable.ic_woori_card
+        Brand.LOTTE -> R.drawable.ic_lotte_card
+        Brand.HANA -> R.drawable.ic_hana_card
+        Brand.KB -> R.drawable.ic_kb_card
     }.let { painterResource(id = it) }
