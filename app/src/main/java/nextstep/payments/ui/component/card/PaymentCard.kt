@@ -51,7 +51,7 @@ fun PaymentCard(
     PaymentCardLayout(
         modifier = modifier.semantics {
             contentDescription = cardContentDescription
-            this.backgroundColor = bankType.color
+            backgroundColor = bankType.color
         },
         colors = PaymentCardLayoutDefaults.colors(containerColor = bankType.color)
     ) {
