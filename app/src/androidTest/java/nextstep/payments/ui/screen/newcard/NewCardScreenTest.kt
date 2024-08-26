@@ -28,7 +28,7 @@ internal class NewCardScreenTest : BaseComposeTest() {
                 setOwnerName = {},
                 setPassword = {},
                 onCardClick = {},
-                selectedCard = BankTypeModel.SHINHAN,
+                bankType = BankTypeModel.SHINHAN,
                 snackbarHostState = SnackbarHostState()
             )
         }

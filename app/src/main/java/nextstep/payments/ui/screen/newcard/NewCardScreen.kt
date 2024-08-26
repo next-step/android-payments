@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.NewCardTopBar
-import nextstep.payments.ui.component.card.BasicCardColors
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
@@ -51,7 +49,7 @@ fun NewCardRoute(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
+    val selectedBank by viewModel.selectedCard.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
@@ -68,8 +66,8 @@ fun NewCardRoute(
         }
     }
 
-    LaunchedEffect(selectedCard) {
-        if (selectedCard != BankTypeModel.NOT_SELECTED) {
+    LaunchedEffect(selectedBank) {
+        if (selectedBank != BankTypeModel.NOT_SELECTED) {
             showCardCompanyBottomSheet = false
         }
     }
@@ -92,7 +90,7 @@ fun NewCardRoute(
         ownerName = ownerName,
         password = password,
         snackbarHostState = snackbarHostState,
-        selectedCard = selectedCard,
+        bankType = selectedBank,
         onBackClick = onBackClick,
         onCardClick = {
             Log.d("TAG", "NewCardRoute: cardCompanyModalBottomSheetState.show()")
@@ -112,8 +110,8 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType: BankTypeModel,
     snackbarHostState: SnackbarHostState,
-    selectedCard: BankTypeModel,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -149,10 +147,7 @@ internal fun NewCardScreen(
                 cardNumber = cardNumber,
                 cardOwnerName = ownerName,
                 cardExpiredDate = expiredDate,
-                colors = BasicCardColors(
-                    containerColor = selectedCard.color,
-                    contentColor = Color.White
-                )
+                bankType = bankType,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -204,7 +199,7 @@ private fun NewCardScreenPreview() {
             expiredDate = "22 / 33",
             ownerName = "이지훈",
             password = "12345678",
-            selectedCard = BankTypeModel.BC,
+            bankType = BankTypeModel.BC,
             snackbarHostState = SnackbarHostState(),
             onSaveClick = {},
             onBackClick = {},

@@ -16,18 +16,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-object BasicCardDefaults {
+object PaymentCardLayoutDefaults {
     fun colors(
-        backgroundColor: Color = Color(0xFF333333),
+        containerColor: Color = Color(0xFF333333),
         contentColor: Color = Color.White
-    ): BasicCardColors = BasicCardColors(
-        containerColor = backgroundColor,
+    ): PaymentCardLayoutColors = PaymentCardLayoutColors(
+        containerColor = containerColor,
         contentColor = contentColor
     )
 }
 
 @Stable
-data class BasicCardColors(
+data class PaymentCardLayoutColors(
     val containerColor: Color,
     val contentColor: Color
 )
@@ -35,7 +35,7 @@ data class BasicCardColors(
 @Composable
 fun PaymentCardLayout(
     modifier: Modifier = Modifier,
-    colors: BasicCardColors = BasicCardDefaults.colors(),
+    colors: PaymentCardLayoutColors = PaymentCardLayoutDefaults.colors(),
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(

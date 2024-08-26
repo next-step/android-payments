@@ -17,9 +17,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.component.text.CardNumberText
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.utils.toFormattedExpirationDate
 
@@ -28,17 +31,29 @@ fun PaymentCard(
     cardNumber: String,
     cardOwnerName: String,
     cardExpiredDate: String,
+    bankType: BankTypeModel,
     modifier: Modifier = Modifier,
-    colors: BasicCardColors = BasicCardDefaults.colors(),
 ) {
     PaymentCardLayout(
         modifier = modifier,
-        colors = colors
+        colors = PaymentCardLayoutDefaults.colors(containerColor = bankType.color)
     ) {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .semantics {
+                    contentDescription = "카드 소유자: $cardOwnerName, 카드 번호: ${
+                        cardNumber
+                            .chunked(8)
+                            .joinToString(" ")
+                    }, 만료일: ${
+                        cardExpiredDate.toFormattedExpirationDate(
+                            maxLength = 4,
+                            separator = "/"
+                        )
+                    }"
+                },
             verticalArrangement = Arrangement.Bottom,
         ) {
             Box(
@@ -86,6 +101,7 @@ private fun PaymentCardPreview() {
             cardNumber = "1111222233334444",
             cardOwnerName = "이지훈",
             cardExpiredDate = "22 / 33",
+            bankType = BankTypeModel.SHINHAN
         )
     }
 }

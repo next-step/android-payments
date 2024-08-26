@@ -30,8 +30,8 @@ class NewCardViewModel : ViewModel() {
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded = _cardAdded.asStateFlow()
 
-    private val _selectedCard = MutableStateFlow<BankTypeModel>(BankTypeModel.NOT_SELECTED)
-    val selectedCard = _selectedCard.asStateFlow()
+    private val _selectedBank = MutableStateFlow<BankTypeModel>(BankTypeModel.NOT_SELECTED)
+    val selectedCard = _selectedBank.asStateFlow()
 
     private val _snackbarMessages = MutableSharedFlow<String>()
     val snackbarMessages = _snackbarMessages.asSharedFlow()
@@ -53,7 +53,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun setSelectedCard(bankTypeModel: BankTypeModel) {
-        _selectedCard.value = bankTypeModel
+        _selectedBank.value = bankTypeModel
     }
 
     fun addCard() {
@@ -64,7 +64,7 @@ class NewCardViewModel : ViewModel() {
                     cardOwnerName = _ownerName.value,
                     cardExpiredDate = _expiredDate.value,
                     cardPassword = _password.value,
-                    bankType = _selectedCard.value.toData()
+                    bankType = _selectedBank.value.toData()
                 )
             )
             _cardAdded.value = true

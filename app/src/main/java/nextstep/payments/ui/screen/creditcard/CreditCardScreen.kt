@@ -30,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
+import nextstep.payments.ui.component.card.PaymentCardLayoutDefaults
 import nextstep.payments.ui.component.card.PaymentCardLayout
 import nextstep.payments.ui.screen.creditcard.model.CardModel
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
@@ -136,9 +136,7 @@ private fun OneCardSection(
             cardNumber = cardModel.cardNumber,
             cardOwnerName = cardModel.cardOwnerName,
             cardExpiredDate = cardModel.cardExpiredDate,
-            colors = BasicCardDefaults.colors(
-                backgroundColor = cardModel.bankType.color
-            )
+            bankType = cardModel.bankType
         )
 
         AddCreditCard(
@@ -155,7 +153,7 @@ private fun AddCreditCard(
 ) {
     PaymentCardLayout(
         modifier = modifier.clickable { onAddClick() },
-        colors = BasicCardDefaults.colors(backgroundColor = Color(0xFFE5E5E5)),
+        colors = PaymentCardLayoutDefaults.colors(containerColor = Color(0xFFE5E5E5)),
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
@@ -185,9 +183,7 @@ private fun ManyCardSection(
                 cardNumber = card.cardNumber,
                 cardOwnerName = card.cardOwnerName,
                 cardExpiredDate = card.cardExpiredDate,
-                colors = BasicCardDefaults.colors(
-                    backgroundColor = card.bankType.color
-                )
+                bankType = card.bankType
             )
         }
     }
