@@ -41,8 +41,8 @@ fun CreditCardItem(
         modifier = Modifier
             .shadow(8.dp)
             .cardDefaultSize()
-            .background(CardBgColor)
             .clip(RoundedCornerShape(5.dp))
+            .background(CardBgColor)
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
         Column(
