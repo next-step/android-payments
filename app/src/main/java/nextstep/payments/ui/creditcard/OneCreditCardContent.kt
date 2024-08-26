@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun OneCreditCardContent(
     card: Card,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -26,10 +30,31 @@ internal fun OneCreditCardContent(
             cardNumber = card.cardNumber,
             ownerName = card.ownerName,
             expiredDate = card.expiredDate,
+            onClick = { onCardClick(card) },
         )
         AddCreditCardBox(
             onClick = onAddCardClick,
             modifier = Modifier.size(width = 208.dp, height = 124.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun OneCreditCardContentPreview() {
+    PaymentsTheme {
+        OneCreditCardContent(
+            card =
+                Card(
+                    brand = Brand.BC,
+                    cardNumber = "1234-5678-1234-5678",
+                    ownerName = "홍길동",
+                    expiredDate = "12/34",
+                    password = "1234",
+                ),
+            onAddCardClick = {},
+            onCardClick = {},
+            modifier = Modifier.size(width = 360.dp, height = 640.dp),
         )
     }
 }

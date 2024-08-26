@@ -1,5 +1,6 @@
 package nextstep.payments.ui.register
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,14 +13,43 @@ import kotlinx.coroutines.launch
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardRegisterResult
+import nextstep.payments.model.ExpiredDateMonthValidResult
 import nextstep.payments.model.OwnerNameValidResult
+import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 
-class RegisterCardViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(RegisterCardUiState.NONE)
+class RegisterCardViewModel(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+    private val _uiState =
+        MutableStateFlow<RegisterCardUiState>(RegisterCardUiState.DEFAULT_REGISTER)
     val uiState: StateFlow<RegisterCardUiState> = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<RegisterCardScreenEffect>()
     val effect = _effect.asSharedFlow()
+
+    private val cardId: Long? = savedStateHandle.get<String>(ARG_CARD_ID)?.toLongOrNull()
+
+    init {
+        if (cardId != null) {
+            PaymentCardsRepository
+                .getCardById(cardId)
+                ?.let { card ->
+                    _uiState.update {
+                        RegisterCardUiState.Update(
+                            brand = card.brand,
+                            cardNumber = card.cardNumber,
+                            expiredDate = card.expiredDate,
+                            ownerName = card.ownerName,
+                            password = card.password,
+                            ownerNameValidResult = OwnerNameValidResult.VALID,
+                            expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
+                            registerEnabled = false,
+                        )
+                    }
+                }
+        }
+    }
 
     fun dispatchEvent(event: RegisterCardScreenEvent) {
         when (event) {
@@ -33,59 +63,151 @@ class RegisterCardViewModel : ViewModel() {
     }
 
     private fun setCardNumber(cardNumber: String) {
+        if (cardNumber.length > CARD_NUMBER_MAX_LENGTH) return
         _uiState.update {
-            it.copy(cardNumber = cardNumber)
+            val state = it.copyState(cardNumber = cardNumber)
+            val enabled = checkRegisterEnabled(state)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
     private fun setExpiredDate(expiredDate: String) {
+        if (expiredDate.length > EXPIRED_DATE_MAX_LENGTH) return
+        val result = validateExpiredDate(expiredDate)
         _uiState.update {
-            it.copy(expiredDate = expiredDate)
+            val state =
+                it.copyState(
+                    expiredDate = expiredDate,
+                    expiredDateMonthValidResult = result,
+                )
+            val enabled = checkRegisterEnabled(state)
+            state.copyState(registerEnabled = enabled)
+        }
+    }
+
+    private fun validateExpiredDate(expiredDate: String): ExpiredDateMonthValidResult {
+        if (expiredDate.length < 2) return ExpiredDateMonthValidResult.NONE
+
+        val month =
+            expiredDate.substring(0, 2).toIntOrNull() ?: return ExpiredDateMonthValidResult.NONE
+        return if (month !in 1..12) {
+            ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE
+        } else {
+            ExpiredDateMonthValidResult.VALID
         }
     }
 
     private fun setOwnerName(ownerName: String) {
         val result = validateOwnerName(ownerName)
         _uiState.update {
-            it.copy(
-                ownerName = ownerName,
-                ownerNameValidResult = result,
-            )
+            val state =
+                it.copyState(
+                    ownerName = ownerName,
+                    ownerNameValidResult = result,
+                )
+            val enabled = checkRegisterEnabled(state)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
     private fun validateOwnerName(ownerName: String): OwnerNameValidResult =
         when {
-            ownerName.length > 30 -> OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
+            ownerName.length > OWNER_NAME_MAX_LENGTH -> OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
             else -> OwnerNameValidResult.VALID
         }
 
     private fun setPassword(password: String) {
+        if (password.length > PASSWORD_MAX_LENGTH) return
         _uiState.update {
-            it.copy(password = password)
-        }
-    }
-
-    private fun registerCard() {
-        viewModelScope.launch {
-            val card =
-                Card(
-                    brand = _uiState.value.brand,
-                    cardNumber = _uiState.value.cardNumber,
-                    expiredDate = _uiState.value.expiredDate,
-                    ownerName = _uiState.value.ownerName,
-                    password = _uiState.value.password,
-                )
-            PaymentCardsRepository.addCard(card)
-            _effect.emit(
-                RegisterCardScreenEffect.NavigateToCardListScreen(shouldFetchCards = true),
-            )
+            val state = it.copyState(password = password)
+            val enabled = checkRegisterEnabled(state)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
     private fun setBrand(brand: Brand) {
         _uiState.update {
-            it.copy(brand = brand)
+            val state = it.copyState(brand = brand)
+            val enabled = checkRegisterEnabled(state)
+            state.copyState(registerEnabled = enabled)
         }
+    }
+
+    private fun registerCard() {
+        val uiState = _uiState.value
+        val card =
+            Card(
+                brand = uiState.brand,
+                cardNumber = uiState.cardNumber,
+                expiredDate = uiState.expiredDate,
+                ownerName = uiState.ownerName,
+                password = uiState.password,
+            )
+        if (uiState.isRegister) {
+            registerNewCard(card)
+        } else {
+            updateCard(card)
+        }
+    }
+
+    private fun registerNewCard(card: Card) {
+        viewModelScope.launch {
+            PaymentCardsRepository.addCard(card)
+            _effect.emit(
+                RegisterCardScreenEffect.NavigateToCardListScreen(
+                    result = CardRegisterResult.SUCCESS,
+                ),
+            )
+        }
+    }
+
+    private fun updateCard(card: Card) {
+        viewModelScope.launch {
+            val id = cardId ?: return@launch
+            PaymentCardsRepository.updateCard(card.copy(id = id))
+            _effect.emit(
+                RegisterCardScreenEffect.NavigateToCardListScreen(
+                    result = CardRegisterResult.SUCCESS,
+                ),
+            )
+        }
+    }
+
+    private fun checkRegisterEnabled(uiState: RegisterCardUiState): Boolean =
+        if (uiState.isRegister) {
+            isRegisterEnabled(uiState)
+        } else {
+            isModified(uiState) && isRegisterEnabled(uiState)
+        }
+
+    private fun isRegisterEnabled(uiState: RegisterCardUiState): Boolean =
+        uiState.cardNumber.length == CARD_NUMBER_MAX_LENGTH &&
+            uiState.expiredDate.length == EXPIRED_DATE_MAX_LENGTH &&
+            uiState.password.length == PASSWORD_MAX_LENGTH &&
+            uiState.brand != Brand.NONE &&
+            uiState.ownerNameValidResult.isError().not() &&
+            uiState.expiredDateMonthValidResult.isError().not()
+
+    private fun isModified(uiState: RegisterCardUiState): Boolean {
+        val id = cardId ?: return false
+        val originalCard = PaymentCardsRepository.getCardById(id) ?: return false
+        return isCardModified(originalCard, uiState)
+    }
+
+    private fun isCardModified(
+        originalCard: Card,
+        uiState: RegisterCardUiState,
+    ): Boolean =
+        originalCard.brand != uiState.brand ||
+            originalCard.cardNumber != uiState.cardNumber ||
+            originalCard.expiredDate != uiState.expiredDate ||
+            originalCard.ownerName != uiState.ownerName ||
+            originalCard.password != uiState.password
+
+    companion object {
+        private const val CARD_NUMBER_MAX_LENGTH = 16
+        private const val EXPIRED_DATE_MAX_LENGTH = 4
+        private const val PASSWORD_MAX_LENGTH = 4
+        private const val OWNER_NAME_MAX_LENGTH = 30
     }
 }

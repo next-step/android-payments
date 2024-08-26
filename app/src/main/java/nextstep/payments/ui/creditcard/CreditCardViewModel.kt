@@ -1,42 +1,29 @@
 package nextstep.payments.ui.creditcard
 
-import android.os.Bundle
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.savedstate.SavedStateRegistryOwner
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import nextstep.payments.data.PaymentCardsRepository
-import nextstep.payments.ui.creditcard.navigation.ARG_SHOULD_FETCH_CARDS
+import nextstep.payments.model.Card
+import nextstep.payments.model.CardRegisterResult
 
-class CreditCardViewModel(
-    savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+class CreditCardViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<CreditCardUiState>(CreditCardUiState.Empty)
     val uiState = _uiState.asStateFlow()
 
-    val shouldFetchCards =
-        flow {
-            emit(
-                savedStateHandle.get<Boolean>(ARG_SHOULD_FETCH_CARDS) ?: false,
-            )
-        }.stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )
+    private val _effect = MutableSharedFlow<CreditCardEffect>()
+    val effect = _effect.asSharedFlow()
 
     init {
         fetchCards()
     }
 
-    fun fetchCards() {
+    private fun fetchCards() {
         val cards = PaymentCardsRepository.cards
         _uiState.update {
             when (cards.size) {
@@ -46,20 +33,29 @@ class CreditCardViewModel(
             }
         }
     }
-}
 
-class CreditCardViewModelFactory(
-    owner: SavedStateRegistryOwner,
-    defaultArgs: Bundle? = null,
-) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
-    override fun <T : ViewModel> create(
-        key: String,
-        modelClass: Class<T>,
-        handle: SavedStateHandle,
-    ): T {
-        if (modelClass.isAssignableFrom(CreditCardViewModel::class.java)) {
-            return CreditCardViewModel(handle) as T
+    fun handleCardRegisterResult(result: CardRegisterResult?) {
+        if (result == CardRegisterResult.SUCCESS) {
+            fetchCards()
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+
+    fun dispatchEvent(event: CreditCardEvent) {
+        when (event) {
+            is CreditCardEvent.OnNewCardClick -> {
+                navigateToRegisterCard()
+            }
+
+            is CreditCardEvent.OnCardClick -> {
+                navigateToRegisterCard(event.card)
+            }
+        }
+    }
+
+    private fun navigateToRegisterCard(card: Card? = null) {
+        viewModelScope.launch {
+            val id = card?.id?.toString()
+            _effect.emit(CreditCardEffect.NavigateToRegisterCard(id))
+        }
     }
 }

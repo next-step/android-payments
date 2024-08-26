@@ -1,7 +1,9 @@
 package nextstep.payments.ui.register
 
+import nextstep.payments.model.CardRegisterResult
+
 sealed interface RegisterCardScreenEffect {
     data class NavigateToCardListScreen(
-        val shouldFetchCards: Boolean,
+        val result: CardRegisterResult,
     ) : RegisterCardScreenEffect
 }

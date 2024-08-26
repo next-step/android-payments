@@ -26,12 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.model.Brand
-import nextstep.payments.model.toIcon
+import nextstep.payments.model.toLogo
 import nextstep.payments.model.toName
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
-private const val ROW_COUNT = 2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +38,7 @@ fun BankSelectBottomSheet(
     onBrandSelected: (Brand) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    brands: List<Brand> = Brand.entries.drop(1),
     selectedBrand: Brand = Brand.NONE,
     modalBottomSheetState: SheetState =
         rememberModalBottomSheetState(
@@ -55,12 +55,15 @@ fun BankSelectBottomSheet(
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
         onDismissRequest = onDismiss,
-        modifier = modifier.height(352.dp),
+        modifier = modifier,
     ) {
         BankSelectRow(
-            brands = Brand.entries.drop(1),
+            brands = brands,
             onClick = onBrandSelected,
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(300.dp),
         )
     }
 }
@@ -78,31 +81,37 @@ fun BankSelectRow(
         horizontalArrangement = Arrangement.Center,
         maxItemsInEachRow = COLUMN_COUNT,
     ) {
-        repeat(ROW_COUNT * COLUMN_COUNT) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+        brands.forEach { brand ->
+            BankCard(
+                brand = brand,
                 modifier =
                     Modifier
                         .size(80.dp)
-                        .clickable { onClick(brands[it]) },
-            ) {
-                brands[it]
-                    .toIcon()
-                    ?.let { icon ->
-                        Image(
-                            painter = icon,
-                            contentDescription = stringResource(id = R.string.brand_icon_content_description),
-                        )
-                    }
-                Spacer(modifier = Modifier.height(9.dp))
-                Text(
-                    text = brands[it].toName(),
-                    style =
-                        MaterialTheme.typography.titleMedium,
-                )
-            }
+                        .clickable { onClick(brand) },
+            )
         }
+    }
+}
+
+@Composable
+private fun BankCard(
+    brand: Brand,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        Image(
+            painter = brand.toLogo(),
+            contentDescription = stringResource(id = R.string.brand_icon_content_description),
+        )
+        Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = brand.toName(),
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
 }
 

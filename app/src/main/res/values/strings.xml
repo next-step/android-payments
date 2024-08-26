@@ -25,4 +25,5 @@
     <string name="title_credit_card">Payments</string>
     <string name="tob_bar_action_add">추가</string>
     <string name="brand_icon_content_description">BrandIcon</string>
+    <string name="error_expired_date_month_range">01~12월만 가능</string>
 </resources>

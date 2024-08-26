@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,29 +23,36 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Brand
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardRegisterResult
 import nextstep.payments.ui.component.PaymentsTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun CreditCardRoute(
+    cardRegisterResult: CardRegisterResult?,
     modifier: Modifier = Modifier,
-    onAddCardClick: () -> Unit,
-    viewModel: CreditCardViewModel =
-        viewModel(
-            factory = CreditCardViewModelFactory(LocalSavedStateRegistryOwner.current),
-        ),
+    navigateToRegister: (String?) -> Unit,
+    viewModel: CreditCardViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(viewModel.shouldFetchCards) {
-        viewModel.shouldFetchCards.collect {
-            viewModel.fetchCards()
+    LaunchedEffect(viewModel.effect) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is CreditCardEffect.NavigateToRegisterCard -> {
+                    navigateToRegister(effect.cardId)
+                }
+            }
         }
+    }
+
+    LaunchedEffect(cardRegisterResult) {
+        viewModel.handleCardRegisterResult(cardRegisterResult)
     }
 
     CreditCardScreen(
         uiState = uiState,
-        onAddCardClick = onAddCardClick,
+        onCreditCardEvent = viewModel::dispatchEvent,
         modifier = modifier,
     )
 }
@@ -54,7 +60,7 @@ internal fun CreditCardRoute(
 @Composable
 internal fun CreditCardScreen(
     uiState: CreditCardUiState,
-    onAddCardClick: () -> Unit,
+    onCreditCardEvent: (CreditCardEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -64,7 +70,11 @@ internal fun CreditCardScreen(
                 titleTextAlign = TextAlign.Center,
                 actions = {
                     if (uiState is CreditCardUiState.Many) {
-                        TextButton(onClick = onAddCardClick) {
+                        TextButton(
+                            onClick = {
+                                onCreditCardEvent(CreditCardEvent.OnNewCardClick)
+                            },
+                        ) {
                             Text(
                                 text = stringResource(id = R.string.tob_bar_action_add),
                                 style = MaterialTheme.typography.headlineMedium,
@@ -81,7 +91,9 @@ internal fun CreditCardScreen(
         when (uiState) {
             is CreditCardUiState.Empty -> {
                 EmptyCreditCardContent(
-                    onAddCardClick = onAddCardClick,
+                    onAddCardClick = {
+                        onCreditCardEvent(CreditCardEvent.OnNewCardClick)
+                    },
                     modifier =
                         Modifier
                             .fillMaxSize()
@@ -93,7 +105,8 @@ internal fun CreditCardScreen(
             is CreditCardUiState.One -> {
                 OneCreditCardContent(
                     card = uiState.card,
-                    onAddCardClick = onAddCardClick,
+                    onAddCardClick = { onCreditCardEvent(CreditCardEvent.OnNewCardClick) },
+                    onCardClick = { onCreditCardEvent(CreditCardEvent.OnCardClick(it)) },
                     modifier =
                         Modifier
                             .fillMaxSize()
@@ -105,6 +118,7 @@ internal fun CreditCardScreen(
             is CreditCardUiState.Many -> {
                 ManyCreditCardContent(
                     cards = uiState.cards,
+                    onCardClick = { onCreditCardEvent(CreditCardEvent.OnCardClick(it)) },
                     modifier =
                         Modifier
                             .fillMaxSize()
@@ -123,7 +137,7 @@ private fun CreditCardScreenPreview(
     PaymentsTheme {
         CreditCardScreen(
             uiState = uiState,
-            onAddCardClick = {},
+            onCreditCardEvent = {},
         )
     }
 }
