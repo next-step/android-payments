@@ -54,18 +54,20 @@ fun PaymentCard(
             expiredDateVisualTransformation.filter(AnnotatedString(expiredDate)).text
         }
 
-    Box {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier =
+            modifier
+                .shadow(8.dp)
+                .height(124.dp)
+                .widthIn(min = 0.dp, max = 208.dp)
+                .background(
+                    color = brand.toColor(),
+                    shape = RoundedCornerShape(5.dp),
+                ).clickable(onClick = onClick),
+    ) {
         Column(
-            modifier =
-                modifier
-                    .shadow(8.dp)
-                    .height(124.dp)
-                    .widthIn(min = 0.dp, max = 208.dp)
-                    .background(
-                        color = brand.toColor(),
-                        shape = RoundedCornerShape(5.dp),
-                    ).padding(14.dp)
-                    .clickable(onClick = onClick),
+            modifier = Modifier.padding(14.dp),
         ) {
             Text(
                 text = brand.toName(),
