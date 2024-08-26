@@ -22,6 +22,7 @@ import nextstep.payments.R
 import nextstep.payments.ui.components.AddPaymentCard
 import nextstep.payments.ui.components.PaymentActionsTopBar
 import nextstep.payments.ui.components.PaymentTopBar
+import nextstep.payments.ui.newcard.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -83,7 +84,7 @@ fun CardListScreen(
 
                 is CreditCardUiState.One -> {
                     val card = creditCardUiState.card
-                    PaymentCardDetail(card = card)
+                    PaymentCard(card = card)
                     AddPaymentCard(
                         onAddPaymentCard = onAddPaymentCard,
                         modifier = Modifier.padding(top = 32.dp)
@@ -96,7 +97,7 @@ fun CardListScreen(
                         verticalArrangement = Arrangement.spacedBy(36.dp)
                     ) {
                         items(cards) { card ->
-                            PaymentCardDetail(card = card)
+                            PaymentCard(card = card)
                         }
                     }
                 }
