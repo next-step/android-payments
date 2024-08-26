@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,6 +25,7 @@ import nextstep.payments.ui.components.AddPaymentCard
 import nextstep.payments.ui.components.PaymentActionsTopBar
 import nextstep.payments.ui.components.PaymentTopBar
 import nextstep.payments.ui.newcard.PaymentCard
+import nextstep.payments.ui.provider.CarListScreenProvider
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -106,12 +109,15 @@ fun CardListScreen(
     }
 }
 
+
 @Preview
 @Composable
-private fun CardListScreenPreview() {
+private fun CardListScreenPreview(
+    @PreviewParameter(CarListScreenProvider::class) creditCardUiState: CreditCardUiState
+) {
     PaymentsTheme {
         CardListScreen(
-            viewModel = viewModel(),
+            creditCardUiState = creditCardUiState,
             onAddPaymentCard = {
 
             }
