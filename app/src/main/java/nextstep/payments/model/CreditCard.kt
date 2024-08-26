@@ -1,15 +1,15 @@
 package nextstep.payments.model
 
-data class PaymentCard(
+data class CreditCard(
     val cardNumber: String,
-    val expiryDate: String,
+    val expiredDate: String,
     val password: String,
     val ownerName: String? = null,
 ) {
     companion object {
-        val default = PaymentCard(
+        val default = CreditCard(
             cardNumber = "",
-            expiryDate = "",
+            expiredDate = "",
             password = "",
             ownerName = null
         )
