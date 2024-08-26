@@ -15,8 +15,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
-import nextstep.payments.data.CreditCard
-import nextstep.payments.data.CreditCardUiState
+import nextstep.payments.data.RegisteredCreditCards
+import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
@@ -29,7 +29,7 @@ fun CardListScreen(
     viewModel: CardListViewModel = viewModel(),
     onAddCard: () -> Unit = {},
 ) {
-    val cards by viewModel.creditCard.collectAsStateWithLifecycle()
+    val cards by viewModel.registeredCreditCards.collectAsStateWithLifecycle()
 
     when (cards.getState()) {
         is CreditCardUiState.Empty -> {
@@ -90,7 +90,7 @@ fun CardListScreenEmpty(
 
 @Composable
 fun CardListScreenOne(
-    cards: CreditCard,
+    cards: RegisteredCreditCards,
     onAddCard: () -> Unit = {}
 ) {
     Scaffold(
@@ -120,7 +120,7 @@ fun CardListScreenOne(
 
 @Composable
 fun CardListScreenMany(
-    cards: CreditCard,
+    cards: RegisteredCreditCards,
     onAddCard: () -> Unit = {}
 ) {
     Scaffold(

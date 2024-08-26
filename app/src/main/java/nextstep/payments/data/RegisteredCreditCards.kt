@@ -1,6 +1,8 @@
 package nextstep.payments.data
 
-data class CreditCard(val cardList: List<Card>) {
+import nextstep.payments.ui.card.CreditCardUiState
+
+data class RegisteredCreditCards(val cardList: List<Card>) {
 
     fun getState(): CreditCardUiState {
         return when (cardList.size) {
