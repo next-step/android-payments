@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.SecureFlagPolicy
+import kotlinx.coroutines.launch
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -42,6 +44,7 @@ fun CardCompanyModalBottomSheet(
     onCardCompanySelected: (BankTypeModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val scope = rememberCoroutineScope()
     ModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
@@ -55,7 +58,14 @@ fun CardCompanyModalBottomSheet(
         CardCompanyContents(
             modifier = Modifier.navigationBarsPadding(),
             bankTypeModelList = bankTypeModelList,
-            onCardCompanySelected = onCardCompanySelected
+            onCardCompanySelected = { company ->
+                onCardCompanySelected(company)
+                scope.launch {
+                    sheetState.hide()
+                }.invokeOnCompletion {
+                    onDismissRequest()
+                }
+            }
         )
     }
 }
