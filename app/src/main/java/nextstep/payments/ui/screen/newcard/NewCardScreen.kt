@@ -50,6 +50,7 @@ fun NewCardRoute(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val selectedBank by viewModel.selectedCard.collectAsStateWithLifecycle()
+    val cardBrands by viewModel.cardBrands.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
@@ -69,7 +70,7 @@ fun NewCardRoute(
     if (showCardCompanyBottomSheet) {
         CardCompanyModalBottomSheet(
             sheetState = cardCompanyModalBottomSheetState,
-            bankTypeModelList = remember { BankTypeModel.getCardBrandList() },
+            bankTypeModelList = cardBrands,
             onDismissRequest = {
                 showCardCompanyBottomSheet = false
             },

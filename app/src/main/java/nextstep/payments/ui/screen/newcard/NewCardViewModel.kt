@@ -36,6 +36,13 @@ class NewCardViewModel : ViewModel() {
     private val _snackbarMessages = MutableSharedFlow<String>()
     val snackbarMessages = _snackbarMessages.asSharedFlow()
 
+    private val _cardBrands = MutableStateFlow<List<BankTypeModel>>(emptyList())
+    val cardBrands = _cardBrands.asStateFlow()
+
+    init {
+        _cardBrands.value = BankTypeModel.getCardBrandList()
+    }
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
