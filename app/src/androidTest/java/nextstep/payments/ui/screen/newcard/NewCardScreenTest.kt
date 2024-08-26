@@ -9,9 +9,9 @@ import androidx.test.core.app.ApplicationProvider
 import nextstep.payments.BaseComposeTest
 import nextstep.payments.R
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
+import nextstep.payments.ui.utils.chunkedCardNumber
 import nextstep.payments.ui.utils.toFormattedExpirationDate
 import nextstep.payments.utils.assertBackgroundColor
-import nextstep.payments.utils.chunkedCardNumber
 import org.junit.Before
 import org.junit.Test
 

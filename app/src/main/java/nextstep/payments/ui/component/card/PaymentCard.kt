@@ -27,6 +27,7 @@ import nextstep.payments.ui.component.text.CardNumberText
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.utils.backgroundColor
+import nextstep.payments.ui.utils.chunkedCardNumber
 import nextstep.payments.ui.utils.toFormattedExpirationDate
 
 @Composable
@@ -41,7 +42,7 @@ fun PaymentCard(
         id = R.string.payment_card_content_description,
         bankType.companyName,
         cardOwnerName,
-        cardNumber.chunked(4).joinToString(" "),
+        cardNumber.chunkedCardNumber(),
         cardExpiredDate.toFormattedExpirationDate(
             maxLength = 4,
             separator = "/"
