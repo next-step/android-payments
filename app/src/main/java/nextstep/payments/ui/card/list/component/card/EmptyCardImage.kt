@@ -20,7 +20,6 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun EmptyCardImage(cardColor: Color, onAddCard: () -> Unit, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
     Card(
         modifier = modifier
             .clickable { onAddCard() },
