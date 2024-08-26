@@ -30,10 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.component.card.BasicCard
-import nextstep.payments.ui.component.card.BasicCardDefaults
 import nextstep.payments.ui.component.card.PaymentCard
-import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.component.card.PaymentCardLayoutDefaults
+import nextstep.payments.ui.component.card.PaymentCardLayout
+import nextstep.payments.ui.screen.creditcard.model.CardModel
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
 @Composable
 fun CreditCardRoute(
@@ -56,7 +57,6 @@ internal fun CreditCardScreen(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -79,7 +79,7 @@ internal fun CreditCardScreen(
 
             state.isOneCard() -> {
                 OneCardSection(
-                    creditCard = state.cards.first(),
+                    cardModel = state.cards.first(),
                     onAddClick = onAddClick,
                     modifier = maxScreenModifier
                 )
@@ -124,7 +124,7 @@ private fun EmptySection(
 
 @Composable
 private fun OneCardSection(
-    creditCard: CreditCard,
+    cardModel: CardModel,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -133,9 +133,10 @@ private fun OneCardSection(
         contentDescription = context.getString(R.string.credit_card_section_one)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
         PaymentCard(
-            cardNumber = creditCard.cardNumber,
-            cardOwnerName = creditCard.cardOwnerName,
-            cardExpiredDate = creditCard.cardExpiredDate
+            cardNumber = cardModel.cardNumber,
+            cardOwnerName = cardModel.cardOwnerName,
+            cardExpiredDate = cardModel.cardExpiredDate,
+            bankType = cardModel.bankType
         )
 
         AddCreditCard(
@@ -150,9 +151,9 @@ private fun AddCreditCard(
     modifier: Modifier = Modifier,
     onAddClick: () -> Unit
 ) {
-    BasicCard(
+    PaymentCardLayout(
         modifier = modifier.clickable { onAddClick() },
-        colors = BasicCardDefaults.colors(backgroundColor = Color(0xFFE5E5E5)),
+        colors = PaymentCardLayoutDefaults.colors(containerColor = Color(0xFFE5E5E5)),
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
@@ -165,7 +166,7 @@ private fun AddCreditCard(
 @Composable
 private fun ManyCardSection(
     modifier: Modifier = Modifier,
-    cards: List<CreditCard>
+    cards: List<CardModel>
 ) {
     val context = LocalContext.current
     LazyColumn(
@@ -181,7 +182,8 @@ private fun ManyCardSection(
             PaymentCard(
                 cardNumber = card.cardNumber,
                 cardOwnerName = card.cardOwnerName,
-                cardExpiredDate = card.cardExpiredDate
+                cardExpiredDate = card.cardExpiredDate,
+                bankType = card.bankType
             )
         }
     }
@@ -221,10 +223,11 @@ private fun CreditCardTopBarPreview() {
     CreditCardTopBar(isShowActionButton = true) {}
 }
 
-private val previewDummyCreditCard = CreditCard(
+private val previewDummyCardModel = CardModel(
     cardNumber = "1111222233334444",
     cardOwnerName = "이지훈",
-    cardExpiredDate = "22 / 33"
+    cardExpiredDate = "22 / 33",
+    bankType = BankTypeModel.SHINHAN,
 )
 
 @Preview(showBackground = true, name = "카드가 0개 일때")
@@ -241,7 +244,7 @@ fun CreditCardZeroScreenPreview() {
 fun CreditCardOneScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
-            cards = listOf(previewDummyCreditCard),
+            cards = listOf(previewDummyCardModel),
         ),
         onAddClick = { }
     )
@@ -252,7 +255,7 @@ fun CreditCardOneScreenPreview() {
 fun CreditCardManyScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(
-            cards = List(5) { previewDummyCreditCard }
+            cards = List(5) { previewDummyCardModel }
         ),
         onAddClick = { }
     )

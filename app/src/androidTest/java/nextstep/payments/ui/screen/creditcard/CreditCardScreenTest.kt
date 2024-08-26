@@ -8,7 +8,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import nextstep.payments.BaseComposeTest
 import nextstep.payments.R
-import nextstep.payments.ui.screen.creditcard.model.CreditCard
+import nextstep.payments.ui.screen.creditcard.model.CardModel
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import org.junit.Before
 import org.junit.Test
 
@@ -49,10 +50,11 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     fun 카드가_1개일_때_해당_카드와_크레딧카드_추가_버튼이_보여야_한다() {
         state.value = CreditCardUiState(
             cards = listOf(
-                CreditCard(
+                CardModel(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             )
         )
@@ -68,10 +70,11 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     fun 카드가_2개_이상일_때_카드들만_보여야_하고_추가_버튼이_있어야_한다() {
         state.value = CreditCardUiState(
             cards = List(3) {
-                CreditCard(
+                CardModel(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             }
         )
@@ -87,10 +90,11 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     fun 카드가2개_이상이면_상단_바에_카드_추가_버튼을_누를수있다() {
         state.value = CreditCardUiState(
             cards = List(3) {
-                CreditCard(
+                CardModel(
                     cardNumber = "1111222233334444",
                     cardOwnerName = "이지훈",
-                    cardExpiredDate = "22 / 33"
+                    cardExpiredDate = "22 / 33",
+                    bankType = BankTypeModel.SHINHAN,
                 )
             }
         )

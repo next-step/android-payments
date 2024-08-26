@@ -29,3 +29,5 @@ fun String.toFormattedExpirationDate(maxLength: Int, separator: String): String 
         }
     }
 }
+
+fun String.chunkedCardNumber() = chunked(4).joinToString(" ")

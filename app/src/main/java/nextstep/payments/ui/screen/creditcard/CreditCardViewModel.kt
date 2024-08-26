@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.PaymentCardsRepository
-import nextstep.payments.ui.screen.creditcard.model.toCreditCard
+import nextstep.payments.ui.screen.creditcard.model.toUiModel
 
 class CreditCardViewModel : ViewModel() {
 
@@ -16,7 +16,7 @@ class CreditCardViewModel : ViewModel() {
     }
 
     fun fetchCards() {
-        val cards = PaymentCardsRepository.cards.map { it.toCreditCard() }
+        val cards = PaymentCardsRepository.cards.map { it.toUiModel() }
         _paymentCardsUiState.value = _paymentCardsUiState.value.copy(cards = cards)
     }
 }

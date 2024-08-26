@@ -1,11 +1,17 @@
 package nextstep.payments.ui.screen.newcard
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.data.Card
+import kotlinx.coroutines.launch
+import nextstep.payments.data.CardData
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.ui.screen.newcard.model.BankTypeModel
+import nextstep.payments.ui.screen.newcard.model.toData
 
 class NewCardViewModel : ViewModel() {
 
@@ -24,6 +30,19 @@ class NewCardViewModel : ViewModel() {
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded = _cardAdded.asStateFlow()
 
+    private val _selectedBank = MutableStateFlow<BankTypeModel?>(null)
+    val selectedCard = _selectedBank.asStateFlow()
+
+    private val _snackbarMessages = MutableSharedFlow<String>()
+    val snackbarMessages = _snackbarMessages.asSharedFlow()
+
+    private val _cardBrands = MutableStateFlow<List<BankTypeModel>>(emptyList())
+    val cardBrands = _cardBrands.asStateFlow()
+
+    init {
+        _cardBrands.value = BankTypeModel.entries
+    }
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -40,15 +59,26 @@ class NewCardViewModel : ViewModel() {
         _password.value = password
     }
 
+    fun setSelectedCard(bankTypeModel: BankTypeModel) {
+        _selectedBank.value = bankTypeModel
+    }
+
     fun addCard() {
-        PaymentCardsRepository.addCard(
-            card = Card(
-                cardNumber = _cardNumber.value,
-                cardOwnerName = _ownerName.value,
-                cardExpiredDate = _expiredDate.value,
-                cardPassword = _password.value
+        selectedCard.value?.let {
+            PaymentCardsRepository.addCard(
+                card = CardData(
+                    cardNumber = _cardNumber.value,
+                    cardOwnerName = _ownerName.value,
+                    cardExpiredDate = _expiredDate.value,
+                    cardPassword = _password.value,
+                    bankType = it.toData()
+                )
             )
-        )
-        _cardAdded.value = true
+            _cardAdded.value = true
+        } ?: run {
+            viewModelScope.launch {
+                _snackbarMessages.emit("카드를 클릭해서 카드 회사를 선택해주세요.")
+            }
+        }
     }
 }
