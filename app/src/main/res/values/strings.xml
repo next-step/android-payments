@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Payments</string>
 
+    <string name="card_number">%s - %s - **** - ****</string>
     <string name="card_list_add">추가</string>
+    <string name="card_list_item_add">새로운 카드를 등록해주세요</string>
 </resources>
