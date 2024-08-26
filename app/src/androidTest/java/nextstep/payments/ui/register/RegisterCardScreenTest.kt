@@ -22,8 +22,8 @@ class RegisterCardScreenTest {
         val validationResult = OwnerNameValidResult.VALID
 
         val uiState =
-            RegisterCardUiState.NONE
-                .copy(
+            RegisterCardUiState.DEFAULT_REGISTER
+                .copyState(
                     ownerName = ownerName,
                     ownerNameValidResult = validationResult,
                 )
@@ -49,7 +49,7 @@ class RegisterCardScreenTest {
         val validationResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH
 
         val uiState =
-            RegisterCardUiState.NONE
+            RegisterCardUiState.DEFAULT_REGISTER
                 .copy(
                     ownerName = ownerName,
                     ownerNameValidResult = validationResult,
@@ -73,7 +73,7 @@ class RegisterCardScreenTest {
     fun 카드_등록_버튼이_활성화_된다() {
         // given
         val uiState =
-            RegisterCardUiState.NONE
+            RegisterCardUiState.DEFAULT_REGISTER
                 .copy(registerEnabled = true)
 
         composeTestRule.setContent {
@@ -94,7 +94,7 @@ class RegisterCardScreenTest {
     fun 카드_등록_버튼이_비활성화_된다() {
         // given
         val uiState =
-            RegisterCardUiState.NONE
+            RegisterCardUiState.DEFAULT_REGISTER
                 .copy(registerEnabled = false)
 
         composeTestRule.setContent {

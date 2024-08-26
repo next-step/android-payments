@@ -21,7 +21,8 @@ import nextstep.payments.ui.register.navigation.ARG_CARD_ID
 class RegisterCardViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(RegisterCardUiState.NONE)
+    private val _uiState =
+        MutableStateFlow<RegisterCardUiState>(RegisterCardUiState.DEFAULT_REGISTER)
     val uiState: StateFlow<RegisterCardUiState> = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<RegisterCardScreenEffect>()
@@ -35,13 +36,15 @@ class RegisterCardViewModel(
                 .getCardById(cardId)
                 ?.let { card ->
                     _uiState.update {
-                        it.copy(
+                        RegisterCardUiState.Update(
                             brand = card.brand,
                             cardNumber = card.cardNumber,
                             expiredDate = card.expiredDate,
                             ownerName = card.ownerName,
                             password = card.password,
-                            mode = RegisterCardUiState.Mode.UPDATE,
+                            ownerNameValidResult = OwnerNameValidResult.VALID,
+                            expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
+                            registerEnabled = false,
                         )
                     }
                 }
@@ -62,9 +65,9 @@ class RegisterCardViewModel(
     private fun setCardNumber(cardNumber: String) {
         if (cardNumber.length > CARD_NUMBER_MAX_LENGTH) return
         _uiState.update {
-            val state = it.copy(cardNumber = cardNumber)
+            val state = it.copyState(cardNumber = cardNumber)
             val enabled = checkRegisterEnabled(state)
-            state.copy(registerEnabled = enabled)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
@@ -73,19 +76,20 @@ class RegisterCardViewModel(
         val result = validateExpiredDate(expiredDate)
         _uiState.update {
             val state =
-                it.copy(
+                it.copyState(
                     expiredDate = expiredDate,
                     expiredDateMonthValidResult = result,
                 )
             val enabled = checkRegisterEnabled(state)
-            state.copy(registerEnabled = enabled)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
     private fun validateExpiredDate(expiredDate: String): ExpiredDateMonthValidResult {
         if (expiredDate.length < 2) return ExpiredDateMonthValidResult.NONE
 
-        val month = expiredDate.substring(0, 2).toIntOrNull() ?: return ExpiredDateMonthValidResult.NONE
+        val month =
+            expiredDate.substring(0, 2).toIntOrNull() ?: return ExpiredDateMonthValidResult.NONE
         return if (month !in 1..12) {
             ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE
         } else {
@@ -97,12 +101,12 @@ class RegisterCardViewModel(
         val result = validateOwnerName(ownerName)
         _uiState.update {
             val state =
-                it.copy(
+                it.copyState(
                     ownerName = ownerName,
                     ownerNameValidResult = result,
                 )
             val enabled = checkRegisterEnabled(state)
-            state.copy(registerEnabled = enabled)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
@@ -115,17 +119,17 @@ class RegisterCardViewModel(
     private fun setPassword(password: String) {
         if (password.length > PASSWORD_MAX_LENGTH) return
         _uiState.update {
-            val state = it.copy(password = password)
+            val state = it.copyState(password = password)
             val enabled = checkRegisterEnabled(state)
-            state.copy(registerEnabled = enabled)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
     private fun setBrand(brand: Brand) {
         _uiState.update {
-            val state = it.copy(brand = brand)
+            val state = it.copyState(brand = brand)
             val enabled = checkRegisterEnabled(state)
-            state.copy(registerEnabled = enabled)
+            state.copyState(registerEnabled = enabled)
         }
     }
 
@@ -139,7 +143,7 @@ class RegisterCardViewModel(
                 ownerName = uiState.ownerName,
                 password = uiState.password,
             )
-        if (uiState.mode.isRegister()) {
+        if (uiState.isRegister) {
             registerNewCard(card)
         } else {
             updateCard(card)
@@ -170,7 +174,7 @@ class RegisterCardViewModel(
     }
 
     private fun checkRegisterEnabled(uiState: RegisterCardUiState): Boolean =
-        if (uiState.mode.isRegister()) {
+        if (uiState.isRegister) {
             isRegisterEnabled(uiState)
         } else {
             isModified(uiState) && isRegisterEnabled(uiState)

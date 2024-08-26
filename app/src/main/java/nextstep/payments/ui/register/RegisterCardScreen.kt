@@ -50,7 +50,6 @@ import nextstep.payments.ui.component.CardNumberVisualTransformation
 import nextstep.payments.ui.component.ExpiredDateVisualTransformation
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.component.PaymentsTopBar
-import nextstep.payments.ui.register.RegisterCardUiState.Mode
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -86,7 +85,7 @@ internal fun RegisterCardScreen(
     modifier: Modifier = Modifier,
 ) {
     var selectedBrand by remember { mutableStateOf(Brand.NONE) }
-    var showBottomSheet by remember { mutableStateOf(uiState.mode.isRegister()) }
+    var showBottomSheet by remember { mutableStateOf(uiState.isRegister) }
     Scaffold(
         topBar = {
             PaymentsTopBar(
@@ -118,7 +117,7 @@ internal fun RegisterCardScreen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            if (uiState.mode.isRegister()) {
+            if (uiState.isRegister) {
                 PaymentCard(
                     brand = uiState.brand,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -340,7 +339,7 @@ private fun NewCardScreenPreview(
 private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCardUiState> {
     override val values: Sequence<RegisterCardUiState> =
         sequenceOf(
-            RegisterCardUiState(
+            RegisterCardUiState.Register(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
@@ -348,10 +347,9 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
                 expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
-                mode = Mode.REGISTER,
                 registerEnabled = true,
             ),
-            RegisterCardUiState(
+            RegisterCardUiState.Update(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "1234",
@@ -360,10 +358,9 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.ERROR_OWNER_NAME_LENGTH,
                 expiredDateMonthValidResult = ExpiredDateMonthValidResult.VALID,
-                mode = Mode.UPDATE,
                 registerEnabled = false,
             ),
-            RegisterCardUiState(
+            RegisterCardUiState.Update(
                 brand = Brand.NONE,
                 cardNumber = "1234567812345678",
                 expiredDate = "3456",
@@ -372,7 +369,6 @@ private class RegisterCardScreenProvider : PreviewParameterProvider<RegisterCard
                 password = "1234",
                 ownerNameValidResult = OwnerNameValidResult.VALID,
                 expiredDateMonthValidResult = ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE,
-                mode = Mode.UPDATE,
                 registerEnabled = false,
             ),
         )

@@ -3,6 +3,7 @@ package nextstep.payments.ui.register
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -80,7 +81,7 @@ class RegisterCardViewModelTest {
 
             // when & then
             registerCardViewModel.uiState.test {
-                assertEquals(awaitItem().mode, RegisterCardUiState.Mode.REGISTER)
+                assertTrue(awaitItem() is RegisterCardUiState.Register)
             }
         }
     }
@@ -108,7 +109,7 @@ class RegisterCardViewModelTest {
 
             // when & then
             registerCardViewModel.uiState.test {
-                assertEquals(awaitItem().mode, RegisterCardUiState.Mode.UPDATE)
+                assertTrue(awaitItem() is RegisterCardUiState.Update)
             }
         }
     }
@@ -170,7 +171,7 @@ class RegisterCardViewModelTest {
                 // then - 카드 목록 화면으로 이동
                 assertEquals(
                     awaitItem(),
-                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.FAILED),
+                    RegisterCardScreenEffect.NavigateToCardListScreen(CardRegisterResult.SUCCESS),
                 )
             }
         }
@@ -299,7 +300,10 @@ class RegisterCardViewModelTest {
             // then
             registerCardViewModel.uiState.test {
                 val item = awaitItem()
-                assertEquals(item.expiredDateMonthValidResult, ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE)
+                assertEquals(
+                    item.expiredDateMonthValidResult,
+                    ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE,
+                )
                 assertEquals(item.registerEnabled, false)
             }
         }
@@ -319,7 +323,10 @@ class RegisterCardViewModelTest {
             // then
             registerCardViewModel.uiState.test {
                 val item = awaitItem()
-                assertEquals(item.expiredDateMonthValidResult, ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE)
+                assertEquals(
+                    item.expiredDateMonthValidResult,
+                    ExpiredDateMonthValidResult.ERROR_EXPIRED_DATE_MONTH_RANGE,
+                )
             }
         }
 
