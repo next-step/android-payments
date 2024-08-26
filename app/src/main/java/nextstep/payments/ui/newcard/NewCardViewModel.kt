@@ -16,6 +16,12 @@ data class NewCardUiState(
     val isInitialInput: Boolean = false
 ) {
 
+    companion object {
+        // 다양한 최대 길이를 정의
+        const val MAX_LENGTH_4 = 4
+        const val MAX_LENGTH_16 = 16
+    }
+
     private val cardNumberRegex = "^\\d{16}$"
     private val fourDigitRegex = "^\\d{4}$"
 
@@ -59,18 +65,20 @@ class NewCardViewModel(
     }
 
     fun setCardNumber(cardNumber: String) {
+        cardNumber.take(10)
         _newCardUiState.update { currentState ->
-            currentState.copy(cardNumber = cardNumber)
+            currentState.copy(cardNumber = cardNumber.take(NewCardUiState.MAX_LENGTH_16))
         }
     }
 
     fun setExpiredDate(expiredDate: String) {
         _newCardUiState.update { currentState ->
-            currentState.copy(expiredDate = expiredDate)
+            currentState.copy(expiredDate = expiredDate.take(NewCardUiState.MAX_LENGTH_4))
         }
     }
 
     fun setOwnerName(ownerName: String) {
+        ownerName.take(3)
         _newCardUiState.update { currentState ->
             currentState.copy(ownerName = ownerName)
         }
@@ -78,7 +86,7 @@ class NewCardViewModel(
 
     fun setPassword(password: String) {
         _newCardUiState.update { currentState ->
-            currentState.copy(password = password)
+            currentState.copy(password = password.take(NewCardUiState.MAX_LENGTH_4))
         }
     }
 }

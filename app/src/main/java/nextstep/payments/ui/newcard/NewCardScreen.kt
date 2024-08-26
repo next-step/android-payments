@@ -92,11 +92,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = newCardUiState.cardNumber,
-                onValueChange = {
-                    if (it.length <= 16) {
-                        setCardNumber(it)
-                    }
-                },
+                onValueChange = { setCardNumber(it) },
                 label = { Text(stringResource(id = R.string.card_number_label)) },
                 isError = newCardUiState.isCardNumberEmptyError || newCardUiState.isCardNumberFormatError,
                 supportingText = {
@@ -114,11 +110,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = newCardUiState.expiredDate,
-                onValueChange = {
-                    if (it.length <= 4) {
-                        setExpiredDate(it)
-                    }
-                },
+                onValueChange = { setExpiredDate(it) },
                 label = { Text(stringResource(id = R.string.expired_date_label)) },
                 isError = newCardUiState.isExpiredDateEmptyError || newCardUiState.isExpiredDateFormatError,
                 supportingText = {
@@ -144,11 +136,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = newCardUiState.password,
-                onValueChange = {
-                    if (it.length <= 4) {
-                        setPassword(it)
-                    }
-                },
+                onValueChange = { setPassword(it) },
                 label = { Text(stringResource(id = R.string.password_name_date_label)) },
                 isError = newCardUiState.isPasswordEmptyError || newCardUiState.isPasswordFormatError,
                 supportingText = {
