@@ -9,14 +9,10 @@ import nextstep.payments.data.PaymentCardsRepository
 
 class CardListViewModel : ViewModel() {
 
-    private val _Registered_creditCards = MutableStateFlow(RegisteredCreditCards(emptyList()))
-    val registeredCreditCards: StateFlow<RegisteredCreditCards> = _Registered_creditCards.asStateFlow()
-
-    init {
-        fetchCards()
-    }
+    private val _registeredCreditCards = MutableStateFlow(RegisteredCreditCards(emptyList()))
+    val registeredCreditCards: StateFlow<RegisteredCreditCards> = _registeredCreditCards.asStateFlow()
 
     fun fetchCards() {
-        _Registered_creditCards.value = RegisteredCreditCards(PaymentCardsRepository.cards)
+        _registeredCreditCards.value = RegisteredCreditCards(PaymentCardsRepository.cards)
     }
 }
