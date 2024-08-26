@@ -1,5 +1,8 @@
 package nextstep.payments.screen
 
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,14 +25,17 @@ import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.Card
+import nextstep.payments.screen.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
+    navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CardListScreen(
         modifier = modifier,
+        navigateToNewCard = navigateToNewCard,
         cardList = emptyList()
     )
 }
@@ -36,6 +43,7 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     cardList: List<Card>,
+    navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -71,7 +79,9 @@ fun CardListScreen(
             }
             if(cardList.size <= 3){
                 item {
-                    AdditionCard()
+                    AdditionCard(
+                        onClick = navigateToNewCard
+                    )
                 }
             }
         }
@@ -83,6 +93,7 @@ fun AdditionCardText(
     modifier: Modifier = Modifier
 ) {
     Text(
+        modifier = modifier,
         text = stringResource(id = R.string.card_list_item_add),
         style = MaterialTheme.typography.titleMedium,
         color = Color(0xFF333333)
@@ -93,7 +104,9 @@ fun AdditionCardText(
 @Composable
 private fun Preview1() {
     PaymentsTheme {
-        CardListScreen()
+        CardListScreen(
+            navigateToNewCard = {}
+        )
     }
 }
 
@@ -109,7 +122,8 @@ private fun Preview2() {
                     expiredDate = "04 / 21",
                     password = "1234"
                 )
-            )
+            ),
+            navigateToNewCard = {}
         )
     }
 }
@@ -144,7 +158,8 @@ private fun Preview3() {
                     expiredDate = "04 / 21",
                     password = "1234"
                 )
-            )
+            ),
+            navigateToNewCard = {}
         )
     }
 }

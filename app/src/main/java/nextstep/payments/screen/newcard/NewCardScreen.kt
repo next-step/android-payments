@@ -26,6 +26,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun NewCardScreen(
     modifier: Modifier = Modifier,
+    navigateToCardList: (Boolean) -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -34,6 +35,7 @@ internal fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     NewCardScreen(
+        modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -41,25 +43,38 @@ internal fun NewCardScreen(
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
+        setPassword = viewModel::setPassword,
+        onBackClick = {
+            navigateToCardList(false)
+        },
+        onSaveClick = {
+            navigateToCardList(true)
+        }
     )
 }
 
 
 @Composable
 private fun NewCardScreen(
-    cardNumber : String,
-    expiredDate : String,
-    ownerName : String,
-    password : String,
-    setCardNumber : (String) -> Unit,
-    setExpiredDate : (String) -> Unit,
-    setOwnerName : (String) -> Unit,
-    setPassword : (String) -> Unit,
+    cardNumber: String,
+    expiredDate: String,
+    ownerName: String,
+    password: String,
+    setCardNumber: (String) -> Unit,
+    setExpiredDate: (String) -> Unit,
+    setOwnerName: (String) -> Unit,
+    setPassword: (String) -> Unit,
+    onBackClick : () -> Unit,
+    onSaveClick : () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -123,7 +138,9 @@ private fun NewCardScreenPreview() {
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
-            setPassword = {}
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {}
         )
     }
 }
