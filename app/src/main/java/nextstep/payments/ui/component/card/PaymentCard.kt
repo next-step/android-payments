@@ -17,13 +17,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.R
 import nextstep.payments.ui.component.text.CardNumberText
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.utils.backgroundColor
 import nextstep.payments.ui.utils.toFormattedExpirationDate
 
 @Composable
@@ -34,26 +37,27 @@ fun PaymentCard(
     bankType: BankTypeModel,
     modifier: Modifier = Modifier,
 ) {
+    val cardContentDescription = stringResource(
+        id = R.string.payment_card_content_description,
+        bankType.companyName,
+        cardOwnerName,
+        cardNumber.chunked(4).joinToString(" "),
+        cardExpiredDate.toFormattedExpirationDate(
+            maxLength = 4,
+            separator = "/"
+        )
+    )
     PaymentCardLayout(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            contentDescription = cardContentDescription
+            this.backgroundColor = bankType.color
+        },
         colors = PaymentCardLayoutDefaults.colors(containerColor = bankType.color)
     ) {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .fillMaxWidth()
-                .semantics {
-                    contentDescription = "카드 소유자: $cardOwnerName, 카드 번호: ${
-                        cardNumber
-                            .chunked(8)
-                            .joinToString(" ")
-                    }, 만료일: ${
-                        cardExpiredDate.toFormattedExpirationDate(
-                            maxLength = 4,
-                            separator = "/"
-                        )
-                    }"
-                },
+                .fillMaxWidth(),
             verticalArrangement = Arrangement.Bottom,
         ) {
             Box(
