@@ -14,16 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.Card
+import nextstep.payments.ui.card.list.component.CardListTopBar
 import nextstep.payments.ui.card.list.component.NewCard
 import nextstep.payments.ui.card.newcard.NewCardActivity
 import nextstep.payments.ui.component.PaymentCard
@@ -57,7 +54,6 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CardListScreen(
     modifier: Modifier = Modifier,
@@ -66,19 +62,10 @@ private fun CardListScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.payments)) },
-                actions = {
-                    if (state is CardListUiState.Many) {
-                        TextButton(onClick = onShowNewCard) {
-                            Text(
-                                text = stringResource(id = R.string.add),
-                                color = Color.Black,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        }
-                    }
-                })
+            CardListTopBar(
+                displayAdd = state is CardListUiState.Many,
+                onShowNewCard = onShowNewCard,
+            )
         },
     ) { innerPadding ->
         Box(
