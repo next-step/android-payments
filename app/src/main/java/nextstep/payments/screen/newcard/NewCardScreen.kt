@@ -1,4 +1,4 @@
-package nextstep.payments.screen
+package nextstep.payments.screen.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
