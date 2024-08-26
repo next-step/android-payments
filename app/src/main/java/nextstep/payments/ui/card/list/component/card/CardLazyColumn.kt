@@ -10,7 +10,7 @@ import nextstep.payments.data.CreditCard
 import nextstep.payments.data.PaymentCardsRepository
 
 @Composable
-fun CardLazyColumn(cards: CreditCard, modifier: Modifier = Modifier) {
+fun CardLazyColumn(cards: CreditCard) {
     LazyColumn {
         items(
             count = cards.cardList.size,

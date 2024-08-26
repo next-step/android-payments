@@ -28,16 +28,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardListViewModel = viewModel(),
     onAddCard: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     val cards by viewModel.creditCard.collectAsStateWithLifecycle()
 
     when (cards.getState()) {
         is CreditCardUiState.Empty -> {
             CardListScreenEmpty(
-                cards = cards,
                 onAddCard = onAddCard,
-                modifier = modifier
             )
         }
 
@@ -45,7 +42,6 @@ fun CardListScreen(
             CardListScreenOne(
                 cards = cards,
                 onAddCard = onAddCard,
-                modifier = modifier
             )
         }
 
@@ -53,7 +49,6 @@ fun CardListScreen(
             CardListScreenMany(
                 cards = cards,
                 onAddCard = onAddCard,
-                modifier = modifier
             )
         }
     }
@@ -61,9 +56,7 @@ fun CardListScreen(
 
 @Composable
 fun CardListScreenEmpty(
-    cards: CreditCard,
-    onAddCard: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onAddCard: () -> Unit = {}
 ) {
     Scaffold(
         topBar = { CardListTopBar() }
@@ -71,14 +64,13 @@ fun CardListScreenEmpty(
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (cards.cardList.isEmpty()) {
-                CardRegistrationComment(
-                    comment = "새로운 카드를 등록해주세요.",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 73.dp)
-                )
-            }
+            CardRegistrationComment(
+                comment = "새로운 카드를 등록해주세요.",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 73.dp)
+            )
+
             EmptyCardImage(
                 cardColor = Color(0xFFE5E5E5),
                 onAddCard = onAddCard,
@@ -99,8 +91,7 @@ fun CardListScreenEmpty(
 @Composable
 fun CardListScreenOne(
     cards: CreditCard,
-    onAddCard: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onAddCard: () -> Unit = {}
 ) {
     Scaffold(
         topBar = { CardListTopBar() }
@@ -108,16 +99,8 @@ fun CardListScreenOne(
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            if (cards.cardList.isEmpty()) {
-                CardRegistrationComment(
-                    comment = "새로운 카드를 등록해주세요.",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 73.dp)
-                )
-            } else {
-                CardLazyColumn(cards)
-            }
+            CardLazyColumn(cards)
+
             EmptyCardImage(
                 cardColor = Color(0xFFE5E5E5),
                 onAddCard = onAddCard,
@@ -138,8 +121,7 @@ fun CardListScreenOne(
 @Composable
 fun CardListScreenMany(
     cards: CreditCard,
-    onAddCard: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onAddCard: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
