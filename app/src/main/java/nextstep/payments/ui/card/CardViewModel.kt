@@ -16,13 +16,7 @@ class CardViewModel(
 
     fun fetchCards() {
         val cards = repository.cards
-        if (cards.isEmpty()) {
-            _creditCardUiState.value = CreditCardUiState.Empty
-        } else if (cards.size == 1) {
-            _creditCardUiState.value = CreditCardUiState.One(cards[0])
-        } else {
-            _creditCardUiState.value = CreditCardUiState.Many(cards)
-        }
+        _creditCardUiState.value = CreditCardUiState.from(cards)
     }
 }
 
@@ -30,4 +24,16 @@ sealed interface CreditCardUiState {
     data object Empty : CreditCardUiState
     data class One(val card: Card) : CreditCardUiState
     data class Many(val cards: List<Card>): CreditCardUiState
+
+    companion object {
+        fun from(cards: List<Card>): CreditCardUiState {
+            return if (cards.isEmpty()) {
+                Empty
+            } else if (cards.size == 1) {
+                One(cards.first())
+            } else {
+                Many(cards)
+            }
+        }
+    }
 }
