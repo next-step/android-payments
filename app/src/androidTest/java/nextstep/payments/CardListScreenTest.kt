@@ -1,14 +1,14 @@
 package nextstep.payments
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.data.model.Card
-import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.card.CardListScreen
-import nextstep.payments.ui.card.CardViewModel
+import nextstep.payments.ui.card.CreditCardUiState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,14 +17,13 @@ class CardListScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-    private val viewModel = CardViewModel()
-    private val repository: PaymentCardsRepository = PaymentCardsRepository
+    private val creditCardUiState = mutableStateOf<CreditCardUiState>(CreditCardUiState.Empty)
 
     @Before
     fun setup() {
         composeTestRule.setContent {
             CardListScreen(
-                viewModel = viewModel,
+                creditCardUiState = creditCardUiState.value,
                 onAddPaymentCard = { }
             )
         }
@@ -45,8 +44,8 @@ class CardListScreenTest {
             ownerName = "",
             password = ""
         )
-        repository.addCard(card)
-        viewModel.fetchCards()
+
+        creditCardUiState.value = CreditCardUiState.One(card)
 
         composeTestRule
             .onNodeWithTag("Card")
@@ -65,9 +64,7 @@ class CardListScreenTest {
             ownerName = "",
             password = ""
         )
-        repository.addCard(card)
-        repository.addCard(card)
-        viewModel.fetchCards()
+        creditCardUiState.value = CreditCardUiState.Many(listOf(card, card))
         composeTestRule
             .onNodeWithText("추가")
             .assertIsDisplayed()
