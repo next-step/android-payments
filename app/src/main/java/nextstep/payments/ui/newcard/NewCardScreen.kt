@@ -39,10 +39,6 @@ internal fun NewCardScreen(
 ) {
     val newCardUiState by viewModel.newCardUiState.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -50,10 +46,6 @@ internal fun NewCardScreen(
 
     NewCardScreen(
         newCardUiState = newCardUiState,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
         onBackClick = onBackClick,
         onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
@@ -67,10 +59,6 @@ internal fun NewCardScreen(
 @Composable
 private fun NewCardScreen(
     newCardUiState: NewCardUiState,
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -103,7 +91,7 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = cardNumber,
+                value = newCardUiState.cardNumber,
                 onValueChange = {
                     if (it.length <= 16) {
                         setCardNumber(it)
@@ -125,7 +113,7 @@ private fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = expiredDate,
+                value = newCardUiState.expiredDate,
                 onValueChange = {
                     if (it.length <= 4) {
                         setExpiredDate(it)
@@ -147,7 +135,7 @@ private fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = ownerName,
+                value = newCardUiState.ownerName,
                 onValueChange = { setOwnerName(it) },
                 label = { Text(stringResource(id = R.string.owner_name_date_label)) },
                 placeholder = { Text(stringResource(id = R.string.owner_name_place_holder)) },
@@ -155,7 +143,7 @@ private fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = password,
+                value = newCardUiState.password,
                 onValueChange = {
                     if (it.length <= 4) {
                         setPassword(it)
@@ -201,11 +189,12 @@ private fun StatefulNewCardScreenPreview() {
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            newCardUiState = NewCardUiState(),
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "00 / 00",
-            ownerName = "최용호",
-            password = "1234",
+            newCardUiState = NewCardUiState(
+                cardNumber = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "최용호",
+                password = "1234"
+            ),
             onBackClick = {},
             onSaveClick = {},
             setCardNumber = {},

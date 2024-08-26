@@ -11,6 +11,7 @@ import nextstep.payments.data.repository.PaymentCardsRepository
 data class NewCardUiState(
     val cardNumber: String = "",
     val expiredDate: String = "",
+    val ownerName: String = "",
     val password: String = "",
     val isInitialInput: Boolean = false
 ) {
@@ -40,58 +41,42 @@ class NewCardViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
     fun addCard() {
         if (_newCardUiState.value.isCardAddable) {
             val card = Card(
-                cardNumber = _cardNumber.value,
-                expiredDate = _ownerName.value,
-                ownerName = _expiredDate.value,
-                password = _password.value
+                cardNumber = _newCardUiState.value.cardNumber,
+                expiredDate = _newCardUiState.value.expiredDate,
+                ownerName = _newCardUiState.value.ownerName,
+                password = _newCardUiState.value.password
             )
             repository.addCard(card)
             _cardAdded.value = true
         } else {
-            _newCardUiState.value = NewCardUiState(
-                cardNumber = _cardNumber.value,
-                expiredDate = _expiredDate.value,
-                password = _password.value,
-                isInitialInput = true
-            )
+            _newCardUiState.update { currentState ->
+                currentState.copy(isInitialInput = true)
+            }
         }
     }
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
         _newCardUiState.update { currentState ->
             currentState.copy(cardNumber = cardNumber)
         }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
         _newCardUiState.update { currentState ->
             currentState.copy(expiredDate = expiredDate)
         }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _newCardUiState.update { currentState ->
+            currentState.copy(ownerName = ownerName)
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
         _newCardUiState.update { currentState ->
             currentState.copy(password = password)
         }
