@@ -107,7 +107,7 @@ private fun CardCompanyContents(
 private fun 카드회사_아이템_프리뷰() {
     PaymentsTheme {
         CardCompanyContents(
-            bankTypeModelList = BankTypeModel.entries,
+            bankTypeModelList = BankTypeModel.getCardBrandList(),
             onCardCompanySelected = {}
         )
     }
