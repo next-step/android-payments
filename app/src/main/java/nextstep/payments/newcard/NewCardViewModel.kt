@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.model.PaymentCard
+import nextstep.payments.model.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
 
 /**
@@ -20,8 +20,8 @@ class NewCardViewModel(
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     // 카드의 세부 정보를 관리하는 상태.
-    private val _cardDetails = MutableStateFlow(PaymentCard.default)
-    val cardDetails: StateFlow<PaymentCard> = _cardDetails.asStateFlow()
+    private val _cardDetails = MutableStateFlow(CreditCard.default)
+    val cardDetails: StateFlow<CreditCard> = _cardDetails.asStateFlow()
 
     // 개별 카드 정보 필드 업데이트를 위한 함수들.
     fun setCardNumber(cardNumber: String) {
@@ -29,7 +29,7 @@ class NewCardViewModel(
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _cardDetails.value = _cardDetails.value.copy(expiryDate = expiredDate)
+        _cardDetails.value = _cardDetails.value.copy(expiredDate = expiredDate)
     }
 
     fun setOwnerName(ownerName: String) {
