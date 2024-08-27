@@ -15,11 +15,13 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import nextstep.payments.component.CardCompanySelector
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.enums.CardCompanyCategory
@@ -70,7 +73,6 @@ fun NewCardScreen(
         showCardCompanySelectBottomSheet = showCardCompanySelectBottomSheet,
         onCardCompanySelect = {
             viewModel.setCardCompany(it)
-            showCardCompanySelectBottomSheet = false
         },
         onCardCompanySelectBottomSheetShowRequest = {
             showCardCompanySelectBottomSheet = true
@@ -111,12 +113,21 @@ private fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     if (showCardCompanySelectBottomSheet) {
+        val sheetState = rememberModalBottomSheetState()
         ModalBottomSheet(
+            sheetState = sheetState,
             containerColor = Color.White,
             onDismissRequest = onCardCompanySelectBottomSheetDismissRequest,
         ) {
-            CardCompanySelector(onCardCompanySelect = onCardCompanySelect)
+            CardCompanySelector(onCardCompanySelect = {
+                onCardCompanySelect(it)
+                coroutineScope.launch {
+                    sheetState.hide()
+                    onCardCompanySelectBottomSheetDismissRequest()
+                }
+            })
         }
     }
 
