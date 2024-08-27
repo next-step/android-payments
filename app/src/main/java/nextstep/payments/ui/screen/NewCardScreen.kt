@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.component.NewCardTopBar
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.DefaultPaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
@@ -73,7 +73,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            DefaultPaymentCard()
 
             Spacer(modifier = Modifier.height(10.dp))
 
