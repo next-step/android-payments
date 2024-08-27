@@ -31,10 +31,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
-import nextstep.payments.ui.component.topbar.PaymentsDefaultTopBar
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
+import nextstep.payments.ui.component.topbar.PaymentsDefaultTopBar
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -76,6 +76,7 @@ fun NewCardRoute(
             onDismissRequest = {
                 showCardCompanyBottomSheet = false
             },
+            dragHandle = null,
             onCardCompanySelected = {
                 viewModel.setSelectedCard(it)
             }
