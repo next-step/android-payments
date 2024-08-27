@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.PaymentCardsRepository
-import nextstep.payments.data.model.Card
+import nextstep.payments.data.model.CreditCard
 
 class NewCardViewModel : ViewModel() {
 
@@ -42,7 +42,7 @@ class NewCardViewModel : ViewModel() {
 
     fun addCard(){
         PaymentCardsRepository.addCard(
-            Card(
+            CreditCard(
                 cardNumber = cardNumber.value,
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,

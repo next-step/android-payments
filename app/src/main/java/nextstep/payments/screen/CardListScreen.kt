@@ -22,7 +22,7 @@ import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
-import nextstep.payments.data.model.Card
+import nextstep.payments.data.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -31,18 +31,18 @@ fun CardListScreen(
     navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val cardList by viewModel.cardList.collectAsStateWithLifecycle()
+    val cardList by viewModel.creditCardList.collectAsStateWithLifecycle()
 
     CardListScreen(
         modifier = modifier,
         navigateToNewCard = navigateToNewCard,
-        cardList = cardList
+        creditCardList = cardList
     )
 }
 
 @Composable
 fun CardListScreen(
-    cardList: List<Card>,
+    creditCardList: List<CreditCard>,
     navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +51,7 @@ fun CardListScreen(
         topBar = {
             CardListTopBar(
                 onSaveClick = navigateToNewCard,
-                isShownAddText = cardList.size > 3
+                isShownAddText = creditCardList.size > 3
             )
         }
     ) { innerPadding ->
@@ -63,13 +63,13 @@ fun CardListScreen(
             verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(cardList.isEmpty()){
+            if(creditCardList.isEmpty()){
                 item {
                     AdditionCardText()
                 }
             }
-            if(cardList.isNotEmpty()){
-                items(cardList){ card ->
+            if(creditCardList.isNotEmpty()){
+                items(creditCardList){ card ->
                     PaymentCard(
                         cardNumber = stringResource(id = R.string.card_number,card.firstCardDigits,card.secondCardDigits),
                         ownerName = card.ownerName,
@@ -77,7 +77,7 @@ fun CardListScreen(
                     )
                 }
             }
-            if(cardList.size <= 3){
+            if(creditCardList.size <= 3){
                 item {
                     AdditionCard(
                         onClick = navigateToNewCard
@@ -116,8 +116,8 @@ private fun Preview1() {
 private fun Preview2() {
     PaymentsTheme {
         CardListScreen(
-            cardList = listOf(
-                Card(
+            creditCardList = listOf(
+                CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW",
                     expiredDate = "04 / 21",
@@ -134,26 +134,26 @@ private fun Preview2() {
 private fun Preview3() {
     PaymentsTheme {
         CardListScreen(
-            cardList = listOf(
-                Card(
+            creditCardList = listOf(
+                CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW",
                     expiredDate = "04 / 21",
                     password = "1234"
                 ),
-                Card(
+                CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW1",
                     expiredDate = "04 / 21",
                     password = "1234"
                 ),
-                Card(
+                CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW2",
                     expiredDate = "04 / 21",
                     password = "1234"
                 ),
-                Card(
+                CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW3",
                     expiredDate = "04 / 21",
