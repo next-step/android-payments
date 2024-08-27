@@ -27,6 +27,7 @@ fun CardNumberTextFiled(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
+        visualTransformation = CardNumberVisualTransformation(),
         singleLine = true,
         modifier = modifier,
     )
@@ -46,6 +47,7 @@ fun ExpiredDateTextFiled(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
+        visualTransformation = ExpiredDateVisualTransformation(),
         singleLine = true,
         modifier = modifier,
     )
