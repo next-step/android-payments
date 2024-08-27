@@ -18,15 +18,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.ui.component.NewCardTopBar
 import nextstep.payments.ui.component.DefaultPaymentCard
+import nextstep.payments.ui.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
+@Composable
+fun NewCardScreenRoute(
+    onBackClick: () -> Unit,
+    viewModel: NewCardViewModel = viewModel(),
+) {
+    NewCardScreen(
+        onBackClick = onBackClick,
+        viewModel = viewModel,
+    )
+}
 
 //Stateful한 NewCardScreen
 @Composable
 internal fun NewCardScreen(
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -44,6 +55,7 @@ internal fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         modifier = modifier,
+        onBackClick = onBackClick,
     )
 }
 
@@ -59,9 +71,10 @@ private fun NewCardScreen(
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = { onBackClick() }, onSaveClick = { TODO() }) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -125,7 +138,8 @@ fun NewCardScreenPreview() {
                 setExpiredDate("00 / 00")
                 setOwnerName("홍길동")
                 setPassword("password")
-            }
+            },
+            onBackClick = { }
         )
     }
 }
@@ -144,6 +158,7 @@ fun StatelessNewCardScreenPreview() {
             setExpiredDate = { },
             setOwnerName = { },
             setPassword = { },
+            onBackClick = { }
         )
     }
 }
