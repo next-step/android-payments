@@ -7,6 +7,10 @@ data class EditCardState(
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
+    val cardBrands: List<BankTypeModel> = emptyList(),
+    val showChangeBankType: Boolean = false,
+    val saved: Boolean = false,
+    val backPressed: Boolean = false,
     val bankType: BankTypeModel? = null,
     val message: String? = null,
 )
@@ -20,4 +24,6 @@ sealed interface EditCardEvent {
     data class OnInit(val cardId: String) : EditCardEvent
     data object OnBackClicked : EditCardEvent
     data object OnSaveClicked : EditCardEvent
+    data object OnCardClicked : EditCardEvent
+    data object OnDismissChangeBackType : EditCardEvent
 }

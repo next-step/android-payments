@@ -22,7 +22,8 @@ class EditCardActivity : ComponentActivity() {
                     }
                     EditCardRoute(
                         viewModel = viewModel,
-                        eventSink = viewModel::handleEvent
+                        eventSink = viewModel::handleEvent,
+                        onBackPressed = { finish() },
                     )
                 }
             }

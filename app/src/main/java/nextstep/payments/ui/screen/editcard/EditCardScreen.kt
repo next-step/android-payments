@@ -1,17 +1,22 @@
 package nextstep.payments.ui.screen.editcard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,18 +24,62 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
 import nextstep.payments.ui.component.topbar.PaymentsDefaultTopBar
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCardRoute(
-    modifier: Modifier = Modifier
+    viewModel: EditCardViewModel,
+    eventSink: (EditCardEvent) -> Unit,
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val sheetState = rememberModalBottomSheetState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.saved) {
+        if (state.saved) {
+            onBackPressed()
+        }
+    }
+
+    LaunchedEffect(state.backPressed) {
+        if (state.backPressed) {
+            onBackPressed()
+        }
+    }
+
+    if (state.showChangeBankType) {
+        CardCompanyModalBottomSheet(
+            sheetState = sheetState,
+            bankTypeModelList = state.cardBrands,
+            onDismissRequest = {
+                eventSink(EditCardEvent.OnDismissChangeBackType)
+            },
+            onCardCompanySelected = {
+                eventSink(EditCardEvent.OnBankTypeChanged(it))
+            }
+        )
+    }
+
+    EditCardScreen(
+        modifier = modifier,
+        cardNumber = state.cardNumber,
+        expiredDate = state.expiredDate,
+        ownerName = state.ownerName,
+        password = state.password,
+        bankType = state.bankType,
+        snackbarHostState = snackbarHostState,
+        eventSink = eventSink,
+    )
 }
 
 @Composable
@@ -41,20 +90,15 @@ internal fun EditCardScreen(
     password: String,
     bankType: BankTypeModel?,
     snackbarHostState: SnackbarHostState,
-    onSaveClick: () -> Unit,
-    onBackClick: () -> Unit,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
+    eventSink: (EditCardEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
             PaymentsDefaultTopBar(
                 title = stringResource(R.string.edit_card_top_bar_action_icon),
-                onBackClick = { onBackClick() },
-                onSaveClick = { onSaveClick() }
+                onBackClick = { eventSink(EditCardEvent.OnBackClicked) },
+                onSaveClick = { eventSink(EditCardEvent.OnSaveClicked) }
             )
         },
         snackbarHost = {
@@ -72,6 +116,7 @@ internal fun EditCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
+                modifier = Modifier.clickable { eventSink(EditCardEvent.OnCardClicked) },
                 cardNumber = cardNumber,
                 cardOwnerName = ownerName,
                 cardExpiredDate = expiredDate,
@@ -82,7 +127,7 @@ internal fun EditCardScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = setCardNumber,
+                onValueChange = { eventSink(EditCardEvent.OnCardNumberChanged(it)) },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 visualTransformation = CreditCardVisualTransformation(),
@@ -91,7 +136,7 @@ internal fun EditCardScreen(
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = setExpiredDate,
+                onValueChange = { eventSink(EditCardEvent.OnExpiredDateChanged(it)) },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 visualTransformation = ExpirationDateVisualTransformation(),
@@ -100,7 +145,7 @@ internal fun EditCardScreen(
 
             OutlinedTextField(
                 value = ownerName,
-                onValueChange = setOwnerName,
+                onValueChange = { eventSink(EditCardEvent.OnOwnerNameChanged(it)) },
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
@@ -108,7 +153,7 @@ internal fun EditCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = setPassword,
+                onValueChange = { eventSink(EditCardEvent.OnPasswordChanged(it)) },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -128,11 +173,6 @@ private fun EditCardScreenPreview() {
         password = "12345678",
         bankType = BankTypeModel.BC,
         snackbarHostState = SnackbarHostState(),
-        onSaveClick = {},
-        onBackClick = {},
-        setCardNumber = {},
-        setExpiredDate = {},
-        setOwnerName = {},
-        setPassword = {},
+        eventSink = {}
     )
 }
