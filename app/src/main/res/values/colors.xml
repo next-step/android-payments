@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bc_card">#FFFF3348</color>
+    <color name="shinhan_card">#FF0046FF</color>
+    <color name="kakao_bank">#FFFFE300</color>
+    <color name="hyundai_card">#FF000000</color>
+    <color name="woori_card">#FF0078B9</color>
+    <color name="lotte_card">#FFDA291C</color>
+    <color name="hana_card">#FF008485</color>
+    <color name="kb_card">#FF695F54</color>
 </resources>
