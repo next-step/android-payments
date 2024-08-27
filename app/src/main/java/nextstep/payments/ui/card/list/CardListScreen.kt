@@ -146,7 +146,6 @@ fun CardListScreenMany(
 @Preview
 @Composable
 private fun CardListScreenEmptyPreview() {
-    PaymentCardsRepository.removeAllCard()
     PaymentsTheme {
         CardListScreen(
             registeredCreditCards = RegisteredCreditCards(mutableListOf()),
