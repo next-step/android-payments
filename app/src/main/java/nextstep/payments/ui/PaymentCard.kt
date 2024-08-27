@@ -26,6 +26,7 @@ import nextstep.payments.ui.card.list.component.card.CardOwnerName
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
+    brandColor: Color = Color(0xFF333333)
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -33,7 +34,7 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = brandColor,
                 shape = RoundedCornerShape(5.dp),
             )
             .testTag(stringResource(id = R.string.test_tag_card_img))

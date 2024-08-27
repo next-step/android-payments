@@ -5,6 +5,7 @@
     <string name="text_card_owner_name">카드 소유자 이름(선택)</string>
     <string name="text_password">비밀번호</string>
     <string name="text_card_registration_comment">새로운 카드를 등록해 주세요.</string>
+    <string name="empty_card">공백 카드</string>
     <string name="bc_card">BC 카드</string>
     <string name="shinhan_card">신한 카드</string>
     <string name="kakao_bank">카카오 뱅크</string>

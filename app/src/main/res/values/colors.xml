@@ -15,4 +15,5 @@
     <color name="lotte_card">#FFDA291C</color>
     <color name="hana_card">#FF008485</color>
     <color name="kb_card">#FF695F54</color>
+    <color name="empty_card">#FFE5E5E5</color>
 </resources>
