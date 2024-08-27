@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Card
+import nextstep.payments.utils.maskCardNumber
 
 @Composable
 fun PaymentCard(
@@ -68,7 +69,7 @@ fun PaymentCard(
                 .padding(14.dp),
         ) {
             Text(
-                text = card.cardNumber,
+                text = card.cardNumber.maskCardNumber(),
                 color = Color.White,
                 fontWeight = FontWeight.Medium,
                 fontSize = 12.sp,
