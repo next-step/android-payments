@@ -237,6 +237,7 @@ private val previewDummyCardModel = CardModel(
     cardNumber = "1111222233334444",
     cardOwnerName = "이지훈",
     cardExpiredDate = "22 / 33",
+    cardPassword = "",
     bankType = BankTypeModel.SHINHAN,
 )
 

@@ -1,5 +1,7 @@
 package nextstep.payments.data
 
+import android.util.Log
+
 object PaymentCardsRepository {
 
     private val _cards = mutableListOf<CardData>()
@@ -11,5 +13,12 @@ object PaymentCardsRepository {
 
     fun getCard(cardId: String): CardData? {
         return _cards.find { it.id == cardId }
+    }
+
+    fun updateCard(card: CardData) {
+        val index = _cards.indexOfFirst { it.id == card.id }
+        if (index != -1) {
+            _cards[index] = card
+        }
     }
 }

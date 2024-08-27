@@ -24,6 +24,10 @@ class EditCardActivity : ComponentActivity() {
                         viewModel = viewModel,
                         eventSink = viewModel::handleEvent,
                         onBackPressed = { finish() },
+                        onSaved = {
+                            setResult(RESULT_OK)
+                            finish()
+                        }
                     )
                 }
             }

@@ -8,5 +8,5 @@ data class CardData(
     val cardOwnerName: String,
     val cardExpiredDate: String,
     val cardPassword: String,
-    val bankType: BankTypeData
+    val bankType: BankTypeData?
 )
