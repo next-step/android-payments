@@ -8,4 +8,11 @@ object PaymentCardsRepository {
     fun addCard(card: Card) {
         _cards.add(card)
     }
+
+    fun modifyCard(card: Card) {
+        val index = _cards.indexOfFirst { it.id == card.id }
+        if (index != -1) {
+            _cards[index] = card
+        }
+    }
 }

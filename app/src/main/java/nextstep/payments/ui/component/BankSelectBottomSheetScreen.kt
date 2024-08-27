@@ -8,7 +8,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import nextstep.payments.data.Bank
 import nextstep.payments.data.BankType
 
@@ -24,16 +26,22 @@ fun BankSelectBottomSheet(
     var selectedBank by remember {
         mutableStateOf(Bank())
     }
+    val coroutineScope = rememberCoroutineScope()
+
     LaunchedEffect(key1 = selectedBank) {
         if (selectedBank.bankType != BankType.NOT_SELECTED) {
             onDismiss(selectedBank)
-//            modalBottomSheetState.hide()
+            coroutineScope.launch {
+                modalBottomSheetState.hide()
+            }
         }
     }
-    
+
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
-        onDismissRequest = {}
+        onDismissRequest = {
+            onDismiss(selectedBank)
+        }
     ) {
         BankSelectRow(banks, onClick = {
             selectedBank = it

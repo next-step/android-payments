@@ -29,8 +29,11 @@ class PaymentCardListActivity : ComponentActivity() {
                     }
                 PaymentCardList(
                     cardUiState = cardUiState,
-                    onAddClick = {
+                    onAddClick = { card ->
                         val intent = Intent(this, NewCardActivity::class.java)
+                        if (card != null) {
+                            intent.putExtra("card", card)
+                        }
                         launcher.launch(intent)
                     }
                 )

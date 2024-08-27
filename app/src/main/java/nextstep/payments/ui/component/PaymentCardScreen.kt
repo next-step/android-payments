@@ -54,8 +54,16 @@ fun PaymentCard(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(cardCompany = "롯데카드", cardColor = Color.White)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PaymentCardBlackPaymentCardPreviewPreview() {
+    PaymentsTheme {
+        PaymentCard(cardCompany = "롯데카드", cardColor = Color.Black)
     }
 }
