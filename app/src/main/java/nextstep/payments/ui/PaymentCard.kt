@@ -63,12 +63,14 @@ fun PaymentCard(
 
         CardNumber(
             cardNumber = card.cardNumber,
-            modifier = modifier
+            modifier = Modifier
+                .size(width = 208.dp, height = 124.dp)
                 .padding(start = 14.dp, end = 14.dp, top = 75.dp)
         )
 
         Row(
-            modifier = modifier
+            modifier = Modifier
+                .size(width = 208.dp, height = 124.dp)
                 .padding(start = 14.dp, end = 14.dp, top = 95.dp)
         ) {
             CardOwnerName(
