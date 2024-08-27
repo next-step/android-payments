@@ -50,52 +50,32 @@ fun PaymentCard(
 @Composable
 fun PaymentCard(
     card: Card,
-    cardColor: Color,
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {}
 ) {
-    Box(
-        contentAlignment = Alignment.BottomEnd,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = cardColor,
-                shape = RoundedCornerShape(5.dp),
-            )
-            .padding(bottom = 10.dp)
-    ) {
-        Column(
+    Box {
+        content()
+
+        CardNumber(
+            cardNumber = card.cardNumber,
+            modifier = modifier
+                .padding(start = 14.dp, end = 14.dp, top = 75.dp)
+        )
+
+        Row(
+            modifier = modifier
+                .padding(start = 14.dp, end = 14.dp, top = 95.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(start = 14.dp, bottom = 10.dp)
-                    .size(width = 40.dp, height = 26.dp)
-                    .background(
-                        color = Color(0xFFCBBA64),
-                        shape = RoundedCornerShape(4.dp),
-                    )
+            CardOwnerName(
+                ownerName = card.ownerName,
             )
 
-            CardNumber(
-                cardNumber = card.cardNumber,
-                modifier = Modifier.padding(start = 14.dp, end = 14.dp)
+            Spacer(modifier = Modifier.weight(1f))
+
+            CardExpiredDate(
+                expiredDate = card.expiredDate,
             )
-
-            Row {
-                CardOwnerName(
-                    ownerName = card.ownerName,
-                    modifier = Modifier.padding(start = 14.dp)
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                CardExpiredDate(
-                    expiredDate = card.expiredDate,
-                    modifier = Modifier.padding(end = 14.dp)
-                )
-            }
         }
-
     }
 }
 
@@ -107,17 +87,16 @@ private fun PaymentCardPreview() {
 
 @Preview
 @Composable
-private fun PaymentCardInfoPreview() {
+private fun NewPaymentCardPreview() {
     PaymentCard(
-        Card(
+        card = Card(
             cardNumber = "1234-5678-1234-5678",
             ownerName = "홍길동",
             expiredDate = "12/34",
             password = "123",
             cardCompany = BcCard
         ),
-        cardColor = Color(0xff333333),
-        modifier = Modifier
-            .size(width = 208.dp, height = 124.dp)
+        modifier = Modifier.size(width = 208.dp, height = 124.dp),
+        content = { PaymentCard() }
     )
 }
