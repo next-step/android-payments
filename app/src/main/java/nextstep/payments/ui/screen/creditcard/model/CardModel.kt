@@ -5,6 +5,7 @@ import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 import nextstep.payments.ui.screen.newcard.model.toUiModel
 
 data class CardModel(
+    val id: String,
     val cardNumber: String,
     val cardOwnerName: String,
     val cardExpiredDate: String,
@@ -12,6 +13,7 @@ data class CardModel(
 )
 
 internal fun CardData.toUiModel() = CardModel(
+    id = id,
     cardNumber = cardNumber,
     cardOwnerName = cardOwnerName,
     cardExpiredDate = cardExpiredDate,
