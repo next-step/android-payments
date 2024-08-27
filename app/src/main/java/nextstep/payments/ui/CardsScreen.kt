@@ -1,0 +1,74 @@
+package nextstep.payments.ui
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import nextstep.payments.ui.theme.PaymentsTheme
+
+@Composable
+fun CardsScreen() {
+    Scaffold(
+        topBar = { CardsTopBar() },
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "새로운 카드를 등록해 주세요",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(32.dp)
+            )
+            CardList()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardsTopBar() {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "Payments",
+                fontSize = 22.sp
+            )
+        }
+    )
+}
+
+@Composable
+fun CardList() {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(36.dp),
+    ) {
+        item {
+            CardAdd()
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CardListPreview() {
+    PaymentsTheme {
+        CardsScreen()
+    }
+}

@@ -2,9 +2,13 @@ package nextstep.payments.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun PaymentCard(
+fun CardAdd(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -24,26 +28,27 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
-            )
+            ),
     ) {
-        Box(
-            modifier = modifier
-                .padding(start = 14.dp, bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
-        )
+
+        IconButton(
+            onClick = { /*TODO*/ },
+            modifier = modifier.fillMaxSize()
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add",
+            )
+        }
     }
 }
 
 @Preview
 @Composable
-fun PaymentCardPreview() {
+fun CardAddPreview() {
     PaymentsTheme {
-        PaymentCard()
+        CardAdd()
     }
 }
