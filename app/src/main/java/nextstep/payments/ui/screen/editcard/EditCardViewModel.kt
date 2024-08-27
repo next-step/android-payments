@@ -23,7 +23,7 @@ class EditCardViewModel : ViewModel() {
                 val bankList = BankTypeModel.entries
                 if (card != null) {
                     updateState {
-                        _state.value.copy(
+                        copy(
                             cardId = card.id,
                             cardNumber = card.cardNumber,
                             expiredDate = card.cardExpiredDate,
@@ -35,7 +35,7 @@ class EditCardViewModel : ViewModel() {
                     }
                 } else {
                     updateState {
-                        _state.value.copy(
+                        copy(
                             backPressed = true
                         )
                     }
@@ -44,7 +44,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnBankTypeChanged -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         bankType = event.bankType
                     )
                 }
@@ -52,7 +52,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnCardNumberChanged -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         cardNumber = event.cardNumber
                     )
                 }
@@ -60,7 +60,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnExpiredDateChanged -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         expiredDate = event.expiredDate
                     )
                 }
@@ -68,7 +68,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnOwnerNameChanged -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         ownerName = event.ownerName
                     )
                 }
@@ -76,7 +76,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnPasswordChanged -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         password = event.password
                     )
                 }
@@ -84,7 +84,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnCardClicked -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         showChangeBankType = true
                     )
                 }
@@ -92,7 +92,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnDismissChangeBackType -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         showChangeBankType = false
                     )
                 }
@@ -100,7 +100,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnBackClicked -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         backPressed = true
                     )
                 }
@@ -108,7 +108,7 @@ class EditCardViewModel : ViewModel() {
 
             is EditCardEvent.OnDismissSnackbar -> {
                 updateState {
-                    _state.value.copy(
+                    copy(
                         message = null
                     )
                 }
@@ -133,13 +133,13 @@ class EditCardViewModel : ViewModel() {
 
         if (originalCard != newCard) {
             PaymentCardsRepository.updateCard(newCard.toData())
-            updateState { _state.value.copy(saved = true) }
+            updateState { copy(saved = true) }
         } else {
-            updateState { _state.value.copy(message = "변경사항이 없습니다.") }
+            updateState { copy(message = "변경사항이 없습니다.") }
         }
     }
 
-    private fun updateState(newState: (EditCardState) -> EditCardState) {
+    private fun updateState(newState: EditCardState.() -> EditCardState) {
         _state.update(newState)
     }
 }
