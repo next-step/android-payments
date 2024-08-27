@@ -1,4 +1,4 @@
-package nextstep.payments.screen
+package nextstep.payments.screen.cardlist
 
 import nextstep.payments.data.model.CreditCard
 

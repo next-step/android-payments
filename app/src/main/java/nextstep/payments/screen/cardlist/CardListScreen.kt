@@ -1,4 +1,4 @@
-package nextstep.payments.screen
+package nextstep.payments.screen.cardlist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -131,7 +131,7 @@ private fun Preview1() {
 private fun Preview2() {
     PaymentsTheme {
         CardListScreen(
-            creditCardUiState =CreditCardUiState.One(
+            creditCardUiState = CreditCardUiState.One(
                 CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW",
