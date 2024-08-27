@@ -25,10 +25,12 @@ class NewCardViewModel : ViewModel() {
     val cardAdded : StateFlow<NewCardEvent> = _cardAdded.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
+        if(cardNumber.length > 16) return
         _cardNumber.value = cardNumber
     }
 
     fun setExpiredDate(expiredDate: String) {
+        if(expiredDate.length > 4) return
         _expiredDate.value = expiredDate
     }
 
@@ -37,6 +39,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun setPassword(password: String) {
+        if(password.length > 4) return
         _password.value = password
     }
 
