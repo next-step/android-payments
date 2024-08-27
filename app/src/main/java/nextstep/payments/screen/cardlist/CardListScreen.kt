@@ -78,7 +78,11 @@ fun CardListScreen(
                                 creditCardUiState.card.secondCardDigits
                             ),
                             ownerName = creditCardUiState.card.ownerName,
-                            expiredDate = creditCardUiState.card.expiredDate
+                            expiredDate = stringResource(
+                                id = R.string.expired_date,
+                                creditCardUiState.card.month,
+                                creditCardUiState.card.year
+                            )
                         )
                     }
                 }
