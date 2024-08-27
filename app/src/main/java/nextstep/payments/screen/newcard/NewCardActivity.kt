@@ -12,7 +12,7 @@ class NewCardActivity : ComponentActivity() {
             PaymentsTheme {
                 NewCardScreen(
                     navigateToCardList = { isAdded ->
-                        if(isAdded) setResult(RESULT_OK)
+                        if(isAdded == NewCardEvent.Success) setResult(RESULT_OK)
                         finish()
                     }
                 )

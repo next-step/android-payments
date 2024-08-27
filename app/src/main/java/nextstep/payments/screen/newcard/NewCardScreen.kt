@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +27,20 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun NewCardScreen(
     modifier: Modifier = Modifier,
-    navigateToCardList: (Boolean) -> Unit,
+    navigateToCardList: (NewCardEvent) -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = cardAdded) {
+        if(cardAdded != NewCardEvent.Pending){
+            navigateToCardList(cardAdded)
+        }
+    }
 
     NewCardScreen(
         modifier = modifier,
@@ -45,10 +53,10 @@ internal fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = {
-            navigateToCardList(false)
+            viewModel.cancelToAddCard()
         },
         onSaveClick = {
-            navigateToCardList(true)
+            viewModel.addCard()
         }
     )
 }

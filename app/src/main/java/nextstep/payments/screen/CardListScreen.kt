@@ -1,8 +1,5 @@
 package nextstep.payments.screen
 
-import android.content.Intent
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,30 +10,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.Card
-import nextstep.payments.screen.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
+    viewModel: CardListViewModel,
     navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val cardList by viewModel.cardList.collectAsStateWithLifecycle()
+
     CardListScreen(
         modifier = modifier,
         navigateToNewCard = navigateToNewCard,
-        cardList = emptyList()
+        cardList = cardList
     )
 }
 
@@ -50,7 +50,7 @@ fun CardListScreen(
         modifier = modifier,
         topBar = {
             CardListTopBar(
-                onSaveClick = { /*TODO*/ },
+                onSaveClick = navigateToNewCard,
                 isShownAddText = cardList.size > 3
             )
         }
@@ -105,6 +105,7 @@ fun AdditionCardText(
 private fun Preview1() {
     PaymentsTheme {
         CardListScreen(
+            viewModel = CardListViewModel(),
             navigateToNewCard = {}
         )
     }
