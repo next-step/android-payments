@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.enums.CardCompanyCategory
 import nextstep.payments.model.PaymentCardModel
 import nextstep.payments.ui.view.cardlist.screen.CardListEmptyScreen
 import nextstep.payments.ui.view.cardlist.screen.CardListManyScreen
@@ -120,6 +121,7 @@ private fun CardListScreenPreviewOne() {
     CardListScreen(
         uiState = CardListUiState.One(
             card = PaymentCardModel(
+                cardCompanyCategory = CardCompanyCategory.KAKAOBANK,
                 cardNumber = "1234-5678-9012-3456",
                 expiredDate = "12/25",
                 ownerName = "SeokJun Jeong",
@@ -138,6 +140,7 @@ private fun CardListScreenPreviewMany() {
         uiState = CardListUiState.Many(
             cards = List(size = 4) {
                 PaymentCardModel(
+                    cardCompanyCategory = CardCompanyCategory.KAKAOBANK,
                     cardNumber = "1234-5678-9012-3456",
                     expiredDate = "12/25",
                     ownerName = "SeokJun Jeong",

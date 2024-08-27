@@ -1,6 +1,7 @@
 package nextstep.payments.ui.view.newcard
 
 import android.app.Activity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,14 +10,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,18 +35,26 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import nextstep.payments.component.CardCompanySelector
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.enums.CardCompanyCategory
 
 @Composable
 fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
+    val isEdit by remember { mutableStateOf(viewModel.isEdit) }
+    val cardCompanyCategory by viewModel.cardCompanyCategory.collectAsStateWithLifecycle()
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val activity = LocalContext.current as? Activity
+    var showCardCompanySelectBottomSheet by remember {
+        mutableStateOf(cardCompanyCategory == null)
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.finishEvent.collectLatest {
@@ -47,10 +64,25 @@ fun NewCardScreen(
 
     NewCardScreen(
         modifier = modifier,
+        isEdit = isEdit,
+        cardCompanyCategory = cardCompanyCategory,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        showCardCompanySelectBottomSheet = showCardCompanySelectBottomSheet,
+        onCardCompanySelect = {
+            viewModel.setCardCompany(it)
+        },
+        onCardCompanySelectBottomSheetShowRequest = {
+            showCardCompanySelectBottomSheet = true
+        },
+        onCardCompanySelectBottomSheetDismissRequest = {
+            if (cardCompanyCategory == null) {
+                activity?.finish()
+            }
+            showCardCompanySelectBottomSheet = false
+        },
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -60,12 +92,19 @@ fun NewCardScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NewCardScreen(
+    isEdit: Boolean,
+    cardCompanyCategory: CardCompanyCategory?,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    showCardCompanySelectBottomSheet: Boolean,
+    onCardCompanySelect: (CardCompanyCategory) -> Unit,
+    onCardCompanySelectBottomSheetShowRequest: () -> Unit,
+    onCardCompanySelectBottomSheetDismissRequest: () -> Unit,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -74,6 +113,24 @@ private fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    if (showCardCompanySelectBottomSheet) {
+        val sheetState = rememberModalBottomSheetState()
+        ModalBottomSheet(
+            sheetState = sheetState,
+            containerColor = Color.White,
+            onDismissRequest = onCardCompanySelectBottomSheetDismissRequest,
+        ) {
+            CardCompanySelector(onCardCompanySelect = {
+                onCardCompanySelect(it)
+                coroutineScope.launch {
+                    sheetState.hide()
+                    onCardCompanySelectBottomSheetDismissRequest()
+                }
+            })
+        }
+    }
+
     Scaffold(
         topBar = {
             NewCardTopBar(
@@ -92,7 +149,23 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                modifier = if (isEdit) {
+                    Modifier
+                } else {
+                    Modifier.clickable(onClick = onCardCompanySelectBottomSheetShowRequest)
+                },
+                // apply를 사용해서 해봤는데 isEdit이 false일 때 click 처리가 안되는데 이유가 궁금합니다.
+//                modifier = Modifier.apply {
+//                    if (!isEdit) {
+//                        clickable(onClick = onCardCompanySelectBottomSheetShowRequest)
+//                    }
+//                },
+                cardCompanyCategory = cardCompanyCategory,
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -157,10 +230,16 @@ private fun NewCardScreen(
 @Composable
 private fun NewCardScreenPreviewStateless() {
     NewCardScreen(
+        isEdit = false,
+        cardCompanyCategory = CardCompanyCategory.KAKAOBANK,
         cardNumber = "1234 - 5678 - 1234 - 5678",
         expiredDate = "12 / 23",
         ownerName = "홍길동",
         password = "1234",
+        showCardCompanySelectBottomSheet = true,
+        onCardCompanySelect = {},
+        onCardCompanySelectBottomSheetShowRequest = {},
+        onCardCompanySelectBottomSheetDismissRequest = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},

@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.component.PaymentCardRegister
 import nextstep.payments.model.PaymentCardModel
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.enums.CardCompanyCategory
 
 @Composable
 fun CardListOneScreen(
@@ -23,6 +24,7 @@ fun CardListOneScreen(
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
         PaymentCard(
+            cardCompanyCategory = paymentCard.cardCompanyCategory,
             modifier = Modifier.clickable {
                 onPaymentCardClick(paymentCard)
             },
@@ -42,6 +44,7 @@ fun CardListOneScreen(
 private fun CardListOneScreenPreview() {
     CardListOneScreen(
         paymentCard = PaymentCardModel(
+            cardCompanyCategory = CardCompanyCategory.KAKAOBANK,
             cardNumber = "1234-5678-9012-3456",
             expiredDate = "12/25",
             ownerName = "SeokJun Jeong",
