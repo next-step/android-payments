@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,15 +20,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.component.AddPaymentCard
 import nextstep.payments.ui.component.RegisteredPaymentCard
+import nextstep.payments.ui.state.PaymentCardUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentCardsScreen(
+    viewModel: PaymentCardsViewModel = viewModel(),
     onAddCardClick: () -> Unit
 ) {
     val visible = false
+    val uiState by viewModel.cardsScreenState.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -53,6 +59,7 @@ fun PaymentCardsScreen(
     ) { paddingModifier ->
         PaymentCardList(
             modifier = Modifier.padding(paddingModifier),
+            uiState = uiState,
             onAddCardClick = onAddCardClick,
         )
     }
@@ -62,6 +69,7 @@ fun PaymentCardsScreen(
 @Composable
 fun PaymentCardList(
     modifier: Modifier = Modifier,
+    uiState: PaymentCardUiState,
     onAddCardClick: () -> Unit,
 ) {
     LazyColumn(
@@ -71,9 +79,8 @@ fun PaymentCardList(
         verticalArrangement = Arrangement.spacedBy(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val testValue = 2
-        when (testValue) {
-            0 -> {
+        when (uiState) {
+            PaymentCardUiState.Empty -> {
                 item {
                     Text(
                         modifier = modifier.fillMaxWidth(),
@@ -88,7 +95,7 @@ fun PaymentCardList(
                 }
             }
 
-            1 -> {
+            is PaymentCardUiState.One -> {
                 item {
                     RegisteredPaymentCard()
                 }
@@ -97,8 +104,8 @@ fun PaymentCardList(
                 }
             }
 
-            2 -> {
-                items(4) {
+            is PaymentCardUiState.Many -> {
+                items(uiState.cards.size) {
                     RegisteredPaymentCard()
                 }
             }
