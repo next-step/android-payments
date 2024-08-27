@@ -23,13 +23,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.R
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
-import nextstep.payments.ui.component.NewCardTopBar
+import nextstep.payments.ui.component.topbar.PaymentsDefaultTopBar
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
@@ -119,7 +121,8 @@ internal fun NewCardScreen(
 ) {
     Scaffold(
         topBar = {
-            NewCardTopBar(
+            PaymentsDefaultTopBar(
+                title = stringResource(R.string.new_card_top_bar_title),
                 onBackClick = { onBackClick() },
                 onSaveClick = { onSaveClick() }
             )
