@@ -12,6 +12,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -39,6 +40,7 @@ fun EditCardRoute(
     viewModel: EditCardViewModel,
     eventSink: (EditCardEvent) -> Unit,
     onBackPressed: () -> Unit,
+    onSaved: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -47,13 +49,23 @@ fun EditCardRoute(
 
     LaunchedEffect(state.saved) {
         if (state.saved) {
-            onBackPressed()
+            onSaved()
         }
     }
 
     LaunchedEffect(state.backPressed) {
         if (state.backPressed) {
             onBackPressed()
+        }
+    }
+
+    LaunchedEffect(state.message) {
+        state.message?.let {
+            val result = snackbarHostState.showSnackbar(it)
+            when (result) {
+                SnackbarResult.Dismissed -> viewModel.handleEvent(EditCardEvent.OnDismissSnackbar)
+                SnackbarResult.ActionPerformed -> Unit
+            }
         }
     }
 
