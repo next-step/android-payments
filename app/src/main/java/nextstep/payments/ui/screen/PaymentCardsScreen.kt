@@ -25,14 +25,26 @@ import nextstep.payments.ui.component.AddPaymentCard
 import nextstep.payments.ui.component.RegisteredPaymentCard
 import nextstep.payments.ui.state.PaymentCardUiState
 
+@Composable
+fun PaymentCardsScreenRoute(
+    onAddCardClick: () -> Unit,
+    viewModel: PaymentCardsViewModel = viewModel(),
+) {
+    val uiState by viewModel.cardsScreenState.collectAsState()
+    PaymentCardsScreen(
+        uiState = uiState,
+        onAddCardClick = onAddCardClick
+    )
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentCardsScreen(
-    viewModel: PaymentCardsViewModel = viewModel(),
+    uiState: PaymentCardUiState,
     onAddCardClick: () -> Unit
 ) {
     val visible = false
-    val uiState by viewModel.cardsScreenState.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -117,6 +129,7 @@ fun PaymentCardList(
 @Composable
 fun PaymentCardsScreenPreview() {
     PaymentCardsScreen(
+        uiState = PaymentCardUiState.Empty,
         onAddCardClick = {}
     )
 }
