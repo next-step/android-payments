@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.component.CardListTopBar
 import nextstep.payments.ui.card.newcard.NewCardActivity
@@ -88,6 +89,7 @@ private fun CardListScreenPreview(@PreviewParameter(CardListScreenPreviewParamet
 
 private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
     val card1 = Card(
+        bankType = BankType.BC,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "08/27",
         ownerName = "jay kang",
@@ -95,6 +97,7 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
     )
 
     val card2 = Card(
+        bankType = BankType.KB,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "06/22",
         ownerName = "jihoi kang",

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 
 @Composable
@@ -31,7 +32,7 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = Color(card?.bankType?.backgroundColor ?: 0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp),
@@ -85,6 +86,7 @@ fun PaymentCard(
 @Composable
 private fun PaymentCardPreview() {
     val card = Card(
+        bankType = BankType.KB,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "08/27",
         ownerName = "jay kang",
