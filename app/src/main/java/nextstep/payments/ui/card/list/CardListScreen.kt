@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
-import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
@@ -85,6 +85,7 @@ fun CardListScreenEmpty(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 73.dp)
+                    .testTag(stringResource(id = R.string.test_tag_comment))
             )
 
             EmptyCardImage(
@@ -108,7 +109,9 @@ fun CardListScreenOne(
 ) {
     Scaffold(topBar = { CardListTopBar() }) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxWidth()
         ) {
             CardLazyColumn(
                 cards = cards,
@@ -119,7 +122,7 @@ fun CardListScreenOne(
                 cardColor = Color(0xFFE5E5E5),
                 onAddCard = onAddCard,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .align(CenterHorizontally)
                     .padding(
                         start = 73.dp, end = 73.dp, top = 12.dp, bottom = 24.dp
                     )
@@ -140,9 +143,14 @@ fun CardListScreenMany(
         )
     }) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxWidth()
         ) {
-            CardLazyColumn(cards)
+            CardLazyColumn(
+                cards = cards,
+                modifier = Modifier.align(CenterHorizontally)
+            )
         }
     }
 }

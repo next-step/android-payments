@@ -29,7 +29,7 @@ class RegisteredCreditCardsScreenTest {
         composeRule
             .setContent {
                 CardListScreen(
-                    registeredCreditCards =  RegisteredCreditCards(mutableListOf()),
+                    registeredCreditCards = RegisteredCreditCards(mutableListOf()),
                     onAddCard = {}
                 )
             }

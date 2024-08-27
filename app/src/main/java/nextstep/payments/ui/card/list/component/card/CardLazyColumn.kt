@@ -21,7 +21,8 @@ fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
         ) {
             PaymentCard(
                 card = cards[it],
-                modifier = Modifier.size(width = 208.dp, height = 124.dp),
+                modifier = Modifier
+                    .size(width = 208.dp, height = 124.dp),
                 content = { PaymentCard() }
             )
         }
