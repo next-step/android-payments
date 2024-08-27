@@ -15,8 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.BankType
@@ -37,6 +40,15 @@ fun PaymentCard(
             )
             .padding(14.dp),
     ) {
+        card?.bankType?.let {
+            Text(
+                text = stringResource(id = it.titleRes),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+            )
+        }
+
         Box(
             modifier = Modifier
                 .padding(bottom = 10.dp)
@@ -84,16 +96,19 @@ fun PaymentCard(
 
 @Preview
 @Composable
-private fun PaymentCardPreview() {
-    val card = Card(
-        bankType = BankType.KB,
-        cardNumber = "0000 - 0000 - 0000 - 0000",
-        expiredDate = "08/27",
-        ownerName = "jay kang",
-        password = "1234",
+private fun PaymentCardPreview(@PreviewParameter(PaymentCardPreviewParameterProvider::class) param: Card?) {
+    PaymentCard(card = param)
+}
+
+private class PaymentCardPreviewParameterProvider : PreviewParameterProvider<Card?> {
+    override val values: Sequence<Card?> = sequenceOf(
+        null,
+        Card(
+            bankType = BankType.KB,
+            cardNumber = "0000 - 0000 - 0000 - 0000",
+            expiredDate = "08/27",
+            ownerName = "jay kang",
+            password = "1234",
+        )
     )
-    Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
-        PaymentCard()
-        PaymentCard(card = card)
-    }
 }

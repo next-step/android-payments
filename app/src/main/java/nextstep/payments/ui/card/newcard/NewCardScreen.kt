@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -19,8 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.model.BankType
+import nextstep.payments.ui.card.newcard.component.BankSelectBottomSheet
 import nextstep.payments.ui.card.newcard.component.NewCardTopBar
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.card.newcard.component.NewPaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -29,17 +34,20 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
     backToCardList: () -> Unit,
 ) {
+    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) backToCardList()
     }
 
     NewCardScreen(
+        bankType = bankType,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -52,10 +60,18 @@ fun NewCardScreen(
         onClickBack = backToCardList,
         modifier = modifier,
     )
+
+    if (showBankTypeBottomSheet) {
+        BankSelectBottomSheet(
+            onClickBank = viewModel::setBankType,
+            onDismissRequest = { showBankTypeBottomSheet = false },
+        )
+    }
 }
 
 @Composable
 private fun NewCardScreen(
+    bankType: BankType?,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -81,7 +97,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            NewPaymentCard(bankType = bankType)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -123,25 +139,10 @@ private fun NewCardScreen(
 
 @Preview
 @Composable
-private fun NewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("0000 - 0000 - 0000 - 0000")
-                setExpiredDate("00 / 00")
-                setOwnerName("강지회")
-                setPassword("1234")
-            },
-            backToCardList = {},
-        )
-    }
-}
-
-@Preview
-@Composable
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
+            bankType = BankType.BC,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "강지회",
