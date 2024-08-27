@@ -84,6 +84,7 @@ internal fun CreditCardScreen(
                 OneCardSection(
                     cardModel = state.cards.first(),
                     onAddClick = onAddClick,
+                    onCardClick = onCardClick,
                     modifier = maxScreenModifier
                 )
             }
@@ -130,6 +131,7 @@ private fun EmptySection(
 private fun OneCardSection(
     cardModel: CardModel,
     onAddClick: () -> Unit,
+    onCardClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -137,6 +139,7 @@ private fun OneCardSection(
         contentDescription = context.getString(R.string.credit_card_section_one)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
         PaymentCard(
+            modifier = Modifier.clickable { onCardClick(cardModel.id) },
             cardNumber = cardModel.cardNumber,
             cardOwnerName = cardModel.cardOwnerName,
             cardExpiredDate = cardModel.cardExpiredDate,
