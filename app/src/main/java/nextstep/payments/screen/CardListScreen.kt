@@ -31,18 +31,18 @@ fun CardListScreen(
     navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val cardList by viewModel.creditCardList.collectAsStateWithLifecycle()
+    val creditCardUiState by viewModel.cardListUiState.collectAsStateWithLifecycle()
 
     CardListScreen(
         modifier = modifier,
         navigateToNewCard = navigateToNewCard,
-        creditCardList = cardList
+        creditCardUiState = creditCardUiState
     )
 }
 
 @Composable
 fun CardListScreen(
-    creditCardList: List<CreditCard>,
+    creditCardUiState: CreditCardUiState,
     navigateToNewCard : () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +51,7 @@ fun CardListScreen(
         topBar = {
             CardListTopBar(
                 onSaveClick = navigateToNewCard,
-                isShownAddText = creditCardList.size > 3
+                isShownAddText = creditCardUiState is CreditCardUiState.Many
             )
         }
     ) { innerPadding ->
@@ -63,21 +63,36 @@ fun CardListScreen(
             verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(creditCardList.isEmpty()){
-                item {
-                    AdditionCardText()
+            when(creditCardUiState){
+                is CreditCardUiState.Empty -> {
+                    item {
+                        AdditionCardText()
+                    }
+                }
+                is CreditCardUiState.One -> {
+                    item {
+                        PaymentCard(
+                            cardNumber = stringResource(
+                                id = R.string.card_number,
+                                creditCardUiState.card.firstCardDigits,
+                                creditCardUiState.card.secondCardDigits
+                            ),
+                            ownerName = creditCardUiState.card.ownerName,
+                            expiredDate = creditCardUiState.card.expiredDate
+                        )
+                    }
+                }
+                is CreditCardUiState.Many -> {
+                    items(creditCardUiState.cards){ card ->
+                        PaymentCard(
+                            cardNumber = stringResource(id = R.string.card_number,card.firstCardDigits,card.secondCardDigits),
+                            ownerName = card.ownerName,
+                            expiredDate = card.expiredDate
+                        )
+                    }
                 }
             }
-            if(creditCardList.isNotEmpty()){
-                items(creditCardList){ card ->
-                    PaymentCard(
-                        cardNumber = stringResource(id = R.string.card_number,card.firstCardDigits,card.secondCardDigits),
-                        ownerName = card.ownerName,
-                        expiredDate = card.expiredDate
-                    )
-                }
-            }
-            if(creditCardList.size <= 3){
+            if(creditCardUiState !is CreditCardUiState.Many){
                 item {
                     AdditionCard(
                         onClick = navigateToNewCard
@@ -116,7 +131,7 @@ private fun Preview1() {
 private fun Preview2() {
     PaymentsTheme {
         CardListScreen(
-            creditCardList = listOf(
+            creditCardUiState =CreditCardUiState.One(
                 CreditCard(
                     cardNumber = "1234 - 1234 - 1234 - 1234",
                     ownerName = "CREW",
@@ -134,30 +149,32 @@ private fun Preview2() {
 private fun Preview3() {
     PaymentsTheme {
         CardListScreen(
-            creditCardList = listOf(
-                CreditCard(
-                    cardNumber = "1234 - 1234 - 1234 - 1234",
-                    ownerName = "CREW",
-                    expiredDate = "04 / 21",
-                    password = "1234"
-                ),
-                CreditCard(
-                    cardNumber = "1234 - 1234 - 1234 - 1234",
-                    ownerName = "CREW1",
-                    expiredDate = "04 / 21",
-                    password = "1234"
-                ),
-                CreditCard(
-                    cardNumber = "1234 - 1234 - 1234 - 1234",
-                    ownerName = "CREW2",
-                    expiredDate = "04 / 21",
-                    password = "1234"
-                ),
-                CreditCard(
-                    cardNumber = "1234 - 1234 - 1234 - 1234",
-                    ownerName = "CREW3",
-                    expiredDate = "04 / 21",
-                    password = "1234"
+            creditCardUiState = CreditCardUiState.Many(
+                cards = listOf(
+                    CreditCard(
+                        cardNumber = "1234 - 1234 - 1234 - 1234",
+                        ownerName = "CREW",
+                        expiredDate = "04 / 21",
+                        password = "1234"
+                    ),
+                    CreditCard(
+                        cardNumber = "1234 - 1234 - 1234 - 1234",
+                        ownerName = "CREW1",
+                        expiredDate = "04 / 21",
+                        password = "1234"
+                    ),
+                    CreditCard(
+                        cardNumber = "1234 - 1234 - 1234 - 1234",
+                        ownerName = "CREW2",
+                        expiredDate = "04 / 21",
+                        password = "1234"
+                    ),
+                    CreditCard(
+                        cardNumber = "1234 - 1234 - 1234 - 1234",
+                        ownerName = "CREW3",
+                        expiredDate = "04 / 21",
+                        password = "1234"
+                    )
                 )
             ),
             navigateToNewCard = {}
