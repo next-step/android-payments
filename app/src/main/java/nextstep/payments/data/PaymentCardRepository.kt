@@ -1,7 +1,5 @@
 package nextstep.payments.data
 
-import android.util.Log
-
 object PaymentCardsRepository {
 
     private val _cards = mutableListOf<CardData>()
