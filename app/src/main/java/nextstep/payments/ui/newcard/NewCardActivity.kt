@@ -10,7 +10,15 @@ class NewCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                NewCardScreen(
+                    onBackClick = {
+                        finish()
+                    },
+                    navigateToCardList = {
+                        setResult(RESULT_OK)
+                        finish()
+                    },
+                )
             }
         }
     }
