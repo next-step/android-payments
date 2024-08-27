@@ -24,6 +24,7 @@ fun EmptyCardItem(
 ) {
     Box(
         modifier = modifier
+            .cardDefaultSize()
             .clip(RoundedCornerShape(5.dp))
             .background(EmptyCardBgColor)
             .clickable { onClickItem() }
@@ -40,7 +41,6 @@ fun EmptyCardItem(
 @Composable
 private fun EmptyCardItemPreview() {
     EmptyCardItem(
-        onClickItem = {},
-        modifier = Modifier.cardDefaultSize()
+        onClickItem = {}
     )
 }

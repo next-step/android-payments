@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.component.EmptyCardItem
-import nextstep.payments.ui.ext.cardDefaultSize
 
 
 @Composable
@@ -33,10 +32,7 @@ fun EmptyCardScreen(
             style = MaterialTheme.typography.bodyLarge
         )
         Spacer(modifier = Modifier.height(32.dp))
-        EmptyCardItem(
-            onClickItem = onClickItem,
-            modifier = Modifier.cardDefaultSize()
-        )
+        EmptyCardItem(onClickItem = onClickItem)
     }
 }
 
