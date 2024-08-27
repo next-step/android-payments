@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import nextstep.payments.ui.screen.creditcard.CreditCardRoute
 import nextstep.payments.ui.screen.creditcard.CreditCardViewModel
+import nextstep.payments.ui.screen.editcard.EditCardActivity
 import nextstep.payments.ui.screen.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -26,7 +27,15 @@ class MainActivity : ComponentActivity() {
                 }
             }
             PaymentsTheme {
-                CreditCardRoute(viewModel = viewModel) {
+                CreditCardRoute(
+                    viewModel = viewModel,
+                    onCardClick = {
+                        val intent = Intent(this, EditCardActivity::class.java).apply {
+                            putExtra("CARD_ID", it)
+                        }
+                        launcher.launch(intent)
+                    },
+                ) {
                     val intent = Intent(this, NewCardActivity::class.java)
                     launcher.launch(intent)
                 }
