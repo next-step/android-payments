@@ -3,4 +3,12 @@
     <string name="payments">Payments</string>
     <string name="register_new_card">새로운 카드를 등록해 주세요</string>
     <string name="add">추가</string>
+    <string name="bc_card">BC카드</string>
+    <string name="shinhan_card">신한카드</string>
+    <string name="kakaobank">카카오뱅크</string>
+    <string name="hyundai_card">현대카드</string>
+    <string name="woori_card">우리카드</string>
+    <string name="lotte_card">롯데카드</string>
+    <string name="hana_card">하나카드</string>
+    <string name="kb_card">국민카드</string>
 </resources>
