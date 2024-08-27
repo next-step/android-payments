@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,7 +91,9 @@ fun PaymentCard(
 @Preview
 @Composable
 private fun PaymentCardPreview() {
-    PaymentCard()
+    PaymentCard(
+        brandColor = colorResource(id = BcCard.brandColor)
+    )
 }
 
 @Preview
@@ -102,7 +105,7 @@ private fun NewPaymentCardPreview() {
             ownerName = "홍길동",
             expiredDate = "12/34",
             password = "123",
-            cardCompany = BcCard
+            brandColor = colorResource(id = BcCard.brandColor)
         ),
         modifier = Modifier.size(width = 208.dp, height = 124.dp),
         content = { PaymentCard() }

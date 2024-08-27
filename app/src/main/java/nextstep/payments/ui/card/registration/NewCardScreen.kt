@@ -33,7 +33,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
 import nextstep.payments.data.BankType
-import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.EmptyCard
 import nextstep.payments.ui.PaymentCard
@@ -126,7 +125,7 @@ private fun NewCardScreen(
                         expiredDate = expiredDate,
                         ownerName = ownerName,
                         password = password,
-                        cardCompany = BcCard
+                        brandColor = brandColor
                     )
                 )
             })
