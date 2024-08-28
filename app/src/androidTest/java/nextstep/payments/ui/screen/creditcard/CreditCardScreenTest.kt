@@ -31,7 +31,11 @@ internal class CreditCardScreenTest : BaseComposeTest() {
     fun setUp() {
         onAddClickCount = 0
         composeTestRule.setContent {
-            CreditCardScreen(state = state.value, onAddClick = { onAddClickCount += 1 })
+            CreditCardScreen(
+                state = state.value,
+                onAddClick = { onAddClickCount += 1 },
+                onCardClick = {}
+            )
         }
     }
 
