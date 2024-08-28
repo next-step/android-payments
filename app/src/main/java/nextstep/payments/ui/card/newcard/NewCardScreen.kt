@@ -42,6 +42,7 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val saveEnabled by viewModel.saveEnabled.collectAsStateWithLifecycle()
     var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(viewModel.editCard == null) }
 
     LaunchedEffect(cardAdded) {
@@ -57,6 +58,7 @@ fun NewCardScreen(
 
     NewCardScreen(
         isEdit = viewModel.editCard != null,
+        saveEnabled = saveEnabled,
         bankType = bankType,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
@@ -83,6 +85,7 @@ fun NewCardScreen(
 @Composable
 private fun NewCardScreen(
     isEdit: Boolean,
+    saveEnabled: Boolean,
     bankType: BankType?,
     cardNumber: String,
     expiredDate: String,
@@ -98,7 +101,7 @@ private fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(isEdit = isEdit, onBackClick = onClickBack, onSaveClick = onClickSave) },
+        topBar = { NewCardTopBar(isEdit = isEdit, enabled = saveEnabled, onBackClick = onClickBack, onSaveClick = onClickSave) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -162,6 +165,7 @@ private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             isEdit = false,
+            saveEnabled = true,
             bankType = BankType.BC,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",

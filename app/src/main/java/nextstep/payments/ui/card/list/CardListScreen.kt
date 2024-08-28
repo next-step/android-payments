@@ -99,6 +99,7 @@ private fun CardListScreenPreview(@PreviewParameter(CardListScreenPreviewParamet
 
 private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
     val card1 = Card(
+        id = 1,
         bankType = BankType.BC,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "08/27",
@@ -107,6 +108,7 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
     )
 
     val card2 = Card(
+        id = 2,
         bankType = BankType.KB,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "06/22",

@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.data.PaymentCardRepository
@@ -37,6 +40,21 @@ class NewCardViewModel(
 
     private val _password = MutableStateFlow(editCard?.password ?: "")
     val password: StateFlow<String> = _password.asStateFlow()
+
+    val saveEnabled: StateFlow<Boolean> = combine(
+        bankType,
+        cardNumber,
+        expiredDate,
+        ownerName,
+    ) { bankType, cardNumber, expiredDate, ownerName ->
+        editCard?.let {
+            it.bankType != bankType || it.cardNumber != cardNumber || it.expiredDate != expiredDate || it.ownerName != ownerName
+        } ?: true
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = false,
+    )
 
     private val _sideEffect: Channel<NewCardSideEffect> = Channel()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -69,6 +87,7 @@ class NewCardViewModel(
         }
 
         val card = Card(
+            id = editCard?.id ?: 0,
             bankType = bankType,
             cardNumber = cardNumber.value,
             expiredDate = expiredDate.value,

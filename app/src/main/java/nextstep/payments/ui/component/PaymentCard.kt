@@ -101,6 +101,7 @@ private fun PaymentCardPreview(@PreviewParameter(PaymentCardPreviewParameterProv
 private class PaymentCardPreviewParameterProvider : PreviewParameterProvider<Card> {
     override val values: Sequence<Card> = sequenceOf(
         Card(
+            id = 1,
             bankType = BankType.KB,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "08/27",
