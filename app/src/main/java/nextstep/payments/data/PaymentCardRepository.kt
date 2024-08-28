@@ -19,4 +19,8 @@ object PaymentCardsRepository {
             _cards[index] = card
         }
     }
+
+    fun remove(cardId: String) {
+        _cards.removeIf { it.id == cardId }
+    }
 }
