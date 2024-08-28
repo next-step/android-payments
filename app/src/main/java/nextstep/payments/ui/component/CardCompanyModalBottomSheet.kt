@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -42,13 +43,14 @@ fun CardCompanyModalBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onCardCompanySelected: (BankTypeModel) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
 ) {
     val scope = rememberCoroutineScope()
     ModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
-        dragHandle = null,
+        dragHandle = dragHandle,
         properties = ModalBottomSheetProperties(
             securePolicy = SecureFlagPolicy.Inherit,
             isFocusable = true,

@@ -18,3 +18,11 @@
     - [ ] ~~test: 카드사 옵션 필수 사항으로 적용이 되는지 확인 -> Route에 Snackbar와 State가 있다 보니 Screen 테스트로는 한계가 있음~~
 - [x] 카드 목록에 카드사 정보 전달
 - [x] test: PaymentCard의 color에 반영이 되는지 확인
+
+## step4
+
+- [x] 카드 수정 화면 추가
+- [x] ViewModel에 Model 및 Event 정리
+- [x] 카드 수정 변경사항이 발생했을 때만 수정 가능 하도록 설정
+- [x] 수정 내용을 repository까지 전달
+- [x] 수정 후 카드 목록에 갔을 때 데이터 동기화 되게 설정

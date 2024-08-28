@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.ui.component.card.PaymentCard
-import nextstep.payments.ui.component.card.PaymentCardLayoutDefaults
 import nextstep.payments.ui.component.card.PaymentCardLayout
+import nextstep.payments.ui.component.card.PaymentCardLayoutDefaults
 import nextstep.payments.ui.screen.creditcard.model.CardModel
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 
@@ -40,6 +40,7 @@ import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 fun CreditCardRoute(
     viewModel: CreditCardViewModel,
     modifier: Modifier = Modifier,
+    onCardClick: (id: String) -> Unit,
     onAddClick: () -> Unit,
 ) {
     val state by viewModel.paymentCardsUiState.collectAsStateWithLifecycle()
@@ -47,6 +48,7 @@ fun CreditCardRoute(
     CreditCardScreen(
         modifier = modifier,
         onAddClick = onAddClick,
+        onCardClick = onCardClick,
         state = state,
     )
 }
@@ -55,6 +57,7 @@ fun CreditCardRoute(
 internal fun CreditCardScreen(
     state: CreditCardUiState,
     onAddClick: () -> Unit,
+    onCardClick: (id: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -81,6 +84,7 @@ internal fun CreditCardScreen(
                 OneCardSection(
                     cardModel = state.cards.first(),
                     onAddClick = onAddClick,
+                    onCardClick = onCardClick,
                     modifier = maxScreenModifier
                 )
             }
@@ -88,7 +92,8 @@ internal fun CreditCardScreen(
             state.isManyCard() -> {
                 ManyCardSection(
                     cards = state.cards,
-                    modifier = maxScreenModifier
+                    onCardClick = onCardClick,
+                    modifier = maxScreenModifier,
                 )
             }
         }
@@ -126,6 +131,7 @@ private fun EmptySection(
 private fun OneCardSection(
     cardModel: CardModel,
     onAddClick: () -> Unit,
+    onCardClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -133,6 +139,7 @@ private fun OneCardSection(
         contentDescription = context.getString(R.string.credit_card_section_one)
     }, horizontalAlignment = Alignment.CenterHorizontally) {
         PaymentCard(
+            modifier = Modifier.clickable { onCardClick(cardModel.id) },
             cardNumber = cardModel.cardNumber,
             cardOwnerName = cardModel.cardOwnerName,
             cardExpiredDate = cardModel.cardExpiredDate,
@@ -166,7 +173,8 @@ private fun AddCreditCard(
 @Composable
 private fun ManyCardSection(
     modifier: Modifier = Modifier,
-    cards: List<CardModel>
+    cards: List<CardModel>,
+    onCardClick: (id: String) -> Unit
 ) {
     val context = LocalContext.current
     LazyColumn(
@@ -180,6 +188,7 @@ private fun ManyCardSection(
     ) {
         items(cards) { card ->
             PaymentCard(
+                modifier = Modifier.clickable { onCardClick(card.id) },
                 cardNumber = card.cardNumber,
                 cardOwnerName = card.cardOwnerName,
                 cardExpiredDate = card.cardExpiredDate,
@@ -224,9 +233,11 @@ private fun CreditCardTopBarPreview() {
 }
 
 private val previewDummyCardModel = CardModel(
+    id = "",
     cardNumber = "1111222233334444",
     cardOwnerName = "이지훈",
     cardExpiredDate = "22 / 33",
+    cardPassword = "",
     bankType = BankTypeModel.SHINHAN,
 )
 
@@ -235,6 +246,7 @@ private val previewDummyCardModel = CardModel(
 fun CreditCardZeroScreenPreview() {
     CreditCardScreen(
         state = CreditCardUiState(),
+        onCardClick = { },
         onAddClick = { }
     )
 }
@@ -246,6 +258,7 @@ fun CreditCardOneScreenPreview() {
         state = CreditCardUiState(
             cards = listOf(previewDummyCardModel),
         ),
+        onCardClick = { },
         onAddClick = { }
     )
 }
@@ -257,6 +270,7 @@ fun CreditCardManyScreenPreview() {
         state = CreditCardUiState(
             cards = List(5) { previewDummyCardModel }
         ),
+        onCardClick = { },
         onAddClick = { }
     )
 }

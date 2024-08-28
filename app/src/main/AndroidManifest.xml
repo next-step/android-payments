@@ -25,6 +25,8 @@
         </activity>
 
         <activity android:name=".ui.screen.newcard.NewCardActivity" />
+
+        <activity android:name=".ui.screen.editcard.EditCardActivity" />
     </application>
 
 </manifest>

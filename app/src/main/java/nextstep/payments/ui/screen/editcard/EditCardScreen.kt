@@ -1,4 +1,4 @@
-package nextstep.payments.ui.screen.newcard
+package nextstep.payments.ui.screen.editcard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,15 +12,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,7 +26,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.ui.component.CardCompanyModalBottomSheet
 import nextstep.payments.ui.component.card.PaymentCard
@@ -36,96 +33,69 @@ import nextstep.payments.ui.component.text.CreditCardVisualTransformation
 import nextstep.payments.ui.component.text.ExpirationDateVisualTransformation
 import nextstep.payments.ui.component.topbar.PaymentsDefaultTopBar
 import nextstep.payments.ui.screen.newcard.model.BankTypeModel
-import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardRoute(
+fun EditCardRoute(
+    state: EditCardState,
+    eventSink: (EditCardEvent) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
-    onBackClick: () -> Unit,
-    navigateToCardList: () -> Unit,
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val selectedBank by viewModel.selectedCard.collectAsStateWithLifecycle()
-    val cardBrands by viewModel.cardBrands.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
-    val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
-        confirmValueChange = { false }
-    )
+    val sheetState = rememberModalBottomSheetState()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.snackbarMessages.collect { snackbarMessage ->
-            snackbarHostState.showSnackbar(snackbarMessage)
+    LaunchedEffect(state.message) {
+        state.message?.let {
+            val result = snackbarHostState.showSnackbar(it)
+            when (result) {
+                SnackbarResult.Dismissed -> eventSink(EditCardEvent.OnDismissSnackbar)
+                SnackbarResult.ActionPerformed -> Unit
+            }
         }
     }
 
-    if (showCardCompanyBottomSheet) {
+    if (state.showChangeBankType) {
         CardCompanyModalBottomSheet(
-            sheetState = cardCompanyModalBottomSheetState,
-            bankTypeModelList = cardBrands,
+            sheetState = sheetState,
+            bankTypeModelList = state.cardBrands,
             onDismissRequest = {
-                showCardCompanyBottomSheet = false
+                eventSink(EditCardEvent.OnDismissChangeBackType)
             },
-            dragHandle = null,
             onCardCompanySelected = {
-                viewModel.setSelectedCard(it)
+                eventSink(EditCardEvent.OnBankTypeChanged(it))
             }
         )
     }
 
-    NewCardScreen(
+    EditCardScreen(
         modifier = modifier,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        cardNumber = state.cardNumber,
+        expiredDate = state.expiredDate,
+        ownerName = state.ownerName,
+        password = state.password,
+        bankType = state.bankType,
         snackbarHostState = snackbarHostState,
-        bankType = selectedBank,
-        onBackClick = onBackClick,
-        onCardClick = {
-            showCardCompanyBottomSheet = true
-        },
-        onSaveClick = viewModel::addCard,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
+        eventSink = eventSink,
     )
 }
 
 @Composable
-internal fun NewCardScreen(
+internal fun EditCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
     bankType: BankTypeModel?,
     snackbarHostState: SnackbarHostState,
-    onSaveClick: () -> Unit,
-    onBackClick: () -> Unit,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
-    onCardClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    eventSink: (EditCardEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
             PaymentsDefaultTopBar(
-                title = stringResource(R.string.new_card_top_bar_title),
-                onBackClick = { onBackClick() },
-                onSaveClick = { onSaveClick() }
+                title = stringResource(R.string.edit_card_top_bar_action_icon),
+                onBackClick = { eventSink(EditCardEvent.OnBackClicked) },
+                onSaveClick = { eventSink(EditCardEvent.OnSaveClicked) }
             )
         },
         snackbarHost = {
@@ -143,7 +113,7 @@ internal fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                modifier = Modifier.clickable { onCardClick() },
+                modifier = Modifier.clickable { eventSink(EditCardEvent.OnCardClicked) },
                 cardNumber = cardNumber,
                 cardOwnerName = ownerName,
                 cardExpiredDate = expiredDate,
@@ -154,7 +124,7 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = setCardNumber,
+                onValueChange = { eventSink(EditCardEvent.OnCardNumberChanged(it)) },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 visualTransformation = CreditCardVisualTransformation(),
@@ -163,7 +133,7 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = setExpiredDate,
+                onValueChange = { eventSink(EditCardEvent.OnExpiredDateChanged(it)) },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 visualTransformation = ExpirationDateVisualTransformation(),
@@ -172,7 +142,7 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = ownerName,
-                onValueChange = setOwnerName,
+                onValueChange = { eventSink(EditCardEvent.OnOwnerNameChanged(it)) },
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
@@ -180,7 +150,7 @@ internal fun NewCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = setPassword,
+                onValueChange = { eventSink(EditCardEvent.OnPasswordChanged(it)) },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -190,25 +160,16 @@ internal fun NewCardScreen(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun NewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            cardNumber = "1111222233334444",
-            expiredDate = "22 / 33",
-            ownerName = "이지훈",
-            password = "12345678",
-            bankType = BankTypeModel.BC,
-            snackbarHostState = SnackbarHostState(),
-            onSaveClick = {},
-            onBackClick = {},
-            setCardNumber = {},
-            setExpiredDate = {},
-            setOwnerName = {},
-            setPassword = {},
-            onCardClick = {},
-        )
-    }
+private fun EditCardScreenPreview() {
+    EditCardScreen(
+        cardNumber = "1111222233334444",
+        expiredDate = "22 / 33",
+        ownerName = "이지훈",
+        password = "12345678",
+        bankType = BankTypeModel.BC,
+        snackbarHostState = SnackbarHostState(),
+        eventSink = {}
+    )
 }
-

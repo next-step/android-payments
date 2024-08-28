@@ -13,4 +13,7 @@
 
     <string name="new_card_top_bar_action_icon">완료</string>
     <string name="new_card_top_bar_navigation_icon">뒤로 가기</string>
+    <string name="new_card_top_bar_title">카드 추가</string>
+
+    <string name="edit_card_top_bar_action_icon">카드 수정</string>
 </resources>

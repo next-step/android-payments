@@ -22,7 +22,7 @@ internal class NewCardScreenTest : BaseComposeTest() {
     private val expiredData = mutableStateOf("")
     private val cardOwnerName = mutableStateOf("")
     private val password = mutableStateOf("")
-    private val bankType = mutableStateOf(BankTypeModel.NOT_SELECTED)
+    private val bankType = mutableStateOf<BankTypeModel?>(null)
     private val context = ApplicationProvider.getApplicationContext<Context>()
 
     @Before
