@@ -18,8 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.CardCompany
-import nextstep.payments.data.cardCompanies
+import nextstep.payments.data.BankType
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
@@ -27,7 +26,7 @@ private const val COLUMN_COUNT = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectRow(
-    onClick: (CardCompany) -> Unit = {},
+    onClick: (BankType) -> Unit = {},
 ) {
     FlowRow(
         modifier = Modifier
@@ -37,10 +36,10 @@ fun BankSelectRow(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         maxItemsInEachRow = COLUMN_COUNT
     ) {
-
-        cardCompanies.forEach { cardCompany ->
+        BankType.entries.forEach { bankType ->
+            if (bankType == BankType.NOT_SELECTED) return@forEach
             CardSelector(
-                cardCompany = cardCompany,
+                bankType = bankType,
                 onClick = onClick
             )
         }
@@ -49,17 +48,17 @@ fun BankSelectRow(
 
 @Composable
 fun CardSelector(
-    cardCompany: CardCompany,
-    onClick: (CardCompany) -> Unit
+    bankType: BankType,
+    onClick: (BankType) -> Unit
 ) {
     Column(
         modifier = Modifier
             .size(80.dp)
-            .clickable { onClick(cardCompany) },
+            .clickable { onClick(bankType) },
     ) {
         Image(
-            painter = painterResource(id = cardCompany.logo),
-            contentDescription = stringResource(id = cardCompany.name),
+            painter = painterResource(id = bankType.logo),
+            contentDescription = stringResource(id = bankType.companyName),
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.CenterHorizontally)
@@ -67,7 +66,7 @@ fun CardSelector(
         )
 
         Text(
-            text = stringResource(id = cardCompany.name),
+            text = stringResource(id = bankType.companyName),
             modifier = Modifier.align(Alignment.CenterHorizontally),
         )
     }

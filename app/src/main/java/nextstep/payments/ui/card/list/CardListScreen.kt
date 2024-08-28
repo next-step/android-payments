@@ -19,9 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
-import nextstep.payments.data.BcCard
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
-import nextstep.payments.data.KakaoBank
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
@@ -180,7 +179,7 @@ private fun CardListScreenOnePreview() {
                         ownerName = "홍길동",
                         expiredDate = "12/24",
                         password = "123",
-                        brandColor = colorResource(id = BcCard.brandColor)
+                        brandColor = colorResource(id = BankType.BC.brandColor)
                     )
                 )
             ),
@@ -199,14 +198,14 @@ private fun CardListScreenManyPreview() {
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = BcCard.brandColor)
+                brandColor = colorResource(id = BankType.BC.brandColor)
             ),
             Card(
                 cardNumber = "1234-5678-1234-1234",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = KakaoBank.brandColor)
+                brandColor = colorResource(id = BankType.KAKAO.brandColor)
             )
         )
     )

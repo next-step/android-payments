@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
-import nextstep.payments.data.KakaoBank
 import nextstep.payments.ui.PaymentCard
 
 @Composable
@@ -41,7 +41,7 @@ private fun CardLazyColumnPreview() {
                 ownerName = "홍길동",
                 expiredDate = "12/34",
                 password = "123",
-                brandColor = colorResource(id = KakaoBank.brandColor)
+                brandColor = colorResource(id = BankType.KAKAO.brandColor)
             )
         )
     )

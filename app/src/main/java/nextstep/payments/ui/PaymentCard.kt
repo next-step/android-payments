@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.data.BcCard
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.ui.card.list.component.card.CardExpiredDate
 import nextstep.payments.ui.card.list.component.card.CardNumber
@@ -92,7 +92,7 @@ fun PaymentCard(
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
-        brandColor = colorResource(id = BcCard.brandColor)
+        brandColor = colorResource(id = BankType.BC.brandColor)
     )
 }
 
@@ -105,7 +105,7 @@ private fun NewPaymentCardPreview() {
             ownerName = "홍길동",
             expiredDate = "12/34",
             password = "123",
-            brandColor = colorResource(id = BcCard.brandColor)
+            brandColor = colorResource(id = BankType.BC.brandColor)
         ),
         modifier = Modifier.size(width = 208.dp, height = 124.dp),
         content = { PaymentCard() }

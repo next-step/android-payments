@@ -2,15 +2,12 @@ package nextstep.payments.screen.card.list
 
 import android.content.Context
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import nextstep.payments.R
-import nextstep.payments.data.BcCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
