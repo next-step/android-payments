@@ -30,6 +30,7 @@ class EditCardViewModel : ViewModel() {
                             ownerName = card.cardOwnerName,
                             password = card.cardPassword,
                             bankType = card.bankType?.toUiModel(),
+                            originalCard = card.toUiModel(),
                             cardBrands = bankList,
                         )
                     }
@@ -121,23 +122,24 @@ class EditCardViewModel : ViewModel() {
     }
 
     private fun saveCard() {
-        val originalCard = PaymentCardsRepository.getCard(state.value.cardId)?.toUiModel()
-        val newCard = CardModel(
-            state.value.cardId,
-            state.value.cardNumber,
-            state.value.ownerName,
-            state.value.expiredDate,
-            state.value.password,
-            state.value.bankType
-        )
+        val newCard = makeCurrentCard()
 
-        if (originalCard != newCard) {
+        if (state.value.originalCard != newCard) {
             PaymentCardsRepository.updateCard(newCard.toData())
             updateState { copy(saved = true) }
         } else {
             updateState { copy(message = "변경사항이 없습니다.") }
         }
     }
+
+    private fun makeCurrentCard() = CardModel(
+        state.value.cardId,
+        state.value.cardNumber,
+        state.value.ownerName,
+        state.value.expiredDate,
+        state.value.password,
+        state.value.bankType
+    )
 
     private fun updateState(newState: EditCardState.() -> EditCardState) {
         _state.update(newState)
