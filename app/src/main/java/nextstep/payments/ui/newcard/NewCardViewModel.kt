@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
@@ -13,7 +14,9 @@ data class NewCardUiState(
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
-    val isInitialInput: Boolean = false
+    val bank: Bank? = null,
+    val isInitialInput: Boolean = false,
+    val isSelectCard: Boolean = false
 ) {
 
     companion object {
@@ -47,13 +50,17 @@ class NewCardViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
+    private val _isBottomSheetVisible = MutableStateFlow(false)
+    val isBottomSheetVisible: StateFlow<Boolean> = _isBottomSheetVisible.asStateFlow()
+
     fun addCard() {
         if (_newCardUiState.value.isCardAddable) {
             val card = Card(
                 cardNumber = _newCardUiState.value.cardNumber,
                 expiredDate = _newCardUiState.value.expiredDate,
                 ownerName = _newCardUiState.value.ownerName,
-                password = _newCardUiState.value.password
+                password = _newCardUiState.value.password,
+                bank = _newCardUiState.value.bank!!
             )
             repository.addCard(card)
             _cardAdded.value = true
@@ -89,4 +96,20 @@ class NewCardViewModel(
             currentState.copy(password = password.take(NewCardUiState.MAX_LENGTH_4))
         }
     }
+
+    fun setCardSelected(selected: Boolean) {
+        _newCardUiState.update { currentState ->
+            currentState.copy(isSelectCard = selected)
+        }
+    }
+
+    fun setBank(bank: Bank) {
+        _newCardUiState.update { currentState ->
+            currentState.copy(
+                bank = bank,
+                isSelectCard = true
+            )
+        }
+    }
+
 }

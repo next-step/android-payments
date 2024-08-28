@@ -1,6 +1,5 @@
 package nextstep.payments.ui.newcard
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,14 +21,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.R
+import nextstep.payments.ui.components.CardInfoBottomSheet
 import nextstep.payments.ui.components.PaymentToolBar
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.ui.transformation.ExpiredDateTransformation
 
 // Stateful
-@SuppressLint("UnrememberedMutableState")
 @Composable
 internal fun NewCardScreen(
     viewModel: NewCardViewModel,
@@ -39,9 +38,20 @@ internal fun NewCardScreen(
 ) {
     val newCardUiState by viewModel.newCardUiState.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val isBottomSheetVisible by viewModel.isBottomSheetVisible.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
+    }
+
+    if (!newCardUiState.isSelectCard) {
+        CardInfoBottomSheet(
+            isBottomSheetVisible = isBottomSheetVisible,
+            onBankSelect = { bank ->
+                viewModel.setBank(bank)
+            },
+            onDismissRequest = { }
+        )
     }
 
     NewCardScreen(
@@ -86,7 +96,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(bank = newCardUiState.bank)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -178,8 +188,8 @@ private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             newCardUiState = NewCardUiState(
-                cardNumber = "0000 - 0000 - 0000 - 0000",
-                expiredDate = "00 / 00",
+                cardNumber = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "최용호",
                 password = "1234"
             ),
