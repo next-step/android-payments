@@ -52,12 +52,16 @@ class NewCardViewModel(
             ownerName,
             password,
         ->
-        paymentCard == null ||
-                paymentCard.cardCompanyCategory != cardCompanyCategory ||
-                paymentCard.cardNumber != cardNumber ||
-                paymentCard.expiredDate != expiredDate ||
-                paymentCard.ownerName != ownerName ||
-                paymentCard.password != password
+        cardCompanyCategory != null &&
+                cardNumber.isNotBlank() &&
+                expiredDate.isNotBlank() &&
+                password.isNotBlank() &&
+                (paymentCard == null ||
+                        paymentCard.cardCompanyCategory != cardCompanyCategory ||
+                        paymentCard.cardNumber != cardNumber ||
+                        paymentCard.expiredDate != expiredDate ||
+                        paymentCard.ownerName != ownerName ||
+                        paymentCard.password != password)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
