@@ -1,6 +1,5 @@
 package nextstep.payments.data
 
-import android.util.Log
 import nextstep.payments.model.Card
 
 object PaymentCardRepository {
