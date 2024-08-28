@@ -142,6 +142,10 @@ fun NewCardScreen(
         BankSelectBottomSheet(
             banks = bankRepository.getBanks(),
             onDismiss = { bank ->
+                if (bank.bankType == BankType.NOT_SELECTED) {
+                    navigateToCardList()
+                    return@BankSelectBottomSheet
+                }
                 viewModel.setBankType(bank.bankType)
                 viewModel.setCardCompany(bank.name)
                 viewModel.setCardColor(bank.color)

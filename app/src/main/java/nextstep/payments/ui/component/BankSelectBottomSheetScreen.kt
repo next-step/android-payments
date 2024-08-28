@@ -10,9 +10,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 import nextstep.payments.data.Bank
 import nextstep.payments.data.BankType
+import nextstep.payments.data.bank.impl.BankRepositoryImpl
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,4 +49,13 @@ fun BankSelectBottomSheet(
             selectedBank = it
         })
     }
+}
+
+@Preview
+@Composable
+private fun BankSelectBottomSheetPreview() {
+    BankSelectBottomSheet(BankRepositoryImpl().getBanks()) {
+
+    }
+    
 }

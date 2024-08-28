@@ -85,7 +85,9 @@ class NewCardViewModel(
     }
 
     fun modifyCard(card: Card) {
-        repository.modifyCard(card)
-        _cardAdded.value = true
+        val isSuccess = repository.modifyCard(card)
+        if (isSuccess) {
+            _cardAdded.value = true
+        }
     }
 }

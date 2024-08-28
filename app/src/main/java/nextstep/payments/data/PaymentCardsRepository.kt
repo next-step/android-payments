@@ -9,10 +9,23 @@ object PaymentCardsRepository {
         _cards.add(card)
     }
 
-    fun modifyCard(card: Card) {
-        val index = _cards.indexOfFirst { it.id == card.id }
-        if (index != -1) {
-            _cards[index] = card
-        }
+    fun modifyCard(card: Card) : Boolean {
+        return _cards.indexOfFirst { it.id == card.id }
+            .takeIf { it != -1 }?.let { index ->
+                val oldCard = _cards[index]
+                if (hasChanged(oldCard, card)) {
+                    _cards[index] = card
+                    true
+                } else {
+                    false
+                }
+            } ?: false
+    }
+
+    private fun hasChanged(oldCard: Card, newCard: Card): Boolean {
+        return oldCard.cardNumber != newCard.cardNumber ||
+                oldCard.expiredDate != newCard.expiredDate ||
+                oldCard.ownerName != newCard.ownerName ||
+                oldCard.password != newCard.password
     }
 }
