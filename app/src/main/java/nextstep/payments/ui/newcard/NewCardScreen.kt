@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.data.model.Bank
 import nextstep.payments.ui.components.CardInfoBottomSheet
 import nextstep.payments.ui.components.PaymentToolBar
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -38,24 +39,14 @@ internal fun NewCardScreen(
 ) {
     val newCardUiState by viewModel.newCardUiState.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val isBottomSheetVisible by viewModel.isBottomSheetVisible.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
 
-    if (!newCardUiState.isSelectCard) {
-        CardInfoBottomSheet(
-            isBottomSheetVisible = isBottomSheetVisible,
-            onBankSelect = { bank ->
-                viewModel.setBank(bank)
-            },
-            onDismissRequest = { }
-        )
-    }
-
     NewCardScreen(
         newCardUiState = newCardUiState,
+        onBankSelect = viewModel::setBank,
         onBackClick = onBackClick,
         onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
@@ -67,8 +58,9 @@ internal fun NewCardScreen(
 
 // Stateless
 @Composable
-private fun NewCardScreen(
+fun NewCardScreen(
     newCardUiState: NewCardUiState,
+    onBankSelect: (Bank) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -77,6 +69,15 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    if (!newCardUiState.isCardSelected) {
+        CardInfoBottomSheet(
+            isBottomSheetVisible = newCardUiState.isBottomSheetVisible,
+            onBankSelect = onBankSelect,
+            onDismissRequest = { }
+        )
+    }
+
     Scaffold(
         topBar = {
             PaymentToolBar(
@@ -193,6 +194,7 @@ private fun StatelessNewCardScreenPreview() {
                 ownerName = "최용호",
                 password = "1234"
             ),
+            onBankSelect = {},
             onBackClick = {},
             onSaveClick = {},
             setCardNumber = {},

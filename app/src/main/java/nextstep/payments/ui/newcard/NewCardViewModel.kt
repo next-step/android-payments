@@ -16,7 +16,8 @@ data class NewCardUiState(
     val password: String = "",
     val bank: Bank? = null,
     val isInitialInput: Boolean = false,
-    val isSelectCard: Boolean = false
+    val isCardSelected: Boolean = false,
+    val isBottomSheetVisible: Boolean = true
 ) {
 
     companion object {
@@ -49,9 +50,6 @@ class NewCardViewModel(
 
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
-
-    private val _isBottomSheetVisible = MutableStateFlow(false)
-    val isBottomSheetVisible: StateFlow<Boolean> = _isBottomSheetVisible.asStateFlow()
 
     fun addCard() {
         if (_newCardUiState.value.isCardAddable) {
@@ -97,17 +95,12 @@ class NewCardViewModel(
         }
     }
 
-    fun setCardSelected(selected: Boolean) {
-        _newCardUiState.update { currentState ->
-            currentState.copy(isSelectCard = selected)
-        }
-    }
-
     fun setBank(bank: Bank) {
         _newCardUiState.update { currentState ->
             currentState.copy(
                 bank = bank,
-                isSelectCard = true
+                isCardSelected = true,
+                isBottomSheetVisible = false
             )
         }
     }

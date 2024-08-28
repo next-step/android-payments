@@ -6,6 +6,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.data.model.Bank
 
@@ -15,7 +16,7 @@ fun CardInfoBottomSheet(
     isBottomSheetVisible: Boolean,
     onBankSelect: (Bank) -> Unit,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.testTag("cardInfoBottomSheet")
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
@@ -30,13 +31,12 @@ fun CardInfoBottomSheet(
 
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        modifier = modifier
     ) {
         BankSelectRow(
             banks = Bank.entries,
-            onBankSelect = { bank ->
-                onBankSelect(bank)
-            }
+            onBankSelect = onBankSelect
         )
     }
 }
