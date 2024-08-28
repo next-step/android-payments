@@ -22,8 +22,8 @@ import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.component.CardListTopBar
 import nextstep.payments.ui.card.newcard.NewCardActivity
-import nextstep.payments.ui.card.newcard.component.EmptyScreen
-import nextstep.payments.ui.card.newcard.component.ManyCardScree
+import nextstep.payments.ui.card.newcard.component.EmptyCardScreen
+import nextstep.payments.ui.card.newcard.component.ManyCardScreen
 import nextstep.payments.ui.card.newcard.component.OneCardScreen
 
 @Composable
@@ -64,7 +64,7 @@ private fun CardListScreen(
             contentAlignment = Alignment.TopCenter,
         ) {
             when (val state = state) {
-                is CardListUiState.Empty -> EmptyScreen(
+                is CardListUiState.Empty -> EmptyCardScreen(
                     onShowNewCard = onShowNewCard,
                     modifier = modifier,
                 )
@@ -75,7 +75,7 @@ private fun CardListScreen(
                     modifier = modifier,
                 )
 
-                is CardListUiState.Many -> ManyCardScree(state = state, modifier = modifier)
+                is CardListUiState.Many -> ManyCardScreen(state = state, modifier = modifier)
             }
         }
     }

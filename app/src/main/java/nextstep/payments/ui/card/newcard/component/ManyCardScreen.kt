@@ -12,7 +12,7 @@ import nextstep.payments.ui.card.list.CardListUiState
 import nextstep.payments.ui.component.PaymentCard
 
 @Composable
-fun ManyCardScree(
+fun ManyCardScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState.Many,
 ) {

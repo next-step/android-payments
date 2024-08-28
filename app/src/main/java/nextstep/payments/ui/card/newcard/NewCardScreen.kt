@@ -33,6 +33,7 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
     backToCardList: () -> Unit,
+    showToast: (Int) -> Unit,
 ) {
     val bankType by viewModel.bankType.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
@@ -44,6 +45,13 @@ fun NewCardScreen(
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) backToCardList()
+    }
+    LaunchedEffect(viewModel.sideEffect) {
+        viewModel.sideEffect.collect {
+            when (it) {
+                is NewCardSideEffect.ShowToast -> showToast(it.messageRes)
+            }
+        }
     }
 
     NewCardScreen(

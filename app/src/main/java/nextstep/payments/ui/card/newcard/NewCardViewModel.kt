@@ -2,9 +2,14 @@ package nextstep.payments.ui.card.newcard
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import nextstep.payments.R
 import nextstep.payments.data.PaymentCardRepository
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
@@ -31,6 +36,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _sideEffect: Channel<NewCardSideEffect> = Channel()
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     fun setBankType(bankType: BankType) {
         _bankType.value = bankType
     }
@@ -53,7 +61,8 @@ class NewCardViewModel(
 
     fun addCard() {
         val bankType = bankType.value ?: run {
-            Log.d("[NewCardViewModel]", "bankType cannot be null")
+            Log.e("[NewCardViewModel]", "bankType cannot be null")
+            viewModelScope.launch { _sideEffect.send(NewCardSideEffect.ShowToast(R.string.select_bank_type)) }
             return
         }
 

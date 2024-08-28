@@ -15,7 +15,7 @@ import nextstep.payments.R
 import nextstep.payments.ui.card.list.component.NewCard
 
 @Composable
-fun EmptyScreen(
+fun EmptyCardScreen(
     modifier: Modifier = Modifier,
     onShowNewCard: () -> Unit,
 ) {

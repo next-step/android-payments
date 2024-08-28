@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.BankType
 
+private const val DEFAULT_BACKGROUND_COLOR = 0xFF333333
+
 @Composable
 fun NewPaymentCard(
     modifier: Modifier = Modifier,
@@ -30,7 +32,7 @@ fun NewPaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(bankType?.backgroundColor ?: 0xFF333333),
+                color = Color(bankType?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR),
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp),
