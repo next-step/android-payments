@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.CardListUiState
 import nextstep.payments.ui.component.PaymentCard
 
@@ -15,6 +16,7 @@ import nextstep.payments.ui.component.PaymentCard
 fun ManyCardScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState.Many,
+    onShowNewCard: (Card) -> Unit,
 ) {
     Column(modifier = modifier) {
         LazyColumn(
@@ -22,7 +24,7 @@ fun ManyCardScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             items(state.cards) {
-                PaymentCard(card = it)
+                PaymentCard(card = it, onClick = { onShowNewCard(it) })
             }
         }
     }

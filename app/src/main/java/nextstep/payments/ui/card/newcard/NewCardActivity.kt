@@ -25,4 +25,9 @@ class NewCardActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        const val EXTRA_CARD = "EXTRA_CARD"
+    }
+
 }

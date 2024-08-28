@@ -16,12 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.component.CardListTopBar
 import nextstep.payments.ui.card.newcard.NewCardActivity
+import nextstep.payments.ui.card.newcard.NewCardActivity.Companion.EXTRA_CARD
 import nextstep.payments.ui.card.newcard.component.EmptyCardScreen
 import nextstep.payments.ui.card.newcard.component.ManyCardScreen
 import nextstep.payments.ui.card.newcard.component.OneCardScreen
@@ -39,7 +41,11 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 
     CardListScreen(
         state = uiState,
-        onShowNewCard = { launcher.launch(Intent(context, NewCardActivity::class.java)) },
+        onShowNewCard = {
+            launcher.launch(Intent(context, NewCardActivity::class.java).apply {
+                putExtras(bundleOf(EXTRA_CARD to it))
+            })
+        },
     )
 }
 
@@ -47,13 +53,13 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 private fun CardListScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState,
-    onShowNewCard: () -> Unit,
+    onShowNewCard: (Card?) -> Unit,
 ) {
     Scaffold(
         topBar = {
             CardListTopBar(
                 displayAdd = state is CardListUiState.Many,
-                onShowNewCard = onShowNewCard,
+                onShowNewCard = { onShowNewCard(null) },
             )
         },
     ) { innerPadding ->
@@ -65,7 +71,7 @@ private fun CardListScreen(
         ) {
             when (val state = state) {
                 is CardListUiState.Empty -> EmptyCardScreen(
-                    onShowNewCard = onShowNewCard,
+                    onShowNewCard = { onShowNewCard(null) },
                     modifier = modifier,
                 )
 
@@ -75,7 +81,11 @@ private fun CardListScreen(
                     modifier = modifier,
                 )
 
-                is CardListUiState.Many -> ManyCardScreen(state = state, modifier = modifier)
+                is CardListUiState.Many -> ManyCardScreen(
+                    state = state,
+                    onShowNewCard = onShowNewCard,
+                    modifier = modifier
+                )
             }
         }
     }

@@ -10,16 +10,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import nextstep.payments.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    isEdit: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(stringResource(id = if (isEdit) R.string.edit_card else R.string.new_card)) },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(

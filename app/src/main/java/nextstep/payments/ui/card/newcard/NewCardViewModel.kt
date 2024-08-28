@@ -1,6 +1,7 @@
 package nextstep.payments.ui.card.newcard
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -15,25 +16,26 @@ import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 
 class NewCardViewModel(
-    private val repository: PaymentCardRepository = PaymentCardRepository
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    val editCard: Card? = savedStateHandle[NewCardActivity.EXTRA_CARD]
 
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _bankType: MutableStateFlow<BankType?> = MutableStateFlow(null)
+    private val _bankType: MutableStateFlow<BankType?> = MutableStateFlow(editCard?.bankType)
     val bankType: StateFlow<BankType?> = _bankType.asStateFlow()
 
-    private val _cardNumber = MutableStateFlow("")
+    private val _cardNumber = MutableStateFlow(editCard?.cardNumber ?: "")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
 
-    private val _expiredDate = MutableStateFlow("")
+    private val _expiredDate = MutableStateFlow(editCard?.expiredDate ?: "")
     val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
 
-    private val _ownerName = MutableStateFlow("")
+    private val _ownerName = MutableStateFlow(editCard?.ownerName ?: "")
     val ownerName: StateFlow<String> = _ownerName.asStateFlow()
 
-    private val _password = MutableStateFlow("")
+    private val _password = MutableStateFlow(editCard?.password ?: "")
     val password: StateFlow<String> = _password.asStateFlow()
 
     private val _sideEffect: Channel<NewCardSideEffect> = Channel()
@@ -73,7 +75,7 @@ class NewCardViewModel(
             ownerName = ownerName.value,
             password = password.value,
         )
-        repository.addCard(card)
+        PaymentCardRepository.addCard(card)
         _cardAdded.value = true
     }
 

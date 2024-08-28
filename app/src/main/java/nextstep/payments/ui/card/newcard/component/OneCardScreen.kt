@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.CardListUiState
 import nextstep.payments.ui.card.list.component.NewCard
 import nextstep.payments.ui.component.PaymentCard
@@ -15,16 +16,16 @@ import nextstep.payments.ui.component.PaymentCard
 fun OneCardScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState.One,
-    onShowNewCard: () -> Unit,
+    onShowNewCard: (Card?) -> Unit,
 ) {
     Column(modifier = modifier.padding(top = 12.dp)) {
-        PaymentCard(card = state.card)
+        PaymentCard(card = state.card, onClick = { onShowNewCard(it) })
         NewCard(
             modifier = Modifier
                 .padding(top = 32.dp)
                 .width(208.dp)
                 .height(124.dp),
-            onClick = onShowNewCard,
+            onClick = { onShowNewCard(null) },
         )
     }
 }

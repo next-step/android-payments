@@ -27,6 +27,7 @@ import nextstep.payments.ui.card.newcard.component.BankSelectBottomSheet
 import nextstep.payments.ui.card.newcard.component.NewCardTopBar
 import nextstep.payments.ui.card.newcard.component.NewPaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import kotlin.math.exp
 
 @Composable
 fun NewCardScreen(
@@ -41,7 +42,7 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
-    var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(true) }
+    var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(viewModel.editCard == null) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) backToCardList()
@@ -55,6 +56,7 @@ fun NewCardScreen(
     }
 
     NewCardScreen(
+        isEdit = viewModel.editCard != null,
         bankType = bankType,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
@@ -80,6 +82,7 @@ fun NewCardScreen(
 
 @Composable
 private fun NewCardScreen(
+    isEdit: Boolean,
     bankType: BankType?,
     cardNumber: String,
     expiredDate: String,
@@ -95,7 +98,7 @@ private fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = onClickBack, onSaveClick = onClickSave) },
+        topBar = { NewCardTopBar(isEdit = isEdit, onBackClick = onClickBack, onSaveClick = onClickSave) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -109,6 +112,9 @@ private fun NewCardScreen(
 
             NewPaymentCard(
                 bankType = bankType,
+                cardNumber = cardNumber,
+                ownerName = ownerName,
+                expiredDate = expiredDate,
                 onClick = onClickCard,
             )
 
@@ -155,6 +161,7 @@ private fun NewCardScreen(
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
+            isEdit = false,
             bankType = BankType.BC,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",

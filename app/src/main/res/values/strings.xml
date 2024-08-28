@@ -12,4 +12,6 @@
     <string name="hana_card">하나카드</string>
     <string name="kb_card">국민카드</string>
     <string name="select_bank_type">카드사를 선택해 주세요</string>
+    <string name="new_card">카드 추가</string>
+    <string name="edit_card">카드 수정</string>
 </resources>
