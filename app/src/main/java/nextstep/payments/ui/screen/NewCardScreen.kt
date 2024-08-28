@@ -25,10 +25,15 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun NewCardScreenRoute(
     onBackClick: () -> Unit,
+    onAddComplete: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     NewCardScreen(
         onBackClick = onBackClick,
+        onSaveClick = {
+            viewModel.addCard()
+            onAddComplete()
+        },
         viewModel = viewModel,
     )
 }
@@ -38,6 +43,7 @@ fun NewCardScreenRoute(
 internal fun NewCardScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -56,6 +62,7 @@ internal fun NewCardScreen(
         setPassword = viewModel::setPassword,
         modifier = modifier,
         onBackClick = onBackClick,
+        onSaveClick = onSaveClick,
     )
 }
 
@@ -72,9 +79,10 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { onBackClick() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = { onBackClick() }, onSaveClick = { onSaveClick() }) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -139,7 +147,8 @@ fun NewCardScreenPreview() {
                 setOwnerName("홍길동")
                 setPassword("password")
             },
-            onBackClick = { }
+            onBackClick = { },
+            onSaveClick = { }
         )
     }
 }
@@ -158,7 +167,8 @@ fun StatelessNewCardScreenPreview() {
             setExpiredDate = { },
             setOwnerName = { },
             setPassword = { },
-            onBackClick = { }
+            onBackClick = { },
+            onSaveClick = { }
         )
     }
 }

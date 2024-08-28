@@ -1,5 +1,6 @@
 package nextstep.payments.ui.screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +32,9 @@ fun PaymentCardsScreenRoute(
     onAddCardClick: () -> Unit,
     viewModel: PaymentCardsViewModel = viewModel(),
 ) {
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.loadCardPayments()
+    })
     val uiState by viewModel.cardsScreenState.collectAsState()
     PaymentCardsScreen(
         uiState = uiState,
@@ -44,7 +49,7 @@ fun PaymentCardsScreen(
     uiState: PaymentCardUiState,
     onAddCardClick: () -> Unit
 ) {
-    val visible = false
+    val visible = uiState is PaymentCardUiState.Many
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -59,7 +64,7 @@ fun PaymentCardsScreen(
                         TextButton(onClick = { onAddCardClick() }) {
                             Text(
                                 text = "추가",
-                                color = Color.Black,
+                                color = if(isSystemInDarkTheme()) Color.White else Color.Black,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -114,13 +119,20 @@ fun PaymentCardList(
                     RegisteredPaymentCard()
                 }
                 item {
-                    AddPaymentCard()
+                    AddPaymentCard(
+                        onClick = onAddCardClick
+                    )
                 }
             }
 
             is PaymentCardUiState.Many -> {
                 items(uiState.cards.size) {
                     RegisteredPaymentCard()
+                }
+                item {
+                    AddPaymentCard(
+                        onClick = onAddCardClick
+                    )
                 }
             }
         }

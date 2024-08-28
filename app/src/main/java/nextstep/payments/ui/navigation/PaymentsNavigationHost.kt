@@ -23,6 +23,7 @@ fun PaymentsNavigationHost(
         composable(NavigationModel.AddPaymentCard.route) {
             NewCardScreenRoute(
                 onBackClick = { navHostController.popBackStack() },
+                onAddComplete = { navHostController.popBackStack() }
             )
         }
     }
