@@ -11,13 +11,16 @@ internal object NewCardRoute {
     operator fun invoke(
         viewModel: NewCardViewModel = viewModel()
     ) {
-        val cardDetails by viewModel.cardDetails.collectAsStateWithLifecycle()
+        val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
+        val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
+        val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
+        val password by viewModel.password.collectAsStateWithLifecycle()
 
         NewCardScreen(
-            cardNumber = cardDetails.cardNumber,
-            expiredDate = cardDetails.expiredDate,
-            ownerName = cardDetails.ownerName ?: "",
-            password = cardDetails.password,
+            cardNumber = cardNumber,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password,
             setCardNumber = viewModel::setCardNumber,
             setExpiredDate = viewModel::setExpiredDate,
             setOwnerName = viewModel::setOwnerName,

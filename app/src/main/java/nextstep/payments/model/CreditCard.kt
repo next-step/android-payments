@@ -1,17 +1,20 @@
 package nextstep.payments.model
 
+import java.time.YearMonth
+
 data class CreditCard(
-    val cardNumber: String,
-    val expiredDate: String,
+    val cardNumbers: List<CardNumber>,
+    val expiredDate: YearMonth,
     val password: String,
-    val ownerName: String? = null,
+    val ownerName: String,
 ) {
-    companion object {
-        val default = CreditCard(
-            cardNumber = "",
-            expiredDate = "",
-            password = "",
-            ownerName = null
-        )
+    init {
+        require(cardNumbers.size == 4) { "카드 넘버는 4개여야 합니다" }
+    }
+}
+
+data class CardNumber(val number: String) {
+    init {
+        require(number.length == 4) { "카드 넘버의 길이가 4이어야 하지만 그렇지 않습니다" }
     }
 }

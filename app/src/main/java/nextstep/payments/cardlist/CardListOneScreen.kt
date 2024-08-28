@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
 import nextstep.payments.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import java.time.YearMonth
 
 @Composable
 internal fun CardListOneScreen(
@@ -53,8 +55,13 @@ private fun CardListOneContent(
 @Composable
 private fun CardListOneScreenPreview() {
     val card = CreditCard(
-        cardNumber = "0000000000000000",
-        expiredDate = "1024",
+        cardNumbers = listOf(
+            CardNumber("1111"),
+            CardNumber("1111"),
+            CardNumber("1111"),
+            CardNumber("1111"),
+        ),
+        expiredDate = YearMonth.now(),
         ownerName = "이범석",
         password = "1234"
     )

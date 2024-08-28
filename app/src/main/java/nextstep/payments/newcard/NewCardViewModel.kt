@@ -19,25 +19,32 @@ class NewCardViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    // 카드의 세부 정보를 관리하는 상태.
-    private val _cardDetails = MutableStateFlow(CreditCard.default)
-    val cardDetails: StateFlow<CreditCard> = _cardDetails.asStateFlow()
+    private val _cardNumber = MutableStateFlow("")
+    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
 
-    // 개별 카드 정보 필드 업데이트를 위한 함수들.
+    private val _expiredDate = MutableStateFlow("")
+    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
+
+    private val _ownerName = MutableStateFlow("")
+    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
+
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
-        _cardDetails.value = _cardDetails.value.copy(cardNumber = cardNumber)
+        _cardNumber.value = cardNumber
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _cardDetails.value = _cardDetails.value.copy(expiredDate = expiredDate)
+        _expiredDate.value = expiredDate
     }
 
     fun setOwnerName(ownerName: String) {
-        _cardDetails.value = _cardDetails.value.copy(ownerName = ownerName)
+        _ownerName.value = ownerName
     }
 
     fun setPassword(password: String) {
-        _cardDetails.value = _cardDetails.value.copy(password = password)
+        _password.value = password
     }
 
     /**
@@ -47,7 +54,7 @@ class NewCardViewModel(
      * UI에서는 cardAdded가 true로 변경되었을 때, 네비게이션이나 이벤트 처리를 할 수 있습니다.
      */
     fun addCard() {
-        repository.addCard(card = _cardDetails.value)
+//        repository.addCard(card = _cardDetails.value)
         _cardAdded.value = true
     }
 }

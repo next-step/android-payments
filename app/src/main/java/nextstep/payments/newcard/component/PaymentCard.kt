@@ -1,9 +1,13 @@
 package nextstep.payments.newcard.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,12 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
+import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
+import nextstep.payments.ui.theme.PaymentTheme
 import nextstep.payments.ui.theme.PaymentsTheme
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun PaymentCard(
@@ -36,7 +43,9 @@ fun PaymentCard(
             )
     ) {
         Column(
-            modifier = Modifier.padding(start = 14.dp, bottom = 10.dp)
+            modifier = Modifier
+                .padding(horizontal = 14.dp)
+                .padding(bottom = 10.dp)
         ) {
             // 카드의 칩 모양
             Box(
@@ -48,35 +57,66 @@ fun PaymentCard(
                     )
             )
 
-            // 카드 번호와 사용자 정보
-            Column(
-                modifier = Modifier.padding(top = 16.dp)
-            ) {
-                Text(
-                    text = creditCard?.cardNumber ?: "**** - **** - **** - ****",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+            creditCard?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+
+                CardNumber(
+                    numberFirst = creditCard.cardNumbers[0],
+                    numberSecond = creditCard.cardNumbers[1],
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                Row(
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    Text(
-                        text = creditCard?.ownerName ?: "CARD HOLDER",
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        modifier = Modifier.weight(1f)
-                    )
+                Spacer(modifier = Modifier.height(2.dp))
 
-                    Text(
-                        text = creditCard?.expiredDate ?: "MM / YY",
-                        color = Color.White,
-                        fontSize = 14.sp
-                    )
-                }
+                CardOwnerExpiredDate(
+                    ownerName = creditCard.ownerName,
+                    expiredDate = creditCard.expiredDate,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun CardNumber(
+    numberFirst: CardNumber,
+    numberSecond: CardNumber,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        modifier = modifier,
+        text = "${numberFirst.number} - ${numberSecond.number} - **** - ****",
+        style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.17.em),
+        color = Color.White,
+    )
+}
+
+@Composable
+private fun CardOwnerExpiredDate(
+    ownerName: String,
+    expiredDate: YearMonth,
+    modifier: Modifier = Modifier
+) {
+    val formatter = DateTimeFormatter.ofPattern("MM / yy")
+    val formattedDate = expiredDate.format(formatter)
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = ownerName,
+            style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+            color = Color.White
+        )
+
+        Text(
+            text = formattedDate,
+            style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+            color = Color.White
+        )
+
     }
 }
 
@@ -86,11 +126,24 @@ private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
             creditCard = CreditCard(
-                cardNumber = "1111222233334444",
-                expiredDate = "0421",
+                cardNumbers = listOf(
+                    CardNumber("1111"),
+                    CardNumber("2222"),
+                    CardNumber("3333"),
+                    CardNumber("4444")
+                ),
+                expiredDate = YearMonth.now(),
                 password = "1234",
                 ownerName = "CREW"
             )
         )
+    }
+}
+
+@Preview
+@Composable
+private fun NoCreditCardPaymentCardPreview() {
+    PaymentsTheme {
+        PaymentCard(creditCard = null)
     }
 }
