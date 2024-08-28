@@ -21,8 +21,10 @@ class EditCardActivity : ComponentActivity() {
                 if (cardId != null) {
                     val state by viewModel.state.collectAsStateWithLifecycle()
 
-                    LaunchedEffect(Unit) {
-                        viewModel.handleEvent(EditCardEvent.OnInit(cardId))
+                    if (savedInstanceState == null) {
+                        LaunchedEffect(Unit) {
+                            viewModel.handleEvent(EditCardEvent.OnInit(cardId))
+                        }
                     }
 
                     LaunchedEffect(state.saved) {
