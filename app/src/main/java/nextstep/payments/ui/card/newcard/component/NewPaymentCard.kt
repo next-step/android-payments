@@ -1,6 +1,7 @@
 package nextstep.payments.ui.card.newcard.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -9,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,15 +28,15 @@ private const val DEFAULT_BACKGROUND_COLOR = 0xFF333333
 fun NewPaymentCard(
     modifier: Modifier = Modifier,
     bankType: BankType?,
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(bankType?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR),
-                shape = RoundedCornerShape(5.dp),
-            )
+            .clip(shape = RoundedCornerShape(5.dp))
+            .background(color = Color(bankType?.backgroundColor ?: DEFAULT_BACKGROUND_COLOR))
+            .clickable { onClick() }
             .padding(14.dp),
     ) {
         bankType?.let {
@@ -62,7 +64,7 @@ fun NewPaymentCard(
 @Preview
 @Composable
 private fun NewPaymentCardPreview(@PreviewParameter(NewPaymentCardPreviewParameterProvider::class) param: BankType?) {
-    NewPaymentCard(bankType = param)
+    NewPaymentCard(bankType = param, onClick = {})
 }
 
 private class NewPaymentCardPreviewParameterProvider : PreviewParameterProvider<BankType?> {

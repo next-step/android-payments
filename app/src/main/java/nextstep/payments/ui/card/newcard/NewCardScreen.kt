@@ -66,6 +66,7 @@ fun NewCardScreen(
         setPassword = viewModel::setPassword,
         onClickSave = viewModel::addCard,
         onClickBack = backToCardList,
+        onClickCard = { showBankTypeBottomSheet = true },
         modifier = modifier,
     )
 
@@ -90,6 +91,7 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     onClickSave: () -> Unit,
     onClickBack: () -> Unit,
+    onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -105,7 +107,10 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            NewPaymentCard(bankType = bankType)
+            NewPaymentCard(
+                bankType = bankType,
+                onClick = onClickCard,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -161,6 +166,7 @@ private fun StatelessNewCardScreenPreview() {
             setPassword = {},
             onClickBack = {},
             onClickSave = {},
+            onClickCard = {},
         )
     }
 }
