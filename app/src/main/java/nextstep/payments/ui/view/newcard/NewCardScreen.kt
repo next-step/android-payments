@@ -51,6 +51,7 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val canSave by viewModel.canSave.collectAsStateWithLifecycle()
     val activity = LocalContext.current as? Activity
     var showCardCompanySelectBottomSheet by remember {
         mutableStateOf(cardCompanyCategory == null)
@@ -70,6 +71,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        canSave = canSave,
         showCardCompanySelectBottomSheet = showCardCompanySelectBottomSheet,
         onCardCompanySelect = {
             viewModel.setCardCompany(it)
@@ -101,6 +103,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    canSave: Boolean,
     showCardCompanySelectBottomSheet: Boolean,
     onCardCompanySelect: (CardCompanyCategory) -> Unit,
     onCardCompanySelectBottomSheetShowRequest: () -> Unit,
@@ -134,6 +137,8 @@ private fun NewCardScreen(
     Scaffold(
         topBar = {
             NewCardTopBar(
+                isEdit = isEdit,
+                canSave = canSave,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )
@@ -236,6 +241,7 @@ private fun NewCardScreenPreviewStateless() {
         expiredDate = "12 / 23",
         ownerName = "홍길동",
         password = "1234",
+        canSave = false,
         showCardCompanySelectBottomSheet = true,
         onCardCompanySelect = {},
         onCardCompanySelectBottomSheetShowRequest = {},

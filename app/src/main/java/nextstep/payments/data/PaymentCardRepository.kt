@@ -7,18 +7,20 @@ import kotlinx.coroutines.flow.update
 import nextstep.payments.model.PaymentCardModel
 
 object PaymentCardRepository {
+    private var id: Int = 0
+
     private val _cardsStream: MutableStateFlow<List<PaymentCardModel>> = MutableStateFlow(emptyList())
     val cardsStream: StateFlow<List<PaymentCardModel>> = _cardsStream.asStateFlow()
 
     fun addCard(card: PaymentCardModel) {
         _cardsStream.update {
-            val index = it.indexOfFirst { it.cardNumber == card.cardNumber }
+            val index = it.indexOfFirst { it.id == card.id }
             if (index >= 0) {
                 it.toMutableList().apply {
                     set(index, card)
                 }
             } else {
-                it + card
+                it + card.copy(id = id++)
             }
         }
     }

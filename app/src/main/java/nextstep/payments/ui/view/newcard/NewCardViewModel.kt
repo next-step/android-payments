@@ -2,12 +2,16 @@ package nextstep.payments.ui.view.newcard
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import nextstep.payments.data.PaymentCardRepository
 import nextstep.payments.enums.CardCompanyCategory
 import nextstep.payments.model.PaymentCardModel
@@ -35,6 +39,35 @@ class NewCardViewModel(
     private val _password = MutableStateFlow(paymentCard?.password.orEmpty())
     val password: StateFlow<String> = _password.asStateFlow()
 
+    val canSave = combine(
+        cardCompanyCategory,
+        cardNumber,
+        expiredDate,
+        ownerName,
+        password,
+    ) {
+            cardCompanyCategory,
+            cardNumber,
+            expiredDate,
+            ownerName,
+            password,
+        ->
+        cardCompanyCategory != null &&
+                cardNumber.isNotBlank() &&
+                expiredDate.isNotBlank() &&
+                password.isNotBlank() &&
+                (paymentCard == null ||
+                        paymentCard.cardCompanyCategory != cardCompanyCategory ||
+                        paymentCard.cardNumber != cardNumber ||
+                        paymentCard.expiredDate != expiredDate ||
+                        paymentCard.ownerName != ownerName ||
+                        paymentCard.password != password)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = false
+    )
+
     private val _finishEvent = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     val finishEvent = _finishEvent.asSharedFlow()
 
@@ -59,6 +92,7 @@ class NewCardViewModel(
     }
 
     fun saveCard() {
+        if (!canSave.value) return
         val cardCompanyCategory = _cardCompanyCategory.value ?: return run { _finishEvent.tryEmit(Unit) }
         val cardNumber = _cardNumber.value
         val expiredDate = _expiredDate.value
@@ -68,15 +102,27 @@ class NewCardViewModel(
             expiredDate.isNotBlank() &&
             password.isNotBlank()
         ) {
-            PaymentCardRepository.addCard(
-                PaymentCardModel(
-                    cardCompanyCategory = cardCompanyCategory,
-                    cardNumber = cardNumber,
-                    expiredDate = expiredDate,
-                    ownerName = ownerName,
-                    password = password
+            if (paymentCard != null) {
+                PaymentCardRepository.addCard(
+                    paymentCard.copy(
+                        cardCompanyCategory = cardCompanyCategory,
+                        cardNumber = cardNumber,
+                        expiredDate = expiredDate,
+                        ownerName = ownerName,
+                        password = password
+                    )
                 )
-            )
+            } else {
+                PaymentCardRepository.addCard(
+                    PaymentCardModel(
+                        cardCompanyCategory = cardCompanyCategory,
+                        cardNumber = cardNumber,
+                        expiredDate = expiredDate,
+                        ownerName = ownerName,
+                        password = password
+                    )
+                )
+            }
             _finishEvent.tryEmit(Unit)
         }
     }
