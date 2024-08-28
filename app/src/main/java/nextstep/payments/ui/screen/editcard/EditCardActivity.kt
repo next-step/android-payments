@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class EditCardActivity : ComponentActivity() {
@@ -17,18 +19,31 @@ class EditCardActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 if (cardId != null) {
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+
                     LaunchedEffect(Unit) {
                         viewModel.handleEvent(EditCardEvent.OnInit(cardId))
                     }
-                    EditCardRoute(
-                        viewModel = viewModel,
-                        eventSink = viewModel::handleEvent,
-                        onBackPressed = { finish() },
-                        onSaved = {
+
+                    LaunchedEffect(state.saved) {
+                        if (state.saved) {
                             setResult(RESULT_OK)
                             finish()
                         }
+                    }
+
+                    LaunchedEffect(state.backPressed) {
+                        if (state.backPressed) {
+                            finish()
+                        }
+                    }
+
+                    EditCardRoute(
+                        state = state,
+                        eventSink = viewModel::handleEvent,
                     )
+                } else {
+                    finish()
                 }
             }
         }

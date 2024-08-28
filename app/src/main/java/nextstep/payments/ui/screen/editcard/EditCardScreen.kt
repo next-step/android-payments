@@ -37,33 +37,18 @@ import nextstep.payments.ui.screen.newcard.model.BankTypeModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCardRoute(
-    viewModel: EditCardViewModel,
+    state: EditCardState,
     eventSink: (EditCardEvent) -> Unit,
-    onBackPressed: () -> Unit,
-    onSaved: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val sheetState = rememberModalBottomSheetState()
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(state.saved) {
-        if (state.saved) {
-            onSaved()
-        }
-    }
-
-    LaunchedEffect(state.backPressed) {
-        if (state.backPressed) {
-            onBackPressed()
-        }
-    }
 
     LaunchedEffect(state.message) {
         state.message?.let {
             val result = snackbarHostState.showSnackbar(it)
             when (result) {
-                SnackbarResult.Dismissed -> viewModel.handleEvent(EditCardEvent.OnDismissSnackbar)
+                SnackbarResult.Dismissed -> eventSink(EditCardEvent.OnDismissSnackbar)
                 SnackbarResult.ActionPerformed -> Unit
             }
         }
