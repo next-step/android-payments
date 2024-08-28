@@ -137,6 +137,7 @@ private fun NewCardScreen(
     Scaffold(
         topBar = {
             NewCardTopBar(
+                isEdit = isEdit,
                 canSave = canSave,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
