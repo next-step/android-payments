@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AddPaymentCard(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     DefaultCard(
         modifier = modifier,
@@ -35,10 +36,14 @@ fun AddPaymentCard(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable { /* Click Action */ },
+                    .clickable { onClick() },
                 contentAlignment = Alignment.Center
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add",
+                    tint = Color.Black,
+                )
             }
         }
     )

@@ -103,7 +103,9 @@ fun PaymentCardList(
                     )
                 }
                 item {
-                    AddPaymentCard()
+                    AddPaymentCard(
+                        onClick = onAddCardClick
+                    )
                 }
             }
 
