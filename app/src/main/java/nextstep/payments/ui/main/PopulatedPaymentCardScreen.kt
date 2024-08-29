@@ -28,8 +28,8 @@ import nextstep.payments.ui.component.PaymentCard
 @Composable
 fun PopulatedPaymentCard(
     card: Card,
-    modifier: Modifier = Modifier,
     onCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -85,8 +85,7 @@ private fun PopulatedPaymentCardPreview() {
             cardCompany = "롯데카드",
             cardColor = Color.White.toArgb(),
             bankType = BankType.LOTTE
-        )
-    ) {
-
-    }
+        ),
+        onCardClick = {}
+    )
 }
