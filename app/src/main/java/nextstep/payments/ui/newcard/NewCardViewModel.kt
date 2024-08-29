@@ -5,16 +5,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
+import nextstep.payments.ui.newcard.model.BankUI
 
 data class NewCardUiState(
     val cardNumber: String = "",
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
-    val bank: Bank? = null,
+    val bankUI: BankUI = BankUI.EMPTY,
     val isInitialInput: Boolean = false,
     val isCardSelected: Boolean = false,
     val isBottomSheetVisible: Boolean = true
@@ -58,7 +58,7 @@ class NewCardViewModel(
                 expiredDate = _newCardUiState.value.expiredDate,
                 ownerName = _newCardUiState.value.ownerName,
                 password = _newCardUiState.value.password,
-                bank = _newCardUiState.value.bank!!
+                bank = _newCardUiState.value.bankUI.toBank()
             )
             repository.addCard(card)
             _cardAdded.value = true
@@ -95,10 +95,10 @@ class NewCardViewModel(
         }
     }
 
-    fun setBank(bank: Bank) {
+    fun setBank(bankUI: BankUI) {
         _newCardUiState.update { currentState ->
             currentState.copy(
-                bank = bank,
+                bankUI = bankUI,
                 isCardSelected = true,
                 isBottomSheetVisible = false
             )

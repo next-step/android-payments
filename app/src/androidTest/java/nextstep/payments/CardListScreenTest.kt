@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.data.model.Bank
+import nextstep.payments.ui.newcard.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.ui.card.CardListScreen
 import nextstep.payments.ui.card.CreditCardUiState

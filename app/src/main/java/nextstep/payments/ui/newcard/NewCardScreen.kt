@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.data.model.Bank
 import nextstep.payments.ui.components.CardInfoBottomSheet
 import nextstep.payments.ui.components.PaymentToolBar
+import nextstep.payments.ui.newcard.model.BankUI
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.ui.transformation.ExpiredDateTransformation
@@ -60,7 +60,7 @@ internal fun NewCardScreen(
 @Composable
 fun NewCardScreen(
     newCardUiState: NewCardUiState,
-    onBankSelect: (Bank) -> Unit,
+    onBankSelect: (BankUI) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -97,7 +97,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(bank = newCardUiState.bank)
+            PaymentCard(bankUI = newCardUiState.bankUI)
 
             Spacer(modifier = Modifier.height(10.dp))
 

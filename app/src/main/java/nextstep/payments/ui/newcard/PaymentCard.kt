@@ -1,7 +1,6 @@
 package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -23,11 +21,13 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.ui.card.PaymentCardInfo
+import nextstep.payments.ui.newcard.model.BankUI
 
 @Composable
 fun PaymentCard(
-    bank: Bank? = null,
+    bankUI: BankUI,
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = { }
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -35,17 +35,17 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = bank?.color ?: Color(0xFF333333),
+                color = bankUI.color,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(start = 14.dp, top = 15.dp),
+                .padding(start = 14.dp, end = 14.dp, top = 15.dp),
         ) {
             Text(
-                text = bank?.bankName.orEmpty(),
+                text = bankUI.bankName,
                 color = Color.White,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(bottom = 13.dp)
@@ -59,34 +59,7 @@ fun PaymentCard(
                         shape = RoundedCornerShape(4.dp),
                     )
             )
-        }
-    }
-}
-
-@Composable
-fun PaymentCardDetail(
-    card: Card,
-    modifier: Modifier = Modifier.testTag("Card"),
-    content: @Composable (Bank) -> Unit
-) {
-
-    Box(
-        modifier = modifier.size(width = 208.dp, height = 124.dp),
-    ) {
-        content(card.bank)
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(
-                    start = 14.dp,
-                    end = 14.dp,
-                    bottom = 16.dp
-                ),
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            PaymentCardInfo(
-                card = card
-            )
+            content()
         }
     }
 }
@@ -94,16 +67,16 @@ fun PaymentCardDetail(
 @Preview
 @Composable
 private fun PaymentCardPreview() {
-    PaymentCard()
+    PaymentCard(BankUI.EMPTY)
 }
 
-class PaymentCardDetailProvider: PreviewParameterProvider<Card> {
+class PaymentCardDetailProvider : PreviewParameterProvider<Card> {
     private val card = Card(
         cardNumber = "1234123412341234",
         expiredDate = "1234",
         ownerName = "User",
         password = "1234",
-        bank = Bank.BC
+        bank = BankUI.BC.toBank()
     )
     override val values: Sequence<Card> = sequenceOf(
         card, card.copy(bank = Bank.SHINHAN), card.copy(bank = Bank.KAKAO),
@@ -117,8 +90,8 @@ class PaymentCardDetailProvider: PreviewParameterProvider<Card> {
 private fun PaymentCardDetailPreview(
     @PreviewParameter(PaymentCardDetailProvider::class) card: Card
 ) {
-    PaymentCardDetail(card = card) {
-        PaymentCard(card.bank)
+    PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+        PaymentCardInfo(card = card)
     }
 }
 

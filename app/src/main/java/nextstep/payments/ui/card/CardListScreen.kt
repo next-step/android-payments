@@ -26,7 +26,7 @@ import nextstep.payments.ui.components.AddPaymentCard
 import nextstep.payments.ui.components.PaymentActionsTopBar
 import nextstep.payments.ui.components.PaymentTopBar
 import nextstep.payments.ui.newcard.PaymentCard
-import nextstep.payments.ui.newcard.PaymentCardDetail
+import nextstep.payments.ui.newcard.model.BankUI
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -88,8 +88,8 @@ fun CardListScreen(
 
                 is CreditCardUiState.One -> {
                     val card = creditCardUiState.card
-                    PaymentCardDetail(card = card) {
-                        PaymentCard(card.bank)
+                    PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+                        PaymentCardInfo(card = card)
                     }
                     AddPaymentCard(
                         onAddPaymentCard = onAddPaymentCard,
@@ -103,8 +103,8 @@ fun CardListScreen(
                         verticalArrangement = Arrangement.spacedBy(36.dp)
                     ) {
                         items(cards) { card ->
-                            PaymentCardDetail(card = card) {
-                                PaymentCard(card.bank)
+                            PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+                                PaymentCardInfo(card = card)
                             }
                         }
                     }
@@ -114,7 +114,7 @@ fun CardListScreen(
     }
 }
 
-class CarListScreenProvider: PreviewParameterProvider<CreditCardUiState> {
+class CarListScreenProvider : PreviewParameterProvider<CreditCardUiState> {
     private val card = Card(
         cardNumber = "1234123412341234",
         expiredDate = "1234",
