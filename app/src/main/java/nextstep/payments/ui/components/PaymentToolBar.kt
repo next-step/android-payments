@@ -19,7 +19,7 @@ import nextstep.payments.R
 fun PaymentToolBar(
     title: String,
     onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    onActionsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -33,7 +33,7 @@ fun PaymentToolBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(onClick = { onActionsClick() }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(id = R.string.check_content_description),
@@ -50,6 +50,6 @@ private fun PaymentToolBarPreview() {
     PaymentToolBar(
         title = "카드 등록",
         onBackClick = { },
-        onSaveClick = { }
+        onActionsClick = { }
     )
 }

@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardViewModel,
     onAddPaymentCard: () -> Unit,
+    onEditPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val creditCardUiState by viewModel.creditCardUiState.collectAsStateWithLifecycle()
@@ -40,6 +42,7 @@ fun CardListScreen(
     CardListScreen(
         creditCardUiState = creditCardUiState,
         onAddPaymentCard = onAddPaymentCard,
+        onEditPaymentCard = onEditPaymentCard,
         modifier = modifier
     )
 }
@@ -48,6 +51,7 @@ fun CardListScreen(
 fun CardListScreen(
     creditCardUiState: CreditCardUiState,
     onAddPaymentCard: () -> Unit,
+    onEditPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -88,7 +92,13 @@ fun CardListScreen(
 
                 is CreditCardUiState.One -> {
                     val card = creditCardUiState.card
-                    PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+                    PaymentCard(
+                        bankUI = BankUI.fromBank(card.bank) ?: BankUI.EMPTY,
+                        modifier = Modifier
+                            .clickable {
+                                onEditPaymentCard(card)
+                            }
+                    ) {
                         PaymentCardInfo(card = card)
                     }
                     AddPaymentCard(
@@ -103,7 +113,13 @@ fun CardListScreen(
                         verticalArrangement = Arrangement.spacedBy(36.dp)
                     ) {
                         items(cards) { card ->
-                            PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+                            PaymentCard(
+                                bankUI = BankUI.fromBank(card.bank) ?: BankUI.EMPTY,
+                                modifier =  Modifier
+                                    .clickable {
+                                        onEditPaymentCard(card)
+                                    }
+                            ) {
                                 PaymentCardInfo(card = card)
                             }
                         }
@@ -137,9 +153,8 @@ private fun CardListScreenPreview(
     PaymentsTheme {
         CardListScreen(
             creditCardUiState = creditCardUiState,
-            onAddPaymentCard = {
-
-            }
+            onAddPaymentCard = { },
+            onEditPaymentCard = { }
         )
     }
 }

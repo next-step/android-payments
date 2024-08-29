@@ -1,13 +1,12 @@
 package nextstep.payments
 
-import android.app.Activity
-import androidx.activity.viewModels
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,6 +37,11 @@ class MainActivity : ComponentActivity() {
                         viewModel = viewModel,
                         onAddPaymentCard = {
                             val intent = Intent(this, NewCardActivity::class.java)
+                            launcher.launch(intent)
+                        },
+                        onEditPaymentCard = { card ->
+                            val intent = Intent(this, EditCardActivity::class.java)
+                            intent.putExtra("card", card)
                             launcher.launch(intent)
                         }
                     )

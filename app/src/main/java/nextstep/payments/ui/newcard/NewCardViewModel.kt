@@ -54,12 +54,14 @@ class NewCardViewModel(
     fun addCard() {
         if (_newCardUiState.value.isCardAddable) {
             val card = Card(
+                id = repository.cards.size + 1,
                 cardNumber = _newCardUiState.value.cardNumber,
                 expiredDate = _newCardUiState.value.expiredDate,
                 ownerName = _newCardUiState.value.ownerName,
                 password = _newCardUiState.value.password,
                 bank = _newCardUiState.value.bankUI.toBank()
             )
+
             repository.addCard(card)
             _cardAdded.value = true
         } else {

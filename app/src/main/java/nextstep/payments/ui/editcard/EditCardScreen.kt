@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.editcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,33 +22,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.components.CardInfoBottomSheet
 import nextstep.payments.ui.components.PaymentToolBar
-import nextstep.payments.ui.newcard.model.BankUI
-import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.newcard.PaymentCard
 import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.ui.transformation.ExpiredDateTransformation
 
-// Stateful
 @Composable
-internal fun NewCardScreen(
-    viewModel: NewCardViewModel,
+internal fun EditCardScreen(
+    viewModel: EditCardViewModel,
     navigateToCardList: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val newCardUiState by viewModel.newCardUiState.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    val editCardUiState by viewModel.editCardUiState.collectAsStateWithLifecycle()
+    val cardEdited by viewModel.cardEdited.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardEdited) {
+        if (cardEdited) navigateToCardList()
     }
 
-    NewCardScreen(
-        newCardUiState = newCardUiState,
-        onBankSelect = viewModel::setBank,
+    EditCardScreen(
+        editCardUiState = editCardUiState,
         onBackClick = onBackClick,
-        onSaveClick = viewModel::addCard,
+        onEditClick = viewModel::editCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -58,32 +55,22 @@ internal fun NewCardScreen(
 
 // Stateless
 @Composable
-fun NewCardScreen(
-    newCardUiState: NewCardUiState,
-    onBankSelect: (BankUI) -> Unit,
+fun EditCardScreen(
+    editCardUiState: EditCardUiState,
     onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    onEditClick: () -> Unit,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    if (!newCardUiState.isCardSelected) {
-        CardInfoBottomSheet(
-            isBottomSheetVisible = newCardUiState.isBottomSheetVisible,
-            onBankSelect = onBankSelect,
-            onDismissRequest = { }
-        )
-    }
-
     Scaffold(
         topBar = {
             PaymentToolBar(
-                title = stringResource(id = R.string.card_add_top_bar_title),
+                title = stringResource(id = R.string.card_edit_top_bar_title),
                 onBackClick = onBackClick,
-                onActionsClick = onSaveClick
+                onActionsClick = onEditClick
             )
         },
         modifier = modifier
@@ -97,19 +84,19 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(bankUI = newCardUiState.bankUI)
+            PaymentCard(bankUI = editCardUiState.bankUI)
 
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = newCardUiState.cardNumber,
+                value = editCardUiState.cardNumber,
                 onValueChange = { setCardNumber(it) },
                 label = { Text(stringResource(id = R.string.card_number_label)) },
-                isError = newCardUiState.isCardNumberEmptyError || newCardUiState.isCardNumberFormatError,
+                isError = editCardUiState.isCardNumberEmptyError || editCardUiState.isCardNumberFormatError,
                 supportingText = {
-                    if (newCardUiState.isCardNumberEmptyError) {
+                    if (editCardUiState.isCardNumberEmptyError) {
                         Text(text = stringResource(id = R.string.card_number_empty_error_message))
-                    } else if (newCardUiState.isCardNumberFormatError) {
+                    } else if (editCardUiState.isCardNumberFormatError) {
                         Text(text = stringResource(id = R.string.card_number_format_error_message))
                     }
                 },
@@ -120,14 +107,14 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = newCardUiState.expiredDate,
+                value = editCardUiState.expiredDate,
                 onValueChange = { setExpiredDate(it) },
                 label = { Text(stringResource(id = R.string.expired_date_label)) },
-                isError = newCardUiState.isExpiredDateEmptyError || newCardUiState.isExpiredDateFormatError,
+                isError = editCardUiState.isExpiredDateEmptyError || editCardUiState.isExpiredDateFormatError,
                 supportingText = {
-                    if (newCardUiState.isExpiredDateEmptyError) {
+                    if (editCardUiState.isExpiredDateEmptyError) {
                         Text(text = stringResource(id = R.string.expired_date_empty_error_message))
-                    } else if (newCardUiState.isExpiredDateFormatError) {
+                    } else if (editCardUiState.isExpiredDateFormatError) {
                         Text(text = stringResource(id = R.string.expired_date_format_error_message))
                     }
                 },
@@ -138,7 +125,7 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = newCardUiState.ownerName,
+                value = editCardUiState.ownerName,
                 onValueChange = { setOwnerName(it) },
                 label = { Text(stringResource(id = R.string.owner_name_date_label)) },
                 placeholder = { Text(stringResource(id = R.string.owner_name_place_holder)) },
@@ -146,14 +133,14 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = newCardUiState.password,
+                value = editCardUiState.password,
                 onValueChange = { setPassword(it) },
                 label = { Text(stringResource(id = R.string.password_name_date_label)) },
-                isError = newCardUiState.isPasswordEmptyError || newCardUiState.isPasswordFormatError,
+                isError = editCardUiState.isPasswordEmptyError || editCardUiState.isPasswordFormatError,
                 supportingText = {
-                    if (newCardUiState.isPasswordEmptyError) {
+                    if (editCardUiState.isPasswordEmptyError) {
                         Text(text = stringResource(id = R.string.password_empty_error_message))
-                    } else if (newCardUiState.isPasswordFormatError) {
+                    } else if (editCardUiState.isPasswordFormatError) {
                         Text(text = stringResource(id = R.string.password_format_error_message))
                     }
                 },
@@ -168,39 +155,6 @@ fun NewCardScreen(
 
 @Preview
 @Composable
-private fun StatefulNewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            navigateToCardList = { },
-            onBackClick = { },
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("0000 - 0000 - 0000 - 0000")
-                setExpiredDate("00 / 00")
-                setOwnerName("최용호")
-                setPassword("1234")
-            }
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun StatelessNewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            newCardUiState = NewCardUiState(
-                cardNumber = "0000000000000000",
-                expiredDate = "0000",
-                ownerName = "최용호",
-                password = "1234"
-            ),
-            onBankSelect = {},
-            onBackClick = {},
-            onSaveClick = {},
-            setCardNumber = {},
-            setExpiredDate = {},
-            setOwnerName = {},
-            setPassword = {}
-        )
-    }
+private fun EditCardScreenPreview() {
+//    EditCardScreen()
 }
