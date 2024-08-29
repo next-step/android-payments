@@ -1,6 +1,6 @@
 package nextstep.payments.ui.newcard.model
 
-import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
 import nextstep.payments.data.model.Bank
@@ -18,7 +18,7 @@ enum class BankUI(
     private val bank: Bank?,
     val bankName: String,
     val color: Color,
-    @DrawableRes val imageResId: Int?
+    @StringRes val imageResId: Int?
 ) {
     EMPTY(null, "", EmptyMainColor, null),
     BC(Bank.BC,"BC카드", BCMainColor, R.drawable.bc_card),
