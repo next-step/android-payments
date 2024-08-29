@@ -2,6 +2,7 @@ package nextstep.payments.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {},
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -28,15 +30,18 @@ fun PaymentCard(
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
-        Box(
-            modifier = modifier
-                .padding(start = 14.dp, bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
-        )
+        Column {
+            Box(
+                modifier = modifier
+                    .padding(start = 14.dp, bottom = 10.dp)
+                    .size(width = 40.dp, height = 26.dp)
+                    .background(
+                        color = Color(0xFFCBBA64),
+                        shape = RoundedCornerShape(4.dp),
+                    )
+            )
+            content()
+        }
     }
 }
 

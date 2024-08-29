@@ -20,6 +20,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardAdd(
+    onCardAddClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -34,7 +35,7 @@ fun CardAdd(
     ) {
 
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = onCardAddClicked,
             modifier = modifier.fillMaxSize()
         ) {
             Icon(
@@ -49,6 +50,6 @@ fun CardAdd(
 @Composable
 fun CardAddPreview() {
     PaymentsTheme {
-        CardAdd()
+        CardAdd(onCardAddClicked = {})
     }
 }
