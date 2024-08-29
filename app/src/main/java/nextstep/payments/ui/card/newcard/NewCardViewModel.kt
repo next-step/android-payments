@@ -5,9 +5,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -56,8 +59,8 @@ class NewCardViewModel(
         initialValue = false,
     )
 
-    private val _sideEffect: Channel<NewCardSideEffect> = Channel()
-    val sideEffect = _sideEffect.receiveAsFlow()
+    private val _sideEffect: MutableSharedFlow<NewCardSideEffect> = MutableSharedFlow()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     fun setBankType(bankType: BankType) {
         _bankType.value = bankType
@@ -82,7 +85,7 @@ class NewCardViewModel(
     fun addCard() {
         val bankType = bankType.value ?: run {
             Log.e("[NewCardViewModel]", "bankType cannot be null")
-            viewModelScope.launch { _sideEffect.send(NewCardSideEffect.ShowToast(R.string.select_bank_type)) }
+            viewModelScope.launch { _sideEffect.emit(NewCardSideEffect.ShowToast(R.string.select_bank_type)) }
             return
         }
 
