@@ -1,6 +1,5 @@
 package nextstep.payments.ui.newcard
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,14 +21,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.R
+import nextstep.payments.data.model.Bank
+import nextstep.payments.ui.components.CardInfoBottomSheet
 import nextstep.payments.ui.components.PaymentToolBar
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.transformation.CardNumberTransformation
 import nextstep.payments.ui.transformation.ExpiredDateTransformation
 
 // Stateful
-@SuppressLint("UnrememberedMutableState")
 @Composable
 internal fun NewCardScreen(
     viewModel: NewCardViewModel,
@@ -46,6 +46,7 @@ internal fun NewCardScreen(
 
     NewCardScreen(
         newCardUiState = newCardUiState,
+        onBankSelect = viewModel::setBank,
         onBackClick = onBackClick,
         onSaveClick = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
@@ -57,8 +58,9 @@ internal fun NewCardScreen(
 
 // Stateless
 @Composable
-private fun NewCardScreen(
+fun NewCardScreen(
     newCardUiState: NewCardUiState,
+    onBankSelect: (Bank) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     setCardNumber: (String) -> Unit,
@@ -67,6 +69,15 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    if (!newCardUiState.isCardSelected) {
+        CardInfoBottomSheet(
+            isBottomSheetVisible = newCardUiState.isBottomSheetVisible,
+            onBankSelect = onBankSelect,
+            onDismissRequest = { }
+        )
+    }
+
     Scaffold(
         topBar = {
             PaymentToolBar(
@@ -86,7 +97,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(bank = newCardUiState.bank)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -178,11 +189,12 @@ private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             newCardUiState = NewCardUiState(
-                cardNumber = "0000 - 0000 - 0000 - 0000",
-                expiredDate = "00 / 00",
+                cardNumber = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "최용호",
                 password = "1234"
             ),
+            onBankSelect = {},
             onBackClick = {},
             onSaveClick = {},
             setCardNumber = {},
