@@ -56,7 +56,7 @@ fun PaymentsTheme(
     )
 }
 
-object PaymentTheme {
+object PaymentsTheme {
     val typography: Typography
         @Composable
         @ReadOnlyComposable

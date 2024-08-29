@@ -1,11 +1,17 @@
 package nextstep.payments.newcard
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
+import java.time.YearMonth
 
 /**
  * NewCardViewModel은 새 결제 카드를 관리하고 추가하는 로직을 포함한 ViewModel입니다.
@@ -31,6 +37,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _errorFlow = MutableSharedFlow<Throwable>()
+    val errorFlow = _errorFlow.asSharedFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -53,8 +62,22 @@ class NewCardViewModel(
      *
      * UI에서는 cardAdded가 true로 변경되었을 때, 네비게이션이나 이벤트 처리를 할 수 있습니다.
      */
-    fun addCard() {
-//        repository.addCard(card = _cardDetails.value)
+    fun addCard() = runCatching {
+        val cardNumbers = _cardNumber.value.chunked(4).map { CardNumber(it) }
+        val expiredDate = YearMonth.parse(_expiredDate.value)
+        val ownerName = _ownerName.value
+        val password = _password.value
+
+        CreditCard(
+            cardNumbers = cardNumbers,
+            expiredDate = expiredDate,
+            password = password,
+            ownerName = ownerName
+        )
+    }.onSuccess { card ->
+        repository.addCard(card)
         _cardAdded.value = true
+    }.onFailure {
+        viewModelScope.launch { _errorFlow.emit(it) }
     }
 }

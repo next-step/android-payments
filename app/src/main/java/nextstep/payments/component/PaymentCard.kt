@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.component
+package nextstep.payments.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
-import nextstep.payments.ui.theme.PaymentTheme
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -33,7 +32,6 @@ fun PaymentCard(
     creditCard: CreditCard? = null,
 ) {
     Box(
-        contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
@@ -45,7 +43,7 @@ fun PaymentCard(
         Column(
             modifier = Modifier
                 .padding(horizontal = 14.dp)
-                .padding(bottom = 10.dp)
+                .padding(top = 44.dp)
         ) {
             // 카드의 칩 모양
             Box(
@@ -87,7 +85,7 @@ private fun CardNumber(
     Text(
         modifier = modifier,
         text = "${numberFirst.number} - ${numberSecond.number} - **** - ****",
-        style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.17.em),
+        style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.17.em),
         color = Color.White,
     )
 }
@@ -103,17 +101,18 @@ private fun CardOwnerExpiredDate(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = ownerName,
-            style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+            style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
             color = Color.White
         )
 
         Text(
             text = formattedDate,
-            style = PaymentTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+            style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
             color = Color.White
         )
 

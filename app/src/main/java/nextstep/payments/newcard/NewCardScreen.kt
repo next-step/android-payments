@@ -19,8 +19,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
+import nextstep.payments.component.PaymentCard
 import nextstep.payments.newcard.component.NewCardTopBar
-import nextstep.payments.newcard.component.PaymentCard
+import nextstep.payments.util.CardNumberVisualTransformation
 
 @Composable
 internal fun NewCardScreen(
@@ -32,10 +33,17 @@ internal fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onAddCardClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = onAddCardClick
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -57,6 +65,7 @@ internal fun NewCardScreen(
                 label = { Text(text = stringResource(id = R.string.card_number)) },
                 placeholder = { Text(text = stringResource(id = R.string.card_number_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = CardNumberVisualTransformation()
             )
 
             OutlinedTextField(
@@ -90,7 +99,7 @@ internal fun NewCardScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewCardScreen() {
-    val cardNumber = remember { mutableStateOf("1234 - 5678 - 1234 - 5678") }
+    val cardNumber = remember { mutableStateOf("1111222233334444") }
     val expiredDate = remember { mutableStateOf("12 / 34") }
     val ownerName = remember { mutableStateOf("홍길동") }
     val password = remember { mutableStateOf("1234") }
@@ -104,6 +113,8 @@ fun PreviewNewCardScreen() {
         setExpiredDate = { expiredDate.value = it },
         setOwnerName = { ownerName.value = it },
         setPassword = { password.value = it },
+        onAddCardClick = {},
+        onBackClick = {},
         modifier = Modifier
     )
 }

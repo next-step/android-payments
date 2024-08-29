@@ -12,4 +12,9 @@
 
     <string name="password">비밀번호</string>
     <string name="password_placeholder">0000</string>
+    <string name="credit_card_error">카드 생성에 실패했습니다</string>
+    <string name="net_card_top_bar_title">카드 추가</string>
+    <string name="card_list_top_app_bar_title">Payments</string>
+    <string name="card_list_empty_screen_title">새로운 카드를 등록해주세요</string>
+    <string name="card_list_many_screen_top_app_bar_action">추가</string>
 </resources>

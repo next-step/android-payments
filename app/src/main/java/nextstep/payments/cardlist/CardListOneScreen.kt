@@ -1,53 +1,60 @@
 package nextstep.payments.cardlist
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import nextstep.payments.component.AddCard
+import nextstep.payments.component.PaymentCard
 import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
-import nextstep.payments.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 
 @Composable
 internal fun CardListOneScreen(
-    card: CreditCard
+    card: CreditCard,
+    onAddCardClick: () -> Unit,
 ) {
     Scaffold(
-        topBar = { CardListOneTopAppBar() },
+        topBar = { CardListTopAppBar() },
         content = { paddingValues ->
             CardListOneContent(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .fillMaxSize()
+                    .padding(top = 12.dp)
+                    .fillMaxSize(),
+                card = card,
+                onAddCardClick = onAddCardClick,
             )
         }
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CardListOneTopAppBar() {
-    CenterAlignedTopAppBar(title = { Text(text = "Payments") })
-}
-
 @Composable
 private fun CardListOneContent(
+    card: CreditCard,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        PaymentCard()
+        PaymentCard(
+            creditCard = card,
+        )
+
+        Spacer(modifier = Modifier.height(36.dp))
+
+        AddCard(onClick = onAddCardClick)
     }
 }
 
@@ -66,6 +73,9 @@ private fun CardListOneScreenPreview() {
         password = "1234"
     )
     PaymentsTheme {
-        CardListOneScreen(card = card)
+        CardListOneScreen(
+            card = card,
+            onAddCardClick = {},
+        )
     }
 }
