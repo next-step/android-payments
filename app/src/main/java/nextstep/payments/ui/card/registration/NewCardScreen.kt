@@ -6,14 +6,23 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,13 +31,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
-import nextstep.payments.data.BcCard
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.card.registration.component.BankSelectRow
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 // Stateful
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     modifier: Modifier = Modifier,
@@ -40,11 +51,33 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
-
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+    var selectedBankType by remember { mutableStateOf(BankType.NOT_SELECTED) }
+    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
+    }
+
+    LaunchedEffect(key1 = selectedBankType) {
+        if (selectedBankType != BankType.NOT_SELECTED) {
+            modalBottomSheetState.hide()
+        }
+    }
+
+    if (showCardCompanyBottomSheet) {
+        ModalBottomSheet(
+            sheetState = modalBottomSheetState,
+            onDismissRequest = { }
+        ) {
+            BankSelectRow(
+                onClick = {
+                    showCardCompanyBottomSheet = false
+                    selectedBankType = it
+                }
+            )
+        }
     }
 
     NewCardScreen(
@@ -53,12 +86,13 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        brandColor = colorResource(selectedBankType.brandColor),
         setCardNumber = viewModel::setCardNumber,
         setExpiredDatedNumber = viewModel::setExpiredDate,
         setOwnerNamedNumber = viewModel::setOwnerName,
         setPasswordNumber = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = viewModel::addCard
+        onSaveClick = viewModel::addCard,
     )
 }
 
@@ -70,12 +104,13 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    brandColor: Color,
     setCardNumber: (String) -> Unit,
     setExpiredDatedNumber: (String) -> Unit,
     setOwnerNamedNumber: (String) -> Unit,
     setPasswordNumber: (String) -> Unit,
     onBackClick: () -> Unit = {},
-    onSaveClick: (Card) -> Unit = {}
+    onSaveClick: (Card) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -86,7 +121,7 @@ private fun NewCardScreen(
                         expiredDate = expiredDate,
                         ownerName = ownerName,
                         password = password,
-                        cardCompany = BcCard
+                        brandColor = brandColor
                     )
                 )
             })
@@ -101,7 +136,9 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                brandColor = brandColor
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -164,6 +201,7 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "02/26",
             ownerName = "김수현",
             password = "1234",
+            brandColor = colorResource(id = BankType.NOT_SELECTED.brandColor),
             setCardNumber = {},
             setExpiredDatedNumber = {},
             setOwnerNamedNumber = {},

@@ -1,10 +1,13 @@
 package nextstep.payments.screen.card.list
 
+import android.content.Context
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.data.BcCard
+import androidx.test.core.app.ApplicationProvider
+import nextstep.payments.R
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
@@ -17,6 +20,7 @@ class RegisteredCreditCardsScreenTest {
 
     @get:Rule
     val composeRule = createComposeRule()
+    var context: Context = ApplicationProvider.getApplicationContext()
 
     @Before
     fun setUp() {
@@ -29,7 +33,7 @@ class RegisteredCreditCardsScreenTest {
         composeRule
             .setContent {
                 CardListScreen(
-                    registeredCreditCards =  RegisteredCreditCards(mutableListOf()),
+                    registeredCreditCards = RegisteredCreditCards(mutableListOf()),
                     onAddCard = {}
                 )
             }
@@ -50,14 +54,14 @@ class RegisteredCreditCardsScreenTest {
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    cardCompany = BcCard
+                    brandColor = Color(context.getColor(R.color.bc_card))
                 ),
                 Card(
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    cardCompany = BcCard
+                    brandColor = Color(context.getColor(R.color.bc_card))
                 )
             )
         )
@@ -119,7 +123,7 @@ class RegisteredCreditCardsScreenTest {
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                cardCompany = BcCard
+                brandColor = Color(context.getColor(R.color.bc_card))
             )
         )
         val registeredCreditCards = RegisteredCreditCards(
@@ -129,7 +133,7 @@ class RegisteredCreditCardsScreenTest {
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    cardCompany = BcCard
+                    brandColor = Color(context.getColor(R.color.bc_card))
                 )
             )
         )
