@@ -27,7 +27,6 @@ import nextstep.payments.ui.card.newcard.component.BankSelectBottomSheet
 import nextstep.payments.ui.card.newcard.component.NewCardTopBar
 import nextstep.payments.ui.card.newcard.component.NewPaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
-import kotlin.math.exp
 
 @Composable
 fun NewCardScreen(
@@ -36,12 +35,8 @@ fun NewCardScreen(
     backToCardList: () -> Unit,
     showToast: (Int) -> Unit,
 ) {
-    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
     val saveEnabled by viewModel.saveEnabled.collectAsStateWithLifecycle()
     var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(viewModel.editCard == null) }
 
@@ -59,11 +54,11 @@ fun NewCardScreen(
     NewCardScreen(
         isEdit = viewModel.editCard != null,
         saveEnabled = saveEnabled,
-        bankType = bankType,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        bankType = uiState.bankType,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -101,8 +96,14 @@ private fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(isEdit = isEdit, enabled = saveEnabled, onBackClick = onClickBack, onSaveClick = onClickSave) },
-        modifier = modifier
+        topBar = {
+            NewCardTopBar(
+                isEdit = isEdit,
+                enabled = saveEnabled,
+                onBackClick = onClickBack,
+                onSaveClick = onClickSave
+            )
+        }, modifier = modifier
     ) { innerPadding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(18.dp),
