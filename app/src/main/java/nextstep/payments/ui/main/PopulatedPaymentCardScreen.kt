@@ -1,5 +1,6 @@
 package nextstep.payments.ui.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.ui.component.MaskedCardNumberText
 import nextstep.payments.ui.component.PaymentCard
@@ -25,16 +28,20 @@ import nextstep.payments.ui.component.PaymentCard
 @Composable
 fun PopulatedPaymentCard(
     card: Card,
-    modifier: Modifier = Modifier
+    onCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .width(208.dp)
             .height(124.dp)
+            .clickable {
+                onCardClick()
+            }
     ) {
         PaymentCard(
             cardCompany = card.cardCompany,
-            cardColor = card.cardColor
+            cardColor = Color(card.cardColor),
         )
         Column(
             modifier = Modifier
@@ -45,7 +52,7 @@ fun PopulatedPaymentCard(
         ) {
             MaskedCardNumberText(
                 cardNumber = card.cardNumber,
-                cardColor = card.cardColor,
+                cardColor = Color(card.cardColor),
                 modifier = Modifier.fillMaxWidth()
             )
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -53,12 +60,12 @@ fun PopulatedPaymentCard(
                     modifier = Modifier.weight(1f),
                     text = card.ownerName.uppercase(),
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (card.cardColor.luminance() > 0.5) Color.Black else Color.White
+                    color = if (Color(card.cardColor).luminance() > 0.5) Color.Black else Color.White
                 )
                 Text(
                     text = card.expiredDate,
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (card.cardColor.luminance() > 0.5) Color.Black else Color.White,
+                    color = if (Color(card.cardColor).luminance() > 0.5) Color.Black else Color.White,
                     textAlign = TextAlign.End
                 )
             }
@@ -71,12 +78,14 @@ fun PopulatedPaymentCard(
 private fun PopulatedPaymentCardPreview() {
     PopulatedPaymentCard(
         card = Card(
-            "1234-5678-1234-5678",
-            "12/23",
-            "yoon",
-            "1234",
+            cardNumber = "1234-5678-1234-5678",
+            expiredDate = "12/23",
+            ownerName = "yoon",
+            password = "1234",
             cardCompany = "롯데카드",
-            cardColor = Color.White,
-        )
+            cardColor = Color.White.toArgb(),
+            bankType = BankType.LOTTE
+        ),
+        onCardClick = {}
     )
 }

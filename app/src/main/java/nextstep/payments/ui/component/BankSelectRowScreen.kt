@@ -57,8 +57,8 @@ fun BankSelectRow(
     FlowRow(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 100.dp, horizontal = 43.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .padding(top = 45.dp, bottom = 100.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
         verticalArrangement = Arrangement.spacedBy(23.dp),
         maxItemsInEachRow = COLUMN_COUNT
     ) {

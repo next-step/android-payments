@@ -15,12 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    title: String,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
@@ -44,5 +45,5 @@ fun NewCardTopBar(
 @Preview
 @Composable
 private fun NewCardTopBarPreview() {
-    NewCardTopBar(onBackClick = {}, onSaveClick = {})
+    NewCardTopBar("카드추가", onBackClick = {}, onSaveClick = {})
 }

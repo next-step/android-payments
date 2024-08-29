@@ -60,3 +60,9 @@ fun maskCardNumber(formattedNumber: String): String {
 private fun MaskedCardNumberTextPreview() {
     MaskedCardNumberText("1234567890123456", Color.White)
 }
+
+@Preview
+@Composable
+private fun MaskedCardNumberTextBlackPreview() {
+    MaskedCardNumberText("1234567890123456", Color.Black)
+}

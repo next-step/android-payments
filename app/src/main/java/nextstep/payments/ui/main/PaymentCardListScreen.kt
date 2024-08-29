@@ -19,8 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.ui.state.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -29,7 +31,7 @@ import nextstep.payments.ui.theme.titleBoldStyle
 @Composable
 fun PaymentCardList(
     cardUiState: CardUiState,
-    onAddClick: () -> Unit,
+    onAddClick: (Card?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -37,7 +39,9 @@ fun PaymentCardList(
             PaymentCardListTopBar {
                 AddButton(
                     cardUiState = cardUiState,
-                    onAddClick = onAddClick
+                    onAddClick = {
+                        onAddClick(null)
+                    }
                 )
             }
         },
@@ -65,7 +69,10 @@ fun PaymentCardList(
                     item {
                         PopulatedPaymentCard(
                             card = cardUiState.card,
-                            Modifier.padding(top = 12.dp)
+                            Modifier.padding(top = 12.dp),
+                            onCardClick = {
+                                onAddClick(cardUiState.card)
+                            }
                         )
                     }
                 }
@@ -74,7 +81,10 @@ fun PaymentCardList(
                     items(cardUiState.cards) { card ->
                         PopulatedPaymentCard(
                             card = card,
-                            Modifier.padding(top = 12.dp)
+                            Modifier.padding(top = 12.dp),
+                            onCardClick = {
+                                onAddClick(card)
+                            }
                         )
                     }
                 }
@@ -84,7 +94,9 @@ fun PaymentCardList(
                 item {
                     AddCardButton(
                         modifier = modifier,
-                        onClick = onAddClick
+                        onClick =  {
+                            onAddClick(null)
+                        }
                     )
                 }
             }
@@ -132,12 +144,13 @@ private fun PaymentCardListOnePreview() {
     PaymentsTheme {
 //        PaymentMain(listOf(), Modifier)
         val item = Card(
-            "1234-5678-9012-3456",
-            "12/34",
-            "홍길동",
-            "1234",
+            cardNumber = "1234-5678-9012-3456",
+            expiredDate = "12/34",
+            ownerName = "홍길동",
+            password = "1234",
             cardCompany = "롯데카드",
-            cardColor = Color.White,
+            cardColor = Color.White.toArgb(),
+            bankType = BankType.LOTTE
         )
         PaymentCardList(
             cardUiState = CardUiState.One(item),
@@ -152,20 +165,22 @@ private fun PaymentCardListManyPreview() {
     PaymentsTheme {
         val items: List<Card> = listOf(
             Card(
-                "1234-5678-9012-3456",
-                "12/34",
-                "홍길동",
-                "1234",
+                cardNumber = "1234-5678-9012-3456",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
                 cardCompany = "롯데카드",
-                cardColor = Color.White,
+                cardColor = Color.White.toArgb(),
+                bankType = BankType.LOTTE
             ),
             Card(
-                "1234-5678-9012-3456",
-                "12/34",
-                "홍길동",
-                "1234",
+                cardNumber = "1234-5678-9012-3456",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
                 cardCompany = "롯데카드",
-                cardColor = Color.White,
+                cardColor = Color.Black.toArgb(),
+                bankType = BankType.LOTTE
             )
         )
         PaymentCardList(

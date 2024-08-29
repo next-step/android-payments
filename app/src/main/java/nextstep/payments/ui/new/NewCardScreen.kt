@@ -12,21 +12,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.data.Bank
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.data.bank.BankRepository
 import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.main.PopulatedPaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -37,17 +36,20 @@ fun NewCardScreen(
     password: String,
     cardCompany: String,
     cardColor: Color,
+    bankType: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    card : Card?,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
             NewCardTopBar(
+                if (card != null) "카드 수정" else "카드 추가",
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick
             )
@@ -63,10 +65,19 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
-                cardCompany = cardCompany,
-                cardColor = cardColor
-            )
+            if (card != null) {
+                PopulatedPaymentCard(
+                    card = card
+                ) {
+
+                }
+            } else {
+                PaymentCard(
+                    cardCompany = cardCompany,
+                    cardColor = cardColor
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -111,6 +122,7 @@ fun NewCardScreen(
     viewModel: NewCardViewModel,
     bankRepository: BankRepository,
     navigateToCardList: () -> Unit,
+    card : Card?,
     modifier: Modifier = Modifier
 ) {
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
@@ -124,14 +136,17 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardCompany by viewModel.cardCompany.collectAsStateWithLifecycle()
     val cardColor by viewModel.cardColor.collectAsStateWithLifecycle()
+    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
 
-    var selectedBank by remember { mutableStateOf<Bank?>(null) }
-
-    if (selectedBank == null) {
+    if (bankType == BankType.NOT_SELECTED) {
         BankSelectBottomSheet(
             banks = bankRepository.getBanks(),
             onDismiss = { bank ->
-                selectedBank = bank
+                if (bank.bankType == BankType.NOT_SELECTED) {
+                    navigateToCardList()
+                    return@BankSelectBottomSheet
+                }
+                viewModel.setBankType(bank.bankType)
                 viewModel.setCardCompany(bank.name)
                 viewModel.setCardColor(bank.color)
             }
@@ -145,23 +160,39 @@ fun NewCardScreen(
         password = password,
         cardCompany = cardCompany,
         cardColor = cardColor,
+        bankType = bankType,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = { navigateToCardList() },
         onSaveClick = {
-            viewModel.addCard(
-                Card(
-                    cardNumber,
-                    expiredDate,
-                    ownerName,
-                    password,
-                    cardCompany,
-                    cardColor
+            if (card != null) {
+                viewModel.modifyCard(card.copy(
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                    password = password,
+                    cardCompany = cardCompany,
+                    cardColor = cardColor.toArgb(),
+                    bankType = bankType
+                ))
+            } else {
+                viewModel.addCard(
+                    Card(
+                        cardNumber = cardNumber,
+                        expiredDate = expiredDate,
+                        ownerName = ownerName,
+                        password = password,
+                        cardCompany = cardCompany,
+                        cardColor = cardColor.toArgb(),
+                        bankType = bankType
+                    )
                 )
-            )
+            }
+
         },
+        card = card,
         modifier = modifier
     )
 }
@@ -177,12 +208,21 @@ private fun StatelessNewCardScreenPreview() {
             password = "1234",
             cardCompany = "롯데카드",
             cardColor = Color.White,
+            bankType = BankType.LOTTE,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onSaveClick = {}
+            onSaveClick = {},
+            card = Card(cardNumber = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "윤성현",
+                password = "1234",
+                cardCompany = "롯데카드",
+                cardColor = Color.White.toArgb(),
+                bankType = BankType.LOTTE
+            )
         )
     }
 }
