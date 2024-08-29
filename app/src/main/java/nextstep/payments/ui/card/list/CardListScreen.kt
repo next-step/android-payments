@@ -41,7 +41,8 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 
     CardListScreen(
         state = uiState,
-        onShowNewCard = {
+        onShowNewCard = { launcher.launch(Intent(context, NewCardActivity::class.java)) },
+        onEditCard = {
             launcher.launch(Intent(context, NewCardActivity::class.java).apply {
                 putExtras(bundleOf(EXTRA_CARD to it))
             })
@@ -53,13 +54,14 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 private fun CardListScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState,
-    onShowNewCard: (Card?) -> Unit,
+    onShowNewCard: () -> Unit,
+    onEditCard: (Card) -> Unit,
 ) {
     Scaffold(
         topBar = {
             CardListTopBar(
                 displayAdd = state is CardListUiState.Many,
-                onShowNewCard = { onShowNewCard(null) },
+                onShowNewCard = { onShowNewCard() },
             )
         },
     ) { innerPadding ->
@@ -71,20 +73,21 @@ private fun CardListScreen(
         ) {
             when (val state = state) {
                 is CardListUiState.Empty -> EmptyCardScreen(
-                    onShowNewCard = { onShowNewCard(null) },
+                    onShowNewCard = { onShowNewCard() },
                     modifier = modifier,
                 )
 
                 is CardListUiState.One -> OneCardScreen(
                     state = state,
                     onShowNewCard = onShowNewCard,
+                    onEditCard = onEditCard,
                     modifier = modifier,
                 )
 
                 is CardListUiState.Many -> ManyCardScreen(
                     state = state,
-                    onShowNewCard = onShowNewCard,
-                    modifier = modifier
+                    onEditCard = onEditCard,
+                    modifier = modifier,
                 )
             }
         }
@@ -94,7 +97,7 @@ private fun CardListScreen(
 @Preview(showBackground = true, widthDp = 300)
 @Composable
 private fun CardListScreenPreview(@PreviewParameter(CardListScreenPreviewParameterProvider::class) param: CardListUiState) {
-    CardListScreen(state = param, onShowNewCard = {})
+    CardListScreen(state = param, onShowNewCard = {}, onEditCard = {})
 }
 
 private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {

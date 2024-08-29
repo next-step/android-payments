@@ -16,7 +16,7 @@ import nextstep.payments.ui.component.PaymentCard
 fun ManyCardScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState.Many,
-    onShowNewCard: (Card) -> Unit,
+    onEditCard: (Card) -> Unit,
 ) {
     Column(modifier = modifier) {
         LazyColumn(
@@ -24,7 +24,7 @@ fun ManyCardScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp)
         ) {
             items(state.cards) {
-                PaymentCard(card = it, onClick = { onShowNewCard(it) })
+                PaymentCard(card = it, onClick = { onEditCard(it) })
             }
         }
     }

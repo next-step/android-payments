@@ -16,16 +16,17 @@ import nextstep.payments.ui.component.PaymentCard
 fun OneCardScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState.One,
-    onShowNewCard: (Card?) -> Unit,
+    onShowNewCard: () -> Unit,
+    onEditCard: (Card) -> Unit,
 ) {
     Column(modifier = modifier.padding(top = 12.dp)) {
-        PaymentCard(card = state.card, onClick = { onShowNewCard(it) })
+        PaymentCard(card = state.card, onClick = { onEditCard(it) })
         NewCard(
             modifier = Modifier
                 .padding(top = 32.dp)
                 .width(208.dp)
                 .height(124.dp),
-            onClick = { onShowNewCard(null) },
+            onClick = onShowNewCard,
         )
     }
 }
