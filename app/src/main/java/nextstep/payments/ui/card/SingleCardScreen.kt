@@ -9,10 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreditCardItem
 import nextstep.payments.ui.component.EmptyCardItem
-import nextstep.payments.ui.ext.cardDefaultSize
 
 
 @Composable
@@ -27,15 +27,8 @@ fun SingleCardScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
-        CreditCardItem(
-            cardNumber = card.cardNumber,
-            cardOwnerName = card.cardOwnerName,
-            cardExpiredDate = card.cardExpiredDate
-        )
-        EmptyCardItem(
-            onClickItem = onClickAddItem,
-            modifier = Modifier.cardDefaultSize()
-        )
+        CreditCardItem(card)
+        EmptyCardItem(onClickItem = onClickAddItem)
     }
 }
 
@@ -46,7 +39,8 @@ private fun SingleCardScreenPreview() {
         Card(
             cardNumber = "1111 - 2222 - **** - ****",
             cardOwnerName = "Park",
-            cardExpiredDate = "04 / 21"
+            cardExpiredDate = "04 / 21",
+            bankType = BankType.SHINHAN
         )
     )
     SingleCardScreen(uiState.card, {})

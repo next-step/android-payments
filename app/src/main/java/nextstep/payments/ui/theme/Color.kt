@@ -15,3 +15,13 @@ val EmptyCardBgColor = Color(0xFFE5E5E5)
 val CardBgColor = Color(0xFF333333)
 
 val CardChipColor = Color(0xFFCBBA64)
+val BankTextColor = Color(0xFF525252)
+
+val BCColor = Color(0xFFED1C24)
+val ShinhanColor = Color(0xFF0046FF)
+val KakaoColor = Color(0xFFFFE100)
+val HyundaiColor = Color(0xFF000000)
+val WooriColor = Color(0xFF0067B3)
+val LotteColor = Color(0xFFFF0000)
+val HanaColor = Color(0xFF00857E)
+val KBColor = Color(0xFFFDB813)

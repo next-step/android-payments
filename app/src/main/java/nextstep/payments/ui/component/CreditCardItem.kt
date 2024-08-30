@@ -23,30 +23,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.model.BankType
+import nextstep.payments.model.Card
 import nextstep.payments.ui.ext.cardDefaultSize
-import nextstep.payments.ui.theme.CardBgColor
 import nextstep.payments.ui.theme.CardChipColor
 
 
 @Composable
 fun CreditCardItem(
-    cardNumber: String,
-    cardOwnerName: String,
-    cardExpiredDate: String,
+    card: Card,
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .shadow(8.dp)
             .cardDefaultSize()
             .clip(RoundedCornerShape(5.dp))
-            .background(CardBgColor)
+            .background(card.bankType.color)
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
         Column(
-            modifier.align(Alignment.BottomStart)
+            Modifier.align(Alignment.BottomStart)
         ) {
             Box(
                 modifier = Modifier
@@ -60,7 +61,7 @@ fun CreditCardItem(
                 LocalTextStyle provides MaterialTheme.typography.labelMedium
             ) {
                 Text(
-                    text = cardNumber,
+                    text = card.cardNumber,
                     modifier = Modifier.fillMaxWidth(),
                     letterSpacing = 1.7.sp
                 )
@@ -70,11 +71,11 @@ fun CreditCardItem(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = cardOwnerName,
+                        text = card.cardOwnerName,
                         letterSpacing = 1.sp
                     )
                     Text(
-                        text = cardExpiredDate,
+                        text = card.cardExpiredDate,
                         letterSpacing = 0.8.sp
                     )
                 }
@@ -85,12 +86,33 @@ fun CreditCardItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun CreditCardItemPreview() {
+private fun CreditCardItemPreview(
+    @PreviewParameter(CardListPreviewParameterProvider::class) value: Card
+) {
     Box {
-        CreditCardItem(
-            cardNumber = "1111 - 2222 - **** - ****",
-            cardOwnerName = "Park",
-            cardExpiredDate = "04 / 21"
-        )
+        CreditCardItem(value)
     }
 }
+
+private class CardListPreviewParameterProvider : CollectionPreviewParameterProvider<Card>(
+    listOf(
+        Card(
+            cardNumber = "0000 - 1111 - **** - ****",
+            cardExpiredDate = "08/27",
+            cardOwnerName = "Park",
+            bankType = BankType.SHINHAN
+        ),
+        Card(
+            cardNumber = "0000 - 2222 - **** - ****",
+            cardExpiredDate = "08/27",
+            cardOwnerName = "Park",
+            bankType = BankType.LOTTE
+        ),
+        Card(
+            cardNumber = "0000 - 2222 - **** - ****",
+            cardExpiredDate = "08/27",
+            cardOwnerName = "Park",
+            bankType = BankType.KAKAO
+        )
+    )
+)

@@ -10,14 +10,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreditCardItem
 
 
 @Composable
-fun CardListScreen(cards: List<Card>) {
+fun CardListScreen(
+    cards: List<Card>,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 12.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp),
@@ -27,11 +31,7 @@ fun CardListScreen(cards: List<Card>) {
             items = cards,
             key = { it.cardNumber }
         ) { item ->
-            CreditCardItem(
-                cardNumber = item.cardNumber,
-                cardOwnerName = item.cardOwnerName,
-                cardExpiredDate = item.cardExpiredDate
-            )
+            CreditCardItem(item)
         }
     }
 }
@@ -39,19 +39,22 @@ fun CardListScreen(cards: List<Card>) {
 @Preview(showBackground = true)
 @Composable
 private fun CardListScreenPreview() {
-    val uiState = CreditCardUiState.Many(
-        listOf(
-            Card(
-                cardNumber = "1111 - 2222 - **** - ****",
-                cardOwnerName = "Park",
-                cardExpiredDate = "04 / 21"
-            ),
-            Card(
-                cardNumber = "1111 - 2234 - **** - ****",
-                cardOwnerName = "Park",
-                cardExpiredDate = "04 / 21"
-            )
-        )
+    val cardNumbers = listOf(
+        "1111 - 2222 - **** - ****",
+        "1111 - 2234 - **** - ****",
+        "1111 - 1112 - **** - ****",
+        "1111 - 1113 - **** - ****",
+        "1111 - 1114 - **** - ****",
+        "1111 - 1115 - **** - ****"
     )
+    val cards = cardNumbers.mapIndexed { index, number ->
+        Card(
+            cardNumber = number,
+            cardOwnerName = "Park",
+            cardExpiredDate = "04 / 21",
+            bankType = BankType.entries[index]
+        )
+    }
+    val uiState = CreditCardUiState.Many(cards)
     CardListScreen(uiState.cards)
 }
