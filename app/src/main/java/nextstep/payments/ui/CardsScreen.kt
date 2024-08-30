@@ -20,12 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.R
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -59,7 +61,7 @@ fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, viewModel: Card
                                 modifier = Modifier.padding(16.dp)
                             ) {
                                 Text(
-                                    text = "추가",
+                                    text = stringResource(id = R.string.card_screen_top_bar_card_add),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
@@ -185,7 +187,7 @@ fun CardNotExistListPreview() {
     PaymentsTheme {
         CardsScreen(
             onCardAddClicked = {},
-            cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
+            cards = emptyList(),
             viewModel = CardsViewModel()
         )
     }
@@ -193,12 +195,29 @@ fun CardNotExistListPreview() {
 
 @Preview
 @Composable
-fun CardExistListPreview() {
+fun CardOneExistListPreview() {
     PaymentsTheme {
+        val cardViewModel = CardsViewModel()
+        cardViewModel.notifyCardAdded()
         CardsScreen(
             onCardAddClicked = {},
             cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
-            viewModel = CardsViewModel()
+            viewModel = cardViewModel
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CardManyExistListPreview() {
+    PaymentsTheme {
+        val cardViewModel = CardsViewModel()
+        cardViewModel.notifyCardAdded()
+        cardViewModel.notifyCardAdded()
+        CardsScreen(
+            onCardAddClicked = {},
+            cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
+            viewModel = cardViewModel
         )
     }
 }
