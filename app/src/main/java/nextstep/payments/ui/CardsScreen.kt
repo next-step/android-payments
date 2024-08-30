@@ -2,8 +2,10 @@ package nextstep.payments.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +28,7 @@ import nextstep.payments.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>) {
+fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, cardAdded: Boolean) {
     Scaffold(
         topBar = { CardsTopBar() },
     ) { innerPadding ->
@@ -37,12 +39,14 @@ fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>) {
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "새로운 카드를 등록해 주세요",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(32.dp)
-            )
+            if (!cardAdded) {
+                Text(
+                    text = "새로운 카드를 등록해 주세요",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(32.dp)
+                )
+            }
             CardList(onCardAddClicked = onCardAddClicked, cards = cards)
         }
     }
@@ -66,11 +70,9 @@ fun CardList(onCardAddClicked: () -> Unit, cards: List<Card>) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(36.dp),
     ) {
-        item {
-            CardAdd(onCardAddClicked = onCardAddClicked)
-        }
         itemsIndexed(cards) { _, card ->
             PaymentCard(
+
                 content = {
                     Column(
                         modifier = Modifier
@@ -112,16 +114,32 @@ fun CardList(onCardAddClicked: () -> Unit, cards: List<Card>) {
                 }
             )
         }
+        item {
+            CardAdd(onCardAddClicked = onCardAddClicked)
+        }
     }
 }
 
 @Preview
 @Composable
-fun CardListPreview() {
+fun CardNotExistListPreview() {
     PaymentsTheme {
         CardsScreen(
             onCardAddClicked = {},
-            cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234"))
+            cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
+            cardAdded = false
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CardExistListPreview() {
+    PaymentsTheme {
+        CardsScreen(
+            onCardAddClicked = {},
+            cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
+            cardAdded = true
         )
     }
 }

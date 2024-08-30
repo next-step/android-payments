@@ -37,7 +37,8 @@ class CardsActivity : ComponentActivity() {
                         val intent = Intent(this, NewCardActivity::class.java)
                         launcher.launch(intent)
                     },
-                    cards = cards
+                    cards = cards,
+                    cardAdded = cardAdded
                 )
             }
         }
@@ -48,6 +49,6 @@ class CardsActivity : ComponentActivity() {
 @Composable
 fun CardsScreenPreview() {
     PaymentsTheme {
-        CardsScreen(onCardAddClicked = {}, cards = emptyList())
+        CardsScreen(onCardAddClicked = {}, cards = emptyList(), cardAdded = false)
     }
 }
