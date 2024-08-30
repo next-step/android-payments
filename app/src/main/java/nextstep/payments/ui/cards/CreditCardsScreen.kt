@@ -70,7 +70,7 @@ private fun CreditCardsScreen(
     }
 }
 
-@Preview
+@Preview(name = "카드 0개")
 @Composable
 private fun CreditCardEmptyScreenPreview() {
     CreditCardsScreen(
@@ -79,7 +79,7 @@ private fun CreditCardEmptyScreenPreview() {
     )
 }
 
-@Preview
+@Preview(name = "카드 1개")
 @Composable
 private fun CreditCardOneScreenPreview() {
     CreditCardsScreen(
@@ -95,7 +95,7 @@ private fun CreditCardOneScreenPreview() {
     )
 }
 
-@Preview
+@Preview(name = "카드 5개")
 @Composable
 private fun CreditCardManyScreenPreview() {
     CreditCardsScreen(
