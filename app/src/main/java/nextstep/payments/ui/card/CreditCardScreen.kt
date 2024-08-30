@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.theme.TopBarTitleColor
 
@@ -122,12 +123,14 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
     val card1 = Card(
         cardNumber = "0000 - 1111 - **** - ****",
         cardExpiredDate = "08/27",
-        cardOwnerName = "Park"
+        cardOwnerName = "Park",
+        bankType = BankType.SHINHAN
     )
     val card2 = Card(
         cardNumber = "0000 - 2222 - **** - ****",
         cardExpiredDate = "08/27",
-        cardOwnerName = "Park"
+        cardOwnerName = "Park",
+        bankType = BankType.LOTTE
     )
     override val values: Sequence<CreditCardUiState> = sequenceOf(
         CreditCardUiState.Empty,
@@ -145,12 +148,14 @@ private fun CardListTopAppBarPreview() {
             Card(
                 cardNumber = "1111 - 2222 - **** - ****",
                 cardOwnerName = "Park",
-                cardExpiredDate = "04 / 21"
+                cardExpiredDate = "04 / 21",
+                bankType = BankType.SHINHAN
             ),
             Card(
                 cardNumber = "1111 - 3333 - **** - ****",
                 cardOwnerName = "Park",
-                cardExpiredDate = "04 / 21"
+                cardExpiredDate = "04 / 21",
+                bankType = BankType.BC
             )
         )
     )

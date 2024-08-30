@@ -9,10 +9,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import nextstep.payments.model.BankType
 
 
@@ -20,12 +22,13 @@ import nextstep.payments.model.BankType
 @Composable
 fun BankSelectBottomSheet(
     bankTypes: List<BankType>,
-    onClickBankType: () -> Unit,
+    onClickBankType: (BankType) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
+    val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
@@ -34,7 +37,13 @@ fun BankSelectBottomSheet(
     ) {
         BankSelectRow(
             bankTypes = bankTypes,
-            onClickBankType = onClickBankType
+            onClickBankType = {
+                onClickBankType(it)
+                coroutineScope.launch {
+                    modalBottomSheetState.hide()
+                    onDismissRequest()
+                }
+            }
         )
     }
 }
@@ -43,7 +52,7 @@ fun BankSelectBottomSheet(
 @Composable
 private fun BankSelectRow(
     bankTypes: List<BankType>,
-    onClickBankType: () -> Unit
+    onClickBankType: (BankType) -> Unit
 ) {
     FlowRow(
         modifier = Modifier
@@ -55,7 +64,7 @@ private fun BankSelectRow(
         bankTypes.forEach { bankType ->
             BankSelectorItem(
                 bankType = bankType,
-                onClickBankType = onClickBankType,
+                onClickBankType = { onClickBankType(bankType) },
                 modifier = Modifier.weight(1f)
             )
         }

@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreditCardItem
 
@@ -46,11 +47,12 @@ private fun CardListScreenPreview() {
         "1111 - 1114 - **** - ****",
         "1111 - 1115 - **** - ****"
     )
-    val cards = cardNumbers.map {
+    val cards = cardNumbers.mapIndexed { index, number ->
         Card(
-            cardNumber = it,
+            cardNumber = number,
             cardOwnerName = "Park",
-            cardExpiredDate = "04 / 21"
+            cardExpiredDate = "04 / 21",
+            bankType = BankType.entries[index]
         )
     }
     val uiState = CreditCardUiState.Many(cards)

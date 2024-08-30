@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,7 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.model.BankType
 import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.component.BankSelectBottomSheet
 import nextstep.payments.ui.theme.PaymentsTheme
 
 // Stateful
@@ -42,17 +47,27 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
 
+    val bankTypes by viewModel.bankTypes.collectAsStateWithLifecycle()
+    val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
+
+    var showBankSelectBottomSheet by rememberSaveable { mutableStateOf(true) }
+
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        bankTypes = bankTypes,
+        selectedBankType = selectedBankType,
+        showBankSelectBottomSheet = showBankSelectBottomSheet,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = { viewModel.addCard() }
+        onSaveClick = { viewModel.addCard() },
+        onClickBankType = { viewModel.setSelectedBankType(it) },
+        onBottomSheetDismissRequest = { showBankSelectBottomSheet = false }
     )
 }
 
@@ -63,14 +78,27 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankTypes: List<BankType>,
+    selectedBankType: BankType?,
+    showBankSelectBottomSheet: Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    onClickBankType: (BankType) -> Unit,
+    onBottomSheetDismissRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (showBankSelectBottomSheet) {
+        BankSelectBottomSheet(
+            bankTypes = bankTypes,
+            onClickBankType = onClickBankType,
+            onDismissRequest = onBottomSheetDismissRequest
+        )
+    }
+
     Scaffold(
         topBar = {
             NewCardTopBar(
@@ -89,7 +117,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(selectedBankType)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -133,22 +161,6 @@ fun NewCardScreen(
     }
 }
 
-@Preview
-@Composable
-private fun NewCardScreenPrev() {
-    PaymentsTheme {
-        NewCardScreen(
-            onBackClick = {},
-            navigateToCardList = {},
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("0000 - 0000 - 0000 - 0000")
-                setExpiredDate("00 / 00")
-                setOwnerName("Kyudong3")
-                setPassword("asldkfj")
-            }
-        )
-    }
-}
 
 @Preview
 @Composable
@@ -159,12 +171,17 @@ private fun StatelessNewCardScreenPrev() {
             expiredDate = "00 / 00",
             ownerName = "kyudong3",
             password = "asldkfj",
+            bankTypes = emptyList(),
+            selectedBankType = BankType.BC,
+            showBankSelectBottomSheet = false,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onSaveClick = {}
+            onSaveClick = {},
+            onClickBankType = {},
+            onBottomSheetDismissRequest = {}
         )
     }
 }

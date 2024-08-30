@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreditCardItem
 import nextstep.payments.ui.component.EmptyCardItem
@@ -38,7 +39,8 @@ private fun SingleCardScreenPreview() {
         Card(
             cardNumber = "1111 - 2222 - **** - ****",
             cardOwnerName = "Park",
-            cardExpiredDate = "04 / 21"
+            cardExpiredDate = "04 / 21",
+            bankType = BankType.SHINHAN
         )
     )
     SingleCardScreen(uiState.card, {})
