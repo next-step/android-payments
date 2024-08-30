@@ -12,6 +12,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun EmptyCardComponent(
@@ -42,5 +43,7 @@ fun EmptyCardComponent(
 @Preview(showBackground = true)
 @Composable
 private fun EmptyCardComponentPreview() {
-    EmptyCardComponent(onAddClick = {})
+    PaymentsTheme {
+        EmptyCardComponent(onAddClick = {})
+    }
 }

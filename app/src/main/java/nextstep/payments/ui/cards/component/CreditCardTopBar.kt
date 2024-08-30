@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,11 +41,15 @@ fun CreditCardTopBar(
 @Preview
 @Composable
 private fun ShowActionBarCreditCardTopBarPreview() {
-    CreditCardTopBar(isShowAddButton = true, onAddClick = {})
+    PaymentsTheme {
+        CreditCardTopBar(isShowAddButton = true, onAddClick = {})
+    }
 }
 
 @Preview
 @Composable
 private fun HideActionBarCreditCardTopBarPreview() {
-    CreditCardTopBar(isShowAddButton = false, onAddClick = {})
+    PaymentsTheme {
+        CreditCardTopBar(isShowAddButton = false, onAddClick = {})
+    }
 }

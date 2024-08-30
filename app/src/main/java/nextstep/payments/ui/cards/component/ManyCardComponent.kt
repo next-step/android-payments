@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.ui.common.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun ManyCardComponent(
@@ -40,11 +41,13 @@ fun ManyCardComponent(
 @Preview
 @Composable
 private fun ManyCardComponentPreview() {
-    ManyCardComponent(
-        cards = listOf(
-            Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111"),
-            Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222"),
-            Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333")
-        ),
-    )
+    PaymentsTheme {
+        ManyCardComponent(
+            cards = listOf(
+                Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111"),
+                Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222"),
+                Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333")
+            ),
+        )
+    }
 }

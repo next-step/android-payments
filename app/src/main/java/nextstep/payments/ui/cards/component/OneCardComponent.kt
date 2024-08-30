@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.ui.common.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun OneCardComponent(
@@ -40,13 +41,15 @@ fun OneCardComponent(
 @Preview
 @Composable
 private fun OneCardComponentPreview() {
-    OneCardComponent(
-        card = Card(
-            cardNumber = "1111-1111-1111-1111",
-            expiredDate = "11 / 11",
-            ownerName = "컴포즈",
-            password = "1111"
-        ),
-        onAddClick = {}
-    )
+    PaymentsTheme {
+        OneCardComponent(
+            card = Card(
+                cardNumber = "1111-1111-1111-1111",
+                expiredDate = "11 / 11",
+                ownerName = "컴포즈",
+                password = "1111"
+            ),
+            onAddClick = {}
+        )
+    }
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Card
+import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.maskCardNumber
 
 @Composable
@@ -101,18 +102,22 @@ fun PaymentCard(
 @Preview
 @Composable
 private fun PaymentCardWithInfoEmptyPreview() {
-    PaymentCard()
+    PaymentsTheme {
+        PaymentCard()
+    }
 }
 
 @Preview
 @Composable
 private fun PaymentCardWithInfoPreview() {
-    PaymentCard(
-        card = Card(
-            cardNumber = "0000-0000-0000-0000",
-            expiredDate = "00 / 00",
-            ownerName = "컴포즈",
-            password = "0000",
-        ),
-    )
+    PaymentsTheme {
+        PaymentCard(
+            card = Card(
+                cardNumber = "0000-0000-0000-0000",
+                expiredDate = "00 / 00",
+                ownerName = "컴포즈",
+                password = "0000",
+            ),
+        )
+    }
 }

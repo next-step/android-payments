@@ -13,6 +13,7 @@ import nextstep.payments.ui.cards.component.CreditCardTopBar
 import nextstep.payments.ui.cards.component.EmptyCardComponent
 import nextstep.payments.ui.cards.component.ManyCardComponent
 import nextstep.payments.ui.cards.component.OneCardComponent
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CreditCardsScreen(
@@ -73,41 +74,47 @@ private fun CreditCardsScreen(
 @Preview(name = "카드 0개")
 @Composable
 private fun CreditCardEmptyScreenPreview() {
-    CreditCardsScreen(
-        state = CreditCardUiState.Empty,
-        onAddClick = {}
-    )
+    PaymentsTheme {
+        CreditCardsScreen(
+            state = CreditCardUiState.Empty,
+            onAddClick = {}
+        )
+    }
 }
 
 @Preview(name = "카드 1개")
 @Composable
 private fun CreditCardOneScreenPreview() {
-    CreditCardsScreen(
-        state = CreditCardUiState.One(
-            card = Card(
-                cardNumber = "1111-1111-1111-1111",
-                expiredDate = "11 / 11",
-                ownerName = "컴포즈",
-                password = "1111"
-            )
-        ),
-        onAddClick = {}
-    )
+    PaymentsTheme {
+        CreditCardsScreen(
+            state = CreditCardUiState.One(
+                card = Card(
+                    cardNumber = "1111-1111-1111-1111",
+                    expiredDate = "11 / 11",
+                    ownerName = "컴포즈",
+                    password = "1111"
+                )
+            ),
+            onAddClick = {}
+        )
+    }
 }
 
 @Preview(name = "카드 5개")
 @Composable
 private fun CreditCardManyScreenPreview() {
-    CreditCardsScreen(
-        state = CreditCardUiState.Many(
-            cards = listOf(
-                Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111"),
-                Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222"),
-                Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333"),
-                Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444"),
-                Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555"),
-            )
-        ),
-        onAddClick = {}
-    )
+    PaymentsTheme {
+        CreditCardsScreen(
+            state = CreditCardUiState.Many(
+                cards = listOf(
+                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111"),
+                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222"),
+                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333"),
+                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444"),
+                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555"),
+                )
+            ),
+            onAddClick = {}
+        )
+    }
 }

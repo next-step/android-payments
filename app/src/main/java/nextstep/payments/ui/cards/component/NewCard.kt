@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCard(
@@ -39,9 +40,9 @@ fun NewCard(
         modifier = modifier
             .aspectRatio(aspectRatio)
             .defaultMinSize(
-            minWidth = minWidth,
-            minHeight = minHeight
-        ),
+                minWidth = minWidth,
+                minHeight = minHeight
+            ),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFE5E5E5)
         )
@@ -61,10 +62,13 @@ fun NewCard(
 @Preview
 @Composable
 private fun NewCardPreview() {
-    NewCard(
-        modifier = Modifier.padding(top = 32.dp)
-            .width(208.dp)
-            .height(124.dp),
-        onClick = {},
-    )
+    PaymentsTheme {
+        NewCard(
+            modifier = Modifier
+                .padding(top = 32.dp)
+                .width(208.dp)
+                .height(124.dp),
+            onClick = {},
+        )
+    }
 }
