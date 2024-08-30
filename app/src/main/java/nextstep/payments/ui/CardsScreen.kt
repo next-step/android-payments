@@ -82,7 +82,7 @@ fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, viewModel: Card
             when (uiState) {
                 is CardUiState.Empty -> {
                     Text(
-                        text = "새로운 카드를 등록해 주세요",
+                        text = stringResource(id = R.string.card_screen_card_add_information),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(32.dp)
@@ -114,7 +114,7 @@ fun CardsTopBar(content: @Composable () -> Unit = {}) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Payments",
+                text = stringResource(id = R.string.card_screen_top_bar_card_title),
                 fontSize = 22.sp
             )
         },
