@@ -1,6 +1,7 @@
 package nextstep.payments.ui.cards.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -21,10 +22,10 @@ fun ManyCardComponent(
 ) {
     LazyColumn(
         modifier = modifier
-            .padding(top = 12.dp)
             .semantics {
                 contentDescription = "manyCard"
             },
+        contentPadding = PaddingValues(top = 12.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
