@@ -1,20 +1,22 @@
 package nextstep.payments.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,12 +27,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.viewmodel.CardsViewModel
 
 @Composable
-fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, cardAdded: Boolean) {
+fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, viewModel: CardsViewModel) {
+    val uiState by viewModel.uiState.collectAsState()
     Scaffold(
-        topBar = { CardsTopBar() },
+        topBar = {
+            when (uiState) {
+                is CardUiState.Empty -> {
+                    CardsTopBar()
+                }
+
+                is CardUiState.One -> {
+                    CardsTopBar()
+                }
+
+                is CardUiState.Many -> {
+                    CardsTopBar(
+                        content = {
+                            Button(
+                                onClick = {
+                                    onCardAddClicked()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    contentColor = Color.Black
+                                ),
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(
+                                    text = "추가",
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        }
+                    )
+                }
+            }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -39,40 +77,61 @@ fun CardsScreen(onCardAddClicked: () -> Unit, cards: List<Card>, cardAdded: Bool
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (!cardAdded) {
-                Text(
-                    text = "새로운 카드를 등록해 주세요",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(32.dp)
-                )
+            when (uiState) {
+                is CardUiState.Empty -> {
+                    Text(
+                        text = "새로운 카드를 등록해 주세요",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(32.dp)
+                    )
+                    CardList(
+                        cards = cards,
+                        content = { CardAdd(onCardAddClicked = onCardAddClicked) }
+                    )
+                }
+
+                is CardUiState.One -> {
+                    CardList(
+                        cards = cards,
+                        content = { CardAdd(onCardAddClicked = onCardAddClicked) }
+                    )
+                }
+
+                is CardUiState.Many -> {
+                    CardList(cards = cards)
+                }
             }
-            CardList(onCardAddClicked = onCardAddClicked, cards = cards)
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardsTopBar() {
+fun CardsTopBar(content: @Composable () -> Unit = {}) {
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = "Payments",
                 fontSize = 22.sp
             )
+        },
+        actions = {
+            content()
         }
     )
 }
 
 @Composable
-fun CardList(onCardAddClicked: () -> Unit, cards: List<Card>) {
+fun CardList(
+    cards: List<Card>,
+    content: @Composable () -> Unit = {}
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(36.dp),
     ) {
         itemsIndexed(cards) { _, card ->
             PaymentCard(
-
                 content = {
                     Column(
                         modifier = Modifier
@@ -115,7 +174,7 @@ fun CardList(onCardAddClicked: () -> Unit, cards: List<Card>) {
             )
         }
         item {
-            CardAdd(onCardAddClicked = onCardAddClicked)
+            content()
         }
     }
 }
@@ -127,7 +186,7 @@ fun CardNotExistListPreview() {
         CardsScreen(
             onCardAddClicked = {},
             cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
-            cardAdded = false
+            viewModel = CardsViewModel()
         )
     }
 }
@@ -139,7 +198,7 @@ fun CardExistListPreview() {
         CardsScreen(
             onCardAddClicked = {},
             cards = listOf(Card("1234-5678-9012-3456", "12/34", "홍길동", "1234")),
-            cardAdded = true
+            viewModel = CardsViewModel()
         )
     }
 }

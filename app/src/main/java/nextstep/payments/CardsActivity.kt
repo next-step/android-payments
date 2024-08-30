@@ -24,7 +24,7 @@ class CardsActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 val cards by viewModel.cards.collectAsState()
-                val cardAdded by viewModel.cardAdded.collectAsState()
+
                 val launcher =
                     rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                         if (it.resultCode == RESULT_OK) {
@@ -38,7 +38,7 @@ class CardsActivity : ComponentActivity() {
                         launcher.launch(intent)
                     },
                     cards = cards,
-                    cardAdded = cardAdded
+                    viewModel = viewModel
                 )
             }
         }
@@ -49,6 +49,6 @@ class CardsActivity : ComponentActivity() {
 @Composable
 fun CardsScreenPreview() {
     PaymentsTheme {
-        CardsScreen(onCardAddClicked = {}, cards = emptyList(), cardAdded = false)
+        CardsScreen(onCardAddClicked = {}, cards = emptyList(), viewModel = CardsViewModel())
     }
 }
