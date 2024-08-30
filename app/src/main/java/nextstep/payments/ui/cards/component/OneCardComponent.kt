@@ -19,7 +19,9 @@ fun OneCardComponent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.semantics {
+        modifier = modifier
+            .padding(32.dp)
+            .semantics {
             contentDescription = "OneCard"
         },
         horizontalAlignment = Alignment.CenterHorizontally
