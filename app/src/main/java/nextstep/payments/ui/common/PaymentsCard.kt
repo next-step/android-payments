@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -64,36 +66,31 @@ fun PaymentCard(
     card: Card
 ) {
     PaymentCard(modifier) {
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(14.dp),
-        ) {
-            Text(
-                text = card.cardNumber.maskCardNumber(),
+        ProvideTextStyle(
+            value = MaterialTheme.typography.bodySmall.copy(
                 color = Color.White,
-                fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
-                lineHeight = 14.sp,
+                fontWeight = FontWeight.Medium
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(14.dp),
             ) {
                 Text(
-                    text = card.ownerName,
-                    color = Color.White,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
+                    text = card.cardNumber.maskCardNumber(),
                 )
-                Text(
-                    text = card.expiredDate,
-                    color = Color.White,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 12.sp,
-                    lineHeight = 14.sp,
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = card.ownerName,
+                    )
+                    Text(
+                        text = card.expiredDate,
+                    )
+                }
             }
         }
     }
