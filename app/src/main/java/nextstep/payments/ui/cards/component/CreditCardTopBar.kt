@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun CreditCardTopBar(
     isShowAddButton: Boolean,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onAddClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -40,11 +40,11 @@ fun CreditCardTopBar(
 @Preview
 @Composable
 private fun ShowActionBarCreditCardTopBarPreview() {
-    CreditCardTopBar(isShowAddButton = true) {}
+    CreditCardTopBar(isShowAddButton = true, onAddClick = {})
 }
 
 @Preview
 @Composable
 private fun HideActionBarCreditCardTopBarPreview() {
-    CreditCardTopBar(isShowAddButton = false) {}
+    CreditCardTopBar(isShowAddButton = false, onAddClick = {})
 }
