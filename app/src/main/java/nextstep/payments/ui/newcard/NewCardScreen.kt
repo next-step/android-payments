@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,7 +25,6 @@ import nextstep.payments.model.Card
 import nextstep.payments.ui.common.PaymentCard
 import nextstep.payments.ui.newcard.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
-
 
 
 // stateful
@@ -108,7 +109,9 @@ private fun NewCardScreen(
                 value = cardNumber,
                 onValueChange = { setCardNumber(it) },
                 label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
+                placeholder = { Text("0000-0000-0000-0000") },
+                visualTransformation = CardNumberVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -117,6 +120,8 @@ private fun NewCardScreen(
                 onValueChange = { setExpiredDate(it) },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
+                visualTransformation = ExpiredDateVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -130,10 +135,11 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { setPassword(it) },
+                onValueChange = { setPassword(it.take(30)) },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 visualTransformation = PasswordVisualTransformation(),
             )
         }
@@ -146,8 +152,8 @@ private fun StatefulNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             viewModel = NewCardViewModel().apply {
-                setCardNumber("0000 - 0000 - 0000 - 0000")
-                setExpiredDate("00 / 00")
+                setCardNumber("0000000000000000")
+                setExpiredDate("1111")
                 setOwnerName("컴포즈")
                 setPassword("0000")
             }
@@ -160,8 +166,8 @@ private fun StatefulNewCardScreenPreview() {
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "00 / 00",
+            cardNumber = "12112311",
+            expiredDate = "121233",
             ownerName = "컴포즈2",
             password = "0000",
             onBackClick = {},

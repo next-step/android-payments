@@ -31,18 +31,26 @@ class NewCardViewModel (
     }
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        if (cardNumber.length <= 16) {
+            _cardNumber.value = cardNumber
+        }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        if (expiredDate.length <= 4) {
+            _expiredDate.value = expiredDate
+        }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        if (ownerName.length <= 30) {
+            _ownerName.value = ownerName
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        if (password.length <= 4) {
+            _password.value = password
+        }
     }
 }
