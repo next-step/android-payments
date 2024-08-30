@@ -16,11 +16,11 @@ class CreditCardsViewModel : ViewModel(){
     }
 
     fun fetchCards() {
-        val cardCount = PaymentCardsRepository.cards.count()
-        _creditCardState.value = when (cardCount) {
-            0 -> CreditCardUiState.Empty
-            1 -> CreditCardUiState.One(PaymentCardsRepository.cards.first())
-            else -> CreditCardUiState.Many(PaymentCardsRepository.cards)
+        val cards = PaymentCardsRepository.cards
+        _creditCardState.value = when {
+            cards.isEmpty() -> CreditCardUiState.Empty
+            cards.size == 1 -> CreditCardUiState.One(cards.first())
+            else -> CreditCardUiState.Many(cards)
         }
     }
 }
