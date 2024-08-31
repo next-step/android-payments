@@ -85,6 +85,7 @@ private fun NewCardScreen(
                             expiredDate,
                             ownerName,
                             password,
+                            cardCompany
                         ),
                     )
                 },
