@@ -59,7 +59,7 @@ fun PaymentCard(
     content: @Composable () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier.padding(top = 10.dp)
+        modifier = modifier.padding(top = 10.dp)
     ) {
         content()
 
