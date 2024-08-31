@@ -24,6 +24,7 @@ import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.CreditCard
+import nextstep.payments.screen.model.toUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -101,7 +102,11 @@ fun CardListScreen(
                         PaymentCard(
                             cardNumber = stringResource(id = R.string.card_number,card.firstCardDigits,card.secondCardDigits),
                             ownerName = card.ownerName,
-                            expiredDate = card.expiredDate
+                            expiredDate = stringResource(
+                                id = R.string.expired_date,
+                                card.month,
+                                card.year
+                            )
                         )
                     }
                 }
@@ -151,7 +156,7 @@ private fun Preview2() {
                     ownerName = "CREW",
                     expiredDate = "04 / 21",
                     password = "1234"
-                )
+                ).toUiModel()
             ),
             navigateToNewCard = {}
         )
@@ -189,7 +194,7 @@ private fun Preview3() {
                         expiredDate = "04 / 21",
                         password = "1234"
                     )
-                )
+                ).map { it.toUiModel() }
             ),
             navigateToNewCard = {}
         )
