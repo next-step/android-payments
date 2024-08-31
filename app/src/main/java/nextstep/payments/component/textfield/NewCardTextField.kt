@@ -89,9 +89,20 @@ fun PasswordTextFiled(
     )
 }
 
-@Preview(showBackground = true, name = "CardNumberTextFiled")
+@Preview(showBackground = true, name = "CardNumberTextFiledWithValue")
 @Composable
 private fun Preview1() {
+    PaymentsTheme {
+        CardNumberTextFiled(
+            cardNumber = "1234123412341234",
+            onValueChange = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "CardNumberTextFiled")
+@Composable
+private fun Preview2() {
     PaymentsTheme {
         CardNumberTextFiled(
             cardNumber = "",
@@ -100,9 +111,20 @@ private fun Preview1() {
     }
 }
 
+@Preview(showBackground = true, name = "ExpiredDateTextFiledWithValue")
+@Composable
+private fun Preview3() {
+    PaymentsTheme {
+        ExpiredDateTextFiled(
+            expiredDate = "1212",
+            onValueChange = {}
+        )
+    }
+}
+
 @Preview(showBackground = true, name = "ExpiredDateTextFiled")
 @Composable
-private fun Preview2() {
+private fun Preview4() {
     PaymentsTheme {
         ExpiredDateTextFiled(
             expiredDate = "",
@@ -111,9 +133,20 @@ private fun Preview2() {
     }
 }
 
+@Preview(showBackground = true, name = "OwnerNameTextFiledWithValue")
+@Composable
+private fun Preview5() {
+    PaymentsTheme {
+        OwnerNameTextFiled(
+            ownerName = "김컴포즈",
+            onValueChange = {}
+        )
+    }
+}
+
 @Preview(showBackground = true, name = "OwnerNameTextFiled")
 @Composable
-private fun Preview3() {
+private fun Preview6() {
     PaymentsTheme {
         OwnerNameTextFiled(
             ownerName = "",
@@ -122,9 +155,21 @@ private fun Preview3() {
     }
 }
 
+@Preview(showBackground = true, name = "PasswordTextFiledWithValue")
+@Composable
+private fun Preview7() {
+    PaymentsTheme {
+        PasswordTextFiled(
+            password = "1234",
+            onValueChange = {}
+        )
+    }
+}
+
+
 @Preview(showBackground = true, name = "PasswordTextFiled")
 @Composable
-private fun Preview4() {
+private fun Preview8() {
     PaymentsTheme {
         PasswordTextFiled(
             password = "",
