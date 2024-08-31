@@ -109,8 +109,8 @@ private fun NewCardScreen(
                 onSaveClick = {
                     onSaveClick(
                         Card(
-                            cardNumber,
-                            expiredDate,
+                            cardNumber.chunked(4).joinToString("-"),
+                            "${expiredDate.take(2)} / ${expiredDate.drop(2)}",
                             ownerName,
                             password,
                             cardCompany
