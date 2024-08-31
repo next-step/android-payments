@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
+import nextstep.payments.component.card.PaymentCardDetail
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.toUiModel
@@ -30,7 +31,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun CardListScreen(
     viewModel: CardListViewModel,
-    navigateToNewCard : () -> Unit,
+    navigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val creditCardUiState by viewModel.cardListUiState.collectAsStateWithLifecycle()
@@ -45,7 +46,7 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     creditCardUiState: CreditCardUiState,
-    navigateToNewCard : () -> Unit,
+    navigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -74,44 +75,34 @@ fun CardListScreen(
             verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when(creditCardUiState){
+            when (creditCardUiState) {
                 is CreditCardUiState.Empty -> {
                     item {
                         AdditionCardText()
                     }
                 }
+
                 is CreditCardUiState.One -> {
                     item {
-                        PaymentCard(
-                            cardNumber = stringResource(
-                                id = R.string.card_number,
-                                creditCardUiState.card.firstCardDigits,
-                                creditCardUiState.card.secondCardDigits
-                            ),
-                            ownerName = creditCardUiState.card.ownerName,
-                            expiredDate = stringResource(
-                                id = R.string.expired_date,
-                                creditCardUiState.card.month,
-                                creditCardUiState.card.year
+                        PaymentCard {
+                            PaymentCardDetail(
+                                card = creditCardUiState.card
                             )
-                        )
+                        }
                     }
                 }
+
                 is CreditCardUiState.Many -> {
-                    items(creditCardUiState.cards){ card ->
-                        PaymentCard(
-                            cardNumber = stringResource(id = R.string.card_number,card.firstCardDigits,card.secondCardDigits),
-                            ownerName = card.ownerName,
-                            expiredDate = stringResource(
-                                id = R.string.expired_date,
-                                card.month,
-                                card.year
+                    items(creditCardUiState.cards) { card ->
+                        PaymentCard {
+                            PaymentCardDetail(
+                                card = card
                             )
-                        )
+                        }
                     }
                 }
             }
-            if(creditCardUiState !is CreditCardUiState.Many){
+            if (creditCardUiState !is CreditCardUiState.Many) {
                 item {
                     AdditionCard(
                         onClick = navigateToNewCard

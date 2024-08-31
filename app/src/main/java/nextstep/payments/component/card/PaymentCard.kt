@@ -1,8 +1,10 @@
 package nextstep.payments.component.card
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,26 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.R
+import nextstep.payments.screen.model.CreditCardUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun PaymentCard(
+fun PaymentCardFrame(
     modifier: Modifier = Modifier,
-    cardNumber : String = "",
-    ownerName : String = "",
-    expiredDate : String = "",
+    content: @Composable BoxScope.() -> Unit = {}
 ) {
-    Box(
-        contentAlignment = Alignment.CenterStart,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
-            )
+    CardFrame(
+        modifier = modifier,
+        backgroundColor = Color(0xFF333333)
     ) {
         Box(
             modifier = Modifier
@@ -47,33 +44,71 @@ fun PaymentCard(
                     shape = RoundedCornerShape(4.dp),
                 )
         )
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = 14.dp, bottom = 16.dp, end = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+        content()
+    }
+}
+
+@Composable
+fun PaymentCard(
+    modifier: Modifier = Modifier
+) {
+    PaymentCardFrame(
+        modifier = modifier
+    )
+}
+
+@Composable
+fun PaymentCard(
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit = {}
+) {
+    PaymentCardFrame(
+        modifier = modifier,
+        content = content
+    )
+}
+
+@Composable
+fun BoxScope.PaymentCardDetail(
+    card: CreditCardUiModel,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .align(Alignment.BottomStart)
+            .padding(start = 14.dp, bottom = 16.dp, end = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        CardNumberText(
+            cardNumber = stringResource(
+                id = R.string.card_number,
+                card.firstCardDigits,
+                card.secondCardDigits
+            )
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            CardNumberText(cardNumber = cardNumber)
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                OwnerNameText(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .weight(1f),
-                    ownerName = ownerName
+            OwnerNameText(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .weight(1f),
+                ownerName = card.ownerName,
+            )
+            ExpiredDateText(
+                expiredDate = stringResource(
+                    id = R.string.expired_date,
+                    card.month,
+                    card.year
                 )
-                ExpiredDateText(
-                    expiredDate = expiredDate
-                )
-            }
+            )
         }
     }
 }
 
 @Composable
 fun CardNumberText(
-    cardNumber : String,
+    cardNumber: String,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -110,7 +145,7 @@ fun ExpiredDateText(
     )
 }
 
-@Preview(showBackground = true, name = "CardNumberText", backgroundColor  =0xFF333333 )
+@Preview(showBackground = true, name = "CardNumberText", backgroundColor = 0xFF333333)
 @Composable
 private fun Preview1() {
     PaymentsTheme {
@@ -120,7 +155,7 @@ private fun Preview1() {
     }
 }
 
-@Preview(showBackground = true, name = "OwnerNameText", backgroundColor  =0xFF333333 )
+@Preview(showBackground = true, name = "OwnerNameText", backgroundColor = 0xFF333333)
 @Composable
 private fun Preview2() {
     PaymentsTheme {
@@ -130,7 +165,7 @@ private fun Preview2() {
     }
 }
 
-@Preview(showBackground = true, name = "ExpiredDateText", backgroundColor  = 0xFF333333 )
+@Preview(showBackground = true, name = "ExpiredDateText", backgroundColor = 0xFF333333)
 @Composable
 private fun Preview3() {
     PaymentsTheme {
@@ -140,15 +175,23 @@ private fun Preview3() {
     }
 }
 
-@Preview(showBackground = true, name = "PaymentCard", backgroundColor  = 0xFF333333 )
+@Preview(showBackground = true, name = "PaymentCard", backgroundColor = 0xFF333333)
 @Composable
 private fun Preview4() {
     PaymentsTheme {
-        PaymentCard(
-            cardNumber = "1111 - 2222 - **** - ****",
-            ownerName = "CREW",
-            expiredDate = "04 / 21"
-        )
+        PaymentCard {
+            PaymentCardDetail(
+                card = CreditCardUiModel(
+                    cardNumber = "1234123412341234",
+                    firstCardDigits = "1234",
+                    secondCardDigits = "1234",
+                    ownerName = "김컴포즈",
+                    password = "1234",
+                    month = "12",
+                    year = "12"
+                )
+            )
+        }
     }
 }
 
