@@ -143,9 +143,9 @@ private fun Preview2() {
         CardListScreen(
             creditCardUiState = CreditCardUiState.One(
                 CreditCard(
-                    cardNumber = "1234 - 1234 - 1234 - 1234",
+                    cardNumber = "1234123412341234",
                     ownerName = "CREW",
-                    expiredDate = "04 / 21",
+                    expiredDate = "0421",
                     password = "1234"
                 ).toUiModel()
             ),
@@ -162,27 +162,27 @@ private fun Preview3() {
             creditCardUiState = CreditCardUiState.Many(
                 cards = listOf(
                     CreditCard(
-                        cardNumber = "1234 - 1234 - 1234 - 1234",
+                        cardNumber = "1234123412341234",
                         ownerName = "CREW",
-                        expiredDate = "04 / 21",
+                        expiredDate = "0421",
                         password = "1234"
                     ),
                     CreditCard(
-                        cardNumber = "1234 - 1234 - 1234 - 1234",
-                        ownerName = "CREW1",
-                        expiredDate = "04 / 21",
+                        cardNumber = "1234123412341234",
+                        ownerName = "CREW",
+                        expiredDate = "0421",
                         password = "1234"
                     ),
                     CreditCard(
-                        cardNumber = "1234 - 1234 - 1234 - 1234",
-                        ownerName = "CREW2",
-                        expiredDate = "04 / 21",
+                        cardNumber = "1234123412341234",
+                        ownerName = "CREW",
+                        expiredDate = "0421",
                         password = "1234"
                     ),
                     CreditCard(
-                        cardNumber = "1234 - 1234 - 1234 - 1234",
-                        ownerName = "CREW3",
-                        expiredDate = "04 / 21",
+                        cardNumber = "1234123412341234",
+                        ownerName = "CREW",
+                        expiredDate = "0421",
                         password = "1234"
                     )
                 ).map { it.toUiModel() }
