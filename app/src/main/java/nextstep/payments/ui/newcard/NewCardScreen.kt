@@ -130,7 +130,10 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(cardCompany = cardCompany)
+            PaymentCard(
+                modifier = Modifier.padding(horizontal = 52.dp),
+                cardCompany = cardCompany
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 

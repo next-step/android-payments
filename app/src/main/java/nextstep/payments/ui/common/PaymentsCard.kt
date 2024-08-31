@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
@@ -30,12 +33,19 @@ import nextstep.payments.utils.maskCardNumber
 fun PaymentCard(
     cardCompany: CardCompany,
     modifier: Modifier = Modifier,
+    aspectRatio: Float = 208f / 124f,
+    minWidth: Dp = 208.dp,
+    minHeight: Dp = 124.dp,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
         modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .aspectRatio(aspectRatio)
+            .defaultMinSize(
+                minWidth = minWidth,
+                minHeight = minHeight
+            )
             .background(
                 color = Color(cardCompany.backgroundColor),
                 shape = RoundedCornerShape(5.dp),

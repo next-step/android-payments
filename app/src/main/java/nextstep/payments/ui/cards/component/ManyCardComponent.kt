@@ -24,6 +24,7 @@ fun ManyCardComponent(
 ) {
     LazyColumn(
         modifier = modifier
+            .padding(horizontal = 52.dp)
             .semantics {
                 contentDescription = "manyCard"
             },
