@@ -139,8 +139,8 @@ private fun NewCardScreen(
 private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "11 / 23",
+            cardNumber = "0000000000000000",
+            expiredDate = "1123",
             ownerName = "김",
             password = "1234",
             setCardNumber = {},
