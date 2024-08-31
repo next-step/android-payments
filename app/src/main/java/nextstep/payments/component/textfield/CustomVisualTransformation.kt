@@ -8,29 +8,52 @@ import androidx.compose.ui.text.input.VisualTransformation
 /**
  * https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/VisualTransformation 참고
  */
-class CardNumberVisualTransformation : VisualTransformation {
+class CardNumberVisualTransformation(
+    private val separator: String = " - "
+) : VisualTransformation {
+
+    companion object {
+        private const val MAX_LENGTH = 16
+        private const val CHUNK_SIZE = 4
+    }
+
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= 16) text.text.substring(0..15) else text.text
-        var out = ""
-        for (i in trimmed.indices) {
-            out += trimmed[i]
-            if (i % 4 == 3 && i != 15) out += " - "
+        val trimmed = if (text.text.length >= MAX_LENGTH) {
+            text.text.substring(0 until MAX_LENGTH)
+        } else {
+            text.text
         }
+
+        val out = buildString {
+            for (i in trimmed.indices) {
+                append(trimmed[i])
+                if (i % CHUNK_SIZE == (CHUNK_SIZE - 1) && i != MAX_LENGTH - 1) {
+                    append(separator)
+                }
+            }
+        }
+
+        val transformedLength = trimmed.length + (trimmed.length / CHUNK_SIZE) * separator.length
+
         val cardNumberOffsetTranslator = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
-                if (offset <= 3) return offset
-                if (offset <= 7) return offset + 3
-                if (offset <= 11) return offset + 6
-                if (offset <= 16) return offset + 9
-                return 25
+                return when {
+                    offset <= 3 -> offset
+                    offset <= 7 -> offset + 3
+                    offset <= 11 -> offset + 6
+                    offset <= MAX_LENGTH -> offset + 9
+                    else -> transformedLength
+                }
             }
 
             override fun transformedToOriginal(offset: Int): Int {
-                if (offset <= 4) return offset
-                if (offset <= 11) return offset - 3
-                if (offset <= 18) return offset - 6
-                if (offset <= 25) return offset - 9
-                return 16
+                return when {
+                    offset <= 4 -> offset
+                    offset <= 11 -> offset - 3
+                    offset <= 18 -> offset - 6
+                    offset <= 25 -> offset - 9
+                    else -> MAX_LENGTH
+                }
             }
         }
 
@@ -41,25 +64,48 @@ class CardNumberVisualTransformation : VisualTransformation {
     }
 }
 
-class ExpiredDateVisualTransformation : VisualTransformation {
+class ExpiredDateVisualTransformation(
+    private val separator: String = " / "
+) : VisualTransformation {
+
+    companion object {
+        private const val MAX_LENGTH = 4
+        private const val CHUNK_SIZE = 2
+    }
+
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= 4) text.text.substring(0..3) else text.text
-        var out = ""
-        for (i in trimmed.indices) {
-            out += trimmed[i]
-            if (i % 2 == 1 && i != 3) out += " / "
+        val trimmed = if (text.text.length >= MAX_LENGTH) {
+            text.text.substring(0 until MAX_LENGTH)
+        } else {
+            text.text
         }
+
+        val out = buildString {
+            for (i in trimmed.indices) {
+                append(trimmed[i])
+                if (i % CHUNK_SIZE == (CHUNK_SIZE - 1) && i != MAX_LENGTH - 1) {
+                    append(separator)
+                }
+            }
+        }
+
+        val transformedLength = trimmed.length + (trimmed.length / CHUNK_SIZE) * separator.length
+
         val expiredDateOffsetTranslator = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
-                if (offset <= 1) return offset
-                if (offset <= 4) return offset + 3
-                return 6
+                return when {
+                    offset <= 1 -> offset
+                    offset <= 4 -> offset + 3
+                    else -> transformedLength
+                }
             }
 
             override fun transformedToOriginal(offset: Int): Int {
-                if (offset <= 2) return offset
-                if (offset <= 7) return offset - 3
-                return 4
+                return when {
+                    offset <= 2 -> offset
+                    offset <= 7 -> offset - 3
+                    else -> MAX_LENGTH
+                }
             }
         }
 
