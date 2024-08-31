@@ -44,18 +44,13 @@ internal fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = cardAdded) {
-        if (cardAdded != NewCardEvent.Pending) {
-            navigateToCardList(cardAdded)
-        }
-    }
-
     NewCardScreen(
         modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        cardAdded = cardAdded,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -65,25 +60,34 @@ internal fun NewCardScreen(
         },
         onSaveClick = {
             viewModel.addCard()
-        }
+        },
+        navigateToCardList = navigateToCardList
     )
 }
 
 
 @Composable
-private fun NewCardScreen(
+fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    cardAdded : NewCardEvent,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    navigateToCardList: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(key1 = cardAdded) {
+        if (cardAdded != NewCardEvent.Pending) {
+            navigateToCardList(cardAdded)
+        }
+    }
+
     Scaffold(
         topBar = {
             NewCardTopBar(
@@ -143,12 +147,14 @@ private fun NewCardScreenPreview() {
             expiredDate = "1123",
             ownerName = "김",
             password = "1234",
+            cardAdded = NewCardEvent.Pending,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onSaveClick = {}
+            onSaveClick = {},
+            navigateToCardList = {}
         )
     }
 }
