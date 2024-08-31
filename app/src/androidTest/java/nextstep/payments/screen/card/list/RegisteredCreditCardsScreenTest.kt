@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import nextstep.payments.R
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
@@ -54,14 +55,14 @@ class RegisteredCreditCardsScreenTest {
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 ),
                 Card(
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 )
             )
         )
@@ -123,7 +124,7 @@ class RegisteredCreditCardsScreenTest {
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = Color(context.getColor(R.color.bc_card))
+                bankType = BankType.BC
             )
         )
         val registeredCreditCards = RegisteredCreditCards(
@@ -133,7 +134,7 @@ class RegisteredCreditCardsScreenTest {
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 )
             )
         )

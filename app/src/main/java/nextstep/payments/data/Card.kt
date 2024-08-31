@@ -7,5 +7,5 @@ data class Card(
     val expiredDate: String,
     val ownerName: String,
     val password: String,
-    val brandColor: Color
+    val bankType: BankType
 )

@@ -179,7 +179,7 @@ private fun CardListScreenOnePreview() {
                         ownerName = "홍길동",
                         expiredDate = "12/24",
                         password = "123",
-                        brandColor = colorResource(id = BankType.BC.brandColor)
+                        bankType = BankType.BC
                     )
                 )
             ),
@@ -198,14 +198,14 @@ private fun CardListScreenManyPreview() {
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = BankType.BC.brandColor)
+                bankType = BankType.BC
             ),
             Card(
                 cardNumber = "1234-5678-1234-1234",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = BankType.KAKAO.brandColor)
+                bankType = BankType.BC
             )
         )
     )

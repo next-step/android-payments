@@ -92,7 +92,7 @@ fun PaymentCard(
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
-        brandColor = colorResource(id = BankType.BC.brandColor)
+        brandColor = colorResource(id = BankType.KAKAO.brandColor)
     )
 }
 
@@ -105,7 +105,7 @@ private fun NewPaymentCardPreview() {
             ownerName = "홍길동",
             expiredDate = "12/34",
             password = "123",
-            brandColor = colorResource(id = BankType.BC.brandColor)
+            bankType = BankType.BC
         ),
         modifier = Modifier.size(width = 208.dp, height = 124.dp),
         content = { PaymentCard() }

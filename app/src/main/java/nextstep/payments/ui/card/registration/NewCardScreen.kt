@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card.registration
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,9 +52,9 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
-    var selectedBankType by remember { mutableStateOf(BankType.NOT_SELECTED) }
+    val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
+    val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -72,9 +72,9 @@ fun NewCardScreen(
             onDismissRequest = { }
         ) {
             BankSelectRow(
-                onClick = {
+                onClickBankType = {
                     showCardCompanyBottomSheet = false
-                    selectedBankType = it
+                    viewModel.setSelectBankType(it)
                 }
             )
         }
@@ -86,7 +86,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        brandColor = colorResource(selectedBankType.brandColor),
+        bankType = selectedBankType,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDatedNumber = viewModel::setExpiredDate,
         setOwnerNamedNumber = viewModel::setOwnerName,
@@ -97,6 +97,7 @@ fun NewCardScreen(
 }
 
 // Stateless
+@SuppressLint("ResourceAsColor")
 @Composable
 private fun NewCardScreen(
     modifier: Modifier = Modifier,
@@ -104,26 +105,18 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    brandColor: Color,
+    bankType: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDatedNumber: (String) -> Unit,
     setOwnerNamedNumber: (String) -> Unit,
     setPasswordNumber: (String) -> Unit,
     onBackClick: () -> Unit = {},
-    onSaveClick: (Card) -> Unit = {},
+    onSaveClick: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
             NewCardTopBar(onBackClick = onBackClick, onSaveClick = {
-                onSaveClick(
-                    Card(
-                        cardNumber = cardNumber,
-                        expiredDate = expiredDate,
-                        ownerName = ownerName,
-                        password = password,
-                        brandColor = brandColor
-                    )
-                )
+                onSaveClick()
             })
         }, modifier = modifier
     ) { innerPadding ->
@@ -137,7 +130,7 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                brandColor = brandColor
+                brandColor = colorResource(bankType.brandColor)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -201,7 +194,7 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "02/26",
             ownerName = "김수현",
             password = "1234",
-            brandColor = colorResource(id = BankType.NOT_SELECTED.brandColor),
+            bankType = BankType.NOT_SELECTED,
             setCardNumber = {},
             setExpiredDatedNumber = {},
             setOwnerNamedNumber = {},

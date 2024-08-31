@@ -26,7 +26,7 @@ private const val COLUMN_COUNT = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectRow(
-    onClick: (BankType) -> Unit = {},
+    onClickBankType: (BankType) -> Unit = {},
 ) {
     FlowRow(
         modifier = Modifier
@@ -40,7 +40,7 @@ fun BankSelectRow(
             if (bankType == BankType.NOT_SELECTED) return@forEach
             CardSelector(
                 bankType = bankType,
-                onClick = onClick
+                onClick = { onClickBankType(bankType) }
             )
         }
     }

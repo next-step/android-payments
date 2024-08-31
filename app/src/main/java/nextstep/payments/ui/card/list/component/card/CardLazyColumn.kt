@@ -3,6 +3,7 @@ package nextstep.payments.ui.card.list.component.card
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.data.BankType
@@ -23,7 +24,7 @@ fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
                 modifier = Modifier,
                 content = {
                     PaymentCard(
-                        brandColor = cards[it].brandColor
+                        brandColor = colorResource(cards[it].bankType.brandColor)
                     )
                 }
             )
@@ -41,7 +42,7 @@ private fun CardLazyColumnPreview() {
                 ownerName = "홍길동",
                 expiredDate = "12/34",
                 password = "123",
-                brandColor = colorResource(id = BankType.KAKAO.brandColor)
+                bankType = BankType.KAKAO
             )
         )
     )
