@@ -21,13 +21,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.maskCardNumber
 
 @Composable
 fun PaymentCard(
+    cardCompany: CardCompany,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
@@ -36,61 +37,66 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = Color(cardCompany.backgroundColor),
                 shape = RoundedCornerShape(5.dp),
-            ),
-        Alignment.CenterStart
+            ), Alignment.CenterStart
     ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    start = 14.dp,
-                    bottom = 10.dp
-                )
-                .size(
-                    width = 40.dp,
-                    height = 26.dp
-                )
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
-        )
-        content()
-    }
-}
-
-@Composable
-fun PaymentCard(
-    modifier: Modifier = Modifier,
-    card: Card
-) {
-    PaymentCard(modifier) {
         ProvideTextStyle(
             value = MaterialTheme.typography.bodySmall.copy(
                 color = Color.White,
                 fontWeight = FontWeight.Medium
             )
         ) {
-            Column(
+            Text(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(14.dp),
+                    .align(Alignment.TopStart)
+                    .padding(start = 14.dp, top = 14.dp),
+                text = cardCompany.companyName
+            )
+            Box(
+                modifier = Modifier
+                    .padding(
+                        start = 14.dp, bottom = 10.dp
+                    )
+                    .size(
+                        width = 40.dp, height = 26.dp
+                    )
+                    .background(
+                        color = Color(0xFFCBBA64),
+                        shape = RoundedCornerShape(4.dp),
+                    )
+            )
+            content()
+        }
+    }
+}
+
+@Composable
+fun PaymentCard(
+    modifier: Modifier = Modifier,
+    card: Card,
+) {
+    PaymentCard(
+        cardCompany = card.cardCompany, modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(14.dp),
+        ) {
+            Text(
+                text = card.cardNumber.maskCardNumber(),
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = card.cardNumber.maskCardNumber(),
+                    text = card.ownerName,
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(
-                        text = card.ownerName,
-                    )
-                    Text(
-                        text = card.expiredDate,
-                    )
-                }
+                Text(
+                    text = card.expiredDate,
+                )
             }
         }
     }
@@ -100,7 +106,7 @@ fun PaymentCard(
 @Composable
 private fun PaymentCardWithInfoEmptyPreview() {
     PaymentsTheme {
-        PaymentCard()
+        PaymentCard(CardCompany.KB)
     }
 }
 
@@ -110,10 +116,11 @@ private fun PaymentCardWithInfoPreview() {
     PaymentsTheme {
         PaymentCard(
             card = Card(
-                cardNumber = "0000-0000-0000-0000",
-                expiredDate = "00 / 00",
+                cardNumber = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "컴포즈",
-                password = "0000",
+                password = "2200",
+                cardCompany = CardCompany.KB
             ),
         )
     }

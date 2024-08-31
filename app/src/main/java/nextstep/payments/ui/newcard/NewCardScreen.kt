@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,12 +27,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.common.PaymentCard
+import nextstep.payments.ui.newcard.component.CardSelectBottomSheet
 import nextstep.payments.ui.newcard.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
 // stateful
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewCardScreen(
     modifier: Modifier = Modifier,
@@ -40,11 +48,30 @@ internal fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
+    val cardCompanies by viewModel.cardCompanies.collectAsStateWithLifecycle()
+    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
+    val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
+
+    if (showCardCompanyBottomSheet) {
+        CardSelectBottomSheet(
+            sheetState = cardCompanyModalBottomSheetState,
+            cardCompanies = cardCompanies,
+            onDismissRequest = { showCardCompanyBottomSheet = false },
+            onCardClick = {
+                showCardCompanyBottomSheet = false
+                viewModel.setCardCompany(it)
+            }
+        )
+    }
     NewCardScreen(
+        cardCompany = selectedCard,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -62,6 +89,7 @@ internal fun NewCardScreen(
 // stateless
 @Composable
 private fun NewCardScreen(
+    cardCompany: CardCompany,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -102,7 +130,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(cardCompany = cardCompany)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -147,27 +175,14 @@ private fun NewCardScreen(
     }
 }
 
-@Preview
-@Composable
-private fun StatefulNewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("0000000000000000")
-                setExpiredDate("1111")
-                setOwnerName("컴포즈")
-                setPassword("0000")
-            }
-        )
-    }
-}
 
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
+private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "12112311",
+            cardCompany = CardCompany.KB,
+            cardNumber = "1211231122222222",
             expiredDate = "121233",
             ownerName = "컴포즈2",
             password = "0000",
