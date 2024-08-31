@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -50,8 +51,17 @@ fun CardListScreen(
         modifier = modifier,
         topBar = {
             CardListTopBar(
-                onSaveClick = navigateToNewCard,
-                isShownAddText = creditCardUiState is CreditCardUiState.Many
+                actions = {
+                    TextButton(
+                        onClick = navigateToNewCard
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.card_list_add),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
+                        )
+                    }
+                }
             )
         }
     ) { innerPadding ->

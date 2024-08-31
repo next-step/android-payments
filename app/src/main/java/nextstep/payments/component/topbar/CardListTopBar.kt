@@ -16,9 +16,8 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListTopBar(
-    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isShownAddText : Boolean = false
+    actions : @Composable () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -27,18 +26,7 @@ fun CardListTopBar(
             )
         },
         actions = {
-            if(isShownAddText){
-                TextButton(
-                    onClick = onSaveClick
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.card_list_add),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color.Black
-                    )
-                }
-            }
-
+            actions()
         },
         modifier = modifier
     )
@@ -48,7 +36,7 @@ fun CardListTopBar(
 @Composable
 private fun Preview1() {
     PaymentsTheme {
-        CardListTopBar(onSaveClick = { })
+        CardListTopBar()
     }
 }
 
@@ -57,8 +45,17 @@ private fun Preview1() {
 private fun Preview2() {
     PaymentsTheme {
         CardListTopBar(
-            onSaveClick = { },
-            isShownAddText = true
+            actions = {
+                TextButton(
+                    onClick = { }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.card_list_add),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Black
+                    )
+                }
+            }
         )
     }
 }
