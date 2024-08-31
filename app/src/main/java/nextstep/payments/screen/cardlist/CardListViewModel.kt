@@ -14,10 +14,11 @@ class CardListViewModel : ViewModel() {
 
     fun fetchCardList() {
         PaymentCardsRepository.creditCards.let { creditCards ->
-            _cardListUiState.value =
-                if(creditCards.isEmpty()) CreditCardUiState.Empty
-                else if(creditCards.size == 1) CreditCardUiState.One(creditCards.first().toUiModel())
-                else CreditCardUiState.Many(creditCards.map { it.toUiModel() })
+            _cardListUiState.value = when {
+                creditCards.isEmpty() -> CreditCardUiState.Empty
+                creditCards.size == 1 -> CreditCardUiState.One(creditCards.first().toUiModel())
+                else -> CreditCardUiState.Many(creditCards.map { it.toUiModel() })
+            }
         }
 
     }
