@@ -29,11 +29,12 @@ fun CardSelectBottomSheet(
         containerColor = Color.White,
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
+        dragHandle = null,
         properties = ModalBottomSheetProperties(
             securePolicy = SecureFlagPolicy.Inherit,
             isFocusable = true,
             shouldDismissOnBackPress = false
-        )
+        ),
     ) {
         val coroutineScope = rememberCoroutineScope()
         Box(modifier = Modifier.padding(bottom = 70.dp)) {
