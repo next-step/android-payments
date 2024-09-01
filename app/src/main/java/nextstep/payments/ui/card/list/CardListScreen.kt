@@ -22,6 +22,8 @@ import nextstep.payments.R
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.data.RegisteredCreditCards
+import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.PaymentCardContents
 import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
@@ -114,9 +116,10 @@ fun CardListScreenOne(
                 .padding(paddingValues)
                 .fillMaxWidth()
         ) {
-            CardLazyColumn(
-                cards = cards,
-                modifier = Modifier.align(CenterHorizontally)
+            PaymentCard(
+                brandColor = colorResource(id = cards.first().bankType.brandColor),
+                modifier = Modifier.align(CenterHorizontally),
+                content = { PaymentCardContents(card = cards.first()) }
             )
 
             EmptyCardImage(
@@ -198,7 +201,7 @@ private fun CardListScreenManyPreview() {
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                bankType = BankType.BC
+                bankType = BankType.KAKAO
             ),
             Card(
                 cardNumber = "1234-5678-1234-1234",
