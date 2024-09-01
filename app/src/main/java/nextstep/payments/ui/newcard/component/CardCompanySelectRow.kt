@@ -3,7 +3,6 @@ package nextstep.payments.ui.newcard.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -30,9 +29,6 @@ fun CardCompanySelectRow(
     onClickCardCompany: (CardCompany) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier.fillMaxWidth()
-    )
     FlowRow(
         modifier = modifier
             .fillMaxWidth()
