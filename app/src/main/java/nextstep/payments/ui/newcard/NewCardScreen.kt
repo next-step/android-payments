@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -54,7 +55,6 @@ internal fun NewCardScreen(
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
-
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
@@ -65,7 +65,6 @@ internal fun NewCardScreen(
             cardCompanies = cardCompanies,
             onDismissRequest = { showCardCompanyBottomSheet = false },
             onCardClick = {
-                showCardCompanyBottomSheet = false
                 viewModel.setCardCompany(it)
             }
         )
