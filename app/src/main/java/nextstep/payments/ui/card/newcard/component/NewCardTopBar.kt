@@ -10,16 +10,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    isEdit: Boolean,
+    enabled: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(stringResource(id = if (isEdit) R.string.edit_card else R.string.new_card)) },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -29,7 +34,7 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(onClick = { onSaveClick() }, enabled = enabled) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",
@@ -38,4 +43,11 @@ fun NewCardTopBar(
         },
         modifier = modifier,
     )
+}
+
+
+@Preview
+@Composable
+private fun NewCardTopBarPreview() {
+    NewCardTopBar(isEdit = true, enabled = false, onBackClick = {}, onSaveClick = {})
 }

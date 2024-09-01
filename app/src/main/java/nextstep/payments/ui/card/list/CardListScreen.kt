@@ -16,14 +16,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.core.os.bundleOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.card.list.component.CardListTopBar
 import nextstep.payments.ui.card.newcard.NewCardActivity
-import nextstep.payments.ui.card.newcard.component.EmptyScreen
-import nextstep.payments.ui.card.newcard.component.ManyCardScree
+import nextstep.payments.ui.card.newcard.NewCardActivity.Companion.EXTRA_CARD
+import nextstep.payments.ui.card.newcard.component.EmptyCardScreen
+import nextstep.payments.ui.card.newcard.component.ManyCardScreen
 import nextstep.payments.ui.card.newcard.component.OneCardScreen
 
 @Composable
@@ -40,6 +42,11 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
     CardListScreen(
         state = uiState,
         onShowNewCard = { launcher.launch(Intent(context, NewCardActivity::class.java)) },
+        onEditCard = {
+            launcher.launch(Intent(context, NewCardActivity::class.java).apply {
+                putExtras(bundleOf(EXTRA_CARD to it))
+            })
+        },
     )
 }
 
@@ -48,12 +55,13 @@ private fun CardListScreen(
     modifier: Modifier = Modifier,
     state: CardListUiState,
     onShowNewCard: () -> Unit,
+    onEditCard: (Card) -> Unit,
 ) {
     Scaffold(
         topBar = {
             CardListTopBar(
                 displayAdd = state is CardListUiState.Many,
-                onShowNewCard = onShowNewCard,
+                onShowNewCard = { onShowNewCard() },
             )
         },
     ) { innerPadding ->
@@ -64,18 +72,23 @@ private fun CardListScreen(
             contentAlignment = Alignment.TopCenter,
         ) {
             when (val state = state) {
-                is CardListUiState.Empty -> EmptyScreen(
-                    onShowNewCard = onShowNewCard,
+                is CardListUiState.Empty -> EmptyCardScreen(
+                    onShowNewCard = { onShowNewCard() },
                     modifier = modifier,
                 )
 
                 is CardListUiState.One -> OneCardScreen(
                     state = state,
                     onShowNewCard = onShowNewCard,
+                    onEditCard = onEditCard,
                     modifier = modifier,
                 )
 
-                is CardListUiState.Many -> ManyCardScree(state = state, modifier = modifier)
+                is CardListUiState.Many -> ManyCardScreen(
+                    state = state,
+                    onEditCard = onEditCard,
+                    modifier = modifier,
+                )
             }
         }
     }
@@ -84,11 +97,12 @@ private fun CardListScreen(
 @Preview(showBackground = true, widthDp = 300)
 @Composable
 private fun CardListScreenPreview(@PreviewParameter(CardListScreenPreviewParameterProvider::class) param: CardListUiState) {
-    CardListScreen(state = param, onShowNewCard = {})
+    CardListScreen(state = param, onShowNewCard = {}, onEditCard = {})
 }
 
 private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
     val card1 = Card(
+        id = 1,
         bankType = BankType.BC,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "08/27",
@@ -97,6 +111,7 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
     )
 
     val card2 = Card(
+        id = 2,
         bankType = BankType.KB,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "06/22",

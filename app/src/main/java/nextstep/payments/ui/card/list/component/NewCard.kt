@@ -24,12 +24,14 @@ fun NewCard(
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier.background(
-            color = Color(0xFFE5E5E5),
-            shape = RoundedCornerShape(5.dp),
-        ),
+        shape = RoundedCornerShape(5.dp),
+        modifier = modifier,
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFFE5E5E5)),
+        ) {
             Icon(
                 imageVector = Icons.Filled.Add,
                 contentDescription = "addCard",

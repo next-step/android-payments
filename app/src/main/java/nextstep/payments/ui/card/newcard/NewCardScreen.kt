@@ -33,31 +33,39 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
     backToCardList: () -> Unit,
+    showToast: (Int) -> Unit,
 ) {
-    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(true) }
+    val saveEnabled by viewModel.saveEnabled.collectAsStateWithLifecycle()
+    var showBankTypeBottomSheet by rememberSaveable { mutableStateOf(viewModel.editCard == null) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) backToCardList()
     }
+    LaunchedEffect(viewModel.sideEffect) {
+        viewModel.sideEffect.collect {
+            when (it) {
+                is NewCardSideEffect.ShowToast -> showToast(it.messageRes)
+            }
+        }
+    }
 
     NewCardScreen(
-        bankType = bankType,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        isEdit = viewModel.editCard != null,
+        saveEnabled = saveEnabled,
+        bankType = uiState.bankType,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onClickSave = viewModel::addCard,
         onClickBack = backToCardList,
+        onClickCard = { showBankTypeBottomSheet = true },
         modifier = modifier,
     )
 
@@ -71,6 +79,8 @@ fun NewCardScreen(
 
 @Composable
 private fun NewCardScreen(
+    isEdit: Boolean,
+    saveEnabled: Boolean,
     bankType: BankType?,
     cardNumber: String,
     expiredDate: String,
@@ -82,11 +92,18 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     onClickSave: () -> Unit,
     onClickBack: () -> Unit,
+    onClickCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = onClickBack, onSaveClick = onClickSave) },
-        modifier = modifier
+        topBar = {
+            NewCardTopBar(
+                isEdit = isEdit,
+                enabled = saveEnabled,
+                onBackClick = onClickBack,
+                onSaveClick = onClickSave
+            )
+        }, modifier = modifier
     ) { innerPadding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -97,7 +114,13 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            NewPaymentCard(bankType = bankType)
+            NewPaymentCard(
+                bankType = bankType,
+                cardNumber = cardNumber,
+                ownerName = ownerName,
+                expiredDate = expiredDate,
+                onClick = onClickCard,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -142,6 +165,8 @@ private fun NewCardScreen(
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
+            isEdit = false,
+            saveEnabled = true,
             bankType = BankType.BC,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
@@ -153,6 +178,7 @@ private fun StatelessNewCardScreenPreview() {
             setPassword = {},
             onClickBack = {},
             onClickSave = {},
+            onClickCard = {},
         )
     }
 }
