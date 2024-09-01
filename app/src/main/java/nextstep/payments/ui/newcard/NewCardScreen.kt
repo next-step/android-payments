@@ -1,5 +1,6 @@
 package nextstep.payments.ui.newcard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.common.PaymentCard
@@ -55,6 +57,7 @@ internal fun NewCardScreen(
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
@@ -80,6 +83,12 @@ internal fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
+        onChangeCardCompanyClick = {
+            showCardCompanyBottomSheet = true
+            coroutineScope.launch {
+                cardCompanyModalBottomSheetState.show()
+            }
+        },
         onSaveClick = viewModel::addCard,
         modifier = modifier
     )
@@ -99,6 +108,7 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: (Card) -> Unit,
+    onChangeCardCompanyClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -130,7 +140,11 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                modifier = Modifier.padding(horizontal = 52.dp),
+                modifier = Modifier
+                    .padding(horizontal = 52.dp)
+                    .clickable {
+                        onChangeCardCompanyClick()
+                    },
                 cardCompany = cardCompany
             )
 
@@ -189,6 +203,7 @@ private fun NewCardScreenPreview() {
             ownerName = "컴포즈2",
             password = "0000",
             onBackClick = {},
+            onChangeCardCompanyClick = {},
             onSaveClick = {},
             setCardNumber = {},
             setExpiredDate = {},
