@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.cards.component.CreditCardTopBar
 import nextstep.payments.ui.cards.component.EmptyCardComponent
 import nextstep.payments.ui.cards.component.ManyCardComponent
@@ -92,7 +93,8 @@ private fun CreditCardOneScreenPreview() {
                     cardNumber = "1111-1111-1111-1111",
                     expiredDate = "11 / 11",
                     ownerName = "컴포즈",
-                    password = "1111"
+                    password = "1111",
+                    cardCompany = CardCompany.KB
                 )
             ),
             onAddClick = {}
@@ -107,11 +109,11 @@ private fun CreditCardManyScreenPreview() {
         CreditCardsScreen(
             state = CreditCardUiState.Many(
                 cards = listOf(
-                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111"),
-                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222"),
-                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333"),
-                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444"),
-                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555"),
+                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", CardCompany.HANA),
+                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", CardCompany.LOTTE),
+                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", CardCompany.BC),
+                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444", CardCompany.WOORI),
+                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555", CardCompany.SHINHAN),
                 )
             ),
             onAddClick = {}

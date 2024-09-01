@@ -30,18 +30,15 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun NewCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    aspectRatio: Float = 208f / 124f,
-    minWidth: Dp = 208.dp,
-    minHeight: Dp = 124.dp,
 ) {
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(5.dp),
         modifier = modifier
-            .aspectRatio(aspectRatio)
+            .aspectRatio(208f / 124f)
             .defaultMinSize(
-                minWidth = minWidth,
-                minHeight = minHeight
+                minWidth = 208.dp,
+                minHeight = 124.dp
             ),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFE5E5E5)

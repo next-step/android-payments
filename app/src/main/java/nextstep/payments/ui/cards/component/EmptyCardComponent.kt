@@ -34,7 +34,7 @@ fun EmptyCardComponent(
         )
 
         NewCard(
-            modifier = Modifier.padding(top = 32.dp),
+            modifier = Modifier.padding(top = 32.dp, start = 52.dp, end = 52.dp),
             onClick = onAddClick
         )
     }
