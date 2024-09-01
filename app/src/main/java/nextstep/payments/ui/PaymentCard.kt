@@ -26,12 +26,14 @@ import nextstep.payments.ui.card.list.component.card.CardOwnerName
 
 @Composable
 fun PaymentCard(
+    brandColor: Color,
     modifier: Modifier = Modifier,
-    brandColor: Color = Color(0xFF333333)
+    content: @Composable () -> Unit = {}
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
+            .padding(top = 10.dp)
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
@@ -49,20 +51,15 @@ fun PaymentCard(
                     shape = RoundedCornerShape(4.dp),
                 )
         )
+        content()
     }
 }
 
 @Composable
-fun PaymentCard(
+fun PaymentCardContents(
     card: Card,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = {}
 ) {
-    Box(
-        modifier = modifier.padding(top = 10.dp)
-    ) {
-        content()
-
+    Box {
         CardNumber(
             cardNumber = card.cardNumber,
             modifier = Modifier
@@ -90,24 +87,19 @@ fun PaymentCard(
 
 @Preview
 @Composable
-private fun PaymentCardPreview() {
-    PaymentCard(
-        brandColor = colorResource(id = BankType.KAKAO.brandColor)
-    )
-}
-
-@Preview
-@Composable
 private fun NewPaymentCardPreview() {
+    val card = Card(
+        cardNumber = "1234-5678-1234-5678",
+        ownerName = "홍길동",
+        expiredDate = "12/34",
+        password = "123",
+        bankType = BankType.BC
+    )
+
     PaymentCard(
-        card = Card(
-            cardNumber = "1234-5678-1234-5678",
-            ownerName = "홍길동",
-            expiredDate = "12/34",
-            password = "123",
-            bankType = BankType.BC
-        ),
-        modifier = Modifier.size(width = 208.dp, height = 124.dp),
-        content = { PaymentCard() }
+        brandColor = colorResource(id = BankType.BC.brandColor),
+        content = {
+            PaymentCardContents(card = card)
+        }
     )
 }

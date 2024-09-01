@@ -3,12 +3,12 @@ package nextstep.payments.ui.card.list.component.card
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.PaymentCardContents
 
 @Composable
 fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
@@ -20,13 +20,9 @@ fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
             key = { index -> cards[index].cardNumber }
         ) {
             PaymentCard(
-                card = cards[it],
+                brandColor = colorResource(id = cards[it].bankType.brandColor),
                 modifier = Modifier,
-                content = {
-                    PaymentCard(
-                        brandColor = colorResource(cards[it].bankType.brandColor)
-                    )
-                }
+                content = { PaymentCardContents(card = cards[it]) }
             )
         }
     }

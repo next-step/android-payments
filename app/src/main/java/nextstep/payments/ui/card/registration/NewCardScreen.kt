@@ -21,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -32,7 +31,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
 import nextstep.payments.data.BankType
-import nextstep.payments.data.Card
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.card.registration.component.BankSelectRow
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
@@ -132,6 +130,7 @@ private fun NewCardScreen(
             PaymentCard(
                 brandColor = colorResource(bankType.brandColor)
             )
+
 
             Spacer(modifier = Modifier.height(10.dp))
 
