@@ -67,7 +67,7 @@ fun CardCompanySelectRow(
 @Composable
 private fun CardCompanySelectRowPreview() {
     PaymentsTheme {
-        CardCompanySelectRow(cardCompanies = CardCompany.activeCards, onClickCardCompany = {})
+        CardCompanySelectRow(cardCompanies = CardCompany.entries, onClickCardCompany = {})
     }
 }
 

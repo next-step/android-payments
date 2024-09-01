@@ -31,7 +31,7 @@ import nextstep.payments.utils.maskCardNumber
 
 @Composable
 fun PaymentCard(
-    cardCompany: CardCompany,
+    cardCompany: CardCompany?,
     modifier: Modifier = Modifier,
     aspectRatio: Float = 208f / 124f,
     minWidth: Dp = 208.dp,
@@ -47,7 +47,7 @@ fun PaymentCard(
                 minHeight = minHeight
             )
             .background(
-                color = Color(cardCompany.backgroundColor),
+                color = Color(cardCompany?.backgroundColor ?: 0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             ), Alignment.CenterStart
     ) {
@@ -61,7 +61,7 @@ fun PaymentCard(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(start = 14.dp, top = 14.dp),
-                text = cardCompany.companyName
+                text = cardCompany?.companyName ?: ""
             )
             Box(
                 modifier = Modifier

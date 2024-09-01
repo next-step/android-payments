@@ -26,10 +26,10 @@ class NewCardViewModel (
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _selectedCard = MutableStateFlow<CardCompany>(CardCompany.NOT_SELECTED)
-    val selectedCard: StateFlow<CardCompany> = _selectedCard.asStateFlow()
+    private val _selectedCard = MutableStateFlow<CardCompany?>(null)
+    val selectedCard: StateFlow<CardCompany?> = _selectedCard.asStateFlow()
 
-    private val _cardCompanies = MutableStateFlow<List<CardCompany>>(CardCompany.activeCards)
+    private val _cardCompanies = MutableStateFlow<List<CardCompany>>(CardCompany.entries)
     val cardCompanies = _cardCompanies.asStateFlow()
 
     fun setCardCompany(cardCompany: CardCompany) {

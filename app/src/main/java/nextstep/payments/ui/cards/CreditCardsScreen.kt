@@ -94,7 +94,7 @@ private fun CreditCardOneScreenPreview() {
                     expiredDate = "11 / 11",
                     ownerName = "컴포즈",
                     password = "1111",
-                    cardCompany = CardCompany.NOT_SELECTED
+                    cardCompany = CardCompany.KB
                 )
             ),
             onAddClick = {}
@@ -109,11 +109,11 @@ private fun CreditCardManyScreenPreview() {
         CreditCardsScreen(
             state = CreditCardUiState.Many(
                 cards = listOf(
-                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", CardCompany.NOT_SELECTED),
-                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", CardCompany.NOT_SELECTED),
-                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", CardCompany.NOT_SELECTED),
-                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444", CardCompany.NOT_SELECTED),
-                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555", CardCompany.NOT_SELECTED),
+                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", CardCompany.HANA),
+                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", CardCompany.LOTTE),
+                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", CardCompany.BC),
+                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444", CardCompany.WOORI),
+                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555", CardCompany.SHINHAN),
                 )
             ),
             onAddClick = {}

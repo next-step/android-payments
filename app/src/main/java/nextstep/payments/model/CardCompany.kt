@@ -47,11 +47,5 @@ enum class CardCompany(
         "국민카드",
         R.drawable.ic_kb,
         0xFF695F54,
-    ),
-    NOT_SELECTED(
-        "", 0, 0xFF333333
-    );
-    companion object {
-        val activeCards: List<CardCompany> = entries.filter { it != NOT_SELECTED }
-    }
+    )
 }

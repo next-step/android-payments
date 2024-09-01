@@ -46,9 +46,9 @@ private fun ManyCardComponentPreview() {
     PaymentsTheme {
         ManyCardComponent(
             cards = listOf(
-                Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", cardCompany = CardCompany.NOT_SELECTED),
-                Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", cardCompany = CardCompany.NOT_SELECTED),
-                Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", cardCompany = CardCompany.NOT_SELECTED)
+                Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", cardCompany = CardCompany.KB),
+                Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", cardCompany = CardCompany.KAKAOBANK),
+                Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", cardCompany = CardCompany.BC)
             ),
         )
     }

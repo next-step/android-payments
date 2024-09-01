@@ -89,7 +89,7 @@ internal fun NewCardScreen(
 // stateless
 @Composable
 private fun NewCardScreen(
-    cardCompany: CardCompany,
+    cardCompany: CardCompany?,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,

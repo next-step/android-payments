@@ -50,7 +50,7 @@ private fun OneCardComponentPreview() {
                 expiredDate = "11 / 11",
                 ownerName = "컴포즈",
                 password = "1111",
-                cardCompany = CardCompany.NOT_SELECTED
+                cardCompany = CardCompany.KB
             ),
             onAddClick = {}
         )
