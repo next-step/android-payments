@@ -38,6 +38,12 @@ class NewCardActivity : ComponentActivity() {
                     snackbarHostState.showSnackbar(message = context.getString(R.string.credit_card_error))
                 }
             }
+            LaunchedEffect(true) {
+                viewModel.cardAdded.collectLatest {
+                    setResult(RESULT_OK)
+                    finish()
+                }
+            }
 
             PaymentsTheme {
                 Scaffold(
@@ -54,8 +60,6 @@ class NewCardActivity : ComponentActivity() {
                         setPassword = viewModel::setPassword,
                         onAddCardClick = {
                             viewModel.addCard()
-                            setResult(RESULT_OK)
-                            finish()
                         },
                         onBackClick = {
                             finish()

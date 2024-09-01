@@ -1,6 +1,7 @@
 package nextstep.payments.cardlist
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,6 +42,7 @@ internal fun CardListManyScreen(
                     .padding(top = 12.dp)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(36.dp)
             ) {
                 items(
                     items = cards,

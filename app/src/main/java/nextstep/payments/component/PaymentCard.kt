@@ -27,7 +27,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun PaymentCard(
+internal fun PaymentCard(
     modifier: Modifier = Modifier,
     creditCard: CreditCard? = null,
 ) {

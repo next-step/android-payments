@@ -104,6 +104,17 @@ private fun CardListScreenManyPreview() {
                         expiredDate = YearMonth.now(),
                         ownerName = "이범석",
                         password = "1234"
+                    ),
+                    CreditCard(
+                        cardNumbers = listOf(
+                            CardNumber("1111"),
+                            CardNumber("1111"),
+                            CardNumber("1111"),
+                            CardNumber("1112"),
+                        ),
+                        expiredDate = YearMonth.now(),
+                        ownerName = "이범석",
+                        password = "1234"
                     )
                 )
             ),
