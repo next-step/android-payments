@@ -33,18 +33,15 @@ import nextstep.payments.utils.maskCardNumber
 fun PaymentCard(
     cardCompany: CardCompany?,
     modifier: Modifier = Modifier,
-    aspectRatio: Float = 208f / 124f,
-    minWidth: Dp = 208.dp,
-    minHeight: Dp = 124.dp,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     Box(
         modifier
             .shadow(8.dp)
-            .aspectRatio(aspectRatio)
+            .aspectRatio(208f / 124f)
             .defaultMinSize(
-                minWidth = minWidth,
-                minHeight = minHeight
+                minWidth = 208.dp,
+                minHeight = 124.dp,
             )
             .background(
                 color = Color(cardCompany?.backgroundColor ?: 0xFF333333),
