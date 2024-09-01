@@ -27,12 +27,25 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
+internal fun PaymentCard() {
+    CardFrame()
+}
+
+@Composable
 internal fun PaymentCard(
-    modifier: Modifier = Modifier,
-    creditCard: CreditCard? = null,
+    card: CreditCard,
+) {
+    CardFrame {
+        CardDetails(card)
+    }
+}
+
+@Composable
+fun CardFrame(
+    content: @Composable () -> Unit = {}
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
@@ -45,7 +58,6 @@ internal fun PaymentCard(
                 .padding(horizontal = 14.dp)
                 .padding(top = 44.dp)
         ) {
-            // 카드의 칩 모양
             Box(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
@@ -54,26 +66,25 @@ internal fun PaymentCard(
                         shape = RoundedCornerShape(4.dp),
                     )
             )
-
-            creditCard?.let {
-                Spacer(modifier = Modifier.height(8.dp))
-
-                CardNumber(
-                    numberFirst = creditCard.cardNumbers[0],
-                    numberSecond = creditCard.cardNumbers[1],
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(2.dp))
-
-                CardOwnerExpiredDate(
-                    ownerName = creditCard.ownerName,
-                    expiredDate = creditCard.expiredDate,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+            content() // Default content is empty if not provided
         }
     }
+}
+
+@Composable
+fun CardDetails(card: CreditCard) {
+    Spacer(modifier = Modifier.height(8.dp))
+    CardNumber(
+        numberFirst = card.cardNumbers[0],
+        numberSecond = card.cardNumbers[1],
+        modifier = Modifier.fillMaxWidth()
+    )
+    Spacer(modifier = Modifier.height(2.dp))
+    CardOwnerExpiredDate(
+        ownerName = card.ownerName,
+        expiredDate = card.expiredDate,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
@@ -124,7 +135,7 @@ private fun CardOwnerExpiredDate(
 private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
-            creditCard = CreditCard(
+            card = CreditCard(
                 cardNumbers = listOf(
                     CardNumber("1111"),
                     CardNumber("2222"),
@@ -143,6 +154,6 @@ private fun PaymentCardPreview() {
 @Composable
 private fun NoCreditCardPaymentCardPreview() {
     PaymentsTheme {
-        PaymentCard(creditCard = null)
+        PaymentCard()
     }
 }

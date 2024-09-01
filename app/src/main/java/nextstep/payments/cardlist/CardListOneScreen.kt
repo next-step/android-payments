@@ -49,7 +49,7 @@ private fun CardListOneContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         PaymentCard(
-            creditCard = card,
+            card = card,
         )
 
         Spacer(modifier = Modifier.height(36.dp))

@@ -146,11 +146,34 @@ internal fun NewCardScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewNewCardScreen() {
+private fun PreviewNewCardScreen() {
     val cardNumber = remember { mutableStateOf("1111222233334444") }
     val expiredDate = remember { mutableStateOf("1234") }
     val ownerName = remember { mutableStateOf("홍길동") }
     val password = remember { mutableStateOf("1234") }
+
+    NewCardScreen(
+        cardNumber = cardNumber.value,
+        expiredDate = expiredDate.value,
+        ownerName = ownerName.value,
+        password = password.value,
+        setCardNumber = { cardNumber.value = it },
+        setExpiredDate = { expiredDate.value = it },
+        setOwnerName = { ownerName.value = it },
+        setPassword = { password.value = it },
+        onAddCardClick = {},
+        onBackClick = {},
+        modifier = Modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewEmptyNewCardScreen() {
+    val cardNumber = remember { mutableStateOf("") }
+    val expiredDate = remember { mutableStateOf("") }
+    val ownerName = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
 
     NewCardScreen(
         cardNumber = cardNumber.value,

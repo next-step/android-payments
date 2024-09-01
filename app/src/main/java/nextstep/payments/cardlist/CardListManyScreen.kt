@@ -48,7 +48,7 @@ internal fun CardListManyScreen(
                     items = cards,
                     key = { it.cardNumbers }
                 ) { card ->
-                    PaymentCard(creditCard = card)
+                    PaymentCard(card = card)
                 }
             }
         }
