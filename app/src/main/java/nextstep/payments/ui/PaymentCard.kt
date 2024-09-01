@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +61,13 @@ fun PaymentCardContents(
     card: Card,
 ) {
     Box {
+        Text(
+            text = card.bankType.name,
+            color = Color.White,
+            modifier = Modifier
+                .padding(start = 14.dp, top = 10.dp)
+        )
+
         CardNumber(
             cardNumber = card.cardNumber,
             modifier = Modifier
