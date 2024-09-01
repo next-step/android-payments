@@ -35,19 +35,22 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardListViewModel = viewModel(),
     onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     val cards by viewModel.registeredCreditCards.collectAsStateWithLifecycle()
 
     CardListScreen(
         registeredCreditCards = cards,
         onAddCard = onAddCard,
+        onCardClick = onCardClick
     )
 }
 
 @Composable
 fun CardListScreen(
     registeredCreditCards: RegisteredCreditCards = RegisteredCreditCards(mutableListOf()),
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
 
     when (registeredCreditCards.getState()) {
@@ -62,6 +65,7 @@ fun CardListScreen(
             CardListScreenOne(
                 cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
+                onCardClick = onCardClick
             )
         }
 
@@ -108,7 +112,8 @@ fun CardListScreenEmpty(
 @Composable
 fun CardListScreenOne(
     cards: List<Card>,
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     Scaffold(topBar = { CardListTopBar() }) { paddingValues ->
         Column(
@@ -119,7 +124,12 @@ fun CardListScreenOne(
             PaymentCard(
                 brandColor = colorResource(id = cards.first().bankType.brandColor),
                 modifier = Modifier.align(CenterHorizontally),
-                content = { PaymentCardContents(card = cards.first()) }
+                content = {
+                    PaymentCardContents(
+                        card = cards.first(),
+                        onClick = onCardClick
+                    )
+                }
             )
 
             EmptyCardImage(

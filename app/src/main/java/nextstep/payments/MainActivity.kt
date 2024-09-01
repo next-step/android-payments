@@ -40,6 +40,12 @@ class MainActivity : ComponentActivity() {
                         onAddCard = {
                             val intent = Intent(this, NewCardActivity::class.java)
                             launcher.launch(intent)
+                        },
+                        onCardClick = { card ->
+                            val intent = Intent(this, NewCardActivity::class.java).apply {
+                                putExtra("card", card)
+                            }
+                            launcher.launch(intent)
                         }
                     )
                 }
