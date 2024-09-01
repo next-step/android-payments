@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.component.topbar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +30,10 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(
+                modifier = Modifier.testTag("saveButton"),
+                onClick = { onSaveClick() }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",

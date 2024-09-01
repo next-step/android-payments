@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".screen.newcard.NewCardActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Payments">
+        </activity>
     </application>
 
 </manifest>
