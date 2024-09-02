@@ -24,7 +24,7 @@ import nextstep.payments.data.Card
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.PaymentCardContents
-import nextstep.payments.ui.card.state.CreditCardUiState
+import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
 import nextstep.payments.ui.card.list.component.card.CardListTopBarWithAdd
@@ -191,6 +191,7 @@ private fun CardListScreenOnePreview() {
             registeredCreditCards = RegisteredCreditCards(
                 cardList = listOf(
                     Card(
+                        id = 1,
                         cardNumber = "1234-5678-1234-6654",
                         ownerName = "홍길동",
                         expiredDate = "12/24",
@@ -210,6 +211,7 @@ private fun CardListScreenManyPreview() {
     val registeredCreditCards = RegisteredCreditCards(
         cardList = listOf(
             Card(
+                id = 1,
                 cardNumber = "1234-5678-1234-6654",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
@@ -217,6 +219,7 @@ private fun CardListScreenManyPreview() {
                 bankType = BankType.KAKAO
             ),
             Card(
+                id = 1,
                 cardNumber = "1234-5678-1234-1234",
                 ownerName = "홍길동",
                 expiredDate = "12/24",

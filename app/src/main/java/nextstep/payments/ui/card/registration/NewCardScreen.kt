@@ -1,6 +1,5 @@
 package nextstep.payments.ui.card.registration
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,13 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
 import nextstep.payments.data.BankType
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.card.registration.component.BankSelectRow
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
+import kotlin.reflect.KFunction0
 
 // Stateful
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +52,7 @@ fun NewCardScreen(
     val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
     val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -61,6 +61,12 @@ fun NewCardScreen(
     LaunchedEffect(key1 = selectedBankType) {
         if (selectedBankType != BankType.NOT_SELECTED) {
             modalBottomSheetState.hide()
+        }
+    }
+
+    LaunchedEffect(key1 = uiState) {
+        if (uiState == RegistrationUiState.EditCard) {
+            showCardCompanyBottomSheet = false
         }
     }
 
@@ -77,6 +83,15 @@ fun NewCardScreen(
             )
         }
     }
+    val saveFunction: KFunction0<Unit> = when (uiState) {
+        RegistrationUiState.NewCard -> {
+            viewModel::addCard
+        }
+
+        RegistrationUiState.EditCard -> {
+            viewModel::editCard
+        }
+    }
 
     NewCardScreen(
         modifier = modifier,
@@ -90,12 +105,11 @@ fun NewCardScreen(
         setOwnerNamedNumber = viewModel::setOwnerName,
         setPasswordNumber = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = viewModel::addCard,
+        onSaveClick = saveFunction,
     )
 }
 
 // Stateless
-@SuppressLint("ResourceAsColor")
 @Composable
 private fun NewCardScreen(
     modifier: Modifier = Modifier,
@@ -169,8 +183,6 @@ private fun NewCardScreen(
         }
     }
 }
-
-
 
 @Preview
 @Composable

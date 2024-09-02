@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.card.registration
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +30,13 @@ class NewCardViewModel(
     private val _selectedBankType = MutableStateFlow(BankType.NOT_SELECTED)
     val selectedBankType: StateFlow<BankType> = _selectedBankType.asStateFlow()
 
+    var oldCard: Card? = null
+        private set
+
+    private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.NewCard)
+    val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
+
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -53,6 +60,7 @@ class NewCardViewModel(
     fun addCard() {
         repository.addCard(
             Card(
+                id = repository.createId(),
                 cardNumber = cardNumber.value,
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
@@ -61,5 +69,33 @@ class NewCardViewModel(
             )
         )
         _cardAdded.value = true
+    }
+
+    fun editCard() {
+        repository.editCard(
+            oldCard = oldCard,
+            newCard = Card(
+                id = oldCard!!.id,
+                cardNumber = cardNumber.value,
+                expiredDate = expiredDate.value,
+                ownerName = ownerName.value,
+                password = password.value,
+                bankType = selectedBankType.value
+            )
+        )
+        _cardAdded.value = true
+    }
+
+    fun setOldCard(card: Card) {
+        oldCard = card
+        _cardNumber.value = card.cardNumber
+        _expiredDate.value = card.expiredDate
+        _ownerName.value = card.ownerName
+        _password.value = card.password
+        _selectedBankType.value = card.bankType
+    }
+
+    fun setUiState(newUiState: RegistrationUiState) {
+        _uiState.value = newUiState
     }
 }

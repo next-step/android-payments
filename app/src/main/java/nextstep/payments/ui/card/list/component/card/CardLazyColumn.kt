@@ -43,6 +43,7 @@ private fun CardLazyColumnPreview() {
     CardLazyColumn(
         cards = listOf(
             Card(
+                id = 1,
                 cardNumber = "1234-5678-1234-5678",
                 ownerName = "홍길동",
                 expiredDate = "12/34",
