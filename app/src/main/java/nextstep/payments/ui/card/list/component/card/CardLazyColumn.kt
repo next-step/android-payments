@@ -11,7 +11,11 @@ import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.PaymentCardContents
 
 @Composable
-fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
+fun CardLazyColumn(
+    cards: List<Card>,
+    modifier: Modifier = Modifier,
+    onCardClick: (Card) -> Unit = {}
+) {
     LazyColumn(
         modifier = modifier
     ) {
@@ -22,7 +26,12 @@ fun CardLazyColumn(cards: List<Card>, modifier: Modifier = Modifier) {
             PaymentCard(
                 brandColor = colorResource(id = cards[it].bankType.brandColor),
                 modifier = Modifier,
-                content = { PaymentCardContents(card = cards[it]) }
+                content = {
+                    PaymentCardContents(
+                        card = cards[it],
+                        onClick = onCardClick
+                    )
+                }
             )
         }
     }

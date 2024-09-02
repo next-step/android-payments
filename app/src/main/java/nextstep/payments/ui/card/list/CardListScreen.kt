@@ -24,7 +24,7 @@ import nextstep.payments.data.Card
 import nextstep.payments.data.RegisteredCreditCards
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.PaymentCardContents
-import nextstep.payments.ui.card.CreditCardUiState
+import nextstep.payments.ui.card.state.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
 import nextstep.payments.ui.card.list.component.card.CardListTopBarWithAdd
@@ -73,6 +73,7 @@ fun CardListScreen(
             CardListScreenMany(
                 cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
+                onCardClick = onCardClick
             )
         }
     }
@@ -149,7 +150,8 @@ fun CardListScreenOne(
 @Composable
 fun CardListScreenMany(
     cards: List<Card>,
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     Scaffold(topBar = {
         CardListTopBarWithAdd(
@@ -163,7 +165,8 @@ fun CardListScreenMany(
         ) {
             CardLazyColumn(
                 cards = cards,
-                modifier = Modifier.align(CenterHorizontally)
+                modifier = Modifier.align(CenterHorizontally),
+                onCardClick = onCardClick
             )
         }
     }
