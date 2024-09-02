@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Payments</string>
+    <string name="app_name">PaymentCard</string>
+
+    <string name="card_number">카드 번호</string>
+    <string name="card_number_placeholder">0000 - 0000 - 0000 - 0000</string>
+
+    <string name="expiry_date">만료일</string>
+    <string name="expiry_date_placeholder">MM / YY</string>
+
+    <string name="card_owner_name">카드 소유자 이름(선택)</string>
+    <string name="card_owner_name_placeholder">카드에 표시된 이름을 입력하세요.</string>
+
+    <string name="password">비밀번호</string>
+    <string name="password_placeholder">0000</string>
+    <string name="credit_card_error">카드 생성에 실패했습니다</string>
+    <string name="net_card_top_bar_title">카드 추가</string>
+    <string name="card_list_top_app_bar_title">Payments</string>
+    <string name="card_list_empty_screen_title">새로운 카드를 등록해주세요</string>
+    <string name="card_list_many_screen_top_app_bar_action">추가</string>
 </resources>
