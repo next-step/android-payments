@@ -64,12 +64,6 @@ fun NewCardScreen(
         }
     }
 
-    LaunchedEffect(key1 = uiState) {
-        if (uiState == RegistrationUiState.EditCard) {
-            showCardCompanyBottomSheet = false
-        }
-    }
-
     if (showCardCompanyBottomSheet) {
         ModalBottomSheet(
             sheetState = modalBottomSheetState,
