@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Card(
+    val id: Int?,
     val cardNumber: String,
     val cardOwnerName: String,
     val cardExpiredDate: String,

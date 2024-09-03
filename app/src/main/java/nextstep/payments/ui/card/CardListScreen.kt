@@ -53,6 +53,7 @@ private fun CardListScreenPreview() {
     )
     val cards = cardNumbers.mapIndexed { index, number ->
         Card(
+            id = 0,
             cardNumber = number,
             cardOwnerName = "Park",
             cardExpiredDate = "04 / 21",

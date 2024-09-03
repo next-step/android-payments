@@ -5,6 +5,7 @@
     <string name="complete">완료</string>
 
     <string name="add_card">카드 추가</string>
+    <string name="edit_card">카드 수정</string>
     <string name="card_number">카드 번호</string>
     <string name="expire_date">만료일</string>
     <string name="card_owner_name">카드 소유자 이름(선택)</string>

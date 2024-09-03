@@ -41,6 +41,7 @@ fun SingleCardScreen(
 private fun SingleCardScreenPreview() {
     val uiState = CreditCardUiState.One(
         Card(
+            id = 0,
             cardNumber = "1111 - 2222 - **** - ****",
             cardOwnerName = "Park",
             cardExpiredDate = "04 / 21",

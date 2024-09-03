@@ -103,6 +103,7 @@ private fun CreditCardItemPreview(
 private class CardListPreviewParameterProvider : CollectionPreviewParameterProvider<Card>(
     listOf(
         Card(
+            id = 0,
             cardNumber = "0000 - 1111 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",
@@ -110,6 +111,7 @@ private class CardListPreviewParameterProvider : CollectionPreviewParameterProvi
             bankType = BankType.SHINHAN
         ),
         Card(
+            id = 1,
             cardNumber = "0000 - 2222 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",
@@ -117,6 +119,7 @@ private class CardListPreviewParameterProvider : CollectionPreviewParameterProvi
             bankType = BankType.LOTTE
         ),
         Card(
+            id = 2,
             cardNumber = "0000 - 2222 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",

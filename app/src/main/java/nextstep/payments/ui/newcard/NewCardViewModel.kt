@@ -40,6 +40,9 @@ class NewCardViewModel(
     private val _selectedBank = MutableStateFlow<BankType?>(savedCard?.bankType)
     val selectedBankType: StateFlow<BankType?> = _selectedBank.asStateFlow()
 
+    private val _isCardModified = MutableStateFlow(false)
+    val isCardModified: StateFlow<Boolean> = _isCardModified.asStateFlow()
+
 
     init {
         _bankTypes.value = BankType.entries
@@ -56,8 +59,10 @@ class NewCardViewModel(
             cardPassword.isNotBlank() &&
             currentBankType != null
         ) {
+            val id = PaymentCardsRepository.cards.size + 1
             PaymentCardsRepository.addCard(
                 Card(
+                    id = id,
                     cardNumber = number,
                     cardOwnerName = _ownerName.value,
                     cardExpiredDate = date,
@@ -69,23 +74,62 @@ class NewCardViewModel(
         }
     }
 
+    fun modifyCard() {
+        val id = savedCard?.id
+        val number = _cardNumber.value
+        val date = _expiredDate.value
+        val cardPassword = _password.value
+        val currentBankType = _selectedBank.value
+
+        if (number.isNotBlank() &&
+            date.isNotBlank() &&
+            cardPassword.isNotBlank() &&
+            currentBankType != null
+        ) {
+            val card = Card(
+                id = id,
+                cardNumber = number,
+                cardOwnerName = _ownerName.value,
+                cardExpiredDate = date,
+                cardPassword = cardPassword,
+                bankType = currentBankType
+            )
+            PaymentCardsRepository.modifyCard(card)
+            _cardAdded.value = true
+        }
+    }
+
+    private fun checkCardModification() {
+        _isCardModified.value =
+            (_cardNumber.value != savedCard?.cardNumber) ||
+                (_expiredDate.value != savedCard.cardExpiredDate) ||
+                (_ownerName.value != savedCard.cardOwnerName) ||
+                (_password.value != savedCard.cardPassword) ||
+                (_selectedBank.value != savedCard.bankType)
+    }
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
+        checkCardModification()
     }
 
     fun setExpiredDate(expiredDate: String) {
         _expiredDate.value = expiredDate
+        checkCardModification()
     }
 
     fun setOwnerName(ownerName: String) {
         _ownerName.value = ownerName
+        checkCardModification()
     }
 
     fun setPassword(password: String) {
         _password.value = password
+        checkCardModification()
     }
 
     fun setSelectedBankType(bankType: BankType) {
         _selectedBank.value = bankType
+        checkCardModification()
     }
 }

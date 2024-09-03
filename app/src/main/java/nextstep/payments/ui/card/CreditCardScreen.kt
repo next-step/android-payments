@@ -131,6 +131,7 @@ private fun CreditCardScreenPreview(
 
 private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CreditCardUiState> {
     val card1 = Card(
+        id = 0,
         cardNumber = "0000 - 1111 - **** - ****",
         cardExpiredDate = "08/27",
         cardOwnerName = "Park",
@@ -138,6 +139,7 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
         bankType = BankType.SHINHAN
     )
     val card2 = Card(
+        id = 1,
         cardNumber = "0000 - 2222 - **** - ****",
         cardExpiredDate = "08/27",
         cardOwnerName = "Park",
@@ -158,6 +160,7 @@ private fun CardListTopAppBarPreview() {
     val manyUiState = CreditCardUiState.Many(
         listOf(
             Card(
+                id = 0,
                 cardNumber = "1111 - 2222 - **** - ****",
                 cardOwnerName = "Park",
                 cardExpiredDate = "04 / 21",
@@ -165,6 +168,7 @@ private fun CardListTopAppBarPreview() {
                 bankType = BankType.SHINHAN
             ),
             Card(
+                id = 1,
                 cardNumber = "1111 - 3333 - **** - ****",
                 cardOwnerName = "Park",
                 cardExpiredDate = "04 / 21",

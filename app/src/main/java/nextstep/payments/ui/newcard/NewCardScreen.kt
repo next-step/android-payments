@@ -51,10 +51,13 @@ fun NewCardScreen(
     val bankTypes by viewModel.bankTypes.collectAsStateWithLifecycle()
     val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
 
+    val isCardModified by viewModel.isCardModified.collectAsStateWithLifecycle()
+
     var showBankSelectBottomSheet by rememberSaveable { mutableStateOf(!canEdit) }
 
     NewCardScreen(
         canEdit = canEdit,
+        isCardModified = isCardModified,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -67,7 +70,7 @@ fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = { viewModel.addCard() },
+        onSaveClick = { if (canEdit) viewModel.modifyCard() else viewModel.addCard() },
         onClickPaymentCard = { showBankSelectBottomSheet = true },
         onClickBankType = { viewModel.setSelectedBankType(it) },
         onBottomSheetDismissRequest = { showBankSelectBottomSheet = false }
@@ -78,6 +81,7 @@ fun NewCardScreen(
 @Composable
 fun NewCardScreen(
     canEdit: Boolean,
+    isCardModified: Boolean,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -107,6 +111,8 @@ fun NewCardScreen(
     Scaffold(
         topBar = {
             NewCardTopBar(
+                canEdit = canEdit,
+                isCardModified = isCardModified,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick
             )
@@ -176,12 +182,40 @@ private fun StatelessNewCardScreenPrev() {
     PaymentsTheme {
         NewCardScreen(
             canEdit = false,
+            isCardModified = false,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "kyudong3",
             password = "asldkfj",
             bankTypes = emptyList(),
             selectedBankType = BankType.BC,
+            showBankSelectBottomSheet = false,
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {},
+            onClickPaymentCard = {},
+            onClickBankType = {},
+            onBottomSheetDismissRequest = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ModifyCardScreenPrev() {
+    PaymentsTheme {
+        NewCardScreen(
+            canEdit = true,
+            isCardModified = false,
+            cardNumber = "0000 - 0000 - 0000 - 1234",
+            expiredDate = "00 / 00",
+            ownerName = "kyudong3",
+            password = "asldkfj",
+            bankTypes = emptyList(),
+            selectedBankType = BankType.WOORI,
             showBankSelectBottomSheet = false,
             setCardNumber = {},
             setExpiredDate = {},

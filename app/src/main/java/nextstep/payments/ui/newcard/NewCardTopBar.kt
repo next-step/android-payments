@@ -11,19 +11,23 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    canEdit: Boolean,
+    isCardModified: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = {
-            Text(stringResource(id = R.string.add_card))
+            val title = if (canEdit) R.string.edit_card else R.string.add_card
+            Text(stringResource(title))
         },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
@@ -34,7 +38,9 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(
+                onClick = { if (isCardModified) onSaveClick() }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(id = R.string.complete),
@@ -44,3 +50,27 @@ fun NewCardTopBar(
         modifier = modifier
     )
 }
+
+@Preview(name = "카드 추가", showBackground = true)
+@Composable
+private fun NewCardTopBarPreview() {
+    NewCardTopBar(
+        canEdit = false,
+        isCardModified = false,
+        onBackClick = { },
+        onSaveClick = { }
+    )
+}
+
+@Preview(name = "카드 수정", showBackground = true)
+@Composable
+private fun EditCardTopBarPreview() {
+    NewCardTopBar(
+        canEdit = true,
+        isCardModified = false,
+        onBackClick = { },
+        onSaveClick = { }
+    )
+}
+
+
