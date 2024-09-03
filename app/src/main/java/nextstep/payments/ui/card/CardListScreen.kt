@@ -18,6 +18,7 @@ import nextstep.payments.ui.component.CreditCardItem
 @Composable
 fun CardListScreen(
     cards: List<Card>,
+    onClickCard: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -31,7 +32,10 @@ fun CardListScreen(
             items = cards,
             key = { it.cardNumber }
         ) { item ->
-            CreditCardItem(item)
+            CreditCardItem(
+                card = item,
+                onClickCard = { onClickCard(item) }
+            )
         }
     }
 }
@@ -52,9 +56,10 @@ private fun CardListScreenPreview() {
             cardNumber = number,
             cardOwnerName = "Park",
             cardExpiredDate = "04 / 21",
+            cardPassword = "1234",
             bankType = BankType.entries[index]
         )
     }
     val uiState = CreditCardUiState.Many(cards)
-    CardListScreen(uiState.cards)
+    CardListScreen(uiState.cards, {})
 }

@@ -34,7 +34,8 @@ import nextstep.payments.ui.theme.TopBarTitleColor
 
 @Composable
 fun CreditCardScreen(
-    navigateToCardList: () -> Unit,
+    navigateToNewCard: () -> Unit,
+    navigateToEditCard: (Card) -> Unit,
     viewModel: CreditCardViewModel = viewModel()
 ) {
     val creditCardUiState by viewModel.creditCardUiState.collectAsStateWithLifecycle()
@@ -43,7 +44,7 @@ fun CreditCardScreen(
         topBar = {
             CardListTopAppBar(
                 uiState = creditCardUiState,
-                onClickAddCard = navigateToCardList
+                onClickAddCard = navigateToNewCard
             )
         }
     ) { paddingValues ->
@@ -54,7 +55,8 @@ fun CreditCardScreen(
         ) {
             CreditCardScreen(
                 uiState = creditCardUiState,
-                onClickAddItem = navigateToCardList
+                onClickAddItem = navigateToNewCard,
+                onClickCard = navigateToEditCard
             )
         }
     }
@@ -63,18 +65,25 @@ fun CreditCardScreen(
 @Composable
 fun CreditCardScreen(
     uiState: CreditCardUiState,
-    onClickAddItem: () -> Unit
+    onClickAddItem: () -> Unit,
+    onClickCard: (Card) -> Unit
 ) {
     when (uiState) {
-        is CreditCardUiState.Empty -> EmptyCardScreen(
-            onClickItem = onClickAddItem
-        )
+        is CreditCardUiState.Empty ->
+            EmptyCardScreen(
+                onClickItem = onClickAddItem
+            )
         is CreditCardUiState.One ->
             SingleCardScreen(
                 card = uiState.card,
-                onClickAddItem = onClickAddItem
+                onClickAddItem = onClickAddItem,
+                onClickCard = onClickCard
             )
-        is CreditCardUiState.Many -> CardListScreen(uiState.cards)
+        is CreditCardUiState.Many ->
+            CardListScreen(
+                cards = uiState.cards,
+                onClickCard = onClickCard
+            )
     }
 }
 
@@ -115,7 +124,8 @@ private fun CreditCardScreenPreview(
 ) {
     CreditCardScreen(
         uiState = value,
-        onClickAddItem = {}
+        onClickAddItem = {},
+        onClickCard = {}
     )
 }
 
@@ -124,12 +134,14 @@ private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<
         cardNumber = "0000 - 1111 - **** - ****",
         cardExpiredDate = "08/27",
         cardOwnerName = "Park",
+        cardPassword = "1234",
         bankType = BankType.SHINHAN
     )
     val card2 = Card(
         cardNumber = "0000 - 2222 - **** - ****",
         cardExpiredDate = "08/27",
         cardOwnerName = "Park",
+        cardPassword = "1234",
         bankType = BankType.LOTTE
     )
     override val values: Sequence<CreditCardUiState> = sequenceOf(
@@ -149,12 +161,14 @@ private fun CardListTopAppBarPreview() {
                 cardNumber = "1111 - 2222 - **** - ****",
                 cardOwnerName = "Park",
                 cardExpiredDate = "04 / 21",
+                cardPassword = "1234",
                 bankType = BankType.SHINHAN
             ),
             Card(
                 cardNumber = "1111 - 3333 - **** - ****",
                 cardOwnerName = "Park",
                 cardExpiredDate = "04 / 21",
+                cardPassword = "1234",
                 bankType = BankType.BC
             )
         )

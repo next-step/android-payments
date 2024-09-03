@@ -1,6 +1,7 @@
 package nextstep.payments.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun PaymentCard(
     selectedBankType: BankType?,
+    onClickPaymentCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -32,6 +34,7 @@ fun PaymentCard(
                 color = selectedBankType?.color ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
+            .clickable { onClickPaymentCard() }
     ) {
         Box(
             modifier = Modifier
@@ -51,7 +54,7 @@ private fun PaymentCardPreview(
     @PreviewParameter(PaymentCardPreviewParameterProvider::class) value: BankType
 ) {
     PaymentsTheme {
-        PaymentCard(value)
+        PaymentCard(value, {})
     }
 }
 

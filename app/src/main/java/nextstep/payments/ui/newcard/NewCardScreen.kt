@@ -42,6 +42,7 @@ fun NewCardScreen(
         if (cardAdded) navigateToCardList()
     }
 
+    val canEdit by viewModel.canEdit.collectAsStateWithLifecycle()
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -50,9 +51,10 @@ fun NewCardScreen(
     val bankTypes by viewModel.bankTypes.collectAsStateWithLifecycle()
     val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
 
-    var showBankSelectBottomSheet by rememberSaveable { mutableStateOf(true) }
+    var showBankSelectBottomSheet by rememberSaveable { mutableStateOf(!canEdit) }
 
     NewCardScreen(
+        canEdit = canEdit,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -66,6 +68,7 @@ fun NewCardScreen(
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
         onSaveClick = { viewModel.addCard() },
+        onClickPaymentCard = { showBankSelectBottomSheet = true },
         onClickBankType = { viewModel.setSelectedBankType(it) },
         onBottomSheetDismissRequest = { showBankSelectBottomSheet = false }
     )
@@ -74,6 +77,7 @@ fun NewCardScreen(
 // Stateless
 @Composable
 fun NewCardScreen(
+    canEdit: Boolean,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -87,6 +91,7 @@ fun NewCardScreen(
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    onClickPaymentCard: () -> Unit,
     onClickBankType: (BankType) -> Unit,
     onBottomSheetDismissRequest: () -> Unit,
     modifier: Modifier = Modifier
@@ -117,7 +122,10 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(selectedBankType)
+            PaymentCard(
+                selectedBankType = selectedBankType,
+                onClickPaymentCard = onClickPaymentCard
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -167,6 +175,7 @@ fun NewCardScreen(
 private fun StatelessNewCardScreenPrev() {
     PaymentsTheme {
         NewCardScreen(
+            canEdit = false,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "kyudong3",
@@ -180,6 +189,7 @@ private fun StatelessNewCardScreenPrev() {
             setPassword = {},
             onBackClick = {},
             onSaveClick = {},
+            onClickPaymentCard = {},
             onClickBankType = {},
             onBottomSheetDismissRequest = {}
         )
