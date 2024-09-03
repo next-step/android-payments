@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import nextstep.payments.R
 import nextstep.payments.model.CardNumber
 import nextstep.payments.model.CreditCard
@@ -54,70 +55,12 @@ internal fun CardListTopAppBar(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CardListScreenEmptyPreview() {
+private fun CardListScreenPreview(
+    @PreviewParameter(CardListUiStateProvider::class) uiState: CardListUiState
+) {
     PaymentsTheme {
         CardListScreen(
-            uiState = CardListUiState.Empty,
-            onAddCardClick = {}
-        )
-    }
-}
-
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun CardListScreenOnePreview() {
-    PaymentsTheme {
-        CardListScreen(
-            uiState = CardListUiState.One(
-                CreditCard(
-                    cardNumbers = listOf(
-                        CardNumber("1111"),
-                        CardNumber("1111"),
-                        CardNumber("1111"),
-                        CardNumber("1111"),
-                    ),
-                    expiredDate = YearMonth.now(),
-                    ownerName = "이범석",
-                    password = "1234"
-                )
-            ),
-            onAddCardClick = {}
-        )
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun CardListScreenManyPreview() {
-    PaymentsTheme {
-        CardListScreen(
-            uiState = CardListUiState.Many(
-                listOf(
-                    CreditCard(
-                        cardNumbers = listOf(
-                            CardNumber("1111"),
-                            CardNumber("1111"),
-                            CardNumber("1111"),
-                            CardNumber("1111"),
-                        ),
-                        expiredDate = YearMonth.now(),
-                        ownerName = "이범석",
-                        password = "1234"
-                    ),
-                    CreditCard(
-                        cardNumbers = listOf(
-                            CardNumber("1111"),
-                            CardNumber("1111"),
-                            CardNumber("1111"),
-                            CardNumber("1112"),
-                        ),
-                        expiredDate = YearMonth.now(),
-                        ownerName = "이범석",
-                        password = "1234"
-                    )
-                )
-            ),
+            uiState = uiState,
             onAddCardClick = {}
         )
     }
