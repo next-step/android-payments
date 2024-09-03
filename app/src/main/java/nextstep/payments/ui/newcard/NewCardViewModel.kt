@@ -49,54 +49,52 @@ class NewCardViewModel(
     }
 
     fun addCard() {
-        val number = _cardNumber.value
-        val date = _expiredDate.value
-        val cardPassword = _password.value
-        val currentBankType = _selectedBank.value
-
-        if (number.isNotBlank() &&
-            date.isNotBlank() &&
-            cardPassword.isNotBlank() &&
-            currentBankType != null
-        ) {
+        if (isCardDataSavable()) {
             val id = PaymentCardsRepository.cards.size + 1
-            PaymentCardsRepository.addCard(
-                Card(
-                    id = id,
-                    cardNumber = number,
-                    cardOwnerName = _ownerName.value,
-                    cardExpiredDate = date,
-                    cardPassword = cardPassword,
-                    bankType = currentBankType
+            _selectedBank.value?.let {
+                PaymentCardsRepository.addCard(
+                    Card(
+                        id = id,
+                        cardNumber = _cardNumber.value,
+                        cardOwnerName = _ownerName.value,
+                        cardExpiredDate = _expiredDate.value,
+                        cardPassword = _password.value,
+                        bankType = it
+                    )
                 )
-            )
-            _cardAdded.value = true
+                _cardAdded.value = true
+            }
         }
     }
 
     fun modifyCard() {
-        val id = savedCard?.id
+        if (isCardDataSavable()) {
+            val id = savedCard?.id
+            _selectedBank.value?.let {
+                val card = Card(
+                    id = id,
+                    cardNumber = _cardNumber.value,
+                    cardOwnerName = _ownerName.value,
+                    cardExpiredDate = _expiredDate.value,
+                    cardPassword = _password.value,
+                    bankType = it
+                )
+                PaymentCardsRepository.modifyCard(card)
+                _cardAdded.value = true
+            }
+        }
+    }
+
+    private fun isCardDataSavable(): Boolean {
         val number = _cardNumber.value
         val date = _expiredDate.value
         val cardPassword = _password.value
         val currentBankType = _selectedBank.value
 
-        if (number.isNotBlank() &&
+        return number.isNotBlank() &&
             date.isNotBlank() &&
             cardPassword.isNotBlank() &&
             currentBankType != null
-        ) {
-            val card = Card(
-                id = id,
-                cardNumber = number,
-                cardOwnerName = _ownerName.value,
-                cardExpiredDate = date,
-                cardPassword = cardPassword,
-                bankType = currentBankType
-            )
-            PaymentCardsRepository.modifyCard(card)
-            _cardAdded.value = true
-        }
     }
 
     private fun checkCardModification() {
