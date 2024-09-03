@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Payments"
         tools:targetApi="31">
         <activity
-            android:name=".cardlist.CardListActivity"
+            android:name=".ui.cardlist.CardListActivity"
             android:exported="true"
             android:theme="@style/Theme.Payments">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".newcard.NewCardActivity" />
+        <activity android:name=".ui.newcard.NewCardActivity" />
     </application>
 
 </manifest>

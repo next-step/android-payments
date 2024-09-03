@@ -1,4 +1,4 @@
-package nextstep.payments.newcard
+package nextstep.payments.ui.newcard
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package nextstep.payments.component
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-internal fun AddCard(
+internal fun AddableCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,9 +43,9 @@ internal fun AddCard(
 
 @Preview
 @Composable
-private fun AddCardPreview() {
+private fun AddableCardPreview() {
     PaymentsTheme {
-        AddCard(
+        AddableCard(
             onClick = {},
         )
     }

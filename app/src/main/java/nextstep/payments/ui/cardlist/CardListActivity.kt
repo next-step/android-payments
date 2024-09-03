@@ -1,4 +1,4 @@
-package nextstep.payments.cardlist
+package nextstep.payments.ui.cardlist
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.newcard.NewCardActivity
+import nextstep.payments.ui.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class CardListActivity : ComponentActivity() {

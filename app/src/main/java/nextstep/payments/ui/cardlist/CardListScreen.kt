@@ -1,4 +1,4 @@
-package nextstep.payments.cardlist
+package nextstep.payments.ui.cardlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.RowScope

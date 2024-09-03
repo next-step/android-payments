@@ -1,4 +1,4 @@
-package nextstep.payments.newcard
+package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,10 +24,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.component.PaymentCard
-import nextstep.payments.newcard.component.NewCardTopBar
-import nextstep.payments.util.CardNumberVisualTransformation
-import nextstep.payments.util.ExpirationDateVisualTransformation
+import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.newcard.component.NewCardTopBar
+import nextstep.payments.ui.util.CardNumberVisualTransformation
+import nextstep.payments.ui.util.ExpirationDateVisualTransformation
 
 @Composable
 internal fun NewCardScreen(

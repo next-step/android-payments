@@ -1,4 +1,4 @@
-package nextstep.payments.newcard
+package nextstep.payments.ui.newcard
 
 import android.annotation.SuppressLint
 import android.os.Bundle

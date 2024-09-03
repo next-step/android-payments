@@ -1,4 +1,4 @@
-package nextstep.payments.cardlist
+package nextstep.payments.ui.cardlist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
-import nextstep.payments.component.AddCard
+import nextstep.payments.ui.component.AddableCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -40,7 +40,7 @@ internal fun CardListEmptyScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                AddCard(onClick = onAddCardClick)
+                AddableCard(onClick = onAddCardClick)
             }
         }
     )
