@@ -1,4 +1,4 @@
-package nextstep.payments.ui.util
+package nextstep.payments.ui.component.text.input
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping

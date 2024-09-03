@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.newcard.component.NewCardTopBar
-import nextstep.payments.ui.util.CardNumberVisualTransformation
-import nextstep.payments.ui.util.ExpirationDateVisualTransformation
+import nextstep.payments.ui.component.text.input.CardNumberVisualTransformation
+import nextstep.payments.ui.component.text.input.ExpirationDateVisualTransformation
 
 @Composable
 internal fun NewCardScreen(
