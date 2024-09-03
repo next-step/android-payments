@@ -1,5 +1,6 @@
 package nextstep.payments.ui.newcard
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +38,8 @@ fun NewCardScreen(
     navigateToCardList: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
+    val activity = LocalContext.current as? Activity
+
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
@@ -73,7 +77,13 @@ fun NewCardScreen(
         onSaveClick = { if (canEdit) viewModel.modifyCard() else viewModel.addCard() },
         onClickPaymentCard = { showBankSelectBottomSheet = true },
         onClickBankType = { viewModel.setSelectedBankType(it) },
-        onBottomSheetDismissRequest = { showBankSelectBottomSheet = false }
+        onBottomSheetDismissRequest = {
+            if (selectedBankType == null) {
+                activity?.finish()
+            } else {
+                showBankSelectBottomSheet = false
+            }
+        }
     )
 }
 
@@ -128,10 +138,12 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
-                selectedBankType = selectedBankType,
-                onClickPaymentCard = onClickPaymentCard
-            )
+            if (selectedBankType != null) {
+                PaymentCard(
+                    selectedBankType = selectedBankType,
+                    onClickPaymentCard = onClickPaymentCard
+                )
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 

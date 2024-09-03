@@ -91,7 +91,8 @@ fun CreditCardScreen(
 @Composable
 fun CardListTopAppBar(
     uiState: CreditCardUiState,
-    onClickAddCard: () -> Unit
+    onClickAddCard: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -114,6 +115,7 @@ fun CardListTopAppBar(
                 }
             }
         },
+        modifier = modifier
     )
 }
 

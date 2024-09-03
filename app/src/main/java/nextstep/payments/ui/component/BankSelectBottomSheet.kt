@@ -23,15 +23,16 @@ import nextstep.payments.model.BankType
 fun BankSelectBottomSheet(
     bankTypes: List<BankType>,
     onClickBankType: (BankType) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
     val coroutineScope = rememberCoroutineScope()
-
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
+        modifier = modifier,
         onDismissRequest = onDismissRequest,
         containerColor = Color.White
     ) {
@@ -70,7 +71,6 @@ private fun BankSelectRow(
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

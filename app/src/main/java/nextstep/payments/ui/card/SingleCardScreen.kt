@@ -20,9 +20,10 @@ fun SingleCardScreen(
     card: Card,
     onClickAddItem: () -> Unit,
     onClickCard: (Card) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
