@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.newcard.model.BankUI
@@ -15,7 +16,7 @@ data class EditCardUiState(
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
-    val bankUI: BankUI = BankUI.EMPTY,
+    val bankUI: BankUI? = null,
     val isInitialInput: Boolean = false
 ) {
 
@@ -60,7 +61,7 @@ class EditCardViewModel(
             expiredDate = _editCardUiState.value.expiredDate,
             ownerName = _editCardUiState.value.ownerName,
             password = _editCardUiState.value.password,
-            bank = _editCardUiState.value.bankUI.toBank()
+            bank = currentCard?.bank ?: Bank.EMPTY
         )
         if (currentCard != null && currentCard != editCard && _editCardUiState.value.isCardAddable) {
             val card = Card(
@@ -69,7 +70,7 @@ class EditCardViewModel(
                 expiredDate = _editCardUiState.value.expiredDate,
                 ownerName = _editCardUiState.value.ownerName,
                 password = _editCardUiState.value.password,
-                bank = _editCardUiState.value.bankUI.toBank()
+                bank = currentCard.bank
             )
             repository.editCard(card)
             _cardEdited.value = true
@@ -112,7 +113,7 @@ class EditCardViewModel(
         }
     }
 
-    fun setBank(bankUI: BankUI) {
+    fun setBank(bankUI: BankUI?) {
         _editCardUiState.update { currentState ->
             currentState.copy(bankUI = bankUI)
         }

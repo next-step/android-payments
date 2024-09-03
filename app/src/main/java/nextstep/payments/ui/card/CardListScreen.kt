@@ -93,7 +93,7 @@ fun CardListScreen(
                 is CreditCardUiState.One -> {
                     val card = creditCardUiState.card
                     PaymentCard(
-                        bankUI = BankUI.fromBank(card.bank) ?: BankUI.EMPTY,
+                        bankUi = BankUI.fromBank(card.bank),
                         modifier = Modifier
                             .clickable {
                                 onEditPaymentCard(card)
@@ -114,7 +114,7 @@ fun CardListScreen(
                     ) {
                         items(cards) { card ->
                             PaymentCard(
-                                bankUI = BankUI.fromBank(card.bank) ?: BankUI.EMPTY,
+                                bankUi = BankUI.fromBank(card.bank),
                                 modifier =  Modifier
                                     .clickable {
                                         onEditPaymentCard(card)

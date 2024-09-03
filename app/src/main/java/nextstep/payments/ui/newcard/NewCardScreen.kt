@@ -97,7 +97,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(bankUI = newCardUiState.bankUI)
+            PaymentCard(newCardUiState.bankUI)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -192,7 +192,8 @@ private fun StatelessNewCardScreenPreview() {
                 cardNumber = "0000000000000000",
                 expiredDate = "0000",
                 ownerName = "최용호",
-                password = "1234"
+                password = "1234",
+                bankUI = BankUI.BC
             ),
             onBankSelect = {},
             onBackClick = {},

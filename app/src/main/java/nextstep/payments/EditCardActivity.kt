@@ -30,7 +30,7 @@ class EditCardActivity : ComponentActivity() {
                         setExpiredDate(card.expiredDate)
                         setOwnerName(card.ownerName)
                         setPassword(card.password)
-                        setBank(BankUI.fromBank(card.bank) ?: BankUI.EMPTY)
+                        setBank(BankUI.fromBank(card.bank))
                     }
                     EditCardScreen(
                         viewModel = viewModel,

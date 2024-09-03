@@ -1,5 +1,6 @@
 package nextstep.payments.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import nextstep.payments.ui.newcard.model.BankUI
 
 private const val COLUMN_COUNT = 4
 
+@SuppressLint("ResourceType")
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectRow(
@@ -48,7 +50,7 @@ fun BankSelectRow(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = bankUI.imageResId!!),
+                    painter = painterResource(id = bankUI.imageResId),
                     contentDescription = bankUI.bankName,
                     modifier = Modifier.size(37.dp)
                 )
@@ -69,7 +71,7 @@ fun BankSelectRow(
 @Composable
 private fun BankSelectRowPreview() {
     BankSelectRow(
-        banks = BankUI.nonEmptyValues(),
+        banks = BankUI.entries,
         onBankSelect = {}
     )
 }

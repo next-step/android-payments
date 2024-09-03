@@ -84,7 +84,7 @@ fun EditCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(bankUI = editCardUiState.bankUI)
+            PaymentCard(bankUi = editCardUiState.bankUI)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -156,5 +156,18 @@ fun EditCardScreen(
 @Preview
 @Composable
 private fun EditCardScreenPreview() {
-//    EditCardScreen()
+    EditCardScreen(
+        editCardUiState = EditCardUiState(
+            cardNumber = "0000000000000000",
+            expiredDate = "0000",
+            ownerName = "최용호",
+            password = "1234"
+        ),
+        onBackClick = {},
+        onEditClick = { },
+        setCardNumber = { },
+        setExpiredDate = { },
+        setOwnerName = { },
+        setPassword = { },
+    )
 }

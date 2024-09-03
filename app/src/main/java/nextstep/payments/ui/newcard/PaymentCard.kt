@@ -2,13 +2,9 @@ package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,10 +18,11 @@ import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.ui.card.PaymentCardInfo
 import nextstep.payments.ui.newcard.model.BankUI
+import nextstep.payments.ui.theme.EmptyMainColor
 
 @Composable
 fun PaymentCard(
-    bankUI: BankUI,
+    bankUi: BankUI?,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = { }
 ) {
@@ -35,39 +32,28 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = bankUI.color,
+                color = bankUi?.color ?: EmptyMainColor,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(start = 14.dp, end = 14.dp, top = 15.dp),
-        ) {
-            Text(
-                text = bankUI.bankName,
-                color = Color.White,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(bottom = 13.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .padding(bottom = 10.dp)
-                    .size(width = 40.dp, height = 26.dp)
-                    .background(
-                        color = Color(0xFFCBBA64),
-                        shape = RoundedCornerShape(4.dp),
-                    )
-            )
-            content()
-        }
+                .padding(start = 12.dp, bottom = 10.dp)
+                .size(width = 40.dp, height = 26.dp)
+                .background(
+                    color = Color(0xFFCBBA64),
+                    shape = RoundedCornerShape(4.dp),
+                )
+        )
+        content()
     }
+
 }
 
 @Preview
 @Composable
 private fun PaymentCardPreview() {
-    PaymentCard(BankUI.EMPTY)
+    PaymentCard(null)
 }
 
 class PaymentCardDetailProvider : PreviewParameterProvider<Card> {
@@ -90,7 +76,7 @@ class PaymentCardDetailProvider : PreviewParameterProvider<Card> {
 private fun PaymentCardDetailPreview(
     @PreviewParameter(PaymentCardDetailProvider::class) card: Card
 ) {
-    PaymentCard(BankUI.fromBank(card.bank) ?: BankUI.EMPTY) {
+    PaymentCard(BankUI.fromBank(card.bank)) {
         PaymentCardInfo(card = card)
     }
 }

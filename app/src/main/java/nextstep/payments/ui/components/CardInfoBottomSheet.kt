@@ -35,7 +35,7 @@ fun CardInfoBottomSheet(
         modifier = modifier.testTag("cardInfoBottomSheet")
     ) {
         BankSelectRow(
-            banks = BankUI.nonEmptyValues(),
+            banks = BankUI.entries,
             onBankSelect = onBankSelect
         )
     }
