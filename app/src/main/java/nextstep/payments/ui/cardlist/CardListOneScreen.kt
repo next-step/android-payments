@@ -13,8 +13,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.component.AddableCard
 import nextstep.payments.ui.component.PaymentCard
-import nextstep.payments.model.CardNumber
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.card.CardNumber
+import nextstep.payments.model.card.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 

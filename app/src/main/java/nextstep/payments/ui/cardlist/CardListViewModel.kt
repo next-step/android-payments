@@ -10,11 +10,11 @@ internal class CardListViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(CardListUiState(paymentCardsRepository.cards))
+    private val _uiState = MutableStateFlow(CardListUiState.from(paymentCardsRepository.cards))
     val uiState = _uiState.asStateFlow()
 
     fun fetchCards() {
         val cards = paymentCardsRepository.cards
-        _uiState.update { CardListUiState(cards) }
+        _uiState.update { CardListUiState.from(cards) }
     }
 }

@@ -1,8 +1,8 @@
 package nextstep.payments.ui.cardlist
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import nextstep.payments.model.CardNumber
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.card.CardNumber
+import nextstep.payments.model.card.CreditCard
 import java.time.YearMonth
 
 internal class CardListUiStateProvider : PreviewParameterProvider<CardListUiState> {

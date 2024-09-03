@@ -1,15 +1,17 @@
 package nextstep.payments.ui.cardlist
 
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.card.CreditCard
 
 internal sealed interface CardListUiState {
     data object Empty : CardListUiState
     data class One(val card: CreditCard) : CardListUiState
     data class Many(val cards: List<CreditCard>) : CardListUiState
-}
 
-internal fun CardListUiState(cards: List<CreditCard>): CardListUiState = when {
-    cards.isEmpty() -> CardListUiState.Empty
-    cards.size == 1 -> CardListUiState.One(cards.first())
-    else -> CardListUiState.Many(cards)
+    companion object {
+        fun from(cards: List<CreditCard>): CardListUiState = when {
+            cards.isEmpty() -> Empty
+            cards.size == 1 -> One(cards.first())
+            else -> Many(cards)
+        }
+    }
 }

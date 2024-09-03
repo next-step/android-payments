@@ -1,4 +1,4 @@
-package nextstep.payments.model
+package nextstep.payments.model.card
 
 import java.time.YearMonth
 

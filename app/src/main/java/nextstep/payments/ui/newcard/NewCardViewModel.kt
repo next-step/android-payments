@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import nextstep.payments.model.CardNumber
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.card.CardNumber
+import nextstep.payments.model.card.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter

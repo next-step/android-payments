@@ -1,6 +1,6 @@
 package nextstep.payments.repository
 
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.card.CreditCard
 
 object PaymentCardsRepository {
 
