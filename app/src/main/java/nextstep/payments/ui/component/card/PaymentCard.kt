@@ -1,10 +1,11 @@
-package nextstep.payments.ui.component
+package nextstep.payments.ui.component.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,39 +18,74 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import nextstep.payments.model.card.CardNumber
-import nextstep.payments.model.card.CreditCard
+import nextstep.payments.ui.component.graphics.getDominantColorFromDrawable
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
+internal fun PaymentCard() {
+    CardFrame()
+}
+
+@Composable
 internal fun PaymentCard(
-    color: Color = Color(0xFF333333)
+    cardBankInformation: CardBankInformation
 ) {
+    val color = Color(
+        getDominantColorFromDrawable(
+            context = LocalContext.current,
+            drawableRes = cardBankInformation.iconRes
+        )
+    )
     CardFrame(
         color = color,
+        titleContent = {
+            Text(
+                text = stringResource(id = cardBankInformation.nameRes),
+                style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+                color = Color.White
+            )
+        }
     )
 }
 
 @Composable
 internal fun PaymentCard(
-    card: CreditCard,
-    color: Color = Color(0xFF333333)
+    cardInformation: CardInformation
 ) {
+    val color = Color(
+        getDominantColorFromDrawable(
+            context = LocalContext.current,
+            drawableRes = cardInformation.bank.iconRes
+        )
+    )
     CardFrame(
         color = color,
+        titleContent = {
+            Text(
+                text = stringResource(id = cardInformation.bank.nameRes),
+                style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
+                color = Color.White
+            )
+        }
     ) {
-        CardDetails(card)
+        CardDetails(
+            cardInformation,
+        )
     }
 }
 
 @Composable
 fun CardFrame(
     color: Color = Color(0xFF333333),
+    titleContent: @Composable RowScope.() -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     Box(
@@ -64,35 +100,46 @@ fun CardFrame(
         Column(
             modifier = Modifier
                 .padding(horizontal = 14.dp)
-                .padding(top = 44.dp)
+                .padding(top = 15.dp)
         ) {
+            Row(modifier = Modifier.height(14.dp)) {
+                titleContent()
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
             Box(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
                     .background(
                         color = Color(0xFFCBBA64),
                         shape = RoundedCornerShape(4.dp),
-                    )
+                    ),
             )
+            Spacer(modifier = Modifier.height(8.dp))
+
             content() // Default content is empty if not provided
         }
     }
 }
 
 @Composable
-internal fun CardDetails(card: CreditCard) {
-    Spacer(modifier = Modifier.height(8.dp))
-    CardNumber(
-        numberFirst = card.cardNumbers[0],
-        numberSecond = card.cardNumbers[1],
-        modifier = Modifier.fillMaxWidth()
-    )
-    Spacer(modifier = Modifier.height(2.dp))
-    CardOwnerExpiredDate(
-        ownerName = card.ownerName,
-        expiredDate = card.expiredDate,
-        modifier = Modifier.fillMaxWidth()
-    )
+internal fun CardDetails(
+    cardInformation: CardInformation,
+) {
+    Column {
+        CardNumber(
+            numberFirst = cardInformation.numberFirst,
+            numberSecond = cardInformation.numberSecond,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        CardOwnerExpiredDate(
+            ownerName = cardInformation.ownerName,
+            expirationDate = cardInformation.expirationDate,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable
@@ -112,11 +159,11 @@ private fun CardNumber(
 @Composable
 private fun CardOwnerExpiredDate(
     ownerName: String,
-    expiredDate: YearMonth,
+    expirationDate: YearMonth,
     modifier: Modifier = Modifier
 ) {
     val formatter = DateTimeFormatter.ofPattern("MM / yy")
-    val formattedDate = expiredDate.format(formatter)
+    val formattedDate = expirationDate.format(formatter)
 
     Row(
         modifier = modifier,
@@ -134,7 +181,6 @@ private fun CardOwnerExpiredDate(
             style = PaymentsTheme.typography.roboto12M.copy(letterSpacing = 0.1.em),
             color = Color.White
         )
-
     }
 }
 
@@ -143,18 +189,23 @@ private fun CardOwnerExpiredDate(
 private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
-            card = CreditCard(
-                cardNumbers = listOf(
-                    CardNumber("1111"),
-                    CardNumber("2222"),
-                    CardNumber("3333"),
-                    CardNumber("4444")
-                ),
-                expiredDate = YearMonth.now(),
-                password = "1234",
+            cardInformation = CardInformation(
+                numberFirst = CardNumber("1111"),
+                numberSecond = CardNumber("2222"),
+                expirationDate = YearMonth.now(),
                 ownerName = "CREW",
-                bankType = null,
+                bank = CardBankInformation.Bc
             )
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CardBankInformationPaymentCardPreview() {
+    PaymentsTheme {
+        PaymentCard(
+            cardBankInformation = CardBankInformation.Bc
         )
     }
 }

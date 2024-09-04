@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
-import nextstep.payments.ui.component.AddableCard
+import nextstep.payments.ui.component.card.AddableCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable

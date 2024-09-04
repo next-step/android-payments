@@ -7,29 +7,31 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.palette.graphics.Palette
 import nextstep.payments.R
+import org.w3c.dom.Text
 import android.graphics.Color as AndroidColor
 
 fun getDominantColorFromDrawable(context: Context, @DrawableRes drawableRes: Int): Int {
     val drawable =
         ContextCompat.getDrawable(context, drawableRes) ?: return AndroidColor.TRANSPARENT
     val bitmap = drawableToBitmap(drawable)
-    val dominantColorInt = getDominantColor(bitmap)
-    val colorWithAlpha = (dominantColorInt and 0x00FFFFFF) or (0xFF shl 24) // 알파값 추가
+    val dominantColorInt = getDominantColorUsingPalette(bitmap)
+//    val colorWithAlpha = (dominantColorInt and 0x00FFFFFF) or (0xFF shl 24) // 알파값 추가
 
-    return colorWithAlpha
+    return dominantColorInt
 }
 
 private fun drawableToBitmap(drawable: Drawable): Bitmap {
@@ -48,7 +50,7 @@ private fun drawableToBitmap(drawable: Drawable): Bitmap {
 }
 
 private fun getDominantColor(bitmap: Bitmap): Int {
-    val colorCountMap = mutableMapOf<Int, Int>()
+val colorCountMap = mutableMapOf<Int, Int>()
 
     for (x in 0 until bitmap.width) {
         for (y in 0 until bitmap.height) {
@@ -63,10 +65,15 @@ private fun getDominantColor(bitmap: Bitmap): Int {
     return colorCountMap.maxByOrNull { it.value }?.key ?: AndroidColor.TRANSPARENT
 }
 
+private fun getDominantColorUsingPalette(bitmap: Bitmap): Int {
+    val palette = Palette.from(bitmap).generate()
+    return palette.getDominantColor(AndroidColor.TRANSPARENT)
+}
+
 @Composable
 @Preview
 private fun ColorExtractionPreview() {
-    val drawableRes = R.drawable.ic_android_24dp
+    val drawableRes = R.drawable.kakao
 
     val dominantColor = getDominantColorFromDrawable(
         context = LocalContext.current,
@@ -77,7 +84,9 @@ private fun ColorExtractionPreview() {
         modifier = Modifier.size(500.dp),
         color = Color(dominantColor)
     ) {
-        Text(text = dominantColor.toString())
-        Image(imageVector = ImageVector.vectorResource(id = drawableRes), contentDescription = null)
+        Column {
+            Text(text = dominantColor.toString())
+        }
+        Image(painter = painterResource(id = drawableRes), contentDescription = null)
     }
 }

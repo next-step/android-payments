@@ -11,16 +11,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.ui.component.AddableCard
-import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.model.card.CardNumber
-import nextstep.payments.model.card.CreditCard
+import nextstep.payments.ui.component.card.AddableCard
+import nextstep.payments.ui.component.card.CardBankInformation
+import nextstep.payments.ui.component.card.CardInformation
+import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 
 @Composable
 internal fun CardListOneScreen(
-    card: CreditCard,
+    card: CardInformation,
     onAddCardClick: () -> Unit,
 ) {
     Scaffold(
@@ -40,7 +41,7 @@ internal fun CardListOneScreen(
 
 @Composable
 private fun CardListOneContent(
-    card: CreditCard,
+    card: CardInformation,
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,7 +50,7 @@ private fun CardListOneContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         PaymentCard(
-            card = card,
+            cardInformation = card,
         )
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -61,16 +62,12 @@ private fun CardListOneContent(
 @Preview
 @Composable
 private fun CardListOneScreenPreview() {
-    val card = CreditCard(
-        cardNumbers = listOf(
-            CardNumber("1111"),
-            CardNumber("1111"),
-            CardNumber("1111"),
-            CardNumber("1111"),
-        ),
-        expiredDate = YearMonth.now(),
+    val card = CardInformation(
+        numberFirst = CardNumber("1111"),
+        numberSecond = CardNumber("1111"),
+        expirationDate = YearMonth.now(),
         ownerName = "이범석",
-        password = "1234"
+        bank = CardBankInformation.None,
     )
     PaymentsTheme {
         CardListOneScreen(

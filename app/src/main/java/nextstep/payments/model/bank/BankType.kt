@@ -1,6 +1,6 @@
 package nextstep.payments.model.bank
 
-internal enum class BankType {
+enum class BankType {
     BC,
     SHINHAN,
     KAKAO,
@@ -9,4 +9,5 @@ internal enum class BankType {
     LOTTE,
     HANA,
     KB,
+    NONE,
 }

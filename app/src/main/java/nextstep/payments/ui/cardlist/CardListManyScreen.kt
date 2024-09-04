@@ -14,13 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.model.card.CreditCard
+import nextstep.payments.ui.component.card.CardInformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun CardListManyScreen(
-    cards: List<CreditCard>,
+    cards: List<CardInformation>,
     onAddCardClick: () -> Unit
 ) {
     Scaffold(
@@ -46,9 +47,9 @@ internal fun CardListManyScreen(
             ) {
                 items(
                     items = cards,
-                    key = { it.cardNumbers }
+                    key = { "${it.numberFirst}${it.numberSecond}" }
                 ) { card ->
-                    PaymentCard(card = card)
+                    PaymentCard(cardInformation = card)
                 }
             }
         }

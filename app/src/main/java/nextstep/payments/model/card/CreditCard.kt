@@ -8,7 +8,7 @@ internal data class CreditCard(
     val expiredDate: YearMonth,
     val password: String,
     val ownerName: String,
-    val bankType: BankType? = null,
+    val bankType: BankType,
 ) {
     init {
         require(cardNumbers.size == 4) { "카드 넘버는 4개여야 합니다" }

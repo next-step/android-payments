@@ -13,12 +13,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.ui.newcard.NewCardBankUiState
+import nextstep.payments.ui.component.card.CardBankInformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun BankIcon(
-    bank: NewCardBankUiState,
+    bank: CardBankInformation,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,7 +44,7 @@ internal fun BankIcon(
 private fun CompanyIconPreview() {
     PaymentsTheme {
         BankIcon(
-            bank = NewCardBankUiState.Bc,
+            bank = CardBankInformation.Bc,
         )
     }
 }

@@ -22,8 +22,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -33,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.ui.component.PaymentCard
-import nextstep.payments.ui.component.graphics.getDominantColorFromDrawable
+import nextstep.payments.ui.component.card.CardBankInformation
+import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.input.CardNumberVisualTransformation
 import nextstep.payments.ui.component.text.input.ExpirationDateVisualTransformation
 import nextstep.payments.ui.newcard.component.BankBottomSheetContent
@@ -47,14 +45,14 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    bank: NewCardBankUiState?,
+    bank: CardBankInformation,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onAddCardClick: () -> Unit,
     onBackClick: () -> Unit,
-    onBankClick: (NewCardBankUiState) -> Unit,
+    onBankClick: (CardBankInformation) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
@@ -86,18 +84,7 @@ internal fun NewCardScreen(
             ) {
                 Spacer(modifier = Modifier.height(14.dp))
 
-                if (bank != null) {
-                    PaymentCard(
-                        color = Color(
-                            getDominantColorFromDrawable(
-                                context = LocalContext.current,
-                                drawableRes = bank.iconRes
-                            )
-                        )
-                    )
-                } else {
-                    PaymentCard()
-                }
+                PaymentCard(cardBankInformation = bank)
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -202,7 +189,7 @@ private fun PreviewNewCardScreen() {
         expiredDate = expiredDate.value,
         ownerName = ownerName.value,
         password = password.value,
-        bank = NewCardBankUiState.Kakao,
+        bank = CardBankInformation.None,
         setCardNumber = { cardNumber.value = it },
         setExpiredDate = { expiredDate.value = it },
         setOwnerName = { ownerName.value = it },
@@ -227,7 +214,7 @@ private fun PreviewEmptyNewCardScreen() {
         expiredDate = expiredDate.value,
         ownerName = ownerName.value,
         password = password.value,
-        bank = null,
+        bank = CardBankInformation.None,
         setCardNumber = { cardNumber.value = it },
         setExpiredDate = { expiredDate.value = it },
         setOwnerName = { ownerName.value = it },

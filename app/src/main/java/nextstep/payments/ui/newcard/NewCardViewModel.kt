@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import nextstep.payments.model.card.CardNumber
 import nextstep.payments.model.card.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
+import nextstep.payments.ui.component.card.CardBankInformation
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -40,7 +41,7 @@ internal class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _selectedBank = MutableStateFlow<NewCardBankUiState?>(null)
+    private val _selectedBank = MutableStateFlow(CardBankInformation.None)
     val selectedBank = _selectedBank.asStateFlow()
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
@@ -62,7 +63,7 @@ internal class NewCardViewModel(
         _password.value = password
     }
 
-    fun setBank(bankUiState: NewCardBankUiState) {
+    fun setBank(bankUiState: CardBankInformation) {
         _selectedBank.update { bankUiState }
     }
 
@@ -79,12 +80,14 @@ internal class NewCardViewModel(
         val expiredDate = YearMonth.parse(_expiredDate.value, formatter)
         val ownerName = _ownerName.value
         val password = _password.value
+        val bank = _selectedBank.value
 
         CreditCard(
             cardNumbers = cardNumbers,
             expiredDate = expiredDate,
             password = password,
-            ownerName = ownerName
+            ownerName = ownerName,
+            bankType = bank.bankType
         )
     }.onSuccess { card ->
         repository.addCard(card)
