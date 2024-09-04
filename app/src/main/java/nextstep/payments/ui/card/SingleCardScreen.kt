@@ -18,16 +18,21 @@ import nextstep.payments.ui.component.EmptyCardItem
 @Composable
 fun SingleCardScreen(
     card: Card,
-    onClickAddItem: () -> Unit
+    onClickAddItem: () -> Unit,
+    onClickCard: (Card) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(top = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
-        CreditCardItem(card)
+        CreditCardItem(
+            card = card,
+            onClickCard = { onClickCard(card) }
+        )
         EmptyCardItem(onClickItem = onClickAddItem)
     }
 }
@@ -37,11 +42,13 @@ fun SingleCardScreen(
 private fun SingleCardScreenPreview() {
     val uiState = CreditCardUiState.One(
         Card(
+            id = 0,
             cardNumber = "1111 - 2222 - **** - ****",
             cardOwnerName = "Park",
             cardExpiredDate = "04 / 21",
+            cardPassword = "1234",
             bankType = BankType.SHINHAN
         )
     )
-    SingleCardScreen(uiState.card, {})
+    SingleCardScreen(uiState.card, {}, {})
 }

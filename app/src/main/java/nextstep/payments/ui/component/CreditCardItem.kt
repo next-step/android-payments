@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +37,7 @@ import nextstep.payments.ui.theme.CardChipColor
 @Composable
 fun CreditCardItem(
     card: Card,
+    onClickCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -44,6 +46,7 @@ fun CreditCardItem(
             .cardDefaultSize()
             .clip(RoundedCornerShape(5.dp))
             .background(card.bankType.color)
+            .clickable { onClickCard() }
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
         Column(
@@ -90,28 +93,37 @@ private fun CreditCardItemPreview(
     @PreviewParameter(CardListPreviewParameterProvider::class) value: Card
 ) {
     Box {
-        CreditCardItem(value)
+        CreditCardItem(
+            card = value,
+            onClickCard = {}
+        )
     }
 }
 
 private class CardListPreviewParameterProvider : CollectionPreviewParameterProvider<Card>(
     listOf(
         Card(
+            id = 0,
             cardNumber = "0000 - 1111 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",
+            cardPassword = "1234",
             bankType = BankType.SHINHAN
         ),
         Card(
+            id = 1,
             cardNumber = "0000 - 2222 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",
+            cardPassword = "1234",
             bankType = BankType.LOTTE
         ),
         Card(
+            id = 2,
             cardNumber = "0000 - 2222 - **** - ****",
             cardExpiredDate = "08/27",
             cardOwnerName = "Park",
+            cardPassword = "1234",
             bankType = BankType.KAKAO
         )
     )

@@ -19,10 +19,11 @@ import nextstep.payments.ui.component.EmptyCardItem
 
 @Composable
 fun EmptyCardScreen(
-    onClickItem: () -> Unit
+    onClickItem: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(32.dp))
