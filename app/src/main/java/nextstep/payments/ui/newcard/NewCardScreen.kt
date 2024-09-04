@@ -28,6 +28,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import nextstep.payments.R
@@ -176,20 +178,58 @@ internal fun NewCardScreen(
     )
 }
 
+// Card information data class for previews
+private data class CardPreviewData(
+    val cardNumber: String,
+    val expiredDate: String,
+    val ownerName: String,
+    val password: String,
+    val bank: CardBankInformation
+)
+
+private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
+    override val values = sequenceOf(
+        CardPreviewData(
+            cardNumber = "1111222233334444",
+            expiredDate = "1234",
+            ownerName = "홍길동",
+            password = "1234",
+            bank = CardBankInformation.None
+        ),
+        CardPreviewData(
+            cardNumber = "",
+            expiredDate = "",
+            ownerName = "",
+            password = "",
+            bank = CardBankInformation.None
+        ),
+    ) + CardBankInformation.entries.map {
+        CardPreviewData(
+            cardNumber = "",
+            expiredDate = "",
+            ownerName = "",
+            password = "",
+            bank = it
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun PreviewNewCardScreen() {
-    val cardNumber = remember { mutableStateOf("1111222233334444") }
-    val expiredDate = remember { mutableStateOf("1234") }
-    val ownerName = remember { mutableStateOf("홍길동") }
-    val password = remember { mutableStateOf("1234") }
+private fun PreviewNewCardScreen(
+    @PreviewParameter(CardPreviewProvider::class) cardPreviewData: CardPreviewData
+) {
+    val cardNumber = remember { mutableStateOf(cardPreviewData.cardNumber) }
+    val expiredDate = remember { mutableStateOf(cardPreviewData.expiredDate) }
+    val ownerName = remember { mutableStateOf(cardPreviewData.ownerName) }
+    val password = remember { mutableStateOf(cardPreviewData.password) }
 
     NewCardScreen(
         cardNumber = cardNumber.value,
         expiredDate = expiredDate.value,
         ownerName = ownerName.value,
         password = password.value,
-        bank = CardBankInformation.None,
+        bank = cardPreviewData.bank,
         setCardNumber = { cardNumber.value = it },
         setExpiredDate = { expiredDate.value = it },
         setOwnerName = { ownerName.value = it },
@@ -198,30 +238,5 @@ private fun PreviewNewCardScreen() {
         onBackClick = {},
         onBankClick = {},
         modifier = Modifier.fillMaxSize()
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewEmptyNewCardScreen() {
-    val cardNumber = remember { mutableStateOf("") }
-    val expiredDate = remember { mutableStateOf("") }
-    val ownerName = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-
-    NewCardScreen(
-        cardNumber = cardNumber.value,
-        expiredDate = expiredDate.value,
-        ownerName = ownerName.value,
-        password = password.value,
-        bank = CardBankInformation.None,
-        setCardNumber = { cardNumber.value = it },
-        setExpiredDate = { expiredDate.value = it },
-        setOwnerName = { ownerName.value = it },
-        setPassword = { password.value = it },
-        onAddCardClick = {},
-        onBackClick = {},
-        onBankClick = {},
-        modifier = Modifier
     )
 }
