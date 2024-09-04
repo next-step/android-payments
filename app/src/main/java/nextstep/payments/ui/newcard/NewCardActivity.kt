@@ -29,6 +29,7 @@ class NewCardActivity : ComponentActivity() {
             val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
             val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
             val password by viewModel.password.collectAsStateWithLifecycle()
+            val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
 
             val snackbarHostState = remember { SnackbarHostState() }
             val context = LocalContext.current
@@ -54,6 +55,7 @@ class NewCardActivity : ComponentActivity() {
                         expiredDate = expiredDate,
                         ownerName = ownerName,
                         password = password,
+                        bank = selectedBank,
                         setCardNumber = viewModel::setCardNumber,
                         setExpiredDate = viewModel::setExpiredDate,
                         setOwnerName = viewModel::setOwnerName,
@@ -63,7 +65,8 @@ class NewCardActivity : ComponentActivity() {
                         },
                         onBackClick = {
                             finish()
-                        }
+                        },
+                        onBankClick = viewModel::setBank
                     )
                 }
             }

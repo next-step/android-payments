@@ -27,21 +27,29 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @Composable
-internal fun PaymentCard() {
-    CardFrame()
+internal fun PaymentCard(
+    color: Color = Color(0xFF333333)
+) {
+    CardFrame(
+        color = color,
+    )
 }
 
 @Composable
 internal fun PaymentCard(
     card: CreditCard,
+    color: Color = Color(0xFF333333)
 ) {
-    CardFrame {
+    CardFrame(
+        color = color,
+    ) {
         CardDetails(card)
     }
 }
 
 @Composable
 fun CardFrame(
+    color: Color = Color(0xFF333333),
     content: @Composable () -> Unit = {}
 ) {
     Box(
@@ -49,7 +57,7 @@ fun CardFrame(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = color,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
@@ -72,7 +80,7 @@ fun CardFrame(
 }
 
 @Composable
-fun CardDetails(card: CreditCard) {
+internal fun CardDetails(card: CreditCard) {
     Spacer(modifier = Modifier.height(8.dp))
     CardNumber(
         numberFirst = card.cardNumbers[0],
@@ -144,7 +152,8 @@ private fun PaymentCardPreview() {
                 ),
                 expiredDate = YearMonth.now(),
                 password = "1234",
-                ownerName = "CREW"
+                ownerName = "CREW",
+                bankType = null,
             )
         )
     }

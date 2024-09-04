@@ -5,11 +5,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,26 +15,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun BankBottomSheet(
-    sheetState: SheetState,
-    onBankClick: (NewCardBankUiState) -> Unit,
-    onDismissRequest: () -> Unit = {},
-) {
-    ModalBottomSheet(
-        onDismissRequest = onDismissRequest,
-        sheetState = sheetState,
-    ) {
-        BottomSheetContent(
-            onBankClick = onBankClick,
-        )
-    }
-}
-
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun BottomSheetContent(
+internal fun BankBottomSheetContent(
     onBankClick: (NewCardBankUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -58,24 +37,11 @@ private fun BottomSheetContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-private fun BankBottomSheetPreview() {
-    val sheetState = rememberModalBottomSheetState(
-        confirmValueChange = { false }
-    )
-
-    PaymentsTheme {
-        BankBottomSheet(sheetState = sheetState, onBankClick = {})
-    }
-}
-
 @Preview
 @Composable
 private fun BottomSheetContentPreview() {
     PaymentsTheme {
-        BottomSheetContent(
+        BankBottomSheetContent(
             onBankClick = {},
         )
     }

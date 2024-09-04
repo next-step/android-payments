@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import nextstep.payments.model.card.CardNumber
 import nextstep.payments.model.card.CreditCard
@@ -19,7 +20,7 @@ import java.time.format.DateTimeFormatter
  * NewCardViewModel은 새 결제 카드를 관리하고 추가하는 로직을 포함한 ViewModel입니다.
  * 카드 정보는 PaymentCard 데이터 클래스로 관리되며, UI에서 사용할 상태 값들은 StateFlow를 통해 제공됩니다.
  */
-class NewCardViewModel(
+internal class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 
@@ -39,6 +40,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _selectedBank = MutableStateFlow<NewCardBankUiState?>(null)
+    val selectedBank = _selectedBank.asStateFlow()
+
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow = _errorFlow.asSharedFlow()
 
@@ -56,6 +60,10 @@ class NewCardViewModel(
 
     fun setPassword(password: String) {
         _password.value = password
+    }
+
+    fun setBank(bankUiState: NewCardBankUiState) {
+        _selectedBank.update { bankUiState }
     }
 
     /**

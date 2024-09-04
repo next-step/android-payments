@@ -1,12 +1,14 @@
 package nextstep.payments.model.card
 
+import nextstep.payments.model.bank.BankType
 import java.time.YearMonth
 
-data class CreditCard(
+internal data class CreditCard(
     val cardNumbers: List<CardNumber>,
     val expiredDate: YearMonth,
     val password: String,
     val ownerName: String,
+    val bankType: BankType? = null,
 ) {
     init {
         require(cardNumbers.size == 4) { "카드 넘버는 4개여야 합니다" }
