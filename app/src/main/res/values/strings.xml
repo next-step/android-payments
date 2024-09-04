@@ -17,4 +17,12 @@
     <string name="card_list_top_app_bar_title">Payments</string>
     <string name="card_list_empty_screen_title">새로운 카드를 등록해주세요</string>
     <string name="card_list_many_screen_top_app_bar_action">추가</string>
+    <string name="bc_name">BC카드</string>
+    <string name="shinhan_name">신한카드</string>
+    <string name="kakao_name">카카오뱅크</string>
+    <string name="hyundai_name">현대카드</string>
+    <string name="woori_name">우리카드</string>
+    <string name="lotte_name">롯데카드</string>
+    <string name="hana_name">하나카드</string>
+    <string name="kb_name">국민카드</string>
 </resources>

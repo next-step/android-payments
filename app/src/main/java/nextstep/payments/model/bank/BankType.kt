@@ -9,6 +9,4 @@ internal enum class BankType {
     LOTTE,
     HANA,
     KB,
-
-    NONE,
 }
