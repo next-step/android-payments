@@ -1,41 +1,24 @@
 package nextstep.payments.ui.newcard
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import nextstep.payments.R
 import nextstep.payments.ui.component.card.CardBankInformation
-import nextstep.payments.ui.component.card.PaymentCard
-import nextstep.payments.ui.component.text.input.CardNumberVisualTransformation
-import nextstep.payments.ui.component.text.input.ExpirationDateVisualTransformation
+import nextstep.payments.ui.component.card.edit.EditableCardPage
 import nextstep.payments.ui.newcard.component.BankBottomSheetContent
 import nextstep.payments.ui.newcard.component.NewCardTopBar
 
@@ -78,64 +61,20 @@ internal fun NewCardScreen(
             )
         },
         content = { innerPadding ->
-            Column(
-                verticalArrangement = Arrangement.spacedBy(18.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            EditableCardPage(
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                password = password,
+                bank = bank,
+                setCardNumber = setCardNumber,
+                setExpiredDate = setExpiredDate,
+                setOwnerName = setOwnerName,
+                setPassword = setPassword,
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(horizontal = 24.dp)
-            ) {
-                Spacer(modifier = Modifier.height(14.dp))
-
-                PaymentCard(cardBankInformation = bank)
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                OutlinedTextField(
-                    value = cardNumber,
-                    onValueChange = { newValue -> setCardNumber(newValue) },
-                    label = { Text(text = stringResource(id = R.string.card_number)) },
-                    placeholder = { Text(text = stringResource(id = R.string.card_number_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = CardNumberVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number
-                    )
-                )
-
-                OutlinedTextField(
-                    value = expiredDate,
-                    onValueChange = { newValue -> setExpiredDate(newValue) },
-                    label = { Text(text = stringResource(id = R.string.expiry_date)) },
-                    placeholder = { Text(text = stringResource(id = R.string.expiry_date_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = ExpirationDateVisualTransformation(),
-                )
-
-                OutlinedTextField(
-                    value = ownerName,
-                    onValueChange = setOwnerName,
-                    label = { Text(text = stringResource(id = R.string.card_owner_name)) },
-                    placeholder = { Text(text = stringResource(id = R.string.card_owner_name_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
-                    )
-                )
-
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { newValue -> setPassword(newValue) },
-                    label = { Text(text = stringResource(R.string.password)) },
-                    placeholder = { Text(text = stringResource(R.string.password_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    )
-                )
-            }
+            )
         },
     )
 
