@@ -25,7 +25,8 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 creditCardUiState = creditCardUiState.value,
-                onAddPaymentCard = { }
+                onAddPaymentCard = { },
+                onEditPaymentCard = { }
             )
         }
     }

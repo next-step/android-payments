@@ -8,15 +8,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import nextstep.payments.data.model.Bank
+import nextstep.payments.ui.newcard.model.BankUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardInfoBottomSheet(
     isBottomSheetVisible: Boolean,
-    onBankSelect: (Bank) -> Unit,
+    onBankSelect: (BankUI) -> Unit,
     onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier.testTag("cardInfoBottomSheet")
+    modifier: Modifier = Modifier
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
@@ -32,10 +32,10 @@ fun CardInfoBottomSheet(
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
         onDismissRequest = onDismissRequest,
-        modifier = modifier
+        modifier = modifier.testTag("cardInfoBottomSheet")
     ) {
         BankSelectRow(
-            banks = Bank.entries,
+            banks = BankUI.entries,
             onBankSelect = onBankSelect
         )
     }

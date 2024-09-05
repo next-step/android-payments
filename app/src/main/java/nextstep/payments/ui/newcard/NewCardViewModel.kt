@@ -5,16 +5,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import nextstep.payments.data.model.Bank
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
+import nextstep.payments.ui.newcard.model.BankUI
 
 data class NewCardUiState(
     val cardNumber: String = "",
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
-    val bank: Bank? = null,
+    val bankUI: BankUI?,
     val isInitialInput: Boolean = false,
     val isCardSelected: Boolean = false,
     val isBottomSheetVisible: Boolean = true
@@ -30,9 +30,11 @@ data class NewCardUiState(
     private val fourDigitRegex = "^\\d{4}$"
 
     val isCardNumberEmptyError = isInitialInput && cardNumber.isEmpty()
-    val isCardNumberFormatError = cardNumber.isNotEmpty() && !cardNumber.matches(Regex(cardNumberRegex))
+    val isCardNumberFormatError =
+        cardNumber.isNotEmpty() && !cardNumber.matches(Regex(cardNumberRegex))
     val isExpiredDateEmptyError = isInitialInput && expiredDate.isEmpty()
-    val isExpiredDateFormatError = expiredDate.isNotEmpty() && !expiredDate.matches(Regex(fourDigitRegex))
+    val isExpiredDateFormatError =
+        expiredDate.isNotEmpty() && !expiredDate.matches(Regex(fourDigitRegex))
     val isPasswordEmptyError = isInitialInput && password.isEmpty()
     val isPasswordFormatError = password.isNotEmpty() && !password.matches(Regex(fourDigitRegex))
 
@@ -45,7 +47,7 @@ data class NewCardUiState(
 class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
-    private val _newCardUiState = MutableStateFlow(NewCardUiState())
+    private val _newCardUiState = MutableStateFlow(NewCardUiState(bankUI = null))
     val newCardUiState: StateFlow<NewCardUiState> = _newCardUiState.asStateFlow()
 
     private val _cardAdded = MutableStateFlow(false)
@@ -53,15 +55,19 @@ class NewCardViewModel(
 
     fun addCard() {
         if (_newCardUiState.value.isCardAddable) {
-            val card = Card(
-                cardNumber = _newCardUiState.value.cardNumber,
-                expiredDate = _newCardUiState.value.expiredDate,
-                ownerName = _newCardUiState.value.ownerName,
-                password = _newCardUiState.value.password,
-                bank = _newCardUiState.value.bank!!
-            )
-            repository.addCard(card)
-            _cardAdded.value = true
+            _newCardUiState.value.bankUI?.let {
+                repository.addCard(
+                    card = Card(
+                        id = repository.cards.size + 1,
+                        cardNumber = _newCardUiState.value.cardNumber,
+                        expiredDate = _newCardUiState.value.expiredDate,
+                        ownerName = _newCardUiState.value.ownerName,
+                        password = _newCardUiState.value.password,
+                        bank = it.toBank()
+                    )
+                )
+                _cardAdded.value = true
+            }
         } else {
             _newCardUiState.update { currentState ->
                 currentState.copy(isInitialInput = true)
@@ -95,10 +101,10 @@ class NewCardViewModel(
         }
     }
 
-    fun setBank(bank: Bank) {
+    fun setBank(bankUI: BankUI) {
         _newCardUiState.update { currentState ->
             currentState.copy(
-                bank = bank,
+                bankUI = bankUI,
                 isCardSelected = true,
                 isBottomSheetVisible = false
             )
