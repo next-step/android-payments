@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,43 +28,23 @@ internal class NewCardViewModel(
     private val _cardAdded = MutableSharedFlow<Boolean>()
     val cardAdded = _cardAdded.asSharedFlow()
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
-    private val _selectedBank = MutableStateFlow(CardBankInformation.None)
-    val selectedBank = _selectedBank.asStateFlow()
+    private val _uiState = MutableStateFlow(NewCardUiState.default)
+    val uiState = _uiState.asStateFlow()
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow = _errorFlow.asSharedFlow()
 
-    fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
-    }
+    fun setCardNumber(cardNumber: String) = _uiState.update { it.copy(cardNumber = cardNumber) }
 
-    fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
-    }
+    fun setExpiredDate(expirationDate: String) =
+        _uiState.update { it.copy(expirationDate = expirationDate) }
 
-    fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
-    }
+    fun setOwnerName(ownerName: String) = _uiState.update { it.copy(ownerName = ownerName) }
 
-    fun setPassword(password: String) {
-        _password.value = password
-    }
+    fun setPassword(password: String) = _uiState.update { it.copy(password = password) }
 
-    fun setBank(bankUiState: CardBankInformation) {
-        _selectedBank.update { bankUiState }
-    }
+    fun setBank(selectedBank: CardBankInformation) =
+        _uiState.update { it.copy(selectedBank = selectedBank) }
 
     /**
      * 현재 입력된 카드 정보를 저장소에 추가합니다.
@@ -75,20 +54,22 @@ internal class NewCardViewModel(
      */
     fun addCard() = runCatching {
         val formatter = DateTimeFormatter.ofPattern("MMyy")
+        val currentUiState = _uiState.value
+        with(currentUiState) {
+            val cardNumbers = cardNumber.chunked(4).map { CardNumber(it) }
+            val expiredDate = YearMonth.parse(expirationDate, formatter)
+            val ownerName = ownerName
+            val password = password
+            val bank = selectedBank
 
-        val cardNumbers = _cardNumber.value.chunked(4).map { CardNumber(it) }
-        val expiredDate = YearMonth.parse(_expiredDate.value, formatter)
-        val ownerName = _ownerName.value
-        val password = _password.value
-        val bank = _selectedBank.value
-
-        CreditCard(
-            cardNumbers = cardNumbers,
-            expiredDate = expiredDate,
-            password = password,
-            ownerName = ownerName,
-            bankType = bank.bankType
-        )
+            CreditCard(
+                cardNumbers = cardNumbers,
+                expiredDate = expiredDate,
+                password = password,
+                ownerName = ownerName,
+                bankType = bank.bankType
+            )
+        }
     }.onSuccess { card ->
         repository.addCard(card)
         viewModelScope.launch { _cardAdded.emit(true) }

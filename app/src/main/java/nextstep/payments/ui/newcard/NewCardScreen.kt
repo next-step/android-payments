@@ -8,17 +8,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -28,11 +27,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.ui.component.card.CardBankInformation
 import nextstep.payments.ui.component.card.PaymentCard
@@ -49,6 +46,7 @@ internal fun NewCardScreen(
     ownerName: String,
     password: String,
     bank: CardBankInformation,
+    isShowBanks: Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -59,17 +57,19 @@ internal fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Expanded,
-            confirmValueChange = { false },
-            skipHiddenState = false
-        )
+    val bottomSheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
     )
-    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(key1 = isShowBanks) {
+        if (isShowBanks) {
+            bottomSheetState.show()
+        } else {
+            bottomSheetState.hide()
+        }
+    }
 
     // 카드 추가 화면
-    BottomSheetScaffold(
+    Scaffold(
         modifier = modifier,
         topBar = {
             NewCardTopBar(
@@ -152,6 +152,7 @@ internal fun NewCardScreen(
                         // 숫자가 아닌 문자를 필터링하여 새로운 값으로 설정
                         val filteredValue = newValue.filter { it.isDigit() }
                         // 4자 제한
+
                         if (filteredValue.length <= 4) {
                             setPassword(filteredValue)
                         }
@@ -164,19 +165,23 @@ internal fun NewCardScreen(
                         imeAction = ImeAction.Done
                     )
                 )
+
             }
         },
-        sheetContent = {
-            // 카드사 선택 바텀 시트
+    )
+
+    if(isShowBanks) {
+        ModalBottomSheet(
+            onDismissRequest = { },
+            sheetState = bottomSheetState,
+        ) {
             BankBottomSheetContent(
                 onBankClick = {
                     onBankClick(it)
-                    coroutineScope.launch { scaffoldState.bottomSheetState.hide() }
                 },
             )
-        },
-        scaffoldState = scaffoldState,
-    )
+        }
+    }
 }
 
 // Card information data class for previews
@@ -231,6 +236,7 @@ private fun PreviewNewCardScreen(
         ownerName = ownerName.value,
         password = password.value,
         bank = cardPreviewData.bank,
+        isShowBanks = false,
         setCardNumber = { cardNumber.value = it },
         setExpiredDate = { expiredDate.value = it },
         setOwnerName = { ownerName.value = it },

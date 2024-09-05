@@ -2,6 +2,7 @@ package nextstep.payments.ui.newcard
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -25,11 +26,7 @@ class NewCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-            val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-            val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-            val password by viewModel.password.collectAsStateWithLifecycle()
-            val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             val snackbarHostState = remember { SnackbarHostState() }
             val context = LocalContext.current
@@ -51,11 +48,12 @@ class NewCardActivity : ComponentActivity() {
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
                 ) {
                     NewCardScreen(
-                        cardNumber = cardNumber,
-                        expiredDate = expiredDate,
-                        ownerName = ownerName,
-                        password = password,
-                        bank = selectedBank,
+                        cardNumber = uiState.cardNumber,
+                        expiredDate = uiState.expirationDate,
+                        ownerName = uiState.ownerName,
+                        password = uiState.password,
+                        bank = uiState.selectedBank,
+                        isShowBanks = uiState.isShowBanks,
                         setCardNumber = viewModel::setCardNumber,
                         setExpiredDate = viewModel::setExpiredDate,
                         setOwnerName = viewModel::setOwnerName,
