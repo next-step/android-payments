@@ -34,7 +34,10 @@ internal class NewCardViewModel(
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow = _errorFlow.asSharedFlow()
 
-    fun setCardNumber(cardNumber: String) = _uiState.update { it.copy(cardNumber = cardNumber) }
+    fun setCardNumber(cardNumber: String) {
+        if (cardNumber.length > 16) return
+        _uiState.update { it.copy(cardNumber = cardNumber.filter(Char::isDigit)) }
+    }
 
     fun setExpiredDate(expirationDate: String) =
         _uiState.update { it.copy(expirationDate = expirationDate) }

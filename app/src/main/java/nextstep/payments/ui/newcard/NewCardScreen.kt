@@ -95,18 +95,7 @@ internal fun NewCardScreen(
 
                 OutlinedTextField(
                     value = cardNumber,
-                    onValueChange = { newValue ->
-                        // 숫자가 아닌 문자를 필터링하여 새로운 값으로 설정
-                        val filteredValue = newValue.filter { it.isDigit() }
-                        // 16자 제한
-                        if (filteredValue.length <= 16) {
-                            setCardNumber(filteredValue)
-
-                            if (filteredValue.length == 16) {
-                                focusManager.moveFocus(FocusDirection.Down)
-                            }
-                        }
-                    },
+                    onValueChange = { newValue -> setCardNumber(newValue) },
                     label = { Text(text = stringResource(id = R.string.card_number)) },
                     placeholder = { Text(text = stringResource(id = R.string.card_number_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
