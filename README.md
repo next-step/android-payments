@@ -31,3 +31,18 @@
   - UI 기능 관련 테스트 추가
     - ex) 16자리 숫자를 입력했을때 뒤8자리는 *로 보인다.
 - 카드 추가 시 화면 이동 테스트 추 (NewCardScreen - cardAdded)
+
+### STEP-2 Feedback #2
+- Composable 접근 제어
+- PaymentCard 개선
+- CustomVisualTransformation 로직 개선
+  - filter에서 take 사용
+  - originalToTransformed,transformedToOriginal 개선
+
+## STEP-3
+- 카드사 선택 BottomSheet 구현
+  - 카드사 목록 구현
+    - 카드사 목록 아이템 구현
+- 카드사 선택 시 해당 카드에 맞게 카드 미리보기 변경 구현
+
+
