@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -165,13 +167,15 @@ internal fun NewCardScreen(
                         imeAction = ImeAction.Done
                     )
                 )
-
             }
         },
     )
 
-    if(isShowBanks) {
+    if (isShowBanks) {
         ModalBottomSheet(
+            modifier = Modifier.semantics {
+                contentDescription = "BankBottomSheet"
+            },
             onDismissRequest = { },
             sheetState = bottomSheetState,
         ) {
