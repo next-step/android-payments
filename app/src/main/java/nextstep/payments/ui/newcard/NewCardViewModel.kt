@@ -47,7 +47,10 @@ internal class NewCardViewModel(
 
     fun setOwnerName(ownerName: String) = _uiState.update { it.copy(ownerName = ownerName) }
 
-    fun setPassword(password: String) = _uiState.update { it.copy(password = password) }
+    fun setPassword(password: String) {
+        if (password.length > 4) return
+        _uiState.update { it.copy(password = password.filter(Char::isDigit)) }
+    }
 
     fun setBank(selectedBank: CardBankInformation) =
         _uiState.update { it.copy(selectedBank = selectedBank) }

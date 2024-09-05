@@ -128,15 +128,7 @@ internal fun NewCardScreen(
 
                 OutlinedTextField(
                     value = password,
-                    onValueChange = { newValue ->
-                        // 숫자가 아닌 문자를 필터링하여 새로운 값으로 설정
-                        val filteredValue = newValue.filter { it.isDigit() }
-                        // 4자 제한
-
-                        if (filteredValue.length <= 4) {
-                            setPassword(filteredValue)
-                        }
-                    },
+                    onValueChange = { newValue -> setPassword(newValue) },
                     label = { Text(text = stringResource(R.string.password)) },
                     placeholder = { Text(text = stringResource(R.string.password_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
