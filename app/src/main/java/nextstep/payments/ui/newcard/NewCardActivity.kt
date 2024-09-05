@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.R
@@ -27,9 +28,10 @@ class NewCardActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             val snackbarHostState = remember { SnackbarHostState() }
-            val context = LocalContext.current
+            val focusManager = LocalFocusManager.current
 
             LaunchedEffect(true) {
                 viewModel.errorFlow.collectLatest {
@@ -40,6 +42,11 @@ class NewCardActivity : ComponentActivity() {
                 viewModel.cardAdded.collectLatest {
                     setResult(RESULT_OK)
                     finish()
+                }
+            }
+            LaunchedEffect(true) {
+                viewModel.commandFocus.collectLatest {
+                    focusManager.moveFocus(it)
                 }
             }
 
