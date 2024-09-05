@@ -108,18 +108,7 @@ internal fun NewCardScreen(
 
                 OutlinedTextField(
                     value = expiredDate,
-                    onValueChange = { newValue ->
-                        // 숫자가 아닌 문자를 필터링하여 새로운 값으로 설정
-                        val filteredValue = newValue.filter { it.isDigit() }
-                        // 4자 제한
-                        if (filteredValue.length <= 4) {
-                            setExpiredDate(filteredValue)
-
-                            if (filteredValue.length == 4) {
-                                focusManager.moveFocus(FocusDirection.Down)
-                            }
-                        }
-                    },
+                    onValueChange = { newValue -> setExpiredDate(newValue) },
                     label = { Text(text = stringResource(id = R.string.expiry_date)) },
                     placeholder = { Text(text = stringResource(id = R.string.expiry_date_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),

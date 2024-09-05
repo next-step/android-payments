@@ -39,8 +39,11 @@ internal class NewCardViewModel(
         _uiState.update { it.copy(cardNumber = cardNumber.filter(Char::isDigit)) }
     }
 
-    fun setExpiredDate(expirationDate: String) =
-        _uiState.update { it.copy(expirationDate = expirationDate) }
+    fun setExpiredDate(expirationDate: String) {
+        if (expirationDate.length > 4) return
+        _uiState.update { it.copy(expirationDate = expirationDate.filter(Char::isDigit)) }
+    }
+
 
     fun setOwnerName(ownerName: String) = _uiState.update { it.copy(ownerName = ownerName) }
 
