@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -214,7 +215,7 @@ private class CardPreviewProvider : PreviewParameterProvider<CardPreviewData> {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun PreviewNewCardScreen(
     @PreviewParameter(CardPreviewProvider::class) cardPreviewData: CardPreviewData

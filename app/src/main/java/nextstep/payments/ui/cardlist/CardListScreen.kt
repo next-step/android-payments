@@ -1,13 +1,12 @@
 package nextstep.payments.ui.cardlist
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import nextstep.payments.R
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -49,8 +48,7 @@ internal fun CardListTopAppBar(
     )
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@PreviewLightDark
 @Composable
 private fun CardListScreenPreview(
     @PreviewParameter(CardListUiStateProvider::class) uiState: CardListUiState
