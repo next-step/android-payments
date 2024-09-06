@@ -67,7 +67,7 @@ internal fun NewCardScreen(
 
 
 @Composable
-fun NewCardScreen(
+internal fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
