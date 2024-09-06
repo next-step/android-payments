@@ -65,6 +65,7 @@ class NewCardActivity : ComponentActivity() {
                         setOwnerName = viewModel::setOwnerName,
                         setPassword = viewModel::setPassword,
                         onAddCardClick = {
+                            focusManager.clearFocus()
                             viewModel.addCard()
                         },
                         onBackClick = {
