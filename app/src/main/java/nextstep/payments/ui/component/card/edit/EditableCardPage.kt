@@ -23,11 +23,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
+import nextstep.payments.model.card.CardNumber
 import nextstep.payments.ui.component.card.CardBankInformation
+import nextstep.payments.ui.component.card.CardInformation
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.component.text.input.CardNumberVisualTransformation
 import nextstep.payments.ui.component.text.input.ExpirationDateVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
+import java.time.Month
+import java.time.YearMonth
+import java.util.UUID
 
 @Composable
 fun EditableCardPage(
@@ -42,6 +47,64 @@ fun EditableCardPage(
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    EditableCardPageFrame(
+        cardNumber = cardNumber,
+        expiredDate = expiredDate,
+        ownerName = ownerName,
+        password = password,
+        paymentCard = {
+            PaymentCard(cardBankInformation = bank)
+        },
+        setCardNumber = setCardNumber,
+        setExpiredDate = setExpiredDate,
+        setOwnerName = setOwnerName,
+        setPassword = setPassword,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun EditableCardPage(
+    cardNumber: String,
+    expiredDate: String,
+    ownerName: String,
+    password: String,
+    cardInformation: CardInformation,
+    setCardNumber: (String) -> Unit,
+    setExpiredDate: (String) -> Unit,
+    setOwnerName: (String) -> Unit,
+    setPassword: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    EditableCardPageFrame(
+        cardNumber = cardNumber,
+        expiredDate = expiredDate,
+        ownerName = ownerName,
+        password = password,
+        paymentCard = {
+            PaymentCard(cardInformation = cardInformation)
+        },
+        setCardNumber = setCardNumber,
+        setExpiredDate = setExpiredDate,
+        setOwnerName = setOwnerName,
+        setPassword = setPassword,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun EditableCardPageFrame(
+    cardNumber: String,
+    expiredDate: String,
+    ownerName: String,
+    password: String,
+    paymentCard: @Composable () -> Unit,
+    setCardNumber: (String) -> Unit,
+    setExpiredDate: (String) -> Unit,
+    setOwnerName: (String) -> Unit,
+    setPassword: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,7 +112,7 @@ fun EditableCardPage(
     ) {
         Spacer(modifier = Modifier.height(14.dp))
 
-        PaymentCard(cardBankInformation = bank)
+        paymentCard()
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -159,5 +222,32 @@ private fun EditableCardPagePreview(
             setPassword = { password.value = it },
             modifier = Modifier.fillMaxSize()
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EditableCardPageCardInformationPreview() {
+    PaymentsTheme {
+        CardInformation(
+            id = UUID.randomUUID(),
+            numberFirst = CardNumber("1234"),
+            numberSecond = CardNumber("5678"),
+            ownerName = "이범석",
+            expirationDate = YearMonth.of(2025, Month.JANUARY),
+            bank = CardBankInformation.Kakao,
+        ).also {
+            EditableCardPage(
+                cardNumber = "",
+                expiredDate = "",
+                ownerName = "",
+                password = "",
+                cardInformation = it,
+                setCardNumber = {},
+                setExpiredDate = {},
+                setOwnerName = {},
+                setPassword = {}
+            )
+        }
     }
 }

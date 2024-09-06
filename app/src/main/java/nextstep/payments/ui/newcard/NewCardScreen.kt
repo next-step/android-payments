@@ -2,25 +2,33 @@ package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import nextstep.payments.R
 import nextstep.payments.ui.component.card.CardBankInformation
 import nextstep.payments.ui.component.card.edit.EditableCardPage
 import nextstep.payments.ui.newcard.component.BankBottomSheetContent
-import nextstep.payments.ui.newcard.component.NewCardTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,9 +63,24 @@ internal fun NewCardScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            NewCardTopBar(
-                onBackClick = onBackClick,
-                onSaveClick = onAddCardClick
+            TopAppBar(
+                title = { Text(stringResource(R.string.net_card_top_bar_title)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "뒤로 가기",
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onAddCardClick) {
+                        Icon(
+                            imageVector = Icons.Filled.Check,
+                            contentDescription = "완료",
+                        )
+                    }
+                },
             )
         },
         content = { innerPadding ->

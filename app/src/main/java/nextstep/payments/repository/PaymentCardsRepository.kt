@@ -10,4 +10,9 @@ internal object PaymentCardsRepository {
     fun addCard(card: CreditCard) {
         _cards.add(card)
     }
+
+    fun updateCard(before: CreditCard, after: CreditCard) {
+        _cards.remove(before)
+        _cards.add(after)
+    }
 }

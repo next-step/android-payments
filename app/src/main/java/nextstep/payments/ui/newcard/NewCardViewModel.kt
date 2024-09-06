@@ -16,6 +16,7 @@ import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.card.CardBankInformation
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 /**
  * NewCardViewModel은 새 결제 카드를 관리하고 추가하는 로직을 포함한 ViewModel입니다.
@@ -55,8 +56,9 @@ internal class NewCardViewModel(
         }
     }
 
-
-    fun setOwnerName(ownerName: String) = _uiState.update { it.copy(ownerName = ownerName) }
+    fun setOwnerName(ownerName: String) {
+        _uiState.update { it.copy(ownerName = ownerName) }
+    }
 
     fun setPassword(password: String) {
         if (password.length > 4) return
@@ -66,8 +68,9 @@ internal class NewCardViewModel(
         }
     }
 
-    fun setBank(selectedBank: CardBankInformation) =
+    fun setBank(selectedBank: CardBankInformation) {
         _uiState.update { it.copy(selectedBank = selectedBank) }
+    }
 
     /**
      * 현재 입력된 카드 정보를 저장소에 추가합니다.
@@ -83,8 +86,9 @@ internal class NewCardViewModel(
                 YearMonth.parse(currentUiState.expirationDate, DateTimeFormatter.ofPattern("MMyy"))
 
             CreditCard(
+                id = UUID.randomUUID(),
                 cardNumbers = cardNumbers,
-                expiredDate = expiredDate,
+                expirationDate = expiredDate,
                 password = currentUiState.password,
                 ownerName = currentUiState.ownerName,
                 bankType = currentUiState.selectedBank.bankType
@@ -98,3 +102,4 @@ internal class NewCardViewModel(
         }
     }
 }
+

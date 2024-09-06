@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
 import nextstep.payments.R
-import org.w3c.dom.Text
 import android.graphics.Color as AndroidColor
 
 fun getDominantColorFromDrawable(context: Context, @DrawableRes drawableRes: Int): Int {
@@ -50,7 +49,7 @@ private fun drawableToBitmap(drawable: Drawable): Bitmap {
 }
 
 private fun getDominantColor(bitmap: Bitmap): Int {
-val colorCountMap = mutableMapOf<Int, Int>()
+    val colorCountMap = mutableMapOf<Int, Int>()
 
     for (x in 0 until bitmap.width) {
         for (y in 0 until bitmap.height) {

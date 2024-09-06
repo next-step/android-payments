@@ -21,12 +21,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun CardListEmptyScreen(
     onAddCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = { CardListTopAppBar() },
         content = { paddingValues ->
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(paddingValues)
                     .padding(top = 32.dp)
                     .fillMaxSize(),
