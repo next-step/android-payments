@@ -11,16 +11,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -92,6 +89,7 @@ internal object EditCardRoute {
 
         fun updateCard() {
             val currentUiState = _uiState.value
+            if (targetCard.toUi() == currentUiState) return
             runCatching {
                 val cardNumbers = currentUiState.cardNumber.chunked(4).map { CardNumber(it) }
                 val expirationDate =
@@ -138,10 +136,6 @@ internal object EditCardRoute {
                 }
                 LaunchedEffect(true) {
                     viewModel.cardUpdated.collectLatest {
-                        snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.card_edit_success),
-                            duration = SnackbarDuration.Short
-                        )
                         setResult(RESULT_OK)
                         finish()
                     }

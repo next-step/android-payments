@@ -15,10 +15,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.ui.editcard.EditCardRoute
 import nextstep.payments.ui.newcard.NewCardActivity
@@ -35,10 +37,20 @@ class CardListActivity : ComponentActivity() {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val context = LocalContext.current
             val snackbarHostState = remember { SnackbarHostState() }
+            val coroutineScope = rememberCoroutineScope()
             val launcher =
                 rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                     if (it.resultCode == RESULT_OK) {
                         viewModel.fetchCards()
+                    }
+                }
+            val editCardLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    if (it.resultCode == RESULT_OK) {
+                        viewModel.fetchCards()
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(message = context.getString(R.string.card_edit_success))
+                        }
                     }
                 }
 
@@ -53,7 +65,7 @@ class CardListActivity : ComponentActivity() {
                     EditCardRoute.startActivity(
                         targetCard = creditCard,
                         context = this@CardListActivity,
-                        launcher = launcher,
+                        launcher = editCardLauncher,
                     )
                 }
             }
