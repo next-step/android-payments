@@ -23,5 +23,7 @@ fun NewCardRoute(
         setPassword = viewModel::setPassword,
         setOwnerName = viewModel::setOwnerName,
         setExpiredDate = viewModel::setExpiredDate,
+        onBackClick = {},
+        onSaveClick = {},
     )
 }
