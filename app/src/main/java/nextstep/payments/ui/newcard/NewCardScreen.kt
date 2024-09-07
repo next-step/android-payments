@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,37 +10,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
-
-@Composable
-fun NewCardRoute(
-    modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
-) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-
-    NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setPassword = viewModel::setPassword,
-        setOwnerName = viewModel::setOwnerName,
-        setExpiredDate = viewModel::setExpiredDate,
-    )
-}
 
 @Composable
 fun NewCardScreen(
@@ -55,22 +31,24 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
-        modifier = modifier
+        topBar = {
+            NewCardTopBar(
+                onBackClick = { TODO() },
+                onSaveClick = { TODO() },
+            )
+        },
+        modifier = modifier,
     ) { innerPadding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
         ) {
             Spacer(modifier = Modifier.height(14.dp))
-
             PaymentCard()
-
             Spacer(modifier = Modifier.height(10.dp))
-
             OutlinedTextField(
                 value = cardNumber,
                 onValueChange = setCardNumber,
@@ -78,7 +56,6 @@ fun NewCardScreen(
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
             )
-
             OutlinedTextField(
                 value = expiredDate,
                 onValueChange = setExpiredDate,
@@ -86,7 +63,6 @@ fun NewCardScreen(
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
             )
-
             OutlinedTextField(
                 value = ownerName,
                 onValueChange = setOwnerName,
@@ -94,7 +70,6 @@ fun NewCardScreen(
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
             )
-
             OutlinedTextField(
                 value = password,
                 onValueChange = setPassword,
@@ -110,23 +85,6 @@ fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            cardNumber = "cardNumber",
-            expiredDate = "expiredDate",
-            ownerName = "ownerName",
-            password = "password",
-            setCardNumber = { },
-            setPassword = { },
-            setOwnerName = { },
-            setExpiredDate = { },
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun NewCardRoutePreview() {
     PaymentsTheme {
         NewCardScreen(
             cardNumber = "cardNumber",
