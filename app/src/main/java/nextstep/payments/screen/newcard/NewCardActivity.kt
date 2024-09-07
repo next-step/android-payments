@@ -10,7 +10,7 @@ class NewCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen(
+                NewCardRouteScreen(
                     navigateToCardList = { isAdded ->
                         if(isAdded == NewCardEvent.Success) setResult(RESULT_OK)
                         finish()

@@ -1,6 +1,5 @@
 package nextstep.payments.screen.newcard
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -34,7 +32,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NewCardScreen(
+internal fun NewCardRouteScreen(
     modifier: Modifier = Modifier,
     navigateToCardList: (NewCardEvent) -> Unit,
     viewModel: NewCardViewModel = viewModel(),
@@ -62,6 +60,12 @@ internal fun NewCardScreen(
         }
     }
 
+    LaunchedEffect(key1 = cardAdded) {
+        if (cardAdded != NewCardEvent.Pending) {
+            navigateToCardList(cardAdded)
+        }
+    }
+
     if (bankType == null) {
         BankSelectBottomSheet(
             onBankTypeClick = viewModel::setBankType,
@@ -69,7 +73,7 @@ internal fun NewCardScreen(
         )
     }
 
-    NewCardScreen(
+    NewCardRouteScreen(
         modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
@@ -77,7 +81,6 @@ internal fun NewCardScreen(
         password = password,
         bankType = bankType,
         isAddCardEnabled = isAddCardEnabled,
-        cardAdded = cardAdded,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -87,35 +90,27 @@ internal fun NewCardScreen(
         },
         onSaveClick = {
             viewModel.addCard()
-        },
-        navigateToCardList = navigateToCardList
+        }
     )
 }
 
 
 @Composable
-internal fun NewCardScreen(
+internal fun NewCardRouteScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
     bankType: BankTypeUiModel?,
     isAddCardEnabled : Boolean,
-    cardAdded: NewCardEvent,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
-    navigateToCardList: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(key1 = cardAdded) {
-        if (cardAdded != NewCardEvent.Pending) {
-            navigateToCardList(cardAdded)
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -174,21 +169,19 @@ internal fun NewCardScreen(
 @Composable
 private fun NewCardScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
+        NewCardRouteScreen(
             cardNumber = "0000000000000000",
             expiredDate = "1123",
             ownerName = "김",
             password = "1234",
             bankType = BankTypeUiModel.BC,
             isAddCardEnabled = true,
-            cardAdded = NewCardEvent.Pending,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onSaveClick = {},
-            navigateToCardList = {}
+            onSaveClick = {}
         )
     }
 }
