@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.testTag
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    isAddCardEnabled : Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -32,6 +33,7 @@ fun NewCardTopBar(
         actions = {
             IconButton(
                 modifier = Modifier.testTag("saveButton"),
+                enabled = isAddCardEnabled,
                 onClick = { onSaveClick() }
             ) {
                 Icon(

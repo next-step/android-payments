@@ -22,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
-import nextstep.payments.component.card.PaymentCardDetail
 import nextstep.payments.component.topbar.CardListTopBar
+import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.toUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -54,15 +54,18 @@ fun CardListScreen(
         topBar = {
             CardListTopBar(
                 actions = {
-                    TextButton(
-                        onClick = navigateToNewCard
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.card_list_add),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.Black
-                        )
+                    if(creditCardUiState is CreditCardUiState.Many){
+                        TextButton(
+                            onClick = navigateToNewCard
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.card_list_add),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.Black
+                            )
+                        }
                     }
+
                 }
             )
         }
@@ -84,21 +87,17 @@ fun CardListScreen(
 
                 is CreditCardUiState.One -> {
                     item {
-                        PaymentCard {
-                            PaymentCardDetail(
-                                card = creditCardUiState.card
-                            )
-                        }
+                        PaymentCard(
+                            card = creditCardUiState.card
+                        )
                     }
                 }
 
                 is CreditCardUiState.Many -> {
                     items(creditCardUiState.cards) { card ->
-                        PaymentCard {
-                            PaymentCardDetail(
-                                card = card
-                            )
-                        }
+                        PaymentCard(
+                            card = card
+                        )
                     }
                 }
             }
@@ -146,7 +145,8 @@ private fun Preview2() {
                     cardNumber = "1234123412341234",
                     ownerName = "CREW",
                     expiredDate = "0421",
-                    password = "1234"
+                    password = "1234",
+                    bankType = BankType.BC
                 ).toUiModel()
             ),
             navigateToNewCard = {}
@@ -165,25 +165,29 @@ private fun Preview3() {
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.BC
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.KAKAO
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.HANA
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.SHINHAN
                     )
                 ).map { it.toUiModel() }
             ),

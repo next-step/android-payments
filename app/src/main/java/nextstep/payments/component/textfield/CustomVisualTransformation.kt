@@ -18,11 +18,7 @@ class CardNumberVisualTransformation(
     }
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= MAX_LENGTH) {
-            text.text.substring(0 until MAX_LENGTH)
-        } else {
-            text.text
-        }
+        val trimmed = text.text.take(MAX_LENGTH)
 
         val out = buildString {
             for (i in trimmed.indices) {
@@ -39,9 +35,9 @@ class CardNumberVisualTransformation(
             override fun originalToTransformed(offset: Int): Int {
                 return when {
                     offset <= 3 -> offset
-                    offset <= 7 -> offset + 3
-                    offset <= 11 -> offset + 6
-                    offset <= MAX_LENGTH -> offset + 9
+                    offset <= 7 -> offset + separator.length
+                    offset <= 11 -> offset + separator.length * 2
+                    offset <= MAX_LENGTH -> offset + separator.length * 3
                     else -> transformedLength
                 }
             }
@@ -49,9 +45,9 @@ class CardNumberVisualTransformation(
             override fun transformedToOriginal(offset: Int): Int {
                 return when {
                     offset <= 4 -> offset
-                    offset <= 11 -> offset - 3
-                    offset <= 18 -> offset - 6
-                    offset <= 25 -> offset - 9
+                    offset <= 11 -> offset - separator.length
+                    offset <= 18 -> offset - (separator.length * 2)
+                    offset <= 25 -> offset - (separator.length * 3)
                     else -> MAX_LENGTH
                 }
             }
@@ -74,11 +70,7 @@ class ExpiredDateVisualTransformation(
     }
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= MAX_LENGTH) {
-            text.text.substring(0 until MAX_LENGTH)
-        } else {
-            text.text
-        }
+        val trimmed = text.text.take(MAX_LENGTH)
 
         val out = buildString {
             for (i in trimmed.indices) {
@@ -90,12 +82,13 @@ class ExpiredDateVisualTransformation(
         }
 
         val transformedLength = trimmed.length + (trimmed.length / CHUNK_SIZE) * separator.length
+        val separatorOffsetLength = separator.length - 1
 
         val expiredDateOffsetTranslator = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
                 return when {
                     offset <= 1 -> offset
-                    offset <= 4 -> offset + 3
+                    offset <= 4 -> offset + separator.length
                     else -> transformedLength
                 }
             }
@@ -103,7 +96,7 @@ class ExpiredDateVisualTransformation(
             override fun transformedToOriginal(offset: Int): Int {
                 return when {
                     offset <= 2 -> offset
-                    offset <= 7 -> offset - 3
+                    offset <= 7 -> offset - separator.length
                     else -> MAX_LENGTH
                 }
             }
