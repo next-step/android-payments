@@ -1,5 +1,6 @@
 package nextstep.payments.screen.newcard
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,7 +55,13 @@ internal fun NewCardScreen(
         }
     }
 
-    if(bankType == null){
+    LaunchedEffect(modalBottomSheetState.targetValue) {
+        if (modalBottomSheetState.hasExpandedState && modalBottomSheetState.targetValue == SheetValue.Hidden && bankType == null) {
+           viewModel.cancelToAddCard()
+        }
+    }
+
+    if (bankType == null) {
         BankSelectBottomSheet(
             onBankTypeClick = viewModel::setBankType,
             modalBottomSheetState = modalBottomSheetState
@@ -88,8 +97,8 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    bankType : BankTypeUiModel?,
-    cardAdded : NewCardEvent,
+    bankType: BankTypeUiModel?,
+    cardAdded: NewCardEvent,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
