@@ -1,6 +1,9 @@
 package nextstep.payments.ui
 
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import nextstep.payments.screen.model.BankTypeUiModel
@@ -13,7 +16,7 @@ import org.junit.Test
 internal class NewCardRouteScreenTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var viewModel: NewCardViewModel
 
     @Before
@@ -48,6 +51,27 @@ internal class NewCardRouteScreenTest {
         assert(isNavigated)
     }
 
+    @Test
+    fun 카드사_선택을_하지_않고_뒤로_가기_시_카드_추가_화면에서_빠져나온다() {
+        //GIVEN
+        composeTestRule.setContent {
+            NewCardRouteScreen(
+                modifier = Modifier.testTag("NewCardRouteScreen"),
+                navigateToCardList = { },
+                viewModel = viewModel
+            )
+        }
 
+        //WHEN
+        composeTestRule.runOnUiThread {
+            composeTestRule.activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        composeTestRule.waitForIdle()
+
+        //THEN
+        composeTestRule.onNodeWithTag("NewCardRouteScreen")
+            .assertDoesNotExist()
+    }
 }
 
