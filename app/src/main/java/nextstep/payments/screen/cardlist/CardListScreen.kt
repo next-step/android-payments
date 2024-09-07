@@ -54,15 +54,18 @@ fun CardListScreen(
         topBar = {
             CardListTopBar(
                 actions = {
-                    TextButton(
-                        onClick = navigateToNewCard
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.card_list_add),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.Black
-                        )
+                    if(creditCardUiState is CreditCardUiState.Many){
+                        TextButton(
+                            onClick = navigateToNewCard
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.card_list_add),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.Black
+                            )
+                        }
                     }
+
                 }
             )
         }
