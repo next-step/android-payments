@@ -60,51 +60,45 @@ fun PaymentCard(
 
 @Composable
 fun PaymentCard(
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit = {}
-) {
-    PaymentCardFrame(
-        modifier = modifier,
-        content = content
-    )
-}
-
-@Composable
-fun BoxScope.PaymentCardDetail(
     card: CreditCardUiModel,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .align(Alignment.BottomStart)
-            .padding(start = 14.dp, bottom = 16.dp, end = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        CardNumberText(
-            cardNumber = stringResource(
-                id = R.string.card_number,
-                card.firstCardDigits,
-                card.secondCardDigits
-            )
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            OwnerNameText(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .weight(1f),
-                ownerName = card.ownerName,
-            )
-            ExpiredDateText(
-                expiredDate = stringResource(
-                    id = R.string.expired_date,
-                    card.month,
-                    card.year
+    PaymentCardFrame(
+        modifier = modifier,
+        content = {
+            Column(
+                modifier = modifier
+                    .align(Alignment.BottomStart)
+                    .padding(start = 14.dp, bottom = 16.dp, end = 14.dp),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                CardNumberText(
+                    cardNumber = stringResource(
+                        id = R.string.card_number,
+                        card.firstCardDigits,
+                        card.secondCardDigits
+                    )
                 )
-            )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OwnerNameText(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .weight(1f),
+                        ownerName = card.ownerName,
+                    )
+                    ExpiredDateText(
+                        expiredDate = stringResource(
+                            id = R.string.expired_date,
+                            card.month,
+                            card.year
+                        )
+                    )
+                }
+            }
         }
-    }
+    )
 }
 
 @Composable
@@ -180,19 +174,17 @@ private fun Preview3() {
 @Composable
 private fun Preview4() {
     PaymentsTheme {
-        PaymentCard {
-            PaymentCardDetail(
-                card = CreditCardUiModel(
-                    cardNumber = "1234123412341234",
-                    firstCardDigits = "1234",
-                    secondCardDigits = "1234",
-                    ownerName = "김컴포즈",
-                    password = "1234",
-                    month = "12",
-                    year = "12"
-                )
+        PaymentCard(
+            card = CreditCardUiModel(
+                cardNumber = "1234123412341234",
+                firstCardDigits = "1234",
+                secondCardDigits = "1234",
+                ownerName = "김컴포즈",
+                password = "1234",
+                month = "12",
+                year = "12"
             )
-        }
+        )
     }
 }
 

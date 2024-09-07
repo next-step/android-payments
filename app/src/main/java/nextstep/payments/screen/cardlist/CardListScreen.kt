@@ -22,7 +22,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
-import nextstep.payments.component.card.PaymentCardDetail
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.toUiModel
@@ -84,21 +83,17 @@ fun CardListScreen(
 
                 is CreditCardUiState.One -> {
                     item {
-                        PaymentCard {
-                            PaymentCardDetail(
-                                card = creditCardUiState.card
-                            )
-                        }
+                        PaymentCard(
+                            card = creditCardUiState.card
+                        )
                     }
                 }
 
                 is CreditCardUiState.Many -> {
                     items(creditCardUiState.cards) { card ->
-                        PaymentCard {
-                            PaymentCardDetail(
-                                card = card
-                            )
-                        }
+                        PaymentCard(
+                            card = card
+                        )
                     }
                 }
             }
