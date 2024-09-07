@@ -3,19 +3,19 @@ package nextstep.payments.ui.newcard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.R
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.newcard.component.NewCardTextField
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -28,13 +28,15 @@ fun NewCardScreen(
     setPassword: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             NewCardTopBar(
-                onBackClick = { TODO() },
-                onSaveClick = { TODO() },
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick,
             )
         },
         modifier = modifier,
@@ -49,33 +51,29 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
             PaymentCard()
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
+            NewCardTextField(
+                label = stringResource(R.string.cardNumber_label),
+                placeHolder = stringResource(R.string.cardNumber_place_holder),
+                text = cardNumber,
+                setText = setCardNumber,
             )
-            OutlinedTextField(
-                value = expiredDate,
-                onValueChange = setExpiredDate,
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
-                modifier = Modifier.fillMaxWidth(),
+            NewCardTextField(
+                label = stringResource(R.string.expiredDate_label),
+                placeHolder = stringResource(R.string.expiredDate_place_holder),
+                text = expiredDate,
+                setText = setExpiredDate,
             )
-            OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
-                modifier = Modifier.fillMaxWidth(),
+            NewCardTextField(
+                label = stringResource(R.string.ownerName_label),
+                placeHolder = stringResource(R.string.ownerName_place_holder),
+                text = ownerName,
+                setText = setOwnerName,
             )
-            OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
-                modifier = Modifier.fillMaxWidth(),
+            NewCardTextField(
+                label = stringResource(R.string.password_label),
+                placeHolder = stringResource(R.string.password_place_holder),
+                text = password,
+                setText = setPassword,
                 visualTransformation = PasswordVisualTransformation(),
             )
         }
@@ -95,6 +93,8 @@ private fun NewCardScreenPreview() {
             setPassword = { },
             setOwnerName = { },
             setExpiredDate = { },
+            onBackClick = { },
+            onSaveClick = { },
         )
     }
 }
