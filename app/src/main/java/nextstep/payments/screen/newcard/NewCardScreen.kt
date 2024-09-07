@@ -75,7 +75,7 @@ internal fun NewCardRouteScreen(
         )
     }
 
-    NewCardRouteScreen(
+    NewCardScreen(
         modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
@@ -98,7 +98,7 @@ internal fun NewCardRouteScreen(
 
 
 @Composable
-internal fun NewCardRouteScreen(
+internal fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -171,7 +171,7 @@ internal fun NewCardRouteScreen(
 @Composable
 private fun NewCardScreenPreview() {
     PaymentsTheme {
-        NewCardRouteScreen(
+        NewCardScreen(
             cardNumber = "0000000000000000",
             expiredDate = "1123",
             ownerName = "김",
