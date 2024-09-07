@@ -23,6 +23,7 @@ import nextstep.payments.R
 import nextstep.payments.component.card.AdditionCard
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
+import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.toUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -141,7 +142,8 @@ private fun Preview2() {
                     cardNumber = "1234123412341234",
                     ownerName = "CREW",
                     expiredDate = "0421",
-                    password = "1234"
+                    password = "1234",
+                    bankType = BankType.BC
                 ).toUiModel()
             ),
             navigateToNewCard = {}
@@ -160,25 +162,29 @@ private fun Preview3() {
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.BC
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.KAKAO
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.HANA
                     ),
                     CreditCard(
                         cardNumber = "1234123412341234",
                         ownerName = "CREW",
                         expiredDate = "0421",
-                        password = "1234"
+                        password = "1234",
+                        bankType = BankType.SHINHAN
                     )
                 ).map { it.toUiModel() }
             ),

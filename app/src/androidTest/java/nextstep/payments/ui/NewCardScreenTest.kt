@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import nextstep.payments.screen.model.BankTypeUiModel
 import nextstep.payments.screen.newcard.NewCardEvent
 import nextstep.payments.screen.newcard.NewCardScreen
 import org.junit.Rule
@@ -28,6 +29,7 @@ internal class NewCardScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
+                bankType = null,
                 cardAdded = newCardEvent,
                 setCardNumber = {},
                 setExpiredDate = {},

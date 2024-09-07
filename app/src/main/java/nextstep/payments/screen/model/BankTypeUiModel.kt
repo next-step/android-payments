@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
+import nextstep.payments.data.model.BankType
 
 enum class BankTypeUiModel(
     @StringRes val nameStringRes: Int,
@@ -50,6 +51,14 @@ enum class BankTypeUiModel(
         imageDrawableRes = R.drawable.kookmin,
         color = Color(0xFF695F54)
     )
+}
+
+fun BankType.toUiModel() : BankTypeUiModel? {
+    return BankTypeUiModel.entries.find { it.name == this.name }
+}
+
+fun BankTypeUiModel.toEntity() : BankType? {
+    return BankType.entries.find { it.name == this.name }
 }
 
 

@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import nextstep.payments.component.card.PaymentCard
+import nextstep.payments.screen.model.BankTypeUiModel
 import nextstep.payments.screen.model.CreditCardUiModel
 import org.junit.Rule
 import org.junit.Test
@@ -25,7 +26,8 @@ internal class PaymentCardTest {
                     ownerName = "",
                     password = "",
                     month = "",
-                    year = ""
+                    year = "",
+                    bankTypeUiModel = BankTypeUiModel.BC
                 )
             )
         }
@@ -48,7 +50,8 @@ internal class PaymentCardTest {
                     ownerName = "",
                     password = "",
                     month = "04",
-                    year = "13"
+                    year = "13",
+                    bankTypeUiModel = BankTypeUiModel.BC
                 )
             )
         }

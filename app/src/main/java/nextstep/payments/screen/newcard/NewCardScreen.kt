@@ -6,28 +6,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.R
 import nextstep.payments.component.bottomsheet.bank.BankSelectBottomSheet
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.textfield.CardNumberTextFiled
@@ -50,29 +40,24 @@ internal fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
-    var selectedBank by remember {
-        mutableStateOf<BankTypeUiModel?>(null)
-    }
 
-    LaunchedEffect(key1 = selectedBank) {
-        if (selectedBank != null) {
+    LaunchedEffect(key1 = bankType) {
+        if (bankType != null) {
             modalBottomSheetState.hide()
         }
     }
 
-    if(selectedBank == null){
+    if(bankType == null){
         BankSelectBottomSheet(
-            onBankTypeClick = { bankType ->
-                selectedBank = bankType
-            },
+            onBankTypeClick = viewModel::setBankType,
             modalBottomSheetState = modalBottomSheetState
         )
     }
-
 
     NewCardScreen(
         modifier = modifier,
@@ -80,6 +65,7 @@ internal fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        bankType = bankType,
         cardAdded = cardAdded,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -102,6 +88,7 @@ internal fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType : BankTypeUiModel?,
     cardAdded : NewCardEvent,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -136,7 +123,9 @@ internal fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                bankType = bankType
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -178,6 +167,7 @@ private fun NewCardScreenPreview() {
             ownerName = "김",
             password = "1234",
             cardAdded = NewCardEvent.Pending,
+            bankType = BankTypeUiModel.BC,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},

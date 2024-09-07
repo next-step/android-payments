@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.model.CreditCard
+import nextstep.payments.screen.model.BankTypeUiModel
+import nextstep.payments.screen.model.toEntity
 
 class NewCardViewModel : ViewModel() {
 
@@ -20,6 +22,9 @@ class NewCardViewModel : ViewModel() {
 
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
+
+    private val _bankType = MutableStateFlow<BankTypeUiModel?>(null)
+    val bankType : StateFlow<BankTypeUiModel?> = _bankType.asStateFlow()
 
     private val _cardAdded = MutableStateFlow(NewCardEvent.Pending)
     val cardAdded : StateFlow<NewCardEvent> = _cardAdded.asStateFlow()
@@ -43,13 +48,20 @@ class NewCardViewModel : ViewModel() {
         _password.value = password
     }
 
+    fun setBankType(bankTypeUiModel: BankTypeUiModel){
+        _bankType.value = bankTypeUiModel
+    }
+
     fun addCard(){
+        val selectedBankType = bankType.value?.toEntity() ?: return
+
         PaymentCardsRepository.addCard(
             CreditCard(
                 cardNumber = cardNumber.value,
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
-                password = password.value
+                password = password.value,
+                bankType = selectedBankType
             )
         )
         _cardAdded.value = NewCardEvent.Success

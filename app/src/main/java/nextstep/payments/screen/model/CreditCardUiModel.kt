@@ -9,7 +9,8 @@ data class CreditCardUiModel(
     val month: String,
     val year: String,
     val ownerName: String,
-    val password: String
+    val password: String,
+    val bankTypeUiModel: BankTypeUiModel?
 )
 
 fun CreditCard.toUiModel() =
@@ -36,6 +37,7 @@ fun CreditCard.toUiModel() =
             expiredDate.substring(2, expiredDate.length)
         },
         ownerName = ownerName,
-        password = password
+        password = password,
+        bankTypeUiModel = bankType.toUiModel()
     )
 
