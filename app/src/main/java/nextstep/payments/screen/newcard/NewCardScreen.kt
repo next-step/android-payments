@@ -45,6 +45,7 @@ internal fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val bankType by viewModel.bankType.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val isAddCardEnabled by viewModel.isAddCardEnabled.collectAsStateWithLifecycle()
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
@@ -75,6 +76,7 @@ internal fun NewCardScreen(
         ownerName = ownerName,
         password = password,
         bankType = bankType,
+        isAddCardEnabled = isAddCardEnabled,
         cardAdded = cardAdded,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -98,6 +100,7 @@ internal fun NewCardScreen(
     ownerName: String,
     password: String,
     bankType: BankTypeUiModel?,
+    isAddCardEnabled : Boolean,
     cardAdded: NewCardEvent,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -117,6 +120,7 @@ internal fun NewCardScreen(
     Scaffold(
         topBar = {
             NewCardTopBar(
+                isAddCardEnabled = isAddCardEnabled,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick
             )
@@ -175,8 +179,9 @@ private fun NewCardScreenPreview() {
             expiredDate = "1123",
             ownerName = "김",
             password = "1234",
-            cardAdded = NewCardEvent.Pending,
             bankType = BankTypeUiModel.BC,
+            isAddCardEnabled = true,
+            cardAdded = NewCardEvent.Pending,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},

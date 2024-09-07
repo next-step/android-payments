@@ -30,6 +30,7 @@ internal class NewCardScreenTest {
                 ownerName = "",
                 password = "",
                 bankType = null,
+                isAddCardEnabled = true,
                 cardAdded = newCardEvent,
                 setCardNumber = {},
                 setExpiredDate = {},
