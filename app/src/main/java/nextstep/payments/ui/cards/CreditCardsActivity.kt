@@ -7,7 +7,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import nextstep.payments.ui.newcard.NewCardActivity
+import nextstep.payments.ui.newcard.NewCardActivity.Companion.CARD_ID
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class CreditCardsActivity : ComponentActivity() {
@@ -27,6 +29,11 @@ class CreditCardsActivity : ComponentActivity() {
                     viewModel = viewModel,
                     onAddClick = {
                         val intent = Intent(this, NewCardActivity::class.java)
+                        launcher.launch(intent)
+                    },
+                    onCardClick = { card ->
+                        val intent = Intent(this, NewCardActivity::class.java)
+                        intent.putExtras(bundleOf(CARD_ID to card))
                         launcher.launch(intent)
                     }
                 )

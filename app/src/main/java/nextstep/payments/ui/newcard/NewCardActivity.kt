@@ -22,4 +22,8 @@ class NewCardActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        const val CARD_ID = "CARD_ID"
+    }
 }
