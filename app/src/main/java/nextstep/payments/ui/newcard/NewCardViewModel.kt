@@ -69,11 +69,10 @@ class NewCardViewModel (
 
     fun saveCard(card: Card) {
         if(cardModification != null){
-            PaymentCardsRepository.modifyCard(card)
-            _cardAdded.value = true
-            return
-        }
-        PaymentCardsRepository.addCard(card)
+            val modifyCard = card.copy(id = cardModification.id)
+            PaymentCardsRepository.modifyCard(modifyCard)
+        } else
+            PaymentCardsRepository.addCard(card)
         _cardAdded.value = true
     }
 
