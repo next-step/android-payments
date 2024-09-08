@@ -94,7 +94,7 @@ fun PaymentCard(
                 .padding(14.dp),
         ) {
             Text(
-                text = card.cardNumber.maskCardNumber(),
+                text = card.cardNumber.formatAndMaskingCardNumber(),
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -104,7 +104,7 @@ fun PaymentCard(
                     text = card.ownerName,
                 )
                 Text(
-                    text = card.expiredDate,
+                    text = card.expiredDate.formatExpiredDate(),
                 )
             }
         }
