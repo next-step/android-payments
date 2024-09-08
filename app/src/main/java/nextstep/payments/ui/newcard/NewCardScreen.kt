@@ -53,7 +53,8 @@ internal fun NewCardScreen(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
     val cardCompanies by viewModel.cardCompanies.collectAsStateWithLifecycle()
-    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(viewModel.cardModification == null) }
+    val isModify by viewModel.isModify.collectAsStateWithLifecycle()
+    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(!isModify) }
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
@@ -74,7 +75,7 @@ internal fun NewCardScreen(
         )
     }
     NewCardScreen(
-        isModify = viewModel.cardModification != null,
+        isModify = isModify,
         canSave = canSave,
         cardCompany = selectedCard,
         cardNumber = cardNumber,

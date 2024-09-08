@@ -12,12 +12,14 @@ import kotlinx.coroutines.flow.stateIn
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
-import nextstep.payments.ui.newcard.NewCardActivity.Companion.CARD_ID
 
 class NewCardViewModel (
     savedStateHandle: SavedStateHandle,
 ): ViewModel() {
-    val cardModification: Card? = savedStateHandle[CARD_ID]
+    private val cardModification: Card? = savedStateHandle[NewCardActivity.MODIFY_CARD]
+
+    private val _isModify = MutableStateFlow(cardModification != null)
+    val isModify: StateFlow<Boolean> = _isModify.asStateFlow()
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
