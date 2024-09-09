@@ -11,4 +11,5 @@
     <string name="newcard_top_app_bar_title">카드 추가</string>
     <string name="newcard_top_app_bar_back_navigation_icon">뒤로 가기</string>
     <string name="newcard_top_app_bar_actions_icon">완료</string>
+    <string name="cardlist_empty_card_icon">추가</string>
 </resources>
