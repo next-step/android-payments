@@ -13,9 +13,9 @@ import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
 
-class NewCardViewModel (
+class NewCardViewModel(
     savedStateHandle: SavedStateHandle,
-): ViewModel() {
+) : ViewModel() {
     private val cardModification: Card? = savedStateHandle[NewCardActivity.MODIFY_CARD]
 
     private val _isModify = MutableStateFlow(cardModification != null)
@@ -24,7 +24,7 @@ class NewCardViewModel (
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _cardNumber = MutableStateFlow(cardModification?.cardNumber?: "")
+    private val _cardNumber = MutableStateFlow(cardModification?.cardNumber ?: "")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
 
     private val _expiredDate = MutableStateFlow(cardModification?.expiredDate ?: "")
@@ -43,38 +43,53 @@ class NewCardViewModel (
     val cardCompanies = _cardCompanies.asStateFlow()
 
     val canSave = combine(
-        cardNumber,
-        expiredDate,
-        ownerName,
-        password,
-        selectedCard
+        flow = cardNumber,
+        flow2 = expiredDate,
+        flow3 = ownerName,
+        flow4 = password,
+        flow5 = selectedCard
     ) { cardNumber, expiredDate, ownerName, password, company ->
-        val isNotEmpty = cardNumber.isNotBlank() && expiredDate.isNotBlank() &&
-                ownerName.isNotBlank() && password.isNotBlank()
-        val isChanged = cardModification == null ||
-                cardNumber != cardModification.cardNumber ||
-                expiredDate != cardModification.expiredDate ||
-                ownerName != cardModification.ownerName ||
-                password != cardModification.password ||
-                company != cardModification.cardCompany
-        isNotEmpty && isChanged
+        isCardModificationAllowed(
+            Card(
+                cardNumber = cardNumber,
+                ownerName = ownerName,
+                expiredDate = expiredDate,
+                password = password,
+                cardCompany = company
+            )
+        )
     }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = false
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = false
     )
-    
+
+    private fun isCardModificationAllowed(changeCard: Card): Boolean {
+        val isNotEmpty = with(changeCard) {
+            cardNumber.isNotBlank() &&
+                    expiredDate.isNotBlank() &&
+                    ownerName.isNotBlank() &&
+                    password.isNotBlank()
+        }
+        val isChanged = with(changeCard) {
+            cardModification == null ||
+                    cardNumber != cardModification.cardNumber ||
+                    expiredDate != cardModification.expiredDate ||
+                    ownerName != cardModification.ownerName ||
+                    password != cardModification.password ||
+                    cardCompany != cardModification.cardCompany
+        }
+        return isNotEmpty && isChanged
+    }
+
 
     fun setCardCompany(cardCompany: CardCompany) {
         _selectedCard.value = cardCompany
     }
 
     fun saveCard(card: Card) {
-        if(cardModification != null){
+        if (cardModification != null) {
             val modifyCard = card.copy(id = cardModification.id)
             PaymentCardsRepository.modifyCard(modifyCard)
-        } else
-            PaymentCardsRepository.addCard(card)
+        } else PaymentCardsRepository.addCard(card)
         _cardAdded.value = true
     }
 
