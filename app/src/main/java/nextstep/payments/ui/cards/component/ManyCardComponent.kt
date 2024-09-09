@@ -20,9 +20,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun ManyCardComponent(
-    modifier: Modifier = Modifier,
+    cards: List<Card>,
     onCardClick: (Card) -> Unit,
-    cards: List<Card>
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier
