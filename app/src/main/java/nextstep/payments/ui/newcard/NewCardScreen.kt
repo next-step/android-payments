@@ -17,6 +17,8 @@ import nextstep.payments.R
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.newcard.component.NewCardTextField
 import nextstep.payments.ui.newcard.component.NewCardTopBar
+import nextstep.payments.ui.newcard.component.NewCardVisualTransformation.CreditCardVisualTransformation
+import nextstep.payments.ui.newcard.component.NewCardVisualTransformation.ExpiredDateVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -57,12 +59,14 @@ fun NewCardScreen(
                 placeHolder = stringResource(R.string.cardNumber_place_holder),
                 text = cardNumber,
                 setText = setCardNumber,
+                visualTransformation = CreditCardVisualTransformation,
             )
             NewCardTextField(
                 label = stringResource(R.string.expiredDate_label),
                 placeHolder = stringResource(R.string.expiredDate_place_holder),
                 text = expiredDate,
                 setText = setExpiredDate,
+                visualTransformation = ExpiredDateVisualTransformation,
             )
             NewCardTextField(
                 label = stringResource(R.string.ownerName_label),
@@ -86,8 +90,8 @@ fun NewCardScreen(
 private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "cardNumber",
-            expiredDate = "expiredDate",
+            cardNumber = "1234567812345678",
+            expiredDate = "0212",
             ownerName = "ownerName",
             password = "password",
             setCardNumber = { },
