@@ -4,9 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import nextstep.payments.data.model.BankType
 import nextstep.payments.screen.model.BankTypeUiModel
 import nextstep.payments.screen.newcard.NewCardRouteScreen
 import nextstep.payments.screen.newcard.NewCardViewModel
@@ -88,6 +90,28 @@ internal class NewCardRouteScreenTest {
         //THEN
         composeTestRule.onNodeWithTag("NewCardRouteScreen")
             .assertDoesNotExist()
+    }
+
+    @Test
+    fun 카드사를_선택하면_바텀시트가_내려가고_카드사가_선택되어있다() {
+        //GIVEN
+        composeTestRule.setContent {
+            NewCardRouteScreen(
+                modifier = Modifier.testTag("NewCardRouteScreen"),
+                navigateToCardList = { },
+                viewModel = viewModel
+            )
+        }
+
+        //WHEN
+        composeTestRule.onNodeWithTag(BankTypeUiModel.BC.name).performClick()
+
+        composeTestRule.waitForIdle()
+
+        //THEN
+        composeTestRule.onNodeWithTag("BankSelectBottomSheet")
+            .assertIsNotDisplayed()
+        assert(viewModel.bankType.value == BankTypeUiModel.BC)
     }
 }
 
