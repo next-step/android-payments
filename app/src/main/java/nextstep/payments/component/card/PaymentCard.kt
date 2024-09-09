@@ -37,11 +37,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun PaymentCardFrame(
     bankType: BankTypeUiModel?,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     CardFrame(
         modifier = modifier,
-        backgroundColor = bankType?.color ?: Color(0xFF333333)
+        backgroundColor = bankType?.color ?: Color(0xFF333333),
+        onClick = onClick
     ) {
         bankType?.let { bankType ->
             BankTypeRow(
@@ -79,11 +81,15 @@ fun PaymentCard(
 @Composable
 fun PaymentCard(
     card: CreditCardUiModel,
+    onClick: (CreditCardUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     PaymentCardFrame(
         modifier = modifier,
         bankType = card.bankTypeUiModel,
+        onClick = {
+            onClick(card)
+        },
         content = {
             Column(
                 modifier = modifier
@@ -227,7 +233,8 @@ private fun Preview4() {
                 month = "12",
                 year = "12",
                 bankTypeUiModel = BankTypeUiModel.BC
-            )
+            ),
+            onClick = {}
         )
     }
 }

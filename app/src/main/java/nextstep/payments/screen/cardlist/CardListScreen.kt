@@ -25,20 +25,23 @@ import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.topbar.CardListTopBar
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.CreditCard
+import nextstep.payments.screen.model.CreditCardUiModel
 import nextstep.payments.screen.model.toUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
     viewModel: CardListViewModel,
-    navigateToManageCard: () -> Unit,
+    navigateToAddCard: () -> Unit,
+    navigateToEditCard: (CreditCardUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val creditCardUiState by viewModel.cardListUiState.collectAsStateWithLifecycle()
 
     CardListScreen(
         modifier = modifier,
-        navigateToManageCard = navigateToManageCard,
+        navigateToAddCard = navigateToAddCard,
+        navigateToEditCard = navigateToEditCard,
         creditCardUiState = creditCardUiState
     )
 }
@@ -46,7 +49,8 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     creditCardUiState: CreditCardUiState,
-    navigateToManageCard: () -> Unit,
+    navigateToAddCard: () -> Unit,
+    navigateToEditCard: (CreditCardUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -56,7 +60,7 @@ fun CardListScreen(
                 actions = {
                     if(creditCardUiState is CreditCardUiState.Many){
                         TextButton(
-                            onClick = navigateToManageCard
+                            onClick = navigateToAddCard
                         ) {
                             Text(
                                 text = stringResource(id = R.string.card_list_add),
@@ -88,7 +92,8 @@ fun CardListScreen(
                 is CreditCardUiState.One -> {
                     item {
                         PaymentCard(
-                            card = creditCardUiState.card
+                            card = creditCardUiState.card,
+                            onClick = navigateToEditCard
                         )
                     }
                 }
@@ -96,7 +101,8 @@ fun CardListScreen(
                 is CreditCardUiState.Many -> {
                     items(creditCardUiState.cards) { card ->
                         PaymentCard(
-                            card = card
+                            card = card,
+                            onClick = navigateToEditCard
                         )
                     }
                 }
@@ -104,7 +110,7 @@ fun CardListScreen(
             if (creditCardUiState !is CreditCardUiState.Many) {
                 item {
                     AdditionCard(
-                        onClick = navigateToManageCard
+                        onClick = navigateToAddCard
                     )
                 }
             }
@@ -130,7 +136,8 @@ private fun Preview1() {
     PaymentsTheme {
         CardListScreen(
             viewModel = CardListViewModel(),
-            navigateToManageCard = {}
+            navigateToEditCard = {},
+            navigateToAddCard = {}
         )
     }
 }
@@ -149,7 +156,8 @@ private fun Preview2() {
                     bankType = BankType.BC
                 ).toUiModel()
             ),
-            navigateToManageCard = {}
+            navigateToEditCard = {},
+            navigateToAddCard = {}
         )
     }
 }
@@ -191,7 +199,8 @@ private fun Preview3() {
                     )
                 ).map { it.toUiModel() }
             ),
-            navigateToManageCard = {}
+            navigateToEditCard = {},
+            navigateToAddCard = {}
         )
     }
 }

@@ -8,5 +8,6 @@ enum class BankType {
     WOORI,
     LOTTE,
     HANA,
-    KB
+    KB,
+    DEFAULT
 }

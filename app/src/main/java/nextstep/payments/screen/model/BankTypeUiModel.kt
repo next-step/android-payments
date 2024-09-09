@@ -57,8 +57,8 @@ fun BankType.toUiModel() : BankTypeUiModel? {
     return BankTypeUiModel.entries.find { it.name == this.name }
 }
 
-fun BankTypeUiModel.toEntity() : BankType? {
-    return BankType.entries.find { it.name == this.name }
+fun BankTypeUiModel?.toEntity() : BankType {
+    return BankType.entries.find { it.name == this?.name } ?: BankType.DEFAULT
 }
 
 
