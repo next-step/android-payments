@@ -14,6 +14,7 @@ import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.BankTypeUiModel
 import nextstep.payments.screen.model.arg.CardArgType
 import nextstep.payments.screen.model.toEntity
+import nextstep.payments.screen.model.toUiModel
 
 class ManageCardViewModel(
     savedStateHandle: SavedStateHandle
@@ -24,34 +25,61 @@ class ManageCardViewModel(
         CardArgType.AddCardArg
     )
 
-    private val _cardNumber = MutableStateFlow("")
+    private val _cardNumber = MutableStateFlow(cardArgType.value.creditCardToEdit?.cardNumber ?: "")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
 
-    private val _expiredDate = MutableStateFlow("")
+    private val _expiredDate =
+        MutableStateFlow(cardArgType.value.creditCardToEdit?.expiredDate ?: "")
     val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
 
-    private val _ownerName = MutableStateFlow("")
+    private val _ownerName = MutableStateFlow(cardArgType.value.creditCardToEdit?.ownerName ?: "")
     val ownerName: StateFlow<String> = _ownerName.asStateFlow()
 
-    private val _password = MutableStateFlow("")
+    private val _password = MutableStateFlow(cardArgType.value.creditCardToEdit?.password ?: "")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _bankType = MutableStateFlow<BankTypeUiModel?>(null)
+    private val _bankType = MutableStateFlow(cardArgType.value.creditCardToEdit?.bankType?.toUiModel())
     val bankType: StateFlow<BankTypeUiModel?> = _bankType.asStateFlow()
 
     val isAddCardEnabled: StateFlow<Boolean> =
         combine(
             cardNumber,
             expiredDate,
+            ownerName,
             password,
             bankType
-        ) { cardNumber, expiredDate, password, bankType ->
-            cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4 && bankType != null
+        ) { cardNumber, expiredDate, ownerName, password, bankType ->
+            cardArgType.value.creditCardToEdit?.let { creditCard ->
+                if(isNotCardChanged(creditCard, cardNumber, expiredDate, ownerName, password, bankType))
+                    return@combine false
+            }
+            isValidInputs(cardNumber, expiredDate, password, bankType)
         }.stateIn(
             scope = viewModelScope,
             initialValue = false,
             started = SharingStarted.WhileSubscribed(500)
         )
+
+    private fun isNotCardChanged(
+        creditCard: CreditCard,
+        cardNumber: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        bankType: BankTypeUiModel?
+    ) = creditCard.cardNumber == cardNumber &&
+            creditCard.expiredDate == expiredDate &&
+            creditCard.ownerName == ownerName &&
+            creditCard.password == password &&
+            creditCard.bankType.toUiModel() == bankType
+
+    private fun isValidInputs(
+        cardNumber: String,
+        expiredDate: String,
+        password: String,
+        bankType: BankTypeUiModel?
+    ) = cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4 && bankType != null
+
 
     private val _cardAdded = MutableStateFlow(ManageCardEvent.Pending)
     val cardAdded: StateFlow<ManageCardEvent> = _cardAdded.asStateFlow()

@@ -10,6 +10,13 @@ sealed class CardArgType : Parcelable {
     @Parcelize
     data class EditCardArg(val creditCard: CreditCard) : CardArgType()
 
+    val creditCardToEdit : CreditCard? by lazy {
+        when(this){
+            is EditCardArg -> this.creditCard
+            else -> null
+        }
+    }
+
     companion object {
         const val MANAGE_CARD_TYPE_ARG = "manageCardTypeArg"
     }
