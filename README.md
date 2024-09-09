@@ -1,5 +1,15 @@
 # android-payments
 
+## Step3 구현 목록
+
+- [x] Step2 피드백 반영
+
+## Step3 진행 중 의식의 흐름
+
+- 피드백을 반영하여 CardsScreen을 Stateful, Stateless로 나누어서 구현하니 프리뷰로 각각의 케이스를 정확히 표시할 수 있었습니다. 굿!
+- expiredDate를 LocalDate로 변경하려고 했으나 만료일 초기 빈값을 주는 것이 어려워서 그냥 String으로 두었습니다. 여기 너무 매몰되어 더 중요한 부분을
+  놓치고 있어서 입니다.
+
 ## Step2 구현 목록
 
 - [x] 카드 목록 화면 구현
