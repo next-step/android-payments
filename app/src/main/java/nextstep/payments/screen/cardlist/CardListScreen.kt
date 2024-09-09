@@ -31,14 +31,14 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun CardListScreen(
     viewModel: CardListViewModel,
-    navigateToNewCard: () -> Unit,
+    navigateToManageCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val creditCardUiState by viewModel.cardListUiState.collectAsStateWithLifecycle()
 
     CardListScreen(
         modifier = modifier,
-        navigateToNewCard = navigateToNewCard,
+        navigateToManageCard = navigateToManageCard,
         creditCardUiState = creditCardUiState
     )
 }
@@ -46,7 +46,7 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     creditCardUiState: CreditCardUiState,
-    navigateToNewCard: () -> Unit,
+    navigateToManageCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -56,7 +56,7 @@ fun CardListScreen(
                 actions = {
                     if(creditCardUiState is CreditCardUiState.Many){
                         TextButton(
-                            onClick = navigateToNewCard
+                            onClick = navigateToManageCard
                         ) {
                             Text(
                                 text = stringResource(id = R.string.card_list_add),
@@ -104,7 +104,7 @@ fun CardListScreen(
             if (creditCardUiState !is CreditCardUiState.Many) {
                 item {
                     AdditionCard(
-                        onClick = navigateToNewCard
+                        onClick = navigateToManageCard
                     )
                 }
             }
@@ -130,7 +130,7 @@ private fun Preview1() {
     PaymentsTheme {
         CardListScreen(
             viewModel = CardListViewModel(),
-            navigateToNewCard = {}
+            navigateToManageCard = {}
         )
     }
 }
@@ -149,7 +149,7 @@ private fun Preview2() {
                     bankType = BankType.BC
                 ).toUiModel()
             ),
-            navigateToNewCard = {}
+            navigateToManageCard = {}
         )
     }
 }
@@ -191,7 +191,7 @@ private fun Preview3() {
                     )
                 ).map { it.toUiModel() }
             ),
-            navigateToNewCard = {}
+            navigateToManageCard = {}
         )
     }
 }

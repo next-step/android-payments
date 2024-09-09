@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import nextstep.payments.screen.cardlist.CardListScreen
 import nextstep.payments.screen.cardlist.CardListViewModel
-import nextstep.payments.screen.newcard.NewCardActivity
+import nextstep.payments.screen.cardmanage.ManageCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,8 +26,10 @@ class MainActivity : ComponentActivity() {
             PaymentsTheme {
                 CardListScreen(
                     viewModel = viewModel,
-                    navigateToNewCard = {
-                        launcher.launch(Intent(this, NewCardActivity::class.java))
+                    navigateToManageCard = {
+                        launcher.launch(
+                            Intent(this, ManageCardActivity::class.java)
+                        )
                     }
                 )
             }

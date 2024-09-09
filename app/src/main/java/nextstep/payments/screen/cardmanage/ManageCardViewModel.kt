@@ -1,5 +1,6 @@
-package nextstep.payments.screen.newcard
+package nextstep.payments.screen.cardmanage
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,14 +8,21 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.stateIn
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.BankTypeUiModel
+import nextstep.payments.screen.model.arg.CardArgType
 import nextstep.payments.screen.model.toEntity
 
-class NewCardViewModel : ViewModel() {
+class ManageCardViewModel(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    val cardArgType = savedStateHandle.getStateFlow<CardArgType>(
+        CardArgType.MANAGE_CARD_TYPE_ARG,
+        CardArgType.AddCardArg
+    )
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -29,15 +37,15 @@ class NewCardViewModel : ViewModel() {
     val password: StateFlow<String> = _password.asStateFlow()
 
     private val _bankType = MutableStateFlow<BankTypeUiModel?>(null)
-    val bankType : StateFlow<BankTypeUiModel?> = _bankType.asStateFlow()
+    val bankType: StateFlow<BankTypeUiModel?> = _bankType.asStateFlow()
 
-    val isAddCardEnabled : StateFlow<Boolean> =
+    val isAddCardEnabled: StateFlow<Boolean> =
         combine(
             cardNumber,
             expiredDate,
             password,
             bankType
-        ){ cardNumber, expiredDate, password, bankType ->
+        ) { cardNumber, expiredDate, password, bankType ->
             cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4 && bankType != null
         }.stateIn(
             scope = viewModelScope,
@@ -45,16 +53,16 @@ class NewCardViewModel : ViewModel() {
             started = SharingStarted.WhileSubscribed(500)
         )
 
-    private val _cardAdded = MutableStateFlow(NewCardEvent.Pending)
-    val cardAdded : StateFlow<NewCardEvent> = _cardAdded.asStateFlow()
+    private val _cardAdded = MutableStateFlow(ManageCardEvent.Pending)
+    val cardAdded: StateFlow<ManageCardEvent> = _cardAdded.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        if(cardNumber.length > 16) return
+        if (cardNumber.length > 16) return
         _cardNumber.value = cardNumber
     }
 
     fun setExpiredDate(expiredDate: String) {
-        if(expiredDate.length > 4) return
+        if (expiredDate.length > 4) return
         _expiredDate.value = expiredDate
     }
 
@@ -63,15 +71,15 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun setPassword(password: String) {
-        if(password.length > 4) return
+        if (password.length > 4) return
         _password.value = password
     }
 
-    fun setBankType(bankTypeUiModel: BankTypeUiModel){
+    fun setBankType(bankTypeUiModel: BankTypeUiModel) {
         _bankType.value = bankTypeUiModel
     }
 
-    fun addCard(){
+    fun addCard() {
         val selectedBankType = bankType.value?.toEntity() ?: return
 
         PaymentCardsRepository.addCard(
@@ -83,10 +91,10 @@ class NewCardViewModel : ViewModel() {
                 bankType = selectedBankType
             )
         )
-        _cardAdded.value = NewCardEvent.Success
+        _cardAdded.value = ManageCardEvent.Success
     }
 
-    fun cancelToAddCard(){
-        _cardAdded.value = NewCardEvent.Cancel
+    fun cancelToAddCard() {
+        _cardAdded.value = ManageCardEvent.Cancel
     }
 }

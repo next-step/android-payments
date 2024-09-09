@@ -8,23 +8,25 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import nextstep.payments.data.model.BankType
+import androidx.lifecycle.SavedStateHandle
 import nextstep.payments.screen.model.BankTypeUiModel
-import nextstep.payments.screen.newcard.NewCardRouteScreen
-import nextstep.payments.screen.newcard.NewCardViewModel
+import nextstep.payments.screen.cardmanage.ManageCardRouteScreen
+import nextstep.payments.screen.cardmanage.ManageCardViewModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-internal class NewCardRouteScreenTest {
+internal class ManageCardRouteScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-    private lateinit var viewModel: NewCardViewModel
+    private lateinit var viewModel: ManageCardViewModel
 
     @Before
     fun setUp(){
-        viewModel = NewCardViewModel()
+        viewModel = ManageCardViewModel(
+            savedStateHandle = SavedStateHandle()
+        )
     }
 
     @Test
@@ -33,7 +35,7 @@ internal class NewCardRouteScreenTest {
 
         //GIVEN
         composeTestRule.setContent {
-            NewCardRouteScreen(
+            ManageCardRouteScreen(
                 navigateToCardList = {
                     isNavigated  = true
                 },
@@ -58,7 +60,7 @@ internal class NewCardRouteScreenTest {
     fun 새_카드_추가_화면_진입_시_카드사_선택_바텀_시트가_나타난다(){
         //GIVEN
         composeTestRule.setContent {
-            NewCardRouteScreen(
+            ManageCardRouteScreen(
                 navigateToCardList = { },
                 viewModel = viewModel
             )
@@ -73,8 +75,8 @@ internal class NewCardRouteScreenTest {
     fun 카드사_선택을_하지_않고_뒤로_가기_시_카드_추가_화면에서_빠져나온다() {
         //GIVEN
         composeTestRule.setContent {
-            NewCardRouteScreen(
-                modifier = Modifier.testTag("NewCardRouteScreen"),
+            ManageCardRouteScreen(
+                modifier = Modifier.testTag("ManageCardRouteScreen"),
                 navigateToCardList = { },
                 viewModel = viewModel
             )
@@ -88,7 +90,7 @@ internal class NewCardRouteScreenTest {
         composeTestRule.waitForIdle()
 
         //THEN
-        composeTestRule.onNodeWithTag("NewCardRouteScreen")
+        composeTestRule.onNodeWithTag("ManageCardRouteScreen")
             .assertDoesNotExist()
     }
 
@@ -96,8 +98,8 @@ internal class NewCardRouteScreenTest {
     fun 카드사를_선택하면_바텀시트가_내려가고_카드사가_선택되어있다() {
         //GIVEN
         composeTestRule.setContent {
-            NewCardRouteScreen(
-                modifier = Modifier.testTag("NewCardRouteScreen"),
+            ManageCardRouteScreen(
+                modifier = Modifier.testTag("ManageCardRouteScreen"),
                 navigateToCardList = { },
                 viewModel = viewModel
             )

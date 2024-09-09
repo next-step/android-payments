@@ -1,4 +1,4 @@
-package nextstep.payments.screen.newcard
+package nextstep.payments.screen.cardmanage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,24 +20,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.map
 import nextstep.payments.component.bottomsheet.bank.BankSelectBottomSheet
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.textfield.CardNumberTextFiled
 import nextstep.payments.component.textfield.ExpiredDateTextFiled
 import nextstep.payments.component.textfield.OwnerNameTextFiled
 import nextstep.payments.component.textfield.PasswordTextFiled
-import nextstep.payments.component.topbar.NewCardTopBar
+import nextstep.payments.component.topbar.ManageCardTopBar
 import nextstep.payments.screen.model.BankTypeUiModel
+import nextstep.payments.screen.model.ManageCardType
+import nextstep.payments.screen.model.toManageCardType
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NewCardRouteScreen(
+internal fun ManageCardRouteScreen(
     modifier: Modifier = Modifier,
-    navigateToCardList: (NewCardEvent) -> Unit,
-    viewModel: NewCardViewModel = viewModel(),
+    navigateToCardList: (ManageCardEvent) -> Unit,
+    viewModel: ManageCardViewModel = viewModel(),
 ) {
+    val manageCardType by viewModel.cardArgType
+        .map { it.toManageCardType() }.collectAsStateWithLifecycle(ManageCardType.ADD)
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -62,7 +67,7 @@ internal fun NewCardRouteScreen(
     }
 
     LaunchedEffect(key1 = cardAdded) {
-        if (cardAdded != NewCardEvent.Pending) {
+        if (cardAdded != ManageCardEvent.Pending) {
             navigateToCardList(cardAdded)
         }
     }
@@ -75,8 +80,9 @@ internal fun NewCardRouteScreen(
         )
     }
 
-    NewCardScreen(
+    ManageCardScreen(
         modifier = modifier,
+        manageCardType = manageCardType,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -98,7 +104,8 @@ internal fun NewCardRouteScreen(
 
 
 @Composable
-internal fun NewCardScreen(
+internal fun ManageCardScreen(
+    manageCardType : ManageCardType,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -116,7 +123,8 @@ internal fun NewCardScreen(
 
     Scaffold(
         topBar = {
-            NewCardTopBar(
+            ManageCardTopBar(
+                manageCardType = manageCardType,
                 isAddCardEnabled = isAddCardEnabled,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick
@@ -167,11 +175,35 @@ internal fun NewCardScreen(
 }
 
 
-@Preview
+@Preview(showBackground = true, name = "AddCardScreenPreview")
 @Composable
-private fun NewCardScreenPreview() {
+private fun Preview1() {
     PaymentsTheme {
-        NewCardScreen(
+        ManageCardScreen(
+            manageCardType = ManageCardType.ADD,
+            cardNumber = "0000000000000000",
+            expiredDate = "1123",
+            ownerName = "김",
+            password = "1234",
+            bankType = BankTypeUiModel.BC,
+            isAddCardEnabled = true,
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true, name = "EditCardScreenPreview")
+@Composable
+private fun Preview2() {
+    PaymentsTheme {
+        ManageCardScreen(
+            manageCardType = ManageCardType.EDIT,
             cardNumber = "0000000000000000",
             expiredDate = "1123",
             ownerName = "김",
