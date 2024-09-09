@@ -10,4 +10,14 @@ object PaymentCardsRepository {
     fun addCard(creditCard: CreditCard) {
         _creditCards.add(creditCard)
     }
+
+    fun editCard(
+        currentCard: CreditCard,
+        updatedCard: CreditCard
+    ) {
+        val currentCardIndex = _creditCards.indexOf(currentCard)
+        if(currentCardIndex == -1) return
+
+        _creditCards[currentCardIndex] = updatedCard
+    }
 }

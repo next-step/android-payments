@@ -41,7 +41,7 @@ class ManageCardViewModel(
     private val _bankType = MutableStateFlow(cardArgType.value.creditCardToEdit?.bankType?.toUiModel())
     val bankType: StateFlow<BankTypeUiModel?> = _bankType.asStateFlow()
 
-    val isAddCardEnabled: StateFlow<Boolean> =
+    val isSaveCardEnabled: StateFlow<Boolean> =
         combine(
             cardNumber,
             expiredDate,
@@ -81,8 +81,8 @@ class ManageCardViewModel(
     ) = cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4 && bankType != null
 
 
-    private val _cardAdded = MutableStateFlow(ManageCardEvent.Pending)
-    val cardAdded: StateFlow<ManageCardEvent> = _cardAdded.asStateFlow()
+    private val _cardChanged = MutableStateFlow(ManageCardEvent.Pending)
+    val cardChanged: StateFlow<ManageCardEvent> = _cardChanged.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
         if (cardNumber.length > 16) return
@@ -107,22 +107,34 @@ class ManageCardViewModel(
         _bankType.value = bankTypeUiModel
     }
 
-    fun addCard() {
+    fun saveCard() {
         val selectedBankType = bankType.value?.toEntity() ?: return
 
-        PaymentCardsRepository.addCard(
-            CreditCard(
-                cardNumber = cardNumber.value,
-                expiredDate = expiredDate.value,
-                ownerName = ownerName.value,
-                password = password.value,
-                bankType = selectedBankType
-            )
+        val creditCard = CreditCard(
+            cardNumber = cardNumber.value,
+            expiredDate = expiredDate.value,
+            ownerName = ownerName.value,
+            password = password.value,
+            bankType = selectedBankType
         )
-        _cardAdded.value = ManageCardEvent.Success
+
+        when(cardArgType.value){
+            is CardArgType.AddCardArg -> {
+                PaymentCardsRepository.addCard(creditCard)
+            }
+            is CardArgType.EditCardArg -> {
+                cardArgType.value.creditCardToEdit?.let { currentCard ->
+                    PaymentCardsRepository.editCard(currentCard, creditCard)
+                }
+
+            }
+        }
+
+        _cardChanged.value = ManageCardEvent.Success
     }
 
-    fun cancelToAddCard() {
-        _cardAdded.value = ManageCardEvent.Cancel
+
+    fun cancelToChangeCard() {
+        _cardChanged.value = ManageCardEvent.Cancel
     }
 }

@@ -17,7 +17,7 @@ import nextstep.payments.screen.model.ManageCardType
 @Composable
 fun ManageCardTopBar(
     manageCardType: ManageCardType,
-    isAddCardEnabled: Boolean,
+    isSaveCardEnabled: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -42,7 +42,7 @@ fun ManageCardTopBar(
         actions = {
             IconButton(
                 modifier = Modifier.testTag("saveButton"),
-                enabled = isAddCardEnabled,
+                enabled = isSaveCardEnabled,
                 onClick = { onSaveClick() }
             ) {
                 Icon(

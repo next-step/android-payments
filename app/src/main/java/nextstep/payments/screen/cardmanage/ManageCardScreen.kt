@@ -48,8 +48,8 @@ internal fun ManageCardRouteScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val bankType by viewModel.bankType.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val isAddCardEnabled by viewModel.isAddCardEnabled.collectAsStateWithLifecycle()
+    val cardChanged by viewModel.cardChanged.collectAsStateWithLifecycle()
+    val isSaveCardEnabled by viewModel.isSaveCardEnabled.collectAsStateWithLifecycle()
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
@@ -62,13 +62,13 @@ internal fun ManageCardRouteScreen(
 
     LaunchedEffect(modalBottomSheetState.targetValue) {
         if (modalBottomSheetState.hasExpandedState && modalBottomSheetState.targetValue == SheetValue.Hidden && bankType == null) {
-           viewModel.cancelToAddCard()
+           viewModel.cancelToChangeCard()
         }
     }
 
-    LaunchedEffect(key1 = cardAdded) {
-        if (cardAdded != ManageCardEvent.Pending) {
-            navigateToCardList(cardAdded)
+    LaunchedEffect(key1 = cardChanged) {
+        if (cardChanged != ManageCardEvent.Pending) {
+            navigateToCardList(cardChanged)
         }
     }
 
@@ -88,16 +88,16 @@ internal fun ManageCardRouteScreen(
         ownerName = ownerName,
         password = password,
         bankType = bankType,
-        isAddCardEnabled = isAddCardEnabled,
+        isSaveCardEnabled = isSaveCardEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = {
-            viewModel.cancelToAddCard()
+            viewModel.cancelToChangeCard()
         },
         onSaveClick = {
-            viewModel.addCard()
+            viewModel.saveCard()
         }
     )
 }
@@ -111,7 +111,7 @@ internal fun ManageCardScreen(
     ownerName: String,
     password: String,
     bankType: BankTypeUiModel?,
-    isAddCardEnabled : Boolean,
+    isSaveCardEnabled : Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -125,7 +125,7 @@ internal fun ManageCardScreen(
         topBar = {
             ManageCardTopBar(
                 manageCardType = manageCardType,
-                isAddCardEnabled = isAddCardEnabled,
+                isSaveCardEnabled = isSaveCardEnabled,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick
             )
@@ -186,7 +186,7 @@ private fun Preview1() {
             ownerName = "김",
             password = "1234",
             bankType = BankTypeUiModel.BC,
-            isAddCardEnabled = true,
+            isSaveCardEnabled = true,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
@@ -209,7 +209,7 @@ private fun Preview2() {
             ownerName = "김",
             password = "1234",
             bankType = BankTypeUiModel.BC,
-            isAddCardEnabled = true,
+            isSaveCardEnabled = true,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
