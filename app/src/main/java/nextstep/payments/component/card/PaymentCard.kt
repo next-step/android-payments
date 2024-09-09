@@ -232,3 +232,13 @@ private fun Preview4() {
     }
 }
 
+@Preview(showBackground = true, name = "PaymentCardWithoutBankType", backgroundColor = 0xFF333333)
+@Composable
+private fun Preview5() {
+    PaymentsTheme {
+        PaymentCard(
+            bankType = null
+        )
+    }
+}
+
