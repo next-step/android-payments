@@ -32,7 +32,7 @@ fun OneCardComponent(
     ) {
         PaymentCard(
             modifier = Modifier
-                .padding(start = 52.dp, end = 52.dp)
+                .padding(horizontal = 52.dp)
                 .clickable {
                     onCardClick(card)
                 },
