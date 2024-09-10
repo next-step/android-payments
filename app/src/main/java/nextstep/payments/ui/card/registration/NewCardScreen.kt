@@ -33,7 +33,6 @@ import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.card.registration.component.BankSelectRow
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
-import kotlin.reflect.KFunction0
 
 // Stateful
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +51,6 @@ fun NewCardScreen(
     val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
     val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -77,15 +75,6 @@ fun NewCardScreen(
             )
         }
     }
-    val saveFunction: KFunction0<Unit> = when (uiState) {
-        RegistrationUiState.NewCard -> {
-            viewModel::addCard
-        }
-
-        RegistrationUiState.EditCard -> {
-            viewModel::editCard
-        }
-    }
 
     NewCardScreen(
         modifier = modifier,
@@ -99,7 +88,7 @@ fun NewCardScreen(
         setOwnerNamedNumber = viewModel::setOwnerName,
         setPasswordNumber = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = saveFunction,
+        onSaveClick = viewModel::saveCard,
     )
 }
 

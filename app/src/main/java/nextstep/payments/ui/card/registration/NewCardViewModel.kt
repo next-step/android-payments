@@ -30,8 +30,7 @@ class NewCardViewModel(
     private val _selectedBankType = MutableStateFlow(BankType.NOT_SELECTED)
     val selectedBankType: StateFlow<BankType> = _selectedBankType.asStateFlow()
 
-    var oldCard: Card? = null
-        private set
+    private var oldCard: Card? = null
 
     private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.NewCard)
     val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
@@ -57,7 +56,14 @@ class NewCardViewModel(
         _selectedBankType.value = bankType
     }
 
-    fun addCard() {
+    fun saveCard() {
+        when (uiState.value) {
+            RegistrationUiState.NewCard -> addCard()
+            RegistrationUiState.EditCard -> editCard()
+        }
+    }
+
+    private fun addCard() {
         repository.addCard(
             Card(
                 id = repository.createId(),
@@ -71,7 +77,7 @@ class NewCardViewModel(
         _cardAdded.value = true
     }
 
-    fun editCard() {
+    private fun editCard() {
         if (isCardDataChange()) {
             repository.editCard(
                 oldCard = oldCard,
