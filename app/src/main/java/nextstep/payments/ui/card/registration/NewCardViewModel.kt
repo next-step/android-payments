@@ -66,7 +66,6 @@ class NewCardViewModel(
     private fun addCard() {
         repository.addCard(
             Card(
-                id = repository.createId(),
                 cardNumber = cardNumber.value,
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
@@ -78,19 +77,20 @@ class NewCardViewModel(
     }
 
     private fun editCard() {
-        if (isCardDataChange()) {
-            repository.editCard(
-                oldCard = oldCard,
-                newCard = Card(
-                    id = oldCard!!.id,
-                    cardNumber = cardNumber.value,
-                    expiredDate = expiredDate.value,
-                    ownerName = ownerName.value,
-                    password = password.value,
-                    bankType = selectedBankType.value
+        oldCard?.let {
+            if (isCardDataChange()) {
+                repository.editCard(
+                    newCard = Card(
+                        id = it.id,
+                        cardNumber = cardNumber.value,
+                        expiredDate = expiredDate.value,
+                        ownerName = ownerName.value,
+                        password = password.value,
+                        bankType = selectedBankType.value
+                    )
                 )
-            )
-            _cardAdded.value = true
+                _cardAdded.value = true
+            }
         }
     }
 
