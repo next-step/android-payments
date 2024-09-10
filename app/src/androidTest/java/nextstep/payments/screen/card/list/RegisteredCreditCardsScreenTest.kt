@@ -51,6 +51,7 @@ class RegisteredCreditCardsScreenTest {
         val registeredCreditCards = RegisteredCreditCards(
             mutableListOf(
                 Card(
+                    id = 1,
                     cardNumber = "1234-5678-1234-5678",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
@@ -58,6 +59,7 @@ class RegisteredCreditCardsScreenTest {
                     bankType = BankType.BC
                 ),
                 Card(
+                    id = 2,
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
@@ -120,6 +122,7 @@ class RegisteredCreditCardsScreenTest {
         // given : 카드 등록이 되어있다.
         PaymentCardsRepository.addCard(
             Card(
+                id = 13,
                 cardNumber = "1234-5678-1234-5628",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
@@ -130,6 +133,7 @@ class RegisteredCreditCardsScreenTest {
         val registeredCreditCards = RegisteredCreditCards(
             mutableListOf(
                 Card(
+                    id = 4,
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",

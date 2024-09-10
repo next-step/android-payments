@@ -60,6 +60,7 @@ fun PaymentCard(
 @Composable
 fun PaymentCardContents(
     card: Card,
+    modifier: Modifier = Modifier,
     onClick: (Card) -> Unit = {}
 ) {
     Box(
