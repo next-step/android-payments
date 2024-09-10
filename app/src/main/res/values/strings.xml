@@ -12,4 +12,7 @@
     <string name="newcard_top_app_bar_back_navigation_icon">뒤로 가기</string>
     <string name="newcard_top_app_bar_actions_icon">완료</string>
     <string name="cardlist_empty_card_icon">추가</string>
+    <string name="cardlist_top_app_bar_title">Payments</string>
+    <string name="cardlist_top_app_bar_button">추가</string>
+    <string name="cardlist_text_no_card">새로운 카드를 등록해주세요</string>
 </resources>
