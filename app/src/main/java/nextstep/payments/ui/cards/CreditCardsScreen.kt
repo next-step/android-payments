@@ -20,12 +20,14 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CreditCardsScreen(
     viewModel: CreditCardsViewModel,
     onAddClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.creditCardState.collectAsStateWithLifecycle()
     CreditCardsScreen(
         state,
         onAddClick,
+        onCardClick,
         modifier
     )
 }
@@ -34,6 +36,7 @@ fun CreditCardsScreen(
 private fun CreditCardsScreen(
     state: CreditCardUiState,
     onAddClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -59,13 +62,15 @@ private fun CreditCardsScreen(
                 OneCardComponent(
                     card = state.card,
                     onAddClick = onAddClick,
-                    modifier = componentModifier
+                    modifier = componentModifier,
+                    onCardClick = onCardClick
                 )
             }
             is CreditCardUiState.Many -> {
                 ManyCardComponent(
                     cards = state.cards,
-                    modifier = componentModifier
+                    modifier = componentModifier,
+                    onCardClick = onCardClick
                 )
             }
         }
@@ -78,7 +83,8 @@ private fun CreditCardEmptyScreenPreview() {
     PaymentsTheme {
         CreditCardsScreen(
             state = CreditCardUiState.Empty,
-            onAddClick = {}
+            onAddClick = {},
+            onCardClick = {}
         )
     }
 }
@@ -97,7 +103,8 @@ private fun CreditCardOneScreenPreview() {
                     cardCompany = CardCompany.KB
                 )
             ),
-            onAddClick = {}
+            onAddClick = {},
+            onCardClick = {}
         )
     }
 }
@@ -109,14 +116,45 @@ private fun CreditCardManyScreenPreview() {
         CreditCardsScreen(
             state = CreditCardUiState.Many(
                 cards = listOf(
-                    Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", CardCompany.HANA),
-                    Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", CardCompany.LOTTE),
-                    Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", CardCompany.BC),
-                    Card("4444-4444-4444-4444", "44 / 44", "최컴포즈", "4444", CardCompany.WOORI),
-                    Card("5555-5555-5555-5555", "55 / 55", "이컴포즈", "5555", CardCompany.SHINHAN),
+                    Card(id = 0,
+                        cardNumber = "1111-1111-1111-1111",
+                        expiredDate = "11 / 11",
+                        ownerName = "컴포즈",
+                        password = "1111",
+                        cardCompany = CardCompany.HANA
+                    ),
+                    Card(id = 1,
+                        cardNumber = "2222-2222-2222-2222",
+                        expiredDate = "22 / 22",
+                        ownerName = "김컴포즈",
+                        password = "2222",
+                        cardCompany = CardCompany.LOTTE
+                    ),
+                    Card(id = 2,
+                        cardNumber = "3333-3333-3333-3333",
+                        expiredDate = "33 / 33",
+                        ownerName = "박컴포즈",
+                        password = "3333",
+                        cardCompany = CardCompany.BC
+                    ),
+                    Card(id = 3,
+                        cardNumber = "4444-4444-4444-4444",
+                        expiredDate = "44 / 44",
+                        ownerName = "최컴포즈",
+                        password = "4444",
+                        cardCompany = CardCompany.WOORI
+                    ),
+                    Card(id = 4,
+                        cardNumber = "5555-5555-5555-5555",
+                        expiredDate = "55 / 55",
+                        ownerName = "이컴포즈",
+                        password = "5555",
+                        cardCompany = CardCompany.SHINHAN
+                    ),
                 )
             ),
-            onAddClick = {}
+            onAddClick = {},
+            onCardClick = {}
         )
     }
 }

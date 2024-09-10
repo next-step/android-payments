@@ -1,5 +1,6 @@
 package nextstep.payments.ui.cards.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun OneCardComponent(
     card: Card,
+    onCardClick: (Card) -> Unit,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -29,7 +31,11 @@ fun OneCardComponent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PaymentCard(
-            modifier = Modifier.padding(start = 52.dp, end = 52.dp),
+            modifier = Modifier
+                .padding(horizontal = 52.dp)
+                .clickable {
+                    onCardClick(card)
+                },
             card = card,
         )
 
@@ -52,6 +58,7 @@ private fun OneCardComponentPreview() {
                 password = "1111",
                 cardCompany = CardCompany.KB
             ),
+            onCardClick = {},
             onAddClick = {}
         )
     }

@@ -1,43 +1,95 @@
 package nextstep.payments.ui.newcard
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
 
-class NewCardViewModel (
-    private val repository: PaymentCardsRepository = PaymentCardsRepository
-): ViewModel() {
+class NewCardViewModel(
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+    private val cardModification: Card? = savedStateHandle[NewCardActivity.MODIFY_CARD]
+
+    private val _isModify = MutableStateFlow(cardModification != null)
+    val isModify: StateFlow<Boolean> = _isModify.asStateFlow()
+
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _cardNumber = MutableStateFlow("")
+    private val _cardNumber = MutableStateFlow(cardModification?.cardNumber ?: "")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
 
-    private val _expiredDate = MutableStateFlow("")
+    private val _expiredDate = MutableStateFlow(cardModification?.expiredDate ?: "")
     val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
 
-    private val _ownerName = MutableStateFlow("")
+    private val _ownerName = MutableStateFlow(cardModification?.ownerName ?: "")
     val ownerName: StateFlow<String> = _ownerName.asStateFlow()
 
-    private val _password = MutableStateFlow("")
+    private val _password = MutableStateFlow(cardModification?.password ?: "")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _selectedCard = MutableStateFlow<CardCompany?>(null)
+    private val _selectedCard = MutableStateFlow<CardCompany?>(cardModification?.cardCompany)
     val selectedCard: StateFlow<CardCompany?> = _selectedCard.asStateFlow()
 
     private val _cardCompanies = MutableStateFlow<List<CardCompany>>(CardCompany.entries)
     val cardCompanies = _cardCompanies.asStateFlow()
 
+    val canSave = combine(
+        flow = cardNumber,
+        flow2 = expiredDate,
+        flow3 = ownerName,
+        flow4 = password,
+        flow5 = selectedCard
+    ) { cardNumber, expiredDate, ownerName, password, company ->
+        isCardModificationAllowed(
+            Card(
+                cardNumber = cardNumber,
+                ownerName = ownerName,
+                expiredDate = expiredDate,
+                password = password,
+                cardCompany = company
+            )
+        )
+    }.stateIn(
+        scope = viewModelScope, started = SharingStarted.WhileSubscribed(), initialValue = false
+    )
+
+    private fun isCardModificationAllowed(changeCard: Card): Boolean {
+        val isNotEmpty = with(changeCard) {
+            cardNumber.isNotBlank() &&
+                    expiredDate.isNotBlank() &&
+                    ownerName.isNotBlank() &&
+                    password.isNotBlank()
+        }
+        val isChanged = with(changeCard) {
+            cardModification == null ||
+                    cardNumber != cardModification.cardNumber ||
+                    expiredDate != cardModification.expiredDate ||
+                    ownerName != cardModification.ownerName ||
+                    password != cardModification.password ||
+                    cardCompany != cardModification.cardCompany
+        }
+        return isNotEmpty && isChanged
+    }
+
+
     fun setCardCompany(cardCompany: CardCompany) {
         _selectedCard.value = cardCompany
     }
 
-    fun addCard(card: Card) {
-        repository.addCard(card)
+    fun saveCard(card: Card) {
+        if (cardModification != null) {
+            val modifyCard = card.copy(id = cardModification.id)
+            PaymentCardsRepository.modifyCard(modifyCard)
+        } else PaymentCardsRepository.addCard(card)
         _cardAdded.value = true
     }
 

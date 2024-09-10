@@ -22,4 +22,8 @@ class NewCardActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        const val MODIFY_CARD = "MODIFY_CARD"
+    }
 }

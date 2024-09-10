@@ -22,12 +22,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.utils.maskCardNumber
+import nextstep.payments.utils.formatAndMaskingCardNumber
+import nextstep.payments.utils.formatExpiredDate
 
 @Composable
 fun PaymentCard(
@@ -46,7 +46,8 @@ fun PaymentCard(
             .background(
                 color = Color(cardCompany?.backgroundColor ?: 0xFF333333),
                 shape = RoundedCornerShape(5.dp),
-            ), Alignment.CenterStart
+            )
+            , Alignment.CenterStart,
     ) {
         ProvideTextStyle(
             value = MaterialTheme.typography.bodySmall.copy(
@@ -80,11 +81,12 @@ fun PaymentCard(
 
 @Composable
 fun PaymentCard(
-    modifier: Modifier = Modifier,
     card: Card,
+    modifier: Modifier = Modifier
 ) {
     PaymentCard(
-        cardCompany = card.cardCompany, modifier = modifier
+        cardCompany = card.cardCompany,
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
@@ -92,7 +94,7 @@ fun PaymentCard(
                 .padding(14.dp),
         ) {
             Text(
-                text = card.cardNumber.maskCardNumber(),
+                text = card.cardNumber.formatAndMaskingCardNumber(),
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -102,7 +104,7 @@ fun PaymentCard(
                     text = card.ownerName,
                 )
                 Text(
-                    text = card.expiredDate,
+                    text = card.expiredDate.formatExpiredDate(),
                 )
             }
         }
@@ -123,7 +125,7 @@ private fun PaymentCardWithInfoPreview() {
     PaymentsTheme {
         PaymentCard(
             card = Card(
-                cardNumber = "0000000000000000",
+                cardNumber = "1234-5678-9012-3456",
                 expiredDate = "0000",
                 ownerName = "컴포즈",
                 password = "2200",

@@ -1,5 +1,6 @@
 package nextstep.payments.ui.cards.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -19,8 +20,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun ManyCardComponent(
-    modifier: Modifier = Modifier,
-    cards: List<Card>
+    cards: List<Card>,
+    onCardClick: (Card) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier
@@ -34,7 +36,8 @@ fun ManyCardComponent(
     ) {
         items(items = cards) { card ->
             PaymentCard(
-                card = card
+                modifier = Modifier.clickable { onCardClick(card) },
+                card = card,
             )
         }
     }
@@ -46,10 +49,23 @@ private fun ManyCardComponentPreview() {
     PaymentsTheme {
         ManyCardComponent(
             cards = listOf(
-                Card("1111-1111-1111-1111", "11 / 11", "컴포즈", "1111", cardCompany = CardCompany.KB),
-                Card("2222-2222-2222-2222", "22 / 22", "김컴포즈", "2222", cardCompany = CardCompany.KAKAOBANK),
-                Card("3333-3333-3333-3333", "33 / 33", "박컴포즈", "3333", cardCompany = CardCompany.BC)
+                Card(id = 1,
+                    cardNumber = "1111-1111-1111-1111",
+                    expiredDate = "11 / 11",
+                    ownerName = "컴포즈",
+                    password = "1111", cardCompany = CardCompany.KB),
+                Card(id = 2,
+                    cardNumber = "2222-2222-2222-2222",
+                    expiredDate = "22 / 22",
+                    ownerName = "김컴포즈",
+                    password = "2222", cardCompany = CardCompany.KAKAOBANK),
+                Card(id = 3,
+                    cardNumber = "3333-3333-3333-3333",
+                    expiredDate = "33 / 33",
+                    ownerName = "박컴포즈",
+                    password = "3333", cardCompany = CardCompany.BC)
             ),
+            onCardClick = {}
         )
     }
 }

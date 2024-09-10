@@ -53,10 +53,12 @@ internal fun NewCardScreen(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
     val cardCompanies by viewModel.cardCompanies.collectAsStateWithLifecycle()
-    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
+    val isModify by viewModel.isModify.collectAsStateWithLifecycle()
+    var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(!isModify) }
     val cardCompanyModalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
+    val canSave by viewModel.canSave.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -73,6 +75,8 @@ internal fun NewCardScreen(
         )
     }
     NewCardScreen(
+        isModify = isModify,
+        canSave = canSave,
         cardCompany = selectedCard,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
@@ -89,7 +93,7 @@ internal fun NewCardScreen(
                 cardCompanyModalBottomSheetState.show()
             }
         },
-        onSaveClick = viewModel::addCard,
+        onSaveClick = viewModel::saveCard,
         modifier = modifier
     )
 }
@@ -97,6 +101,8 @@ internal fun NewCardScreen(
 // stateless
 @Composable
 private fun NewCardScreen(
+    isModify: Boolean,
+    canSave: Boolean,
     cardCompany: CardCompany?,
     cardNumber: String,
     expiredDate: String,
@@ -118,14 +124,16 @@ private fun NewCardScreen(
                 onSaveClick = {
                     onSaveClick(
                         Card(
-                            cardNumber.chunked(4).joinToString("-"),
-                            "${expiredDate.take(2)} / ${expiredDate.drop(2)}",
-                            ownerName,
-                            password,
-                            cardCompany
+                            cardNumber = cardNumber,
+                            expiredDate = expiredDate,
+                            ownerName = ownerName,
+                            password = password,
+                            cardCompany = cardCompany
                         ),
                     )
                 },
+                title = if (isModify) "카드 수정" else "카드 추가",
+                canSave = canSave
             )
         },
         modifier = modifier
@@ -145,7 +153,7 @@ private fun NewCardScreen(
                     .clickable {
                         onChangeCardCompanyClick()
                     },
-                cardCompany = cardCompany
+                cardCompany = cardCompany,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -192,11 +200,82 @@ private fun NewCardScreen(
 }
 
 
-@Preview
+@Preview(name = "카드 추가 and 저장 버튼 비활성화")
 @Composable
-private fun NewCardScreenPreview() {
+private fun NewCardScreenSaveButtonUnablePreview() {
     PaymentsTheme {
         NewCardScreen(
+            isModify = false,
+            canSave = false,
+            cardCompany = CardCompany.KB,
+            cardNumber = "1211231122222222",
+            expiredDate = "121233",
+            ownerName = "컴포즈2",
+            password = "0000",
+            onBackClick = {},
+            onChangeCardCompanyClick = {},
+            onSaveClick = {},
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+        )
+    }
+}
+
+@Preview(name = "카드 추가 and 저장 버튼 비활성화")
+@Composable
+private fun NewCardScreenSaveButtonAblePreview() {
+    PaymentsTheme {
+        NewCardScreen(
+            isModify = false,
+            canSave = true,
+            cardCompany = CardCompany.KB,
+            cardNumber = "1211231122222222",
+            expiredDate = "121233",
+            ownerName = "컴포즈2",
+            password = "0000",
+            onBackClick = {},
+            onChangeCardCompanyClick = {},
+            onSaveClick = {},
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+        )
+    }
+}
+
+@Preview(name = "수정 화면 and 저장 버튼 비활성화")
+@Composable
+private fun ModifyCardScreenSaveButtonUnablePreview() {
+    PaymentsTheme {
+        NewCardScreen(
+            isModify = true,
+            canSave = false,
+            cardCompany = CardCompany.KB,
+            cardNumber = "1211231122222222",
+            expiredDate = "121233",
+            ownerName = "컴포즈2",
+            password = "0000",
+            onBackClick = {},
+            onChangeCardCompanyClick = {},
+            onSaveClick = {},
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+        )
+    }
+}
+
+@Preview(name = "수정 화면 and 저장 버튼 비활성화")
+@Composable
+private fun ModifyCardScreenSaveButtonAblePreview() {
+    PaymentsTheme {
+        NewCardScreen(
+            isModify = true,
+            canSave = true,
             cardCompany = CardCompany.KB,
             cardNumber = "1211231122222222",
             expiredDate = "121233",
