@@ -16,4 +16,12 @@
     <string name="new_card_screen_card_owner_name_hint">카드에 표시된 이름을 입력하세요.</string>
     <string name="new_card_screen_card_password_label">비밀번호</string>
     <string name="new_card_screen_card_password_hint">0000</string>
+    <string name="card_company_bc">BC카드</string>
+    <string name="card_company_shinhan">신한카드</string>
+    <string name="card_company_kakaobank">카카오뱅크</string>
+    <string name="card_company_hyundai">현대카드</string>
+    <string name="card_company_woori">우리카드</string>
+    <string name="card_company_lotte">롯데카드</string>
+    <string name="card_company_hana">하나카드</string>
+    <string name="card_company_kb">국민카드</string>
 </resources>

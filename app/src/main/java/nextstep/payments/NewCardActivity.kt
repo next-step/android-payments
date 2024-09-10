@@ -1,5 +1,6 @@
 package nextstep.payments
 
+import CardCompanySelector
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +39,12 @@ class NewCardActivity : ComponentActivity() {
                             )
                         )
                     },
+                )
+
+                CardCompanySelector(
+                    cardCompanies = viewModel.cardCompanies,
+                    onCompanySelected = { company -> println("Selected: $company") },
+                    onDismissRequest = { println("Dismissed") }
                 )
             }
         }

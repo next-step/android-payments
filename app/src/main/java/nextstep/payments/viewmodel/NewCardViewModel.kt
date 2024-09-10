@@ -5,8 +5,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.model.Card
+import nextstep.payments.model.CardCompany
+import nextstep.payments.repository.CardCompaniesRepository
 import nextstep.payments.repository.PaymentCardsRepository
-import java.time.LocalDate
 
 class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) : ViewModel() {
 
@@ -24,6 +25,9 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+
+    val cardCompanies: List<CardCompany> = CardCompaniesRepository.data
+
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
