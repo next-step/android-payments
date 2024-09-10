@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import nextstep.payments.ui.cardlist.navigation.CardListNavigation
 import nextstep.payments.ui.cardlist.navigation.cardListScreen
+import nextstep.payments.ui.newcard.navigation.navigateToNewCard
 import nextstep.payments.ui.newcard.navigation.newCardScreen
 
 @Composable
@@ -17,6 +18,6 @@ fun AppNavHost(
         startDestination = startDestination,
     ) {
         newCardScreen()
-        cardListScreen()
+        cardListScreen(navController::navigateToNewCard)
     }
 }

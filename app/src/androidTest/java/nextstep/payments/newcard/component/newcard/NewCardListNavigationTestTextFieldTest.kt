@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.component
+package nextstep.payments.newcard.component.newcard
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +19,7 @@ import nextstep.payments.ui.newcard.component.NewCardVisualTransformation.Expire
 import org.junit.Rule
 import org.junit.Test
 
-class NewCardTextFieldTest {
+class NewCardListNavigationTestTextFieldTest {
 
     @get:Rule
     val composeRule = createComposeRule()

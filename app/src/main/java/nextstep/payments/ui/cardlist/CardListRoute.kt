@@ -1,9 +1,15 @@
 package nextstep.payments.ui.cardlist
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun CardListRoute(modifier: Modifier = Modifier) {
-
+fun CardListRoute(
+    onAddCardClick: () -> Unit,
+    cardListViewModel: CardListViewModel = viewModel(),
+) {
+    CardListScreen(
+        cards = listOf(),
+        onAddCardClick = onAddCardClick,
+    )
 }

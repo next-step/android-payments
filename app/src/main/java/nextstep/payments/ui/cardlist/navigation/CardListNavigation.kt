@@ -1,15 +1,16 @@
 package nextstep.payments.ui.cardlist.navigation
 
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import nextstep.payments.ui.cardlist.CardListRoute
 import nextstep.payments.ui.cardlist.navigation.CardListNavigation.ROUTE
 
-fun NavGraphBuilder.cardListScreen(modifier: Modifier = Modifier) {
+fun NavGraphBuilder.cardListScreen(
+    onAddCardClick: () -> Unit,
+) {
     composable(route = ROUTE) {
-        CardListRoute()
+        CardListRoute(onAddCardClick = onAddCardClick)
     }
 }
 
