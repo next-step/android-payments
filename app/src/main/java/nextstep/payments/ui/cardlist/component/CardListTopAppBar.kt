@@ -25,7 +25,7 @@ fun CardListTopAppBar(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(R.string.card_list_top_app_bar_title),
+                text = stringResource(R.string.cardlist_top_app_bar_title),
                 fontFamily = RobotoRegular,
                 fontSize = 22.sp,
                 color = Color.Black,
@@ -33,7 +33,7 @@ fun CardListTopAppBar(
         },
         actions = {
             Text(
-                text = stringResource(R.string.card_list_top_app_bar_button),
+                text = stringResource(R.string.cardlist_top_app_bar_button),
                 fontFamily = RobotoBold,
                 fontSize = 18.sp,
                 color = Color.Black,
@@ -42,7 +42,7 @@ fun CardListTopAppBar(
                     .padding(all = 20.dp),
             )
         },
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 18.dp),
     )
 }
 
