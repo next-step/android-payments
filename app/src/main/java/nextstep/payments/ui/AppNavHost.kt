@@ -17,7 +17,7 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        newCardScreen()
+        newCardScreen(navController::popBackStack)
         cardListScreen(navController::navigateToNewCard)
     }
 }

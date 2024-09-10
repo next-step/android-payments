@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun NewCardRoute(
+    onBackClick: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -23,7 +24,7 @@ fun NewCardRoute(
         setPassword = viewModel::setPassword,
         setOwnerName = viewModel::setOwnerName,
         setExpiredDate = viewModel::setExpiredDate,
-        onBackClick = {},
+        onBackClick = onBackClick,
         onSaveClick = {},
     )
 }

@@ -18,7 +18,7 @@ import nextstep.payments.R.string.newcard_top_app_bar_title
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardTopBar(
+fun NewCardTopAppBar(
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -48,7 +48,7 @@ fun NewCardTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun NewCardTopBarPreview() {
-    NewCardTopBar(
+    NewCardTopAppBar(
         onBackClick = { },
         onSaveClick = { },
     )

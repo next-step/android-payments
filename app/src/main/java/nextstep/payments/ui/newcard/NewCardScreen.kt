@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.newcard.component.NewCardTextField
-import nextstep.payments.ui.newcard.component.NewCardTopBar
+import nextstep.payments.ui.newcard.component.NewCardTopAppBar
 import nextstep.payments.ui.newcard.component.NewCardVisualTransformation.CreditCardVisualTransformation
 import nextstep.payments.ui.newcard.component.NewCardVisualTransformation.ExpiredDateVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -37,7 +37,7 @@ fun NewCardScreen(
 ) {
     Scaffold(
         topBar = {
-            NewCardTopBar(
+            NewCardTopAppBar(
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )

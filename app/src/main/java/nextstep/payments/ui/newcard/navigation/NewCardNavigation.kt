@@ -7,9 +7,13 @@ import nextstep.payments.ui.newcard.NewCardRoute
 import nextstep.payments.ui.newcard.navigation.NewCardDestination.ROUTE
 
 
-fun NavGraphBuilder.newCardScreen() {
+fun NavGraphBuilder.newCardScreen(
+    onBackClick: () -> Unit,
+) {
     composable(route = ROUTE) {
-        NewCardRoute()
+        NewCardRoute(
+            onBackClick = onBackClick,
+        )
     }
 }
 
