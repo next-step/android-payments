@@ -10,59 +10,62 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.viewmodel.NewCardViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardCompanySelector(
-    cardCompanies: List<CardCompany>,
+fun CardCompanySelectBottomSheet(
+    viewModel: NewCardViewModel,
     onCompanySelected: (CardCompany) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
+    var showBottomSheet by remember {
+        mutableStateOf(false)
+    }
 
-    LaunchedEffect(Unit) {
-        scope.launch {
-            bottomSheetState.show()
+    LaunchedEffect(key1 = showBottomSheet) {
+        if (showBottomSheet) {
+            bottomSheetState.hide()
         }
     }
 
-    ModalBottomSheet(
-        sheetState = bottomSheetState,
-        onDismissRequest = onDismissRequest,
-    ) {
-        BankSelectRow(
-            cardCompanies = cardCompanies,
-            onCompanySelected = onCompanySelected,
-            bottomSheetState = bottomSheetState,
-            scope = scope
-        )
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            onDismissRequest()
+    if (!showBottomSheet) {
+        ModalBottomSheet(
+            sheetState = bottomSheetState,
+            onDismissRequest = {
+                showBottomSheet = true
+                onDismissRequest()
+            },
+            properties = ModalBottomSheetDefaults.properties(
+                shouldDismissOnBackPress = false,
+            ),
+        ) {
+            BankSelectRow(
+                cardCompanies = viewModel.cardCompanies,
+                onCompanySelected = { company ->
+                    showBottomSheet = true
+                    onCompanySelected(company)
+                },
+            )
         }
     }
+
 }
 
 private const val COLUMN_COUNT = 4
 private const val ROW_COUNT = 2
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectRow(
     cardCompanies: List<CardCompany>,
     onCompanySelected: (CardCompany) -> Unit,
-    bottomSheetState: SheetState,
-    scope: CoroutineScope
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -81,7 +84,6 @@ fun BankSelectRow(
                         .align(Alignment.CenterVertically)
                         .clickable {
                             onCompanySelected(company)
-                            scope.launch { bottomSheetState.hide() }
                         }
                 ) {
                     Image(
@@ -102,7 +104,6 @@ fun BankSelectRow(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun BankSelectRowPreview() {
@@ -119,10 +120,6 @@ fun BankSelectRowPreview() {
                 CardCompany(logo = R.drawable.kb, name = "국민카드")
             ),
             onCompanySelected = { company -> println("Selected: $company") },
-            bottomSheetState = rememberModalBottomSheetState(
-                confirmValueChange = { false }
-            ),
-            scope = rememberCoroutineScope()
         )
     }
 }

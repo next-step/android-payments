@@ -129,15 +129,17 @@ private fun CardNotExistListPreview() {
 private fun CardOneExistListPreview() {
     PaymentsTheme {
         val cardViewModel = CardsViewModel()
-        cardViewModel.notifyCardAdded()
+        cardViewModel.updateCardUiState()
         CardsScreenStateless(
             onCardAddClicked = {},
             cards = listOf(
                 Card(
-                    "1234-5678-9012-3456",
-                    "12/34",
-                    "홍길동",
-                    "1234"
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/34",
+                    ownerName = "홍길동",
+                    password = "1234",
+                    color = 0xFFF04651,
+                    cardCompany = "BC카드"
                 )
             ),
             uiState = CardUiState.One
@@ -150,22 +152,26 @@ private fun CardOneExistListPreview() {
 private fun CardManyExistListPreview() {
     PaymentsTheme {
         val cardViewModel = CardsViewModel()
-        cardViewModel.notifyCardAdded()
-        cardViewModel.notifyCardAdded()
+        cardViewModel.updateCardUiState()
+        cardViewModel.updateCardUiState()
         CardsScreenStateless(
             onCardAddClicked = {},
             cards = listOf(
                 Card(
-                    "4321-5678-9012-3456",
-                    "12/27",
-                    "제임스",
-                    "****"
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/27",
+                    ownerName = "제임스",
+                    password = "1111",
+                    color = 0xFFF04651,
+                    cardCompany = "BC카드"
                 ),
                 Card(
-                    "1234-5678-9012-123",
-                    "03/25",
-                    "홍길동",
-                    "****"
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "02/26",
+                    ownerName = "홍길동",
+                    password = "0000",
+                    color = 0xFF0E19ED,
+                    cardCompany = "신한카드"
                 )
             ),
             uiState = CardUiState.Many

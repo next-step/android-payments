@@ -1,5 +1,6 @@
 package nextstep.payments.model
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.ui.CardAdd
 import nextstep.payments.ui.PaymentCard
-import java.time.format.DateTimeFormatter
 
 sealed interface CardUiState {
     @Composable
@@ -65,13 +67,17 @@ fun CardList(
     cards: List<Card>,
     content: @Composable () -> Unit = {}
 ) {
-    val formatter = DateTimeFormatter.ofPattern("MM/yy")
-
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(36.dp),
     ) {
         itemsIndexed(cards) { _, card ->
             PaymentCard(
+                modifier = Modifier
+                    .background(
+                        color = Color(card.color),
+                        shape = RoundedCornerShape(5.dp),
+                    ),
+                cardCompany = card.cardCompany,
                 content = {
                     Column(
                         modifier = Modifier
@@ -104,7 +110,7 @@ fun CardList(
                                 fontSize = 12.sp
                             )
                             Text(
-                                text = card.expiredDate.format(formatter),
+                                text = card.expiredDate,
                                 color = Color.White,
                                 fontSize = 12.sp
                             )
@@ -117,4 +123,77 @@ fun CardList(
             content()
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CardListPreview() {
+    CardList(
+        cards = listOf(
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFFF04651,
+                cardCompany = "BC카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFF0E19ED,
+                cardCompany = "신한카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFFF0DE1F,
+                cardCompany = "카카오뱅크"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFF030201,
+                cardCompany = "현대카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFF416CE0,
+                cardCompany = "우리카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFFED2405,
+                cardCompany = "롯데카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFF0CAB73,
+                cardCompany = "하나카드"
+            ),
+            Card(
+                cardNumber = "1234-0000-1111-1234",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "1234",
+                color = 0xFF695F54,
+                cardCompany = "국민카드"
+            ),
+        )
+    )
 }

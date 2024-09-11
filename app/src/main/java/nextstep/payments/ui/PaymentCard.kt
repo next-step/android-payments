@@ -25,21 +25,31 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
+    cardCompany: String = "",
     content: @Composable () -> Unit = {},
 ) {
+    val defaultModifier = Modifier
+        .shadow(8.dp)
+        .size(width = 208.dp, height = 124.dp)
+        .background(
+            color = Color(0xFF333333),
+            shape = RoundedCornerShape(5.dp),
+        )
+
     Box(
         contentAlignment = Alignment.CenterStart,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
-            )
+        modifier = defaultModifier.then(modifier)
     ) {
         Column {
+            Text(
+                text = cardCompany,
+                color = Color.White,
+                fontSize = 12.sp,
+                modifier = Modifier
+                    .padding(start = 14.dp, bottom = 3.dp),
+            )
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .padding(start = 14.dp, bottom = 10.dp)
                     .size(width = 40.dp, height = 26.dp)
                     .background(
@@ -54,9 +64,17 @@ fun PaymentCard(
 
 @Preview
 @Composable
-fun PaymentCardPreview() {
+fun BcCardPreview() {
     PaymentsTheme {
         PaymentCard(
+            modifier = Modifier
+                .shadow(8.dp)
+                .size(width = 208.dp, height = 124.dp)
+                .background(
+                    color = Color(0xFFF04651),
+                    shape = RoundedCornerShape(5.dp),
+                ),
+            cardCompany = "BC카드",
             content = {
                 Column(
                     modifier = Modifier
@@ -101,7 +119,7 @@ fun PaymentCardPreview() {
 
 @Preview
 @Composable
-fun PaymentCard2Preview() {
+fun EmptyPaymentCardPreview() {
     PaymentsTheme {
         PaymentCard()
     }

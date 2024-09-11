@@ -1,6 +1,6 @@
 package nextstep.payments
 
-import CardCompanySelector
+import CardCompanySelectBottomSheet
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,15 +36,19 @@ class NewCardActivity : ComponentActivity() {
                                 expiredDate = viewModel.expiredDate.value,
                                 ownerName = viewModel.ownerName.value,
                                 password = viewModel.password.value,
+                                color = viewModel.cardCompanyType.value.color,
+                                cardCompany = viewModel.cardCompanyType.value.name,
                             )
                         )
                     },
                 )
 
-                CardCompanySelector(
-                    cardCompanies = viewModel.cardCompanies,
-                    onCompanySelected = { company -> println("Selected: $company") },
-                    onDismissRequest = { println("Dismissed") }
+                CardCompanySelectBottomSheet(
+                    viewModel = viewModel,
+                    onCompanySelected = { company ->
+                        viewModel.updateCardCompany(company)
+                    },
+                    onDismissRequest = { }
                 )
             }
         }

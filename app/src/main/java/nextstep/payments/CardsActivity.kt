@@ -25,7 +25,7 @@ class CardsActivity : ComponentActivity() {
                     rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                         if (it.resultCode == RESULT_OK) {
                             viewModel.fetchCards()
-                            viewModel.notifyCardAdded()
+                            viewModel.updateCardUiState()
                         }
                     }
                 CardsScreenStateful(

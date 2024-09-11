@@ -25,7 +25,7 @@ class CardsViewModel(private val repository: PaymentCardsRepository = PaymentCar
         }
     }
 
-    fun notifyCardAdded() {
+    fun updateCardUiState() {
         _uiState.update { currentState ->
             when (currentState) {
                 is CardUiState.Empty -> CardUiState.One
