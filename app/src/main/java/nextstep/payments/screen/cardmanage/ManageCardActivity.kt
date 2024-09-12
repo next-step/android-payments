@@ -11,8 +11,8 @@ class ManageCardActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 ManageCardRouteScreen(
-                    navigateToCardList = { isAdded ->
-                        if(isAdded == ManageCardEvent.Success) setResult(RESULT_OK)
+                    navigateToCardList = { isChanged ->
+                        if(isChanged == ManageCardEvent.Success) setResult(RESULT_OK)
                         finish()
                     }
                 )

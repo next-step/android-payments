@@ -13,6 +13,9 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -21,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import nextstep.payments.component.bottomsheet.bank.BankSelectBottomSheet
 import nextstep.payments.component.card.PaymentCard
 import nextstep.payments.component.textfield.CardNumberTextFiled
@@ -51,18 +55,27 @@ internal fun ManageCardRouteScreen(
     val cardChanged by viewModel.cardChanged.collectAsStateWithLifecycle()
     val isSaveCardEnabled by viewModel.isSaveCardEnabled.collectAsStateWithLifecycle()
     val modalBottomSheetState = rememberModalBottomSheetState(
-        confirmValueChange = { false }
+        confirmValueChange = {
+            bankType != null
+        }
     )
+    var shouldHideBottomSheet by remember { mutableStateOf(false) }
+    var isShownBottomSheet by remember { mutableStateOf(true) }
 
-    LaunchedEffect(key1 = bankType) {
-        if (bankType != null) {
-            modalBottomSheetState.hide()
+    LaunchedEffect(key1 = cardChanged) {
+        if (cardChanged != ManageCardEvent.Pending) {
+            navigateToCardList(cardChanged)
         }
     }
 
     LaunchedEffect(modalBottomSheetState.targetValue) {
-        if (modalBottomSheetState.hasExpandedState && modalBottomSheetState.targetValue == SheetValue.Hidden && bankType == null) {
-           viewModel.cancelToChangeCard()
+        if (modalBottomSheetState.hasExpandedState && modalBottomSheetState.targetValue == SheetValue.Hidden) {
+            if( bankType == null) {
+                viewModel.cancelToChangeCard()
+            }
+            else {
+                shouldHideBottomSheet = true
+            }
         }
     }
 
@@ -72,10 +85,30 @@ internal fun ManageCardRouteScreen(
         }
     }
 
-    if (bankType == null) {
+    LaunchedEffect(key1 = bankType) {
+        if (bankType != null) {
+            shouldHideBottomSheet = true
+        }
+    }
+
+    LaunchedEffect(shouldHideBottomSheet) {
+        if(shouldHideBottomSheet){
+            launch {
+                modalBottomSheetState.hide()
+            }.invokeOnCompletion {
+                isShownBottomSheet = false
+                shouldHideBottomSheet = false
+            }
+        }
+    }
+
+    if (isShownBottomSheet) {
         BankSelectBottomSheet(
             onBankTypeClick = viewModel::setBankType,
             modalBottomSheetState = modalBottomSheetState,
+            onDismissRequest = {
+                shouldHideBottomSheet = true
+            },
             modifier = Modifier.testTag("BankSelectBottomSheet")
         )
     }
@@ -93,6 +126,9 @@ internal fun ManageCardRouteScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onCardClick = {
+            isShownBottomSheet = true
+        },
         onBackClick = {
             viewModel.cancelToChangeCard()
         },
@@ -116,6 +152,7 @@ internal fun ManageCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onCardClick : () -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -142,7 +179,8 @@ internal fun ManageCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                bankType = bankType
+                bankType = bankType,
+                onClick = onCardClick
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -191,6 +229,7 @@ private fun Preview1() {
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
+            onCardClick = {},
             onBackClick = {},
             onSaveClick = {}
         )
@@ -214,6 +253,7 @@ private fun Preview2() {
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
+            onCardClick = {},
             onBackClick = {},
             onSaveClick = {}
         )
