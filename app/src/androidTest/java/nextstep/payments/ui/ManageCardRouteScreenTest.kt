@@ -4,14 +4,19 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
+import nextstep.payments.data.model.BankType
+import nextstep.payments.data.model.CreditCard
 import nextstep.payments.screen.model.BankTypeUiModel
 import nextstep.payments.screen.cardmanage.ManageCardRouteScreen
 import nextstep.payments.screen.cardmanage.ManageCardViewModel
+import nextstep.payments.screen.model.arg.CardArgType
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +28,7 @@ internal class ManageCardRouteScreenTest {
     private lateinit var viewModel: ManageCardViewModel
 
     @Before
-    fun setUp(){
+    fun setUp() {
         viewModel = ManageCardViewModel(
             savedStateHandle = SavedStateHandle()
         )
@@ -37,7 +42,7 @@ internal class ManageCardRouteScreenTest {
         composeTestRule.setContent {
             ManageCardRouteScreen(
                 navigateToCardList = {
-                    isNavigated  = true
+                    isNavigated = true
                 },
                 viewModel = viewModel
             )
@@ -57,7 +62,7 @@ internal class ManageCardRouteScreenTest {
     }
 
     @Test
-    fun 새_카드_추가_화면_진입_시_카드사_선택_바텀_시트가_나타난다(){
+    fun 새_카드_추가_화면_진입_시_카드사_선택_바텀_시트가_나타난다() {
         //GIVEN
         composeTestRule.setContent {
             ManageCardRouteScreen(
@@ -114,6 +119,71 @@ internal class ManageCardRouteScreenTest {
         composeTestRule.onNodeWithTag("BankSelectBottomSheet")
             .assertIsNotDisplayed()
         assert(viewModel.bankType.value == BankTypeUiModel.BC)
+    }
+
+    @Test
+    fun 카드_수정_화면에서_변경사항이_발생하지_않으면_저장_버튼을_클릭할_수_없다() {
+        //GIVEN
+        viewModel = ManageCardViewModel(
+            savedStateHandle = SavedStateHandle().apply {
+                set(CardArgType.MANAGE_CARD_TYPE_ARG,
+                    CardArgType.EditCardArg(
+                        CreditCard(
+                            cardNumber = "1234123412341234",
+                            expiredDate = "1122",
+                            ownerName = "김컴포즈",
+                            password = "1234",
+                            bankType = BankType.BC
+                        )
+                    )
+                )
+            }
+        )
+        composeTestRule.setContent {
+            ManageCardRouteScreen(
+                modifier = Modifier.testTag("ManageCardRouteScreen"),
+                navigateToCardList = { },
+                viewModel = viewModel
+            )
+        }
+
+        //THEN
+        composeTestRule.onNodeWithTag("saveButton").assertIsNotEnabled()
+    }
+
+    @Test
+    fun 카드_수정_화면에서_변경사항이_발생하면_저장_버튼을_클릭할_수_있다() {
+        //GIVEN
+        viewModel = ManageCardViewModel(
+            savedStateHandle = SavedStateHandle().apply {
+                set(CardArgType.MANAGE_CARD_TYPE_ARG,
+                    CardArgType.EditCardArg(
+                        CreditCard(
+                            cardNumber = "1234123412341234",
+                            expiredDate = "1122",
+                            ownerName = "김컴포즈",
+                            password = "1234",
+                            bankType = BankType.BC
+                        )
+                    )
+                )
+            }
+        )
+        composeTestRule.setContent {
+            ManageCardRouteScreen(
+                modifier = Modifier.testTag("ManageCardRouteScreen"),
+                navigateToCardList = { },
+                viewModel = viewModel
+            )
+        }
+
+        //WHEN
+        viewModel.setBankType(BankTypeUiModel.HYUNDAI)
+
+        composeTestRule.waitForIdle()
+
+        //THEN
+        composeTestRule.onNodeWithTag("saveButton").assertIsEnabled()
     }
 }
 
