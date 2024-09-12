@@ -1,18 +1,18 @@
-package nextstep.payments.screen.newcard
+package nextstep.payments.screen.cardmanage
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class NewCardActivity : ComponentActivity() {
+class ManageCardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardRouteScreen(
-                    navigateToCardList = { isAdded ->
-                        if(isAdded == NewCardEvent.Success) setResult(RESULT_OK)
+                ManageCardRouteScreen(
+                    navigateToCardList = { isChanged ->
+                        if(isChanged == ManageCardEvent.Success) setResult(RESULT_OK)
                         finish()
                     }
                 )

@@ -11,17 +11,26 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import nextstep.payments.screen.model.ManageCardType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardTopBar(
-    isAddCardEnabled : Boolean,
+fun ManageCardTopBar(
+    manageCardType: ManageCardType,
+    isSaveCardEnabled: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = {
+            Text(
+                text = when (manageCardType) {
+                    ManageCardType.ADD -> "카드 추가"
+                    ManageCardType.EDIT -> "카드 수정"
+                }
+            )
+        },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -33,7 +42,7 @@ fun NewCardTopBar(
         actions = {
             IconButton(
                 modifier = Modifier.testTag("saveButton"),
-                enabled = isAddCardEnabled,
+                enabled = isSaveCardEnabled,
                 onClick = { onSaveClick() }
             ) {
                 Icon(

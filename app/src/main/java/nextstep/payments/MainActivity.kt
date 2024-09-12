@@ -9,7 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import nextstep.payments.screen.cardlist.CardListScreen
 import nextstep.payments.screen.cardlist.CardListViewModel
-import nextstep.payments.screen.newcard.NewCardActivity
+import nextstep.payments.screen.cardmanage.ManageCardActivity
+import nextstep.payments.screen.model.arg.CardArgType
+import nextstep.payments.screen.model.toModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,8 +28,20 @@ class MainActivity : ComponentActivity() {
             PaymentsTheme {
                 CardListScreen(
                     viewModel = viewModel,
-                    navigateToNewCard = {
-                        launcher.launch(Intent(this, NewCardActivity::class.java))
+                    navigateToAddCard = {
+                        launcher.launch(
+                            Intent(this, ManageCardActivity::class.java)
+                        )
+                    },
+                    navigateToEditCard = { card ->
+                        launcher.launch(
+                            Intent(this, ManageCardActivity::class.java).apply {
+                                putExtra(
+                                    CardArgType.MANAGE_CARD_TYPE_ARG,
+                                    CardArgType.EditCardArg(card.toModel())
+                                )
+                            }
+                        )
                     }
                 )
             }

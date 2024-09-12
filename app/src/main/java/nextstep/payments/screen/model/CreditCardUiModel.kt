@@ -41,3 +41,11 @@ fun CreditCard.toUiModel() =
         bankTypeUiModel = bankType.toUiModel()
     )
 
+fun CreditCardUiModel.toModel()
+    = CreditCard(
+        cardNumber = cardNumber,
+        ownerName = ownerName,
+        password = password,
+        bankType = bankTypeUiModel.toEntity(),
+        expiredDate = month + year
+    )

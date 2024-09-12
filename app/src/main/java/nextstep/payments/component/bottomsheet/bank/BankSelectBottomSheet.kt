@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +22,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun BankSelectBottomSheet(
     onBankTypeClick : (BankTypeUiModel) -> Unit,
+    onDismissRequest : () -> Unit,
     modalBottomSheetState : SheetState,
     modifier: Modifier = Modifier,
     containerColor : Color = Color.White
@@ -31,7 +31,7 @@ fun BankSelectBottomSheet(
         modifier = modifier,
         sheetState = modalBottomSheetState,
         containerColor = containerColor,
-        onDismissRequest = { },
+        onDismissRequest = onDismissRequest,
     ) {
         BankSelectRow(
             modifier = Modifier.navigationBarsPadding(),
@@ -61,7 +61,8 @@ private fun Preview1() {
             onBankTypeClick = { bankType ->
                 selectedBank = bankType
             },
-            modalBottomSheetState = modalBottomSheetState
+            modalBottomSheetState = modalBottomSheetState,
+            onDismissRequest = {}
         )
     }
 }

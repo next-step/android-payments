@@ -28,13 +28,14 @@ internal class PaymentCardTest {
                     month = "",
                     year = "",
                     bankTypeUiModel = BankTypeUiModel.BC
-                )
+                ),
+                onClick = {}
             )
         }
 
         //THEN
         composeTestRule
-            .onNodeWithTag("cardNumberText")
+            .onNodeWithTag("cardNumberText",useUnmergedTree = true)
             .assertTextContains("1234 - 1234 - **** - ****")
     }
 
@@ -52,13 +53,14 @@ internal class PaymentCardTest {
                     month = "04",
                     year = "13",
                     bankTypeUiModel = BankTypeUiModel.BC
-                )
+                ),
+                onClick = {}
             )
         }
 
         //THEN
         composeTestRule
-            .onNodeWithTag("expiredDateText")
+            .onNodeWithTag(testTag = "expiredDateText", useUnmergedTree = true)
             .assertTextContains("04 / 13")
     }
 

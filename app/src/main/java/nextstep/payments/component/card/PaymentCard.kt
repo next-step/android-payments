@@ -2,7 +2,6 @@ package nextstep.payments.component.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -20,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -37,11 +35,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun PaymentCardFrame(
     bankType: BankTypeUiModel?,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit = {}
 ) {
     CardFrame(
         modifier = modifier,
-        backgroundColor = bankType?.color ?: Color(0xFF333333)
+        backgroundColor = bankType?.color ?: Color(0xFF333333),
+        onClick = onClick
     ) {
         bankType?.let { bankType ->
             BankTypeRow(
@@ -68,22 +68,28 @@ fun PaymentCardFrame(
 @Composable
 fun PaymentCard(
     bankType: BankTypeUiModel?,
-    modifier: Modifier = Modifier
+    onClick : () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     PaymentCardFrame(
         bankType = bankType,
-        modifier = modifier
+        modifier = modifier,
+        onClick = onClick
     )
 }
 
 @Composable
 fun PaymentCard(
     card: CreditCardUiModel,
+    onClick: (CreditCardUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     PaymentCardFrame(
         modifier = modifier,
         bankType = card.bankTypeUiModel,
+        onClick = {
+            onClick(card)
+        },
         content = {
             Column(
                 modifier = modifier
@@ -227,7 +233,19 @@ private fun Preview4() {
                 month = "12",
                 year = "12",
                 bankTypeUiModel = BankTypeUiModel.BC
-            )
+            ),
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "PaymentCardWithoutBankType", backgroundColor = 0xFF333333)
+@Composable
+private fun Preview5() {
+    PaymentsTheme {
+        PaymentCard(
+            bankType = null,
+            onClick = {},
         )
     }
 }
