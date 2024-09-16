@@ -9,17 +9,15 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 class NewCardActivity : ComponentActivity() {
 
-    private var card: Card? = null
+    private val viewModel: NewCardViewModel by viewModels { NewCardViewModel.Factory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel by viewModels<NewCardViewModel>()
         super.onCreate(savedInstanceState)
 
         (intent?.getParcelableExtra("card") as Card?)?.let {
             viewModel.setOldCard(it)
             viewModel.setUiState(RegistrationUiState.EditCard)
         }
-
         setContent {
             PaymentsTheme {
                 NewCardScreen(
@@ -34,6 +32,16 @@ class NewCardActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setData()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveData()
     }
 }
 

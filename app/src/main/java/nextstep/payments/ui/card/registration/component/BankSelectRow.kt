@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card.registration.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -54,7 +55,10 @@ fun CardSelector(
     Column(
         modifier = Modifier
             .size(80.dp)
-            .clickable { onClick(bankType) },
+            .clickable {
+                Log.e("CardSelector", "CardSelector: $bankType")
+                onClick(bankType)
+            },
     ) {
         Image(
             painter = painterResource(id = bankType.logo),

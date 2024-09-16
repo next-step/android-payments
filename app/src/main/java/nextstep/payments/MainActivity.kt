@@ -17,11 +17,11 @@ import nextstep.payments.ui.card.registration.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: CardListViewModel by viewModels { CardListViewModel.Factory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val viewModel by viewModels<CardListViewModel>()
-
         setContent {
             val launcher =
                 rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -51,6 +51,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveCard()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.openCard()
     }
 }
 

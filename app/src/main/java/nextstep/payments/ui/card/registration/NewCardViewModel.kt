@@ -1,6 +1,12 @@
 package nextstep.payments.ui.card.registration
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,7 +15,8 @@ import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 
 class NewCardViewModel(
-    private val repository: PaymentCardsRepository = PaymentCardsRepository
+    private val repository: PaymentCardsRepository = PaymentCardsRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _cardNumber = MutableStateFlow("")
@@ -35,6 +42,49 @@ class NewCardViewModel(
     private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState.NewCard)
     val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
 
+    init {
+        setData()
+    }
+
+    fun setData() {
+        Log.e(TAG, "setData")
+        savedStateHandle.get<String>(KEY_CARD_NUMBER)?.let {
+            _cardNumber.value = it
+        }
+        Log.e(TAG, "setData: ${_cardNumber.value}")
+        savedStateHandle.get<String>(KEY_EXPIRED)?.let {
+            _expiredDate.value = it
+        }
+
+        savedStateHandle.get<String>(KEY_OWNER_NAME)?.let {
+            _ownerName.value = it
+        }
+
+        savedStateHandle.get<String>(KEY_PASSWORD)?.let {
+            _password.value = it
+        }
+
+        savedStateHandle.get<BankType>(KEY_BANK_TYPE)?.let {
+            _selectedBankType.value = it
+        }
+
+        savedStateHandle.get<RegistrationUiState>(KEY_UI_STATE)?.let {
+            _uiState.value = it
+        }
+        savedStateHandle.get<Card>(KEY_OLD_CARD)?.let {
+            oldCard = it
+        }
+    }
+
+    fun saveData() {
+        savedStateHandle[KEY_CARD_NUMBER] = cardNumber.value
+        savedStateHandle[KEY_EXPIRED] = expiredDate.value
+        savedStateHandle[KEY_OWNER_NAME] = ownerName.value
+        savedStateHandle[KEY_PASSWORD] = password.value
+        savedStateHandle[KEY_BANK_TYPE] = selectedBankType.value
+        savedStateHandle[KEY_UI_STATE] = uiState.value
+        savedStateHandle[KEY_OLD_CARD] = oldCard
+    }
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
@@ -105,15 +155,38 @@ class NewCardViewModel(
     }
 
     fun setOldCard(card: Card) {
+        if (savedStateHandle.get<Card>(KEY_OLD_CARD) == null) {
+            _cardNumber.value = card.cardNumber
+            _expiredDate.value = card.expiredDate
+            _ownerName.value = card.ownerName
+            _password.value = card.password
+            _selectedBankType.value = card.bankType
+        }
         oldCard = card
-        _cardNumber.value = card.cardNumber
-        _expiredDate.value = card.expiredDate
-        _ownerName.value = card.ownerName
-        _password.value = card.password
-        _selectedBankType.value = card.bankType
     }
 
     fun setUiState(newUiState: RegistrationUiState) {
         _uiState.value = newUiState
+    }
+
+    companion object {
+        private const val TAG = "NewCardViewModel"
+        private const val KEY_CARD_NUMBER = "cardNumber"
+        private const val KEY_EXPIRED = "expired"
+        private const val KEY_OWNER_NAME = "ownerName"
+        private const val KEY_PASSWORD = "password"
+        private const val KEY_BANK_TYPE = "bankType"
+        private const val KEY_UI_STATE = "uiState"
+        private const val KEY_OLD_CARD = "oldCard"
+
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val savedStateHandle = createSavedStateHandle()
+                NewCardViewModel(
+                    repository = PaymentCardsRepository,
+                    savedStateHandle = savedStateHandle
+                )
+            }
+        }
     }
 }

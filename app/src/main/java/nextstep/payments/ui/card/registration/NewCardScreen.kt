@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card.registration
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
@@ -35,6 +37,7 @@ import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 // Stateful
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
@@ -51,6 +54,7 @@ fun NewCardScreen(
     val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
     val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -170,10 +174,13 @@ private fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview() {
+    val savedState = SavedStateHandle(mapOf("someIdArg" to 1))
     PaymentsTheme {
         NewCardScreen(modifier = Modifier,
             navigateToCardList = {},
-            viewModel = NewCardViewModel().apply {
+            viewModel = NewCardViewModel(
+                savedStateHandle = savedState
+            ).apply {
                 setCardNumber("0000 - 0000 - 0000 -0000")
                 setExpiredDate("02/26")
                 setOwnerName("김수현")
