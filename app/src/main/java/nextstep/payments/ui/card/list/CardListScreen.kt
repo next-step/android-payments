@@ -22,6 +22,8 @@ import nextstep.payments.R
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.data.RegisteredCreditCards
+import nextstep.payments.ui.PaymentCard
+import nextstep.payments.ui.PaymentCardContents
 import nextstep.payments.ui.card.CreditCardUiState
 import nextstep.payments.ui.card.list.component.card.CardLazyColumn
 import nextstep.payments.ui.card.list.component.card.CardListTopBar
@@ -33,19 +35,22 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardListViewModel = viewModel(),
     onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     val cards by viewModel.registeredCreditCards.collectAsStateWithLifecycle()
 
     CardListScreen(
         registeredCreditCards = cards,
         onAddCard = onAddCard,
+        onCardClick = onCardClick
     )
 }
 
 @Composable
 fun CardListScreen(
     registeredCreditCards: RegisteredCreditCards = RegisteredCreditCards(mutableListOf()),
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
 
     when (registeredCreditCards.getState()) {
@@ -60,6 +65,7 @@ fun CardListScreen(
             CardListScreenOne(
                 cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
+                onCardClick = onCardClick
             )
         }
 
@@ -67,6 +73,7 @@ fun CardListScreen(
             CardListScreenMany(
                 cards = registeredCreditCards.cardList,
                 onAddCard = onAddCard,
+                onCardClick = onCardClick
             )
         }
     }
@@ -106,7 +113,8 @@ fun CardListScreenEmpty(
 @Composable
 fun CardListScreenOne(
     cards: List<Card>,
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     Scaffold(topBar = { CardListTopBar() }) { paddingValues ->
         Column(
@@ -114,9 +122,15 @@ fun CardListScreenOne(
                 .padding(paddingValues)
                 .fillMaxWidth()
         ) {
-            CardLazyColumn(
-                cards = cards,
-                modifier = Modifier.align(CenterHorizontally)
+            PaymentCard(
+                brandColor = colorResource(id = cards.first().bankType.brandColor),
+                modifier = Modifier.align(CenterHorizontally),
+                content = {
+                    PaymentCardContents(
+                        card = cards.first(),
+                        onClick = onCardClick
+                    )
+                }
             )
 
             EmptyCardImage(
@@ -136,7 +150,8 @@ fun CardListScreenOne(
 @Composable
 fun CardListScreenMany(
     cards: List<Card>,
-    onAddCard: () -> Unit = {}
+    onAddCard: () -> Unit = {},
+    onCardClick: (Card) -> Unit = {}
 ) {
     Scaffold(topBar = {
         CardListTopBarWithAdd(
@@ -150,7 +165,8 @@ fun CardListScreenMany(
         ) {
             CardLazyColumn(
                 cards = cards,
-                modifier = Modifier.align(CenterHorizontally)
+                modifier = Modifier.align(CenterHorizontally),
+                onCardClick = onCardClick
             )
         }
     }
@@ -175,11 +191,12 @@ private fun CardListScreenOnePreview() {
             registeredCreditCards = RegisteredCreditCards(
                 cardList = listOf(
                     Card(
+                        id = 1,
                         cardNumber = "1234-5678-1234-6654",
                         ownerName = "홍길동",
                         expiredDate = "12/24",
                         password = "123",
-                        brandColor = colorResource(id = BankType.BC.brandColor)
+                        bankType = BankType.BC
                     )
                 )
             ),
@@ -194,18 +211,20 @@ private fun CardListScreenManyPreview() {
     val registeredCreditCards = RegisteredCreditCards(
         cardList = listOf(
             Card(
+                id = 1,
                 cardNumber = "1234-5678-1234-6654",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = BankType.BC.brandColor)
+                bankType = BankType.KAKAO
             ),
             Card(
+                id = 1,
                 cardNumber = "1234-5678-1234-1234",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = colorResource(id = BankType.KAKAO.brandColor)
+                bankType = BankType.BC
             )
         )
     )

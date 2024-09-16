@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.core.app.ApplicationProvider
 import nextstep.payments.R
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.data.RegisteredCreditCards
@@ -50,18 +51,20 @@ class RegisteredCreditCardsScreenTest {
         val registeredCreditCards = RegisteredCreditCards(
             mutableListOf(
                 Card(
+                    id = 1,
                     cardNumber = "1234-5678-1234-5678",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 ),
                 Card(
+                    id = 2,
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 )
             )
         )
@@ -119,21 +122,23 @@ class RegisteredCreditCardsScreenTest {
         // given : 카드 등록이 되어있다.
         PaymentCardsRepository.addCard(
             Card(
+                id = 13,
                 cardNumber = "1234-5678-1234-5628",
                 ownerName = "홍길동",
                 expiredDate = "12/24",
                 password = "123",
-                brandColor = Color(context.getColor(R.color.bc_card))
+                bankType = BankType.BC
             )
         )
         val registeredCreditCards = RegisteredCreditCards(
             mutableListOf(
                 Card(
+                    id = 4,
                     cardNumber = "1234-5678-1234-5628",
                     ownerName = "홍길동",
                     expiredDate = "12/24",
                     password = "123",
-                    brandColor = Color(context.getColor(R.color.bc_card))
+                    bankType = BankType.BC
                 )
             )
         )

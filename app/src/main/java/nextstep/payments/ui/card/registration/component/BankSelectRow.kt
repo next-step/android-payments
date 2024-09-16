@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card.registration.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +27,7 @@ private const val COLUMN_COUNT = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectRow(
-    onClick: (BankType) -> Unit = {},
+    onClickBankType: (BankType) -> Unit = {},
 ) {
     FlowRow(
         modifier = Modifier
@@ -40,7 +41,7 @@ fun BankSelectRow(
             if (bankType == BankType.NOT_SELECTED) return@forEach
             CardSelector(
                 bankType = bankType,
-                onClick = onClick
+                onClick = { onClickBankType(bankType) }
             )
         }
     }
@@ -54,7 +55,10 @@ fun CardSelector(
     Column(
         modifier = Modifier
             .size(80.dp)
-            .clickable { onClick(bankType) },
+            .clickable {
+                Log.e("CardSelector", "CardSelector: $bankType")
+                onClick(bankType)
+            },
     ) {
         Image(
             painter = painterResource(id = bankType.logo),

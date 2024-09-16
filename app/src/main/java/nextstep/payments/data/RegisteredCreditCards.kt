@@ -1,8 +1,11 @@
 package nextstep.payments.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nextstep.payments.ui.card.CreditCardUiState
 
-data class RegisteredCreditCards(val cardList: List<Card>) {
+@Parcelize
+data class RegisteredCreditCards(val cardList: List<Card>) : Parcelable {
 
     fun getState(): CreditCardUiState {
         return when (cardList.size) {

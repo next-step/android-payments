@@ -1,5 +1,6 @@
 package nextstep.payments.ui.card.registration
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,29 +17,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.NewCardViewModel
 import nextstep.payments.R
 import nextstep.payments.data.BankType
-import nextstep.payments.data.Card
 import nextstep.payments.ui.PaymentCard
 import nextstep.payments.ui.card.registration.component.BankSelectRow
 import nextstep.payments.ui.card.registration.component.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
 // Stateful
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
@@ -52,9 +51,10 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
-    var selectedBankType by remember { mutableStateOf(BankType.NOT_SELECTED) }
+    val selectedBankType by viewModel.selectedBankType.collectAsStateWithLifecycle()
     var showCardCompanyBottomSheet by rememberSaveable { mutableStateOf(true) }
+    val modalBottomSheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -72,9 +72,9 @@ fun NewCardScreen(
             onDismissRequest = { }
         ) {
             BankSelectRow(
-                onClick = {
+                onClickBankType = {
                     showCardCompanyBottomSheet = false
-                    selectedBankType = it
+                    viewModel.setSelectBankType(it)
                 }
             )
         }
@@ -86,13 +86,13 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        brandColor = colorResource(selectedBankType.brandColor),
+        bankType = selectedBankType,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDatedNumber = viewModel::setExpiredDate,
         setOwnerNamedNumber = viewModel::setOwnerName,
         setPasswordNumber = viewModel::setPassword,
         onBackClick = onBackClick,
-        onSaveClick = viewModel::addCard,
+        onSaveClick = viewModel::saveCard,
     )
 }
 
@@ -104,26 +104,18 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    brandColor: Color,
+    bankType: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDatedNumber: (String) -> Unit,
     setOwnerNamedNumber: (String) -> Unit,
     setPasswordNumber: (String) -> Unit,
     onBackClick: () -> Unit = {},
-    onSaveClick: (Card) -> Unit = {},
+    onSaveClick: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
             NewCardTopBar(onBackClick = onBackClick, onSaveClick = {
-                onSaveClick(
-                    Card(
-                        cardNumber = cardNumber,
-                        expiredDate = expiredDate,
-                        ownerName = ownerName,
-                        password = password,
-                        brandColor = brandColor
-                    )
-                )
+                onSaveClick()
             })
         }, modifier = modifier
     ) { innerPadding ->
@@ -137,8 +129,9 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                brandColor = brandColor
+                brandColor = colorResource(bankType.brandColor)
             )
+
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -181,10 +174,13 @@ private fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview() {
+    val savedState = SavedStateHandle(mapOf("someIdArg" to 1))
     PaymentsTheme {
         NewCardScreen(modifier = Modifier,
             navigateToCardList = {},
-            viewModel = NewCardViewModel().apply {
+            viewModel = NewCardViewModel(
+                savedStateHandle = savedState
+            ).apply {
                 setCardNumber("0000 - 0000 - 0000 -0000")
                 setExpiredDate("02/26")
                 setOwnerName("김수현")
@@ -201,7 +197,7 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "02/26",
             ownerName = "김수현",
             password = "1234",
-            brandColor = colorResource(id = BankType.NOT_SELECTED.brandColor),
+            bankType = BankType.NOT_SELECTED,
             setCardNumber = {},
             setExpiredDatedNumber = {},
             setOwnerNamedNumber = {},

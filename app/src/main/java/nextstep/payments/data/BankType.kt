@@ -1,12 +1,13 @@
 package nextstep.payments.data
 
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import nextstep.payments.R
 
 enum class BankType(
     @StringRes val companyName: Int,
-    val logo: Int,
+    @DrawableRes val logo: Int,
     @ColorRes val brandColor: Int,
 ) {
     NOT_SELECTED(
