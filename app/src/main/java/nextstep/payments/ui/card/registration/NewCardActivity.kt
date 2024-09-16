@@ -36,12 +36,12 @@ class NewCardActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setData()
+        viewModel.openCardData()
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveData()
+        viewModel.saveCardData()
     }
 }
 

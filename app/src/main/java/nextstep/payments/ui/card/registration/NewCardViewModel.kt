@@ -1,6 +1,5 @@
 package nextstep.payments.ui.card.registration
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -43,15 +42,13 @@ class NewCardViewModel(
     val uiState: StateFlow<RegistrationUiState> = _uiState.asStateFlow()
 
     init {
-        setData()
+        openCardData()
     }
 
-    fun setData() {
-        Log.e(TAG, "setData")
+    fun openCardData() {
         savedStateHandle.get<String>(KEY_CARD_NUMBER)?.let {
             _cardNumber.value = it
         }
-        Log.e(TAG, "setData: ${_cardNumber.value}")
         savedStateHandle.get<String>(KEY_EXPIRED)?.let {
             _expiredDate.value = it
         }
@@ -76,7 +73,7 @@ class NewCardViewModel(
         }
     }
 
-    fun saveData() {
+    fun saveCardData() {
         savedStateHandle[KEY_CARD_NUMBER] = cardNumber.value
         savedStateHandle[KEY_EXPIRED] = expiredDate.value
         savedStateHandle[KEY_OWNER_NAME] = ownerName.value
@@ -166,7 +163,9 @@ class NewCardViewModel(
     }
 
     fun setUiState(newUiState: RegistrationUiState) {
-        _uiState.value = newUiState
+        if(savedStateHandle.get<RegistrationUiState>(KEY_UI_STATE) == null) {
+            _uiState.value = newUiState
+        }
     }
 
     companion object {
