@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import nextstep.payments.repository.PaymentCardsRepository
 
-class ViewModelFactory : ViewModelProvider.Factory {
+class ViewModelFactory() : ViewModelProvider.Factory {
     private val repository = PaymentCardsRepository
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

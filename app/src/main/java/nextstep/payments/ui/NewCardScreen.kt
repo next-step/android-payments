@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.NewCardViewModel
 
@@ -35,6 +36,7 @@ internal fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardCompanyState by viewModel.cardCompanyType.collectAsStateWithLifecycle()
 
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
@@ -53,6 +55,7 @@ internal fun NewCardScreen(
         setPassword = viewModel::setPassword,
         onBackButtonClicked = onBackButtonClicked,
         onSaveButtonClicked = onSaveButtonClicked,
+        cardCompanyState = cardCompanyState,
     )
 }
 
@@ -69,6 +72,7 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     onBackButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
+    cardCompanyState: CardCompanyType,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -89,7 +93,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            cardCompanyState.Render()
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -162,6 +166,7 @@ private fun StatelessNewCardScreenPreview() {
             setPassword = {},
             onBackButtonClicked = {},
             onSaveButtonClicked = {},
+            cardCompanyState = CardCompanyType.Bc("BC카드")
         )
     }
 }
