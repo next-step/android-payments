@@ -31,15 +31,15 @@ internal class CardListViewModel(
         _uiState.update { CardListUiState.from(cards) }
     }
 
-    fun editCard(cardInformation: CardInformation) {
+    fun editCard(cardInformation: CardInformation) = viewModelScope.launch {
         runCatching {
             paymentCardsRepository.cards.find { it.id == cardInformation.id }
                 ?: error("Cannot Find Card")
         }.onSuccess { creditCard ->
-            viewModelScope.launch { _editCard.emit(creditCard) }
+            _editCard.emit(creditCard)
         }.onFailure { e ->
             Log.e("CardListScreen", e.stackTraceToString())
-            viewModelScope.launch { _errorFlow.emit(e) }
+            _errorFlow.emit(e)
         }
     }
 }
