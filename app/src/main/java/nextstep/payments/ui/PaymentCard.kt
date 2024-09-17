@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.theme.Black
+import nextstep.payments.ui.theme.Yellow
 
 @Composable
 fun PaymentCard(
@@ -22,7 +23,7 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = Black,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
@@ -31,7 +32,7 @@ fun PaymentCard(
                 .padding(start = 14.dp, bottom = 10.dp)
                 .size(width = 40.dp, height = 26.dp)
                 .background(
-                    color = Color(0xFFCBBA64),
+                    color = Yellow,
                     shape = RoundedCornerShape(4.dp),
                 )
         )
