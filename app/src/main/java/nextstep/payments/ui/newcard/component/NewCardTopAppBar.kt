@@ -21,6 +21,7 @@ import nextstep.payments.R.string.newcard_top_app_bar_title
 fun NewCardTopAppBar(
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    isValidCard: Boolean,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -34,7 +35,10 @@ fun NewCardTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = onSaveClick) {
+            IconButton(
+                onClick = onSaveClick,
+                enabled = isValidCard,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(newcard_top_app_bar_actions_icon),
@@ -51,5 +55,6 @@ private fun NewCardTopBarPreview() {
     NewCardTopAppBar(
         onBackClick = { },
         onSaveClick = { },
+        isValidCard = true,
     )
 }

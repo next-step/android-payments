@@ -33,6 +33,7 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    isValidCard: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -40,6 +41,7 @@ fun NewCardScreen(
             NewCardTopAppBar(
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
+                isValidCard = isValidCard,
             )
         },
         modifier = modifier,
@@ -104,6 +106,7 @@ private fun NewCardScreenPreview() {
             setExpiredDate = { },
             onBackClick = { },
             onSaveClick = { },
+            isValidCard = true,
         )
     }
 }

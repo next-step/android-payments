@@ -13,6 +13,7 @@ fun NavGraphBuilder.newCardScreen(
     composable(route = ROUTE) {
         NewCardRoute(
             onBackClick = onBackClick,
+            onSaveClick = onBackClick,
         )
     }
 }
