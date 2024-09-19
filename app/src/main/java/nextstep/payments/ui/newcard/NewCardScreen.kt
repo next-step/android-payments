@@ -59,6 +59,7 @@ fun NewCardScreen(
                 placeHolder = stringResource(R.string.cardNumber_place_holder),
                 text = cardNumber,
                 setText = setCardNumber,
+                maxLength = 16,
                 visualTransformation = CreditCardVisualTransformation,
             )
             NewCardTextField(
@@ -66,12 +67,14 @@ fun NewCardScreen(
                 placeHolder = stringResource(R.string.expiredDate_place_holder),
                 text = expiredDate,
                 setText = setExpiredDate,
+                maxLength = 4,
                 visualTransformation = ExpiredDateVisualTransformation,
             )
             NewCardTextField(
                 label = stringResource(R.string.ownerName_label),
                 placeHolder = stringResource(R.string.ownerName_place_holder),
                 text = ownerName,
+                maxLength = 30,
                 setText = setOwnerName,
             )
             NewCardTextField(
@@ -79,6 +82,7 @@ fun NewCardScreen(
                 placeHolder = stringResource(R.string.password_place_holder),
                 text = password,
                 setText = setPassword,
+                maxLength = 4,
                 visualTransformation = PasswordVisualTransformation(),
             )
         }

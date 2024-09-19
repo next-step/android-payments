@@ -35,6 +35,7 @@ class NewCardListNavigationTestTextFieldTest {
                 placeHolder = "카드 번호",
                 text = input,
                 setText = { input = it },
+                maxLength = 16,
                 visualTransformation = CreditCardVisualTransformation,
                 modifier = Modifier.testTag("CardNumberTextField"),
             )
@@ -55,7 +56,7 @@ class NewCardListNavigationTestTextFieldTest {
     }
 
     @Test
-    fun 만료_일_입력_시_연도와_월_사이에_슬래시_문자가_삽입된다() {
+    fun 카드_번호는_16자리를_넘을_수_없다() {
         // given:
         var input by mutableStateOf("")
 
@@ -65,6 +66,37 @@ class NewCardListNavigationTestTextFieldTest {
                 placeHolder = "카드 번호",
                 text = input,
                 setText = { input = it },
+                maxLength = 16,
+                visualTransformation = CreditCardVisualTransformation,
+                modifier = Modifier.testTag("CardNumberTextField"),
+            )
+        }
+
+        // when:
+        repeat(20) {
+            composeRule.onNodeWithTag("CardNumberTextField").performTextInput(it.toString())
+        }
+
+        // then:
+        val actual = composeRule.onNodeWithTag("CardNumberTextField")
+            .fetchSemanticsNode().config.getOrNull(SemanticsProperties.EditableText)!!
+            .filter { it != '-' }
+
+        assert(actual.length == 16)
+    }
+
+    @Test
+    fun 만료_일_입력_시_연도와_월_사이에_슬래시_문자가_삽입된다() {
+        // given:
+        var input by mutableStateOf("")
+
+        composeRule.setContent {
+            NewCardTextField(
+                label = "만료일",
+                placeHolder = "만료일",
+                text = input,
+                setText = { input = it },
+                maxLength = 4,
                 visualTransformation = ExpiredDateVisualTransformation,
                 modifier = Modifier.testTag("ExpiredDateTextField"),
             )
@@ -83,16 +115,75 @@ class NewCardListNavigationTestTextFieldTest {
     }
 
     @Test
+    fun 만료일은_4자리를_넘을_수_없다() {
+        // given:
+        var input by mutableStateOf("")
+
+        composeRule.setContent {
+            NewCardTextField(
+                label = "만료일",
+                placeHolder = "만료일",
+                text = input,
+                setText = { input = it },
+                maxLength = 4,
+                visualTransformation = ExpiredDateVisualTransformation,
+                modifier = Modifier.testTag("ExpiredDateTextField"),
+            )
+        }
+
+        // when:
+        repeat(10) {
+            composeRule.onNodeWithTag("ExpiredDateTextField").performTextInput(it.toString())
+        }
+
+        // then:
+        val actual = composeRule.onNodeWithTag("ExpiredDateTextField")
+            .fetchSemanticsNode().config.getOrNull(SemanticsProperties.EditableText)!!
+            .filter { it != '/' }
+
+        assert(actual.length == 4)
+    }
+
+    @Test
+    fun 사용자_이름은_30자리를_넘을_수_없다() {
+        // given:
+        var input by mutableStateOf("")
+
+        composeRule.setContent {
+            NewCardTextField(
+                label = "카드 소유자 이름(선택)",
+                placeHolder = "카드 소유자 이름(선택)",
+                text = input,
+                setText = { input = it },
+                maxLength = 30,
+                modifier = Modifier.testTag("UsernameTextField"),
+            )
+        }
+
+        // when:
+        repeat(40) {
+            composeRule.onNodeWithTag("UsernameTextField").performTextInput(it.toString())
+        }
+
+        // then:
+        val actual = composeRule.onNodeWithTag("UsernameTextField")
+            .fetchSemanticsNode().config.getOrNull(SemanticsProperties.EditableText)!!
+
+        assert(actual.length == 30)
+    }
+
+    @Test
     fun 비밀번호는_암호화_되어있다() {
         // given:
         var input by mutableStateOf("")
 
         composeRule.setContent {
             NewCardTextField(
-                label = "카드 번호",
-                placeHolder = "카드 번호",
+                label = "비밀번호",
+                placeHolder = "비밀번호",
                 text = input,
                 setText = { input = it },
+                maxLength = 4,
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.testTag("PasswordTextField")
             )
@@ -104,5 +195,34 @@ class NewCardListNavigationTestTextFieldTest {
 
         // then:
         composeRule.onNodeWithText(password).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun 비밀번호는_4자리를_넘을_수_없다() {
+        // given:
+        var input by mutableStateOf("")
+
+        composeRule.setContent {
+            NewCardTextField(
+                label = "비밀번호",
+                placeHolder = "비밀번호",
+                text = input,
+                setText = { input = it },
+                maxLength = 4,
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.testTag("PasswordTextField")
+            )
+        }
+
+        // when:
+        repeat(10) {
+            composeRule.onNodeWithTag("PasswordTextField").performTextInput(it.toString())
+        }
+
+        // then:
+        val actual = composeRule.onNodeWithTag("PasswordTextField")
+            .fetchSemanticsNode().config.getOrNull(SemanticsProperties.EditableText)!!
+
+        assert(actual.length == 4)
     }
 }

@@ -14,12 +14,15 @@ fun NewCardTextField(
     placeHolder: String,
     text: String,
     setText: (String) -> Unit,
+    maxLength: Int,
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     OutlinedTextField(
         value = text,
-        onValueChange = setText,
+        onValueChange = { newText ->
+            if (newText.length <= maxLength || newText.length < text.length) setText(newText)
+        },
         label = { Text(label) },
         placeholder = { Text(placeHolder) },
         modifier = modifier.fillMaxWidth(),
@@ -35,5 +38,6 @@ private fun NewCardTextFieldPreview() {
         placeHolder = "placeHolder",
         text = "text",
         setText = { },
+        maxLength = 10,
     )
 }
