@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.R
 import nextstep.payments.model.card.CardNumber
 import nextstep.payments.model.card.CreditCard
@@ -46,13 +45,19 @@ internal fun EditCardScreen(
     val targetCardInformation = viewModel.targetCard.toCardInformation()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(true) {
-        viewModel.errorFlow.collectLatest {
+    LaunchedEffect(uiState.isError) {
+        val errorEvent = uiState.isError
+        if (errorEvent != null) {
             snackbarHostState.showSnackbar(message = context.getString(R.string.card_edit_error))
+            errorEvent.onProcessed()
         }
     }
-    LaunchedEffect(true) {
-        viewModel.cardUpdated.collectLatest { onCardUpdated() }
+    LaunchedEffect(uiState.isUpdated) {
+        val updateEvent = uiState.isUpdated
+        if (updateEvent != null) {
+            onCardUpdated()
+            updateEvent.onProcessed()
+        }
     }
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
