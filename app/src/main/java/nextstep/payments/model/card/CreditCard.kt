@@ -1,9 +1,12 @@
 package nextstep.payments.model.card
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import nextstep.payments.model.bank.BankType
 import java.time.YearMonth
 import java.util.UUID
 
+@Parcelize
 internal data class CreditCard(
     val id: UUID,
     val cardNumbers: List<CardNumber>,
@@ -11,7 +14,7 @@ internal data class CreditCard(
     val password: String,
     val ownerName: String,
     val bankType: BankType,
-) {
+) : Parcelable {
     init {
         require(cardNumbers.size == 4) { "카드 넘버는 4개여야 합니다" }
         require(cardNumbers.all { it.number.length == 4 }) { "모든 카드 넘버는 4자리여야 합니다" }
@@ -26,7 +29,8 @@ internal data class CreditCard(
     }
 }
 
-data class CardNumber(val number: String) {
+@Parcelize
+data class CardNumber(val number: String) : Parcelable {
     init {
         require(number.length == 4) { "카드 넘버의 길이가 4이어야 하지만 그렇지 않습니다" }
     }
