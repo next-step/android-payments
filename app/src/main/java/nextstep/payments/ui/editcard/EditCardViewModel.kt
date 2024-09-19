@@ -1,41 +1,22 @@
 package nextstep.payments.ui.editcard
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.setContent
-import androidx.activity.result.ActivityResult
-import androidx.activity.viewModels
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import nextstep.payments.R
 import nextstep.payments.model.card.CardNumber
 import nextstep.payments.model.card.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.card.CardBankInformation
-import nextstep.payments.ui.component.card.CardInformation
-import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -47,6 +28,7 @@ internal class EditCardViewModel(
     val targetCard: CreditCard =
         savedStateHandle.get<CreditCard>(EditCardActivity.EXTRA_KEY)
             ?: error("뷰모델에서 CreditCard를 가져오지 못했습니다")
+
     private val _uiState: MutableStateFlow<EditCardUiState> = MutableStateFlow(targetCard.toUi())
     val uiState = _uiState.asStateFlow()
 
@@ -103,81 +85,24 @@ internal class EditCardViewModel(
             viewModelScope.launch { _errorFlow.emit(e) }
         }
     }
-}
-
-
-internal class EditCardActivity : ComponentActivity() {
-    private val viewModel: EditCardViewModel by viewModels()
-
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
-            val targetCardInformation = viewModel.targetCard.toCardInformation()
-            val snackbarHostState = remember { SnackbarHostState() }
-
-            LaunchedEffect(true) {
-                viewModel.errorFlow.collectLatest {
-                    snackbarHostState.showSnackbar(message = context.getString(R.string.card_edit_error))
-                }
-            }
-            LaunchedEffect(true) {
-                viewModel.cardUpdated.collectLatest {
-                    setResult(RESULT_OK)
-                    finish()
-                }
-            }
-
-            PaymentsTheme {
-                Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-                    content = {
-                        EditCardScreen(
-                            cardNumber = uiState.cardNumber,
-                            expirationDate = uiState.expirationDate,
-                            ownerName = uiState.ownerName,
-                            password = uiState.password,
-                            cardInformation = targetCardInformation,
-                            setCardNumber = viewModel::setCardNumber,
-                            setExpiredDate = viewModel::setExpiredDate,
-                            setOwnerName = viewModel::setOwnerName,
-                            setPassword = viewModel::setPassword,
-                            onBackClick = { finish() },
-                            onSaveClick = viewModel::updateCard,
-                            modifier = Modifier,
-                        )
-                    }
-                )
-            }
-        }
-    }
 
     companion object {
-        const val EXTRA_KEY = "edit_card"
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras,
+            ): T {
+                val savedStateHandle = extras.createSavedStateHandle()
 
-        fun startActivity(
-            targetCard: CreditCard,
-            context: Context,
-            launcher: ManagedActivityResultLauncher<Intent, ActivityResult>
-        ) {
-            val intent = Intent(context, EditCardActivity::class.java)
-            intent.putExtra(EXTRA_KEY, targetCard)
-            launcher.launch(intent)
+                return EditCardViewModel(
+                    savedStateHandle = savedStateHandle,
+                    repository = PaymentCardsRepository
+                ) as T
+            }
         }
     }
 }
-
-private fun CreditCard.toCardInformation(): CardInformation = CardInformation(
-    id = this.id,
-    numberFirst = this.cardNumbers[0],
-    numberSecond = this.cardNumbers[1],
-    ownerName = this.ownerName,
-    expirationDate = this.expirationDate,
-    bank = CardBankInformation.from(this.bankType)
-)
 
 private fun CreditCard.toUi(): EditCardUiState {
     val formatter = DateTimeFormatter.ofPattern("MMyy")

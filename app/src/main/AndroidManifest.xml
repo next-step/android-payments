@@ -24,7 +24,7 @@
         </activity>
 
         <activity android:name=".ui.newcard.NewCardActivity" />
-        <activity android:name=".ui.editcard.EditCardRoute$EditCardActivity" />
+        <activity android:name=".ui.editcard.EditCardActivity" />
     </application>
 
 </manifest>

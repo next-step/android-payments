@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.ui.editcard.EditCardRoute
+import nextstep.payments.ui.editcard.EditCardActivity
 import nextstep.payments.ui.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -62,7 +62,7 @@ class CardListActivity : ComponentActivity() {
 
             LaunchedEffect(true) {
                 viewModel.editCard.collectLatest { creditCard ->
-                    EditCardRoute.startActivity(
+                    EditCardActivity.startActivity(
                         targetCard = creditCard,
                         context = this@CardListActivity,
                         launcher = editCardLauncher,
