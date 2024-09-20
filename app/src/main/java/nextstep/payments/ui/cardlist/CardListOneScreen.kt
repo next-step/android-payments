@@ -1,5 +1,6 @@
 package nextstep.payments.ui.cardlist
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,13 +19,17 @@ import nextstep.payments.ui.component.card.CardInformation
 import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
+import java.util.UUID
 
 @Composable
 internal fun CardListOneScreen(
     card: CardInformation,
     onAddCardClick: () -> Unit,
+    onCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = { CardListTopAppBar() },
         content = { paddingValues ->
             CardListOneContent(
@@ -34,6 +39,7 @@ internal fun CardListOneScreen(
                     .fillMaxSize(),
                 card = card,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
             )
         }
     )
@@ -43,6 +49,7 @@ internal fun CardListOneScreen(
 private fun CardListOneContent(
     card: CardInformation,
     onAddCardClick: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -51,6 +58,7 @@ private fun CardListOneContent(
     ) {
         PaymentCard(
             cardInformation = card,
+            modifier = Modifier.clickable { onCardClick() }
         )
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -63,6 +71,7 @@ private fun CardListOneContent(
 @Composable
 private fun CardListOneScreenPreview() {
     val card = CardInformation(
+        id = UUID.randomUUID(),
         numberFirst = CardNumber("1111"),
         numberSecond = CardNumber("1111"),
         expirationDate = YearMonth.now(),
@@ -73,6 +82,7 @@ private fun CardListOneScreenPreview() {
         CardListOneScreen(
             card = card,
             onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }

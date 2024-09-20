@@ -28,6 +28,7 @@ import nextstep.payments.ui.component.graphics.getDominantColorFromDrawable
 import nextstep.payments.ui.theme.PaymentsTheme
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 
 @Composable
 internal fun PaymentCard() {
@@ -58,7 +59,8 @@ internal fun PaymentCard(
 
 @Composable
 internal fun PaymentCard(
-    cardInformation: CardInformation
+    cardInformation: CardInformation,
+    modifier: Modifier = Modifier,
 ) {
     val color = Color(
         getDominantColorFromDrawable(
@@ -67,6 +69,7 @@ internal fun PaymentCard(
         )
     )
     CardFrame(
+        modifier = modifier,
         color = color,
         titleContent = {
             Text(
@@ -84,12 +87,13 @@ internal fun PaymentCard(
 
 @Composable
 fun CardFrame(
+    modifier: Modifier = Modifier,
     color: Color = Color(0xFF333333),
     titleContent: @Composable RowScope.() -> Unit = {},
     content: @Composable () -> Unit = {}
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
@@ -190,6 +194,7 @@ private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
             cardInformation = CardInformation(
+                id = UUID.randomUUID(),
                 numberFirst = CardNumber("1111"),
                 numberSecond = CardNumber("2222"),
                 expirationDate = YearMonth.now(),

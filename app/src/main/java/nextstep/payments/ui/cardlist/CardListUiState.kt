@@ -18,10 +18,11 @@ internal sealed interface CardListUiState {
     }
 }
 
-internal fun CreditCard.toUi(): CardInformation = CardInformation(
+private fun CreditCard.toUi(): CardInformation = CardInformation(
+    id = this.id,
     numberFirst = this.cardNumbers[0],
     numberSecond = this.cardNumbers[1],
     ownerName = this.ownerName,
-    expirationDate = this.expiredDate,
+    expirationDate = this.expirationDate,
     bank = CardBankInformation.from(bankType)
 )

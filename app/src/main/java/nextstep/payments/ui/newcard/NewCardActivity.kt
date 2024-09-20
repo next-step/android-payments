@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.R
@@ -25,14 +26,11 @@ class NewCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-            val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-            val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-            val password by viewModel.password.collectAsStateWithLifecycle()
-            val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             val snackbarHostState = remember { SnackbarHostState() }
-            val context = LocalContext.current
+            val focusManager = LocalFocusManager.current
 
             LaunchedEffect(true) {
                 viewModel.errorFlow.collectLatest {
@@ -45,22 +43,29 @@ class NewCardActivity : ComponentActivity() {
                     finish()
                 }
             }
+            LaunchedEffect(true) {
+                viewModel.commandFocus.collectLatest {
+                    focusManager.moveFocus(it)
+                }
+            }
 
             PaymentsTheme {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
                 ) {
                     NewCardScreen(
-                        cardNumber = cardNumber,
-                        expiredDate = expiredDate,
-                        ownerName = ownerName,
-                        password = password,
-                        bank = selectedBank,
+                        cardNumber = uiState.cardNumber,
+                        expiredDate = uiState.expirationDate,
+                        ownerName = uiState.ownerName,
+                        password = uiState.password,
+                        bank = uiState.selectedBank,
+                        isShowBanks = uiState.isShowBanks,
                         setCardNumber = viewModel::setCardNumber,
                         setExpiredDate = viewModel::setExpiredDate,
                         setOwnerName = viewModel::setOwnerName,
                         setPassword = viewModel::setPassword,
                         onAddCardClick = {
+                            focusManager.clearFocus()
                             viewModel.addCard()
                         },
                         onBackClick = {

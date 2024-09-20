@@ -14,15 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.ui.component.card.PaymentCard
-import nextstep.payments.model.card.CreditCard
 import nextstep.payments.ui.component.card.CardInformation
+import nextstep.payments.ui.component.card.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 internal fun CardListManyScreen(
     cards: List<CardInformation>,
-    onAddCardClick: () -> Unit
+    onAddCardClick: () -> Unit,
+    onCardClick: (CardInformation) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
@@ -30,7 +31,7 @@ internal fun CardListManyScreen(
                 Text(
                     text = stringResource(R.string.card_list_many_screen_top_app_bar_action),
                     style = PaymentsTheme.typography.roboto18B,
-                    modifier = Modifier
+                    modifier = modifier
                         .padding(end = 20.dp)
                         .clickable { onAddCardClick() }
                 )
@@ -47,9 +48,11 @@ internal fun CardListManyScreen(
             ) {
                 items(
                     items = cards,
-                    key = { "${it.numberFirst}${it.numberSecond}" }
+                    key = { it.id }
                 ) { card ->
-                    PaymentCard(cardInformation = card)
+                    PaymentCard(
+                        cardInformation = card,
+                        modifier = Modifier.clickable { onCardClick(card) })
                 }
             }
         }
