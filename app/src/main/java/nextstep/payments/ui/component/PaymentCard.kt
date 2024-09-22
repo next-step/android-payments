@@ -31,15 +31,9 @@ fun PaymentCard(
     modifier: Modifier = Modifier,
     card: CreditCard = CreditCard(),
 ) {
-    Box(
-        contentAlignment = Alignment.CenterStart,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Black,
-                shape = RoundedCornerShape(5.dp),
-            )
+    PaymentCardLayout(
+        modifier = modifier,
+        backgroundColor = card.bank.getCardColorRes()
     ) {
         Box(
             modifier = Modifier
