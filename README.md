@@ -20,7 +20,7 @@
 
 ### 구현 기능 목록
 - [ ] 리뷰 반영
-  - [ ] 카드 리스트 프리뷰 파라미터에 실 데이터 추가
+  - [x] 카드 리스트 프리뷰 파라미터에 실 데이터 추가
   - [ ] PaymentCardLayout 추가
   - [ ] TextField의 VisualTransformation 사용해서 카드번호, 만료날짜 포맷 개선
   - [ ] cardNumber의 뒷자리 8자리 * 처리
