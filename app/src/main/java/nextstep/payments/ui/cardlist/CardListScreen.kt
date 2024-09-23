@@ -3,14 +3,14 @@ package nextstep.payments.ui.cardlist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.data.Card
 import nextstep.payments.ui.cardlist.component.CardListLazyColumn
@@ -23,22 +23,26 @@ fun CardListScreen(
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Scaffold(
+        topBar = { CardListTopAppBar(onAddCardClick = onAddCardClick) },
         modifier = modifier.fillMaxSize(),
-    ) {
-        CardListTopAppBar(onAddCardClick = onAddCardClick)
-        Spacer(modifier = Modifier.size(14.dp))
+    ) { innerPadding ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = innerPadding),
+        ) {
+            when (cards.isEmpty()) {
+                true -> Text(
+                    text = stringResource(R.string.cardlist_text_no_card),
+                    style = label,
+                )
 
-        when (cards.isEmpty()) {
-            true -> Text(
-                text = stringResource(R.string.cardlist_text_no_card),
-                style = label,
-            )
-
-            false -> CardListLazyColumn(cards)
+                false -> CardListLazyColumn(cards)
+            }
+            Spacer(modifier = Modifier.weight(weight = 1f))
         }
-        Spacer(modifier = Modifier.weight(weight = 1f))
     }
 }
 
