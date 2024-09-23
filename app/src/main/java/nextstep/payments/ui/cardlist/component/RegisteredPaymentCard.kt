@@ -57,7 +57,7 @@ fun RegisteredPaymentCard(
                     style = body,
                 )
                 Text(
-                    text = card.expiredDate,
+                    text = card.formattedExpiredDate,
                     style = body,
                 )
             }

@@ -35,7 +35,7 @@ fun CardListLazyColumn(
                     is Card -> card.cardId
                     is EmptyCard -> EmptyCard.toString()
                 }
-            }
+            },
         ) { card ->
             when (card) {
                 is Card -> RegisteredPaymentCard(card)

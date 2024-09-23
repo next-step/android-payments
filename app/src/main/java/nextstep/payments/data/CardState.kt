@@ -16,7 +16,7 @@ sealed class CardState {
     ) : CardState() {
         val firstOfCardNumber: String = cardNumber.slice(0..3)
         val secondOfCardNumber: String = cardNumber.slice(4..7)
-        val formattedExpiredDate: String = expiredDate.toString()
+        val formattedExpiredDate: String = "${expiredDate.take(2)} / ${expiredDate.takeLast(2)}"
     }
 
     @Immutable
