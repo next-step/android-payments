@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import nextstep.payments.R
 import nextstep.payments.data.CardState
 import nextstep.payments.data.CardState.EmptyCard
@@ -25,7 +26,8 @@ import nextstep.payments.ui.theme.label
 
 @Composable
 fun CardListScreen(
-    cards: List<CardState>,
+    isEmptyOfRegisteredCards: Boolean,
+    cards: ImmutableList<CardState>,
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -40,7 +42,7 @@ fun CardListScreen(
                 .padding(paddingValues = innerPadding)
                 .padding(horizontal = 70.dp),
         ) {
-            if (cards.first() is EmptyCard) {
+            if (isEmptyOfRegisteredCards) {
                 Text(
                     text = stringResource(R.string.cardlist_text_no_card),
                     style = label,
@@ -60,10 +62,11 @@ fun CardListScreen(
 @Preview(showBackground = true)
 @Composable
 private fun CardListScreenPreview(
-    @PreviewParameter(CardListScreenPreviewParameterProvider::class) cards: List<CardState>,
+    @PreviewParameter(CardListScreenPreviewParameterProvider::class) cards: ImmutableList<CardState>,
 ) {
     PaymentsTheme {
         CardListScreen(
+            isEmptyOfRegisteredCards = true,
             cards = cards,
             onAddCardClick = { },
         )

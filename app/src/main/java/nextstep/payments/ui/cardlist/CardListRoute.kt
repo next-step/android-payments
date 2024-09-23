@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.data.CardState.EmptyCard
 
 @Composable
 fun CardListRoute(
@@ -18,6 +19,7 @@ fun CardListRoute(
     }
 
     CardListScreen(
+        isEmptyOfRegisteredCards = cards.first() is EmptyCard,
         cards = cards,
         onAddCardClick = onAddCardClick,
     )
