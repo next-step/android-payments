@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import nextstep.payments.data.model.CreditCard
 import nextstep.payments.ui.ext.toFormattedCardNumber
 import nextstep.payments.ui.ext.toFormattedDate
+import nextstep.payments.ui.model.BankType
 import nextstep.payments.ui.theme.Yellow
 
 @Composable
@@ -93,11 +92,13 @@ private class PaymentCardPreviewParameters : PreviewParameterProvider<CreditCard
             cardNumber = "123456789011",
             ownerName = "kim",
             expiredDate = "1130",
+            bank = BankType.NOT_SELECTED
         ),
         CreditCard(
             cardNumber = "123456789011",
             ownerName = "kim",
             expiredDate = "1130",
+            bank = BankType.LOTTE
         )
     )
 }

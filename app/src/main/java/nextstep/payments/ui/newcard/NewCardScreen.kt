@@ -6,27 +6,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 import nextstep.payments.R
+import nextstep.payments.data.model.CreditCard
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.model.BankType
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.utils.CreditCardVisualTransformation
 import nextstep.payments.ui.utils.ExpiredDateVisualTransformation
 
 // Stateful
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewCardScreen(
     viewModel: NewCardViewModel,
@@ -38,40 +47,76 @@ internal fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
+
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded= true,
+        confirmValueChange = { false }
+    )
+
+    LaunchedEffect(key1 = selectedBank) {
+        if (selectedBank != BankType.NOT_SELECTED) {
+            modalBottomSheetState.hide()
+        }
+    }
+
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        selectedBank = selectedBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = navigateToCardList,
         onSaveClick = viewModel::addCard,
+        bottomSheetState = modalBottomSheetState,
+        onSelectBank = viewModel::setSelectedBank,
         modifier = modifier
     )
 }
 
 // Stateless
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    selectedBank: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
+    bottomSheetState: SheetState,
+    onSelectBank: (BankType) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if(selectedBank == BankType.NOT_SELECTED) {
+        ModalBottomSheet(
+            modifier = modifier,
+            sheetState = bottomSheetState,
+            onDismissRequest = { },
+        ) {
+            BankBottomSheetContent(
+                onItemClick = onSelectBank,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(297.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+    }
+
     Scaffold(
         topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier
@@ -85,7 +130,11 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                card = CreditCard().apply {
+                    bank = selectedBank
+                }
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -138,38 +187,25 @@ private fun NewCardScreen(
     }
 }
 
-
-@Preview
-@Composable
-private fun NewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("0000 - 0000 - 1111 - 1234")
-                setExpiredDate("00 / 00")
-                setOwnerName("김은혜")
-                setPassword("123123")
-            },
-            navigateToCardList = {}
-        )
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "0000 - 0000 - 1111 - 1234",
-            expiredDate = "00 / 00",
+            cardNumber = "1111222233334444",
+            expiredDate = "0000",
             ownerName = "김은혜",
             password = "123123",
+            selectedBank = BankType.SHINHAN,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onSaveClick = {}
+            onSaveClick = {},
+            bottomSheetState = rememberModalBottomSheetState(),
+            onSelectBank = {}
         )
     }
 }
