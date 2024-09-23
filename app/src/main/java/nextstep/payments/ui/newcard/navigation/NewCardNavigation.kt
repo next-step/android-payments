@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import nextstep.payments.ui.newcard.NewCardRoute
 import nextstep.payments.ui.newcard.navigation.NewCardDestination.ROUTE
 
-
 fun NavGraphBuilder.newCardScreen(
     onBackClick: () -> Unit,
 ) {

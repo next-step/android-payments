@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.data.Card
-import nextstep.payments.ui.component.PaymentCard
 
 @Composable
 fun CardListLazyColumn(
@@ -25,8 +24,8 @@ fun CardListLazyColumn(
         items(
             items = cards,
             key = { card -> card.cardId },
-        ) {
-            PaymentCard()
+        ) { card ->
+            RegisteredPaymentCard(card)
         }
     }
 }
