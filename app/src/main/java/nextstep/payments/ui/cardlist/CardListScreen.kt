@@ -3,6 +3,7 @@ package nextstep.payments.ui.cardlist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -11,15 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.data.Card
+import nextstep.payments.data.CardState
+import nextstep.payments.data.CardState.EmptyCard
 import nextstep.payments.ui.cardlist.component.CardListLazyColumn
 import nextstep.payments.ui.cardlist.component.CardListTopAppBar
+import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.label
 
 @Composable
 fun CardListScreen(
-    cards: List<Card>,
+    cards: List<CardState>,
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -31,16 +37,21 @@ fun CardListScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = innerPadding),
+                .padding(paddingValues = innerPadding)
+                .padding(horizontal = 70.dp),
         ) {
-            when (cards.isEmpty()) {
-                true -> Text(
+            if (cards.first() is EmptyCard) {
+                Text(
                     text = stringResource(R.string.cardlist_text_no_card),
                     style = label,
                 )
-
-                false -> CardListLazyColumn(cards)
+                Spacer(modifier = Modifier.height(height = 36.dp))
             }
+
+            CardListLazyColumn(
+                cards = cards,
+                onAddCardClick = onAddCardClick,
+            )
             Spacer(modifier = Modifier.weight(weight = 1f))
         }
     }
@@ -48,18 +59,37 @@ fun CardListScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun CardListScreenPreview() {
-    CardListScreen(
-        cards = listOf(
-            Card(
-                cardId = 0L,
-                cardNumber = "",
-                expiredDate = "",
-                ownerName = "",
-                password = ""
-            )
+private fun CardListScreenPreview(
+    @PreviewParameter(CardListScreenPreviewParameterProvider::class) cards: List<CardState>,
+) {
+    PaymentsTheme {
+        CardListScreen(
+            cards = cards,
+            onAddCardClick = { },
+        )
+    }
+}
+
+class CardListScreenPreviewParameterProvider : PreviewParameterProvider<List<CardState>> {
+    override val values = sequenceOf(
+        listOf(EmptyCard),
+        listOf(
+            CardState.Card(
+                cardId = 0,
+                cardNumber = "1234123412341234",
+                expiredDate = "1221",
+                ownerName = "세훈",
+                password = "1234",
+            ), EmptyCard
         ),
-        onAddCardClick = { },
+        List(4) {
+            CardState.Card(
+                cardId = it.toLong(),
+                cardNumber = "1234123412341234",
+                expiredDate = "122$it",
+                ownerName = "세훈$it",
+                password = "1234",
+            )
+        },
     )
-    // 매개변수 3가지, 빈 리스트, 2개일때, 안보일때,
 }

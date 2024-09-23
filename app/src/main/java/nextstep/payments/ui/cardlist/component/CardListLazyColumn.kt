@@ -1,6 +1,6 @@
 package nextstep.payments.ui.cardlist.component
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,23 +9,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.Card
+import nextstep.payments.data.CardState
+import nextstep.payments.data.CardState.Card
+import nextstep.payments.data.CardState.EmptyCard
 
 @Composable
 fun CardListLazyColumn(
-    cards: List<Card>,
+    cards: List<CardState>,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
-        contentPadding = PaddingValues(vertical = 18.dp),
+        verticalArrangement = Arrangement.spacedBy(space = 36.dp),
         modifier = modifier.fillMaxSize(),
     ) {
         items(
             items = cards,
-            key = { card -> card.cardId },
+            key = { card ->
+                when (card) {
+                    is Card -> card.cardId
+                    is EmptyCard -> EmptyCard.toString()
+                }
+            }
         ) { card ->
-            RegisteredPaymentCard(card)
+            when (card) {
+                is Card -> RegisteredPaymentCard(card)
+                is EmptyCard -> CardListEmptyCard(onAddCardClick = onAddCardClick)
+            }
         }
     }
 }
@@ -34,8 +45,7 @@ fun CardListLazyColumn(
 @Composable
 private fun CardsLazyColumnPreview() {
     CardListLazyColumn(
-        cards = listOf(
-            Card(cardId = 0L, cardNumber = "", expiredDate = "", ownerName = "", password = "")
-        ),
+        cards = emptyList(),
+        onAddCardClick = { },
     )
 }
