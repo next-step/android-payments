@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import nextstep.payments.data.Card
+import nextstep.payments.data.CardState.Card
 import nextstep.payments.data.PaymentCardsRepository
 
 class NewCardViewModel(

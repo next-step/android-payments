@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.Card
+import nextstep.payments.data.CardState.Card
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.body
 

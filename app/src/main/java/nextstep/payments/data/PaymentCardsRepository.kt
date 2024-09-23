@@ -1,5 +1,7 @@
 package nextstep.payments.data
 
+import nextstep.payments.data.CardState.Card
+
 object PaymentCardsRepository {
 
     private val _cards = mutableListOf<Card>()
@@ -9,5 +11,3 @@ object PaymentCardsRepository {
         _cards.add(card)
     }
 }
-
-
