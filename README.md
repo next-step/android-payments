@@ -22,7 +22,7 @@
 - [ ] 리뷰 반영
   - [x] 카드 리스트 프리뷰 파라미터에 실 데이터 추가
   - [x] PaymentCardLayout 추가
-  - [ ] TextField의 VisualTransformation 사용해서 카드번호, 만료날짜 포맷 개선
+  - [x] TextField의 VisualTransformation 사용해서 카드번호, 만료날짜 포맷 개선
   - [ ] cardNumber의 뒷자리 8자리 * 처리
 - [ ] 카드 목록 화면 구현
   - [ ] 카드 추가 화면에 접속했을 때 카드사를 필수로 선택해야 한다.

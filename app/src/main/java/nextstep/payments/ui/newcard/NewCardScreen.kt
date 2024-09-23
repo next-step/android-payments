@@ -23,6 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.utils.CreditCardVisualTransformation
+import nextstep.payments.ui.utils.ExpiredDateVisualTransformation
 
 // Stateful
 @Composable
@@ -89,17 +91,29 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = setCardNumber,
+                onValueChange = { newText ->
+                    if (newText.length <= 16 && newText.all { it.isDigit() }) {
+                        setCardNumber(newText)
+                    }
+                },
                 label = { Text(text = stringResource(id = R.string.payment_card_number_label)) },
                 placeholder = { Text(text = stringResource(id = R.string.payment_card_number_placeholder)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                visualTransformation = CreditCardVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = setExpiredDate,
+                onValueChange = { newText ->
+                    if (newText.length <= 4 && newText.all { it.isDigit() }) {
+                        setExpiredDate(newText)
+                    }
+                },
                 label = { Text(text = stringResource(id = R.string.payment_card_expired_date_label)) },
                 placeholder = { Text(text = stringResource(id = R.string.payment_card_expired_date_placeholder)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                visualTransformation = ExpiredDateVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -116,8 +130,9 @@ private fun NewCardScreen(
                 onValueChange = setPassword,
                 label = { Text(text = stringResource(id = R.string.payment_card_password_label)) },
                 placeholder = { Text(text = stringResource(id = R.string.payment_card_password_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
