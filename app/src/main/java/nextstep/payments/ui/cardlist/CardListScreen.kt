@@ -11,12 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.data.Card
 import nextstep.payments.ui.cardlist.component.CardListLazyColumn
 import nextstep.payments.ui.cardlist.component.CardListTopAppBar
-import nextstep.payments.ui.theme.RobotoBold
+import nextstep.payments.ui.theme.label
 
 @Composable
 fun CardListScreen(
@@ -34,8 +33,7 @@ fun CardListScreen(
         when (cards.isEmpty()) {
             true -> Text(
                 text = stringResource(R.string.cardlist_text_no_card),
-                fontFamily = RobotoBold,
-                fontSize = 18.sp,
+                style = label,
             )
 
             false -> CardListLazyColumn(cards)
