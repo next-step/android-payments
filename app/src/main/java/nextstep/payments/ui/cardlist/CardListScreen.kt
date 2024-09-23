@@ -80,7 +80,8 @@ class CardListScreenPreviewParameterProvider : PreviewParameterProvider<List<Car
                 expiredDate = "1221",
                 ownerName = "세훈",
                 password = "1234",
-            ), EmptyCard
+            ),
+            EmptyCard,
         ),
         List(4) {
             CardState.Card(
