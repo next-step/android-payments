@@ -28,6 +28,7 @@ class CardListScreenTest {
         // when:
         composeRule.setContent {
             CardListScreen(
+                isEnabledOfAddButton = false,
                 isEmptyOfRegisteredCards = registeredCards.first() is EmptyCard,
                 cards = registeredCards,
                 onAddCardClick = { },
@@ -46,6 +47,7 @@ class CardListScreenTest {
         // when:
         composeRule.setContent {
             CardListScreen(
+                isEnabledOfAddButton = false,
                 isEmptyOfRegisteredCards = registeredCards.first() is EmptyCard,
                 cards = registeredCards,
                 onAddCardClick = { },
@@ -73,7 +75,8 @@ class CardListScreenTest {
         // when:
         composeRule.setContent {
             CardListScreen(
-                isEmptyOfRegisteredCards = registeredCards.first() is EmptyCard,
+                isEnabledOfAddButton = false,
+                isEmptyOfRegisteredCards = false,
                 cards = registeredCards,
                 onAddCardClick = { },
             )
@@ -101,7 +104,8 @@ class CardListScreenTest {
         // when:
         composeRule.setContent {
             CardListScreen(
-                isEmptyOfRegisteredCards = registeredCards.first() is EmptyCard,
+                isEnabledOfAddButton = false,
+                isEmptyOfRegisteredCards = false,
                 cards = registeredCards,
                 onAddCardClick = { },
             )
@@ -132,7 +136,8 @@ class CardListScreenTest {
         // when:
         composeRule.setContent {
             CardListScreen(
-                isEmptyOfRegisteredCards = registeredCards.first() is EmptyCard,
+                isEnabledOfAddButton = true,
+                isEmptyOfRegisteredCards = false,
                 cards = registeredCards,
                 onAddCardClick = { },
             )
@@ -150,9 +155,27 @@ class CardListScreenTest {
     @Test
     fun `등록된_카드가_4개_이상일_때_우측_상단에_추가버튼이_노출된다`() {
         // given:
+        val registeredCards: ImmutableList<CardState> = List(4) {
+            CardState.Card(
+                cardId = it.toLong(),
+                cardNumber = "1234123412341234",
+                expiredDate = "122$it",
+                ownerName = "세훈$it",
+                password = "1234",
+            )
+        }.toImmutableList()
 
         // when:
+        composeRule.setContent {
+            CardListScreen(
+                isEnabledOfAddButton = !registeredCards.contains(EmptyCard),
+                isEmptyOfRegisteredCards = false,
+                cards = registeredCards,
+                onAddCardClick = { },
+            )
+        }
 
         // then:
+       composeRule.onNodeWithText("추가").assertIsDisplayed()
     }
 }

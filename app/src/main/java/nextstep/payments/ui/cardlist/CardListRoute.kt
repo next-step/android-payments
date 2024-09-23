@@ -19,6 +19,7 @@ fun CardListRoute(
     }
 
     CardListScreen(
+        isEnabledOfAddButton = !cards.contains(EmptyCard),
         isEmptyOfRegisteredCards = cards.first() is EmptyCard,
         cards = cards,
         onAddCardClick = onAddCardClick,

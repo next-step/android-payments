@@ -16,23 +16,30 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import nextstep.payments.R
 import nextstep.payments.data.CardState
 import nextstep.payments.data.CardState.EmptyCard
 import nextstep.payments.ui.cardlist.component.CardListLazyColumn
 import nextstep.payments.ui.cardlist.component.CardListTopAppBar
-import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.label
 
 @Composable
 fun CardListScreen(
+    isEnabledOfAddButton: Boolean,
     isEmptyOfRegisteredCards: Boolean,
     cards: ImmutableList<CardState>,
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { CardListTopAppBar(onAddCardClick = onAddCardClick) },
+        topBar = {
+            CardListTopAppBar(
+                isEnabledOfAddButton = isEnabledOfAddButton,
+                onAddCardClick = onAddCardClick,
+            )
+        },
         modifier = modifier.fillMaxSize(),
     ) { innerPadding ->
         Column(
@@ -64,19 +71,18 @@ fun CardListScreen(
 private fun CardListScreenPreview(
     @PreviewParameter(CardListScreenPreviewParameterProvider::class) cards: ImmutableList<CardState>,
 ) {
-    PaymentsTheme {
-        CardListScreen(
-            isEmptyOfRegisteredCards = true,
-            cards = cards,
-            onAddCardClick = { },
-        )
-    }
+    CardListScreen(
+        isEnabledOfAddButton = false,
+        isEmptyOfRegisteredCards = true,
+        cards = cards,
+        onAddCardClick = { },
+    )
 }
 
-class CardListScreenPreviewParameterProvider : PreviewParameterProvider<List<CardState>> {
-    override val values = sequenceOf(
-        listOf(EmptyCard),
-        listOf(
+class CardListScreenPreviewParameterProvider : PreviewParameterProvider<ImmutableList<CardState>> {
+    override val values: Sequence<ImmutableList<CardState>> = sequenceOf(
+        persistentListOf(EmptyCard),
+        persistentListOf(
             CardState.Card(
                 cardId = 0,
                 cardNumber = "1234123412341234",
@@ -94,6 +100,6 @@ class CardListScreenPreviewParameterProvider : PreviewParameterProvider<List<Car
                 ownerName = "세훈$it",
                 password = "1234",
             )
-        },
+        }.toImmutableList(),
     )
 }

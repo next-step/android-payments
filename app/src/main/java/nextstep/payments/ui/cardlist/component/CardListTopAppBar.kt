@@ -17,6 +17,7 @@ import nextstep.payments.ui.theme.title
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListTopAppBar(
+    isEnabledOfAddButton: Boolean,
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -28,13 +29,15 @@ fun CardListTopAppBar(
             )
         },
         actions = {
-            Text(
-                text = stringResource(R.string.cardlist_top_app_bar_button),
-                style = label,
-                modifier = Modifier
-                    .clickable { onAddCardClick() }
-                    .padding(all = 20.dp),
-            )
+            if (isEnabledOfAddButton) {
+                Text(
+                    text = stringResource(R.string.cardlist_top_app_bar_button),
+                    style = label,
+                    modifier = Modifier
+                        .clickable { onAddCardClick() }
+                        .padding(all = 20.dp),
+                )
+            }
         },
         modifier = modifier.padding(vertical = 18.dp),
     )
@@ -44,6 +47,7 @@ fun CardListTopAppBar(
 @Composable
 private fun CardListTopBarPreview() {
     CardListTopAppBar(
+        isEnabledOfAddButton = true,
         onAddCardClick = { },
     )
 }
