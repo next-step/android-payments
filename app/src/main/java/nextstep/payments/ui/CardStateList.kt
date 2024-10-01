@@ -1,6 +1,7 @@
 package nextstep.payments.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,26 +34,36 @@ fun EmptyCardState(onCardAddClicked: () -> Unit) {
     )
     CardList(
         cards = emptyList(),
-        content = { CardAdd(onCardAddClicked = onCardAddClicked) }
+        content = { CardAdd(onCardAddClicked = onCardAddClicked) },
+        onCardEditClicked = {}
     )
 }
 
 @Composable
-fun OneCardState(cards: List<Card>, onCardAddClicked: () -> Unit) {
+fun OneCardState(
+    cards: List<Card>,
+    onCardAddClicked: () -> Unit,
+    onCardEditClicked: (Card) -> Unit
+) {
     CardList(
         cards = cards,
-        content = { CardAdd(onCardAddClicked = onCardAddClicked) }
+        content = { CardAdd(onCardAddClicked = onCardAddClicked) },
+        onCardEditClicked = onCardEditClicked
     )
 }
 
 @Composable
-fun ManyCardState(cards: List<Card>) {
-    CardList(cards = cards)
+fun ManyCardState(cards: List<Card>, onCardEditClicked: (Card) -> Unit) {
+    CardList(
+        cards = cards,
+        onCardEditClicked = onCardEditClicked
+    )
 }
 
 @Composable
 fun CardList(
     cards: List<Card>,
+    onCardEditClicked: (Card) -> Unit,
     content: @Composable () -> Unit = {}
 ) {
     LazyColumn(
@@ -64,7 +75,8 @@ fun CardList(
                     .background(
                         color = Color(card.color),
                         shape = RoundedCornerShape(5.dp),
-                    ),
+                    )
+                    .clickable { onCardEditClicked(card) },
                 cardCompany = card.cardCompany,
                 content = { CardAdd(card = card) }
             )
@@ -184,6 +196,7 @@ fun CardListPreview() {
                 color = 0xFF695F54,
                 cardCompany = "국민카드"
             ),
-        )
+        ),
+        onCardEditClicked = {}
     )
 }

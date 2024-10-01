@@ -28,24 +28,33 @@ import nextstep.payments.model.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardsViewModel
 
-
 @Composable
-fun CardsScreen(onCardAddClicked: () -> Unit, viewModel: CardsViewModel) {
+fun CardsScreen(
+    onCardAddClicked: () -> Unit,
+    onCardEditClicked: (Card) -> Unit,
+    viewModel: CardsViewModel
+) {
     val uiState by viewModel.uiState.collectAsState()
     val cards by viewModel.cards.collectAsState()
 
     CardsScreenContent(
         onCardAddClicked = onCardAddClicked,
         cards = cards,
-        uiState = uiState
+        cardUiState = uiState,
+        onCardEditClicked = onCardEditClicked
     )
 }
 
 @Composable
-fun CardsScreenContent(onCardAddClicked: () -> Unit, cards: List<Card>, uiState: CardUiState) {
+fun CardsScreenContent(
+    onCardAddClicked: () -> Unit,
+    cards: List<Card>,
+    cardUiState: CardUiState,
+    onCardEditClicked: (Card) -> Unit
+) {
     Scaffold(
         topBar = {
-            when (uiState) {
+            when (cardUiState) {
                 is CardUiState.Empty -> {
                     CardsTopBar()
                 }
@@ -67,17 +76,35 @@ fun CardsScreenContent(onCardAddClicked: () -> Unit, cards: List<Card>, uiState:
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardList(uiState, cards, onCardAddClicked)
+            CardList(
+                cardUiState = cardUiState,
+                cards = cards,
+                onCardAddClicked = onCardAddClicked,
+                onCardEditClicked = onCardEditClicked
+            )
         }
     }
 }
 
 @Composable
-fun CardList(cardUiState: CardUiState, cards: List<Card>, onCardAddClicked: () -> Unit) {
+fun CardList(
+    cardUiState: CardUiState,
+    cards: List<Card>,
+    onCardAddClicked: () -> Unit,
+    onCardEditClicked: (Card) -> Unit
+) {
     when (cardUiState) {
-        CardUiState.Empty -> EmptyCardState(onCardAddClicked)
-        is CardUiState.One -> OneCardState(cards, onCardAddClicked)
-        is CardUiState.Many -> ManyCardState(cards)
+        CardUiState.Empty -> EmptyCardState(onCardAddClicked = onCardAddClicked)
+        is CardUiState.One -> OneCardState(
+            cards = cards,
+            onCardAddClicked = onCardAddClicked,
+            onCardEditClicked = onCardEditClicked
+        )
+
+        is CardUiState.Many -> ManyCardState(
+            cards = cards,
+            onCardEditClicked = onCardEditClicked
+        )
     }
 }
 
@@ -128,7 +155,8 @@ private fun CardNotExistListPreview() {
         CardsScreenContent(
             onCardAddClicked = {},
             cards = emptyList(),
-            uiState = CardUiState.Empty
+            cardUiState = CardUiState.Empty,
+            onCardEditClicked = {}
         )
     }
 }
@@ -149,7 +177,8 @@ private fun CardOneExistListPreview() {
                     cardCompany = "BC카드"
                 )
             ),
-            uiState = CardUiState.One
+            cardUiState = CardUiState.One,
+            onCardEditClicked = {}
         )
     }
 }
@@ -178,7 +207,8 @@ private fun CardManyExistListPreview() {
                     cardCompany = "신한카드"
                 )
             ),
-            uiState = CardUiState.Many
+            cardUiState = CardUiState.Many,
+            onCardEditClicked = {}
         )
     }
 }

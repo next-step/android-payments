@@ -33,6 +33,9 @@ class CardsActivity : ComponentActivity() {
                         val intent = Intent(this, NewCardActivity::class.java)
                         launcher.launch(intent)
                     },
+                    onCardEditClicked = {
+
+                    },
                     viewModel = viewModel
                 )
             }
@@ -46,6 +49,7 @@ fun CardsScreenPreview() {
     PaymentsTheme {
         CardsScreen(
             onCardAddClicked = {},
+            onCardEditClicked = {},
             viewModel = CardsViewModel()
         )
     }
