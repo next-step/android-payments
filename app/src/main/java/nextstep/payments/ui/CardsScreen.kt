@@ -30,11 +30,11 @@ import nextstep.payments.viewmodel.CardsViewModel
 
 
 @Composable
-fun CardsScreenStateful(onCardAddClicked: () -> Unit, viewModel: CardsViewModel) {
+fun CardsScreen(onCardAddClicked: () -> Unit, viewModel: CardsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     val cards by viewModel.cards.collectAsState()
 
-    CardsScreenStateless(
+    CardsScreenContent(
         onCardAddClicked = onCardAddClicked,
         cards = cards,
         uiState = uiState
@@ -42,7 +42,7 @@ fun CardsScreenStateful(onCardAddClicked: () -> Unit, viewModel: CardsViewModel)
 }
 
 @Composable
-fun CardsScreenStateless(onCardAddClicked: () -> Unit, cards: List<Card>, uiState: CardUiState) {
+fun CardsScreenContent(onCardAddClicked: () -> Unit, cards: List<Card>, uiState: CardUiState) {
     Scaffold(
         topBar = {
             when (uiState) {
@@ -67,8 +67,17 @@ fun CardsScreenStateless(onCardAddClicked: () -> Unit, cards: List<Card>, uiStat
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            uiState.Render(cards, onCardAddClicked)
+            CardList(uiState, cards, onCardAddClicked)
         }
+    }
+}
+
+@Composable
+fun CardList(cardUiState: CardUiState, cards: List<Card>, onCardAddClicked: () -> Unit) {
+    when (cardUiState) {
+        CardUiState.Empty -> EmptyCardState(onCardAddClicked)
+        is CardUiState.One -> OneCardState(cards, onCardAddClicked)
+        is CardUiState.Many -> ManyCardState(cards)
     }
 }
 
@@ -116,7 +125,7 @@ private fun CardsTopBarWithButton(onCardAddClicked: () -> Unit) {
 @Composable
 private fun CardNotExistListPreview() {
     PaymentsTheme {
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
             cards = emptyList(),
             uiState = CardUiState.Empty
@@ -128,9 +137,7 @@ private fun CardNotExistListPreview() {
 @Composable
 private fun CardOneExistListPreview() {
     PaymentsTheme {
-        val cardViewModel = CardsViewModel()
-        cardViewModel.updateCardUiState()
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
             cards = listOf(
                 Card(
@@ -151,10 +158,7 @@ private fun CardOneExistListPreview() {
 @Composable
 private fun CardManyExistListPreview() {
     PaymentsTheme {
-        val cardViewModel = CardsViewModel()
-        cardViewModel.updateCardUiState()
-        cardViewModel.updateCardUiState()
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
             cards = listOf(
                 Card(

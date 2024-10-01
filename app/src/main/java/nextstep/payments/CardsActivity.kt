@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import nextstep.payments.ui.CardsScreenStateful
+import nextstep.payments.ui.CardsScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardsViewModel
 import nextstep.payments.viewmodel.ViewModelFactory
@@ -28,7 +28,7 @@ class CardsActivity : ComponentActivity() {
                             viewModel.updateCardUiState()
                         }
                     }
-                CardsScreenStateful(
+                CardsScreen(
                     onCardAddClicked = {
                         val intent = Intent(this, NewCardActivity::class.java)
                         launcher.launch(intent)
@@ -44,7 +44,7 @@ class CardsActivity : ComponentActivity() {
 @Composable
 fun CardsScreenPreview() {
     PaymentsTheme {
-        CardsScreenStateful(
+        CardsScreen(
             onCardAddClicked = {},
             viewModel = CardsViewModel()
         )

@@ -13,148 +13,51 @@ sealed interface CardCompanyType {
     val color: Long
 
     @Composable
-    fun Render()
+    fun Render() {
+        PaymentCard(
+            modifier = Modifier
+                .background(
+                    color = Color(color),
+                    shape = RoundedCornerShape(5.dp),
+                ),
+            cardCompany = name
+        )
+    }
 
     data object None : CardCompanyType {
         override val name = ""
         override val color = 0xFF333333
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier.background(
-                    color = Color(color),
-                    shape = RoundedCornerShape(5.dp),
-                ),
-            )
-        }
     }
 
     data class Bc(override val name: String) : CardCompanyType {
         override val color = 0xFFF04651
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Shinhan(override val name: String) : CardCompanyType {
         override val color = 0xFF0E19ED
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Kakaobank(override val name: String) : CardCompanyType {
         override val color = 0xFFF0DE1F
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Hyundai(override val name: String) : CardCompanyType {
         override val color = 0xFF030201
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Woori(override val name: String) : CardCompanyType {
         override val color = 0xFF416CE0
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Lotte(override val name: String) : CardCompanyType {
         override val color = 0xFFED2405
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Hana(override val name: String) : CardCompanyType {
         override val color = 0xFF0CAB73
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 
     data class Kb(override val name: String) : CardCompanyType {
         override val color = 0xFF695F54
-
-        @Composable
-        override fun Render() {
-            PaymentCard(
-                modifier = Modifier
-                    .background(
-                        color = Color(color),
-                        shape = RoundedCornerShape(5.dp),
-                    ),
-                cardCompany = name
-            )
-        }
     }
 }

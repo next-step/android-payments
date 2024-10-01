@@ -1,5 +1,12 @@
 # android-payments
 
+## Step4 구현 목록
+
+- [x] Step3 피드백 반영
+
+## Step4 진행 중 의식의 흐름
+- 
+
 ## Step3 구현 목록
 
 - [x] Step2 피드백 반영
