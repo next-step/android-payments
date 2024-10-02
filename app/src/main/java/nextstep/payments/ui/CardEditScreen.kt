@@ -22,12 +22,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.viewmodel.NewCardViewModel
+import nextstep.payments.viewmodel.CardEditViewModel
 
-// Stateful
 @Composable
-internal fun NewCardScreen(
-    viewModel: NewCardViewModel,
+internal fun CardEditScreen(
+    viewModel: CardEditViewModel,
     navigateToCardList: () -> Unit,
     onBackButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
@@ -38,13 +37,13 @@ internal fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardCompanyState by viewModel.cardCompanyType.collectAsStateWithLifecycle()
 
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val cardEdited by viewModel.cardEdited.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(cardEdited) {
+        if (cardEdited) navigateToCardList()
     }
 
-    NewCardScreen(
+    CardEditScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -61,7 +60,7 @@ internal fun NewCardScreen(
 
 // Stateless
 @Composable
-private fun NewCardScreen(
+private fun CardEditScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -80,7 +79,7 @@ private fun NewCardScreen(
             CardTopBar(
                 onBackClick = onBackButtonClicked,
                 onSaveClick = onSaveButtonClicked,
-                title = stringResource(id = R.string.new_card_screen_top_bar_title)
+                title = stringResource(id = R.string.card_edit_screen_top_bar_title),
             )
         },
         modifier = modifier
@@ -136,10 +135,10 @@ private fun NewCardScreen(
 
 @Preview
 @Composable
-fun StatefulNewCardScreenPreview() {
+fun StatefulCardEditScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
+        CardEditScreen(
+            viewModel = CardEditViewModel().apply {
                 setCardNumber("0000 - 0000 - 0000 - 0000")
                 setExpiredDate("00 / 00")
                 setOwnerName("최고심")
@@ -154,9 +153,9 @@ fun StatefulNewCardScreenPreview() {
 
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
+private fun StatelessCardEditScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
+        CardEditScreen(
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "최고심",

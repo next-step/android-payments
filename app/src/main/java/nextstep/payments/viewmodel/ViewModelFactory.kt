@@ -14,6 +14,9 @@ class ViewModelFactory() : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(NewCardViewModel::class.java)) {
             return NewCardViewModel(repository) as T
         }
+        if (modelClass.isAssignableFrom(CardEditViewModel::class.java)) {
+            return CardEditViewModel(repository) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

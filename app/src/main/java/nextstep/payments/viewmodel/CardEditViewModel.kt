@@ -7,10 +7,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CardCompanyType
-import nextstep.payments.repository.CardCompaniesRepository
 import nextstep.payments.repository.PaymentCardsRepository
 
-class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
+class CardEditViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
     ViewModel() {
 
     private val _cardNumber = MutableStateFlow("")
@@ -25,13 +24,11 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _cardAdded = MutableStateFlow(false)
-    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+    private val _cardEdited = MutableStateFlow(false)
+    val cardEdited: StateFlow<Boolean> = _cardEdited.asStateFlow()
 
     private val _cardCompanyType = MutableStateFlow<CardCompanyType>(CardCompanyType.None)
     val cardCompanyType: StateFlow<CardCompanyType> = _cardCompanyType.asStateFlow()
-
-    val cardCompanies: List<CardCompany> = CardCompaniesRepository.data
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
@@ -49,24 +46,32 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         _password.value = password
     }
 
-    fun addCard(card: Card) {
-        repository.addCard(card)
-        _cardAdded.value = true
+    fun editCard(cardId: Int, card: Card) {
+        repository.updateCard(cardId, card)
+        _cardEdited.value = true
     }
 
-    fun updateCardCompany(cardCompany: CardCompany) {
-        val cardCompanyType = when (cardCompany.name) {
-            "BC카드" -> CardCompanyType.Bc(cardCompany.name)
-            "신한카드" -> CardCompanyType.Shinhan(cardCompany.name)
-            "카카오뱅크" -> CardCompanyType.Kakaobank(cardCompany.name)
-            "현대카드" -> CardCompanyType.Hyundai(cardCompany.name)
-            "우리카드" -> CardCompanyType.Woori(cardCompany.name)
-            "롯데카드" -> CardCompanyType.Lotte(cardCompany.name)
-            "하나카드" -> CardCompanyType.Hana(cardCompany.name)
-            "국민카드" -> CardCompanyType.Kb(cardCompany.name)
+    private fun updateCardCompany(cardCompanyName: String) {
+        val cardCompanyType = when (cardCompanyName) {
+            "BC카드" -> CardCompanyType.Bc(cardCompanyName)
+            "신한카드" -> CardCompanyType.Shinhan(cardCompanyName)
+            "카카오뱅크" -> CardCompanyType.Kakaobank(cardCompanyName)
+            "현대카드" -> CardCompanyType.Hyundai(cardCompanyName)
+            "우리카드" -> CardCompanyType.Woori(cardCompanyName)
+            "롯데카드" -> CardCompanyType.Lotte(cardCompanyName)
+            "하나카드" -> CardCompanyType.Hana(cardCompanyName)
+            "국민카드" -> CardCompanyType.Kb(cardCompanyName)
             else -> CardCompanyType.None
         }
         _cardCompanyType.value = cardCompanyType
+    }
+
+    fun readCard(card: Card) {
+        _cardNumber.value = card.cardNumber
+        _expiredDate.value = card.expiredDate
+        _ownerName.value = card.ownerName
+        _password.value = card.password
+        updateCardCompany(card.cardCompany)
     }
 }
 

@@ -33,7 +33,11 @@ class CardsActivity : ComponentActivity() {
                         val intent = Intent(this, NewCardActivity::class.java)
                         launcher.launch(intent)
                     },
-                    onCardEditClicked = {
+                    onCardEditClicked = { card ->
+                        val intent = Intent(this, CardEditActivity::class.java).apply {
+                            putExtra("CARD", card)
+                        }
+                        launcher.launch(intent)
 
                     },
                     viewModel = viewModel
