@@ -38,7 +38,6 @@ class CardsActivity : ComponentActivity() {
                             putExtra("CARD", card)
                         }
                         launcher.launch(intent)
-
                     },
                     viewModel = viewModel
                 )

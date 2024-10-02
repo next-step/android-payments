@@ -1,11 +1,13 @@
 package nextstep.payments.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -14,12 +16,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardEditViewModel
@@ -44,6 +48,7 @@ internal fun CardEditScreen(
     }
 
     CardEditScreen(
+        card = viewModel.readCurrentCard(),
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -61,6 +66,7 @@ internal fun CardEditScreen(
 // Stateless
 @Composable
 private fun CardEditScreen(
+    card: Card,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -93,7 +99,18 @@ private fun CardEditScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            cardCompanyState.Render()
+            PaymentCard(
+                modifier = Modifier.background(
+                    color = Color(cardCompanyState.color),
+                    shape = RoundedCornerShape(5.dp),
+                ),
+                cardCompany = cardCompanyState.name,
+                content = {
+                    CardInformation(
+                        card = card
+                    )
+                }
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -133,6 +150,7 @@ private fun CardEditScreen(
     }
 }
 
+
 @Preview
 @Composable
 fun StatefulCardEditScreenPreview() {
@@ -156,6 +174,15 @@ fun StatefulCardEditScreenPreview() {
 private fun StatelessCardEditScreenPreview() {
     PaymentsTheme {
         CardEditScreen(
+            card = Card(
+                id = 0,
+                cardNumber = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "최고심",
+                password = "1234",
+                cardCompany = "BC카드",
+                color = 0xFFF04651
+            ),
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "최고심",

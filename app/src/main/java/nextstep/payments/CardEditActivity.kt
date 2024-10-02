@@ -10,10 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.model.Card
 import nextstep.payments.ui.CardEditScreen
-import nextstep.payments.ui.NewCardScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardEditViewModel
-import nextstep.payments.viewmodel.NewCardViewModel
 import nextstep.payments.viewmodel.ViewModelFactory
 
 class CardEditActivity : ComponentActivity() {
@@ -25,7 +23,7 @@ class CardEditActivity : ComponentActivity() {
 
         val card = intent.getParcelableExtra("CARD", Card::class.java)
         card?.let {
-            viewModel.readCard(it)
+            viewModel.resetCardData(it)
         }
 
         setContent {

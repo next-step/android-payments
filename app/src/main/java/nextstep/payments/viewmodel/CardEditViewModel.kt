@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.model.Card
-import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CardCompanyType
 import nextstep.payments.repository.PaymentCardsRepository
 
@@ -29,6 +28,18 @@ class CardEditViewModel(private val repository: PaymentCardsRepository = Payment
 
     private val _cardCompanyType = MutableStateFlow<CardCompanyType>(CardCompanyType.None)
     val cardCompanyType: StateFlow<CardCompanyType> = _cardCompanyType.asStateFlow()
+
+    private var _cardId = 0
+    val cardId: Int
+        get() = _cardId
+
+    private var _cardColor = 0L
+    val cardColor: Long
+        get() = _cardColor
+
+    private var _cardCompany = ""
+    val cardCompany: String
+        get() = _cardCompany
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
@@ -66,12 +77,27 @@ class CardEditViewModel(private val repository: PaymentCardsRepository = Payment
         _cardCompanyType.value = cardCompanyType
     }
 
-    fun readCard(card: Card) {
+    fun resetCardData(card: Card) {
+        _cardId = card.id
         _cardNumber.value = card.cardNumber
         _expiredDate.value = card.expiredDate
         _ownerName.value = card.ownerName
         _password.value = card.password
+        _cardColor = card.color
+        _cardCompany = card.cardCompany
         updateCardCompany(card.cardCompany)
+    }
+
+    fun readCurrentCard(): Card {
+        return Card(
+            id = _cardId,
+            cardNumber = _cardNumber.value,
+            expiredDate = _expiredDate.value,
+            ownerName = _ownerName.value,
+            password = _password.value,
+            color = _cardColor,
+            cardCompany = _cardCompany
+        )
     }
 }
 

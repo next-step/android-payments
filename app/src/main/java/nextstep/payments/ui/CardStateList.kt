@@ -78,7 +78,7 @@ fun CardList(
                     )
                     .clickable { onCardEditClicked(card) },
                 cardCompany = card.cardCompany,
-                content = { CardAdd(card = card) }
+                content = { CardInformation(card = card) }
             )
         }
         item {
@@ -88,7 +88,7 @@ fun CardList(
 }
 
 @Composable
-fun CardAdd(card: Card) {
+fun CardInformation(card: Card) {
     Column(
         modifier = Modifier
             .padding(start = 14.dp, end = 14.dp)
