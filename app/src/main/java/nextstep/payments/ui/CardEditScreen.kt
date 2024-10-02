@@ -1,5 +1,6 @@
 package nextstep.payments.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +31,7 @@ import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardEditViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 internal fun CardEditScreen(
     viewModel: CardEditViewModel,
@@ -47,8 +51,20 @@ internal fun CardEditScreen(
         if (cardEdited) navigateToCardList()
     }
 
+    val initialCardNumber = viewModel.cardNumber.value
+    val initialExpiredDate = viewModel.expiredDate.value
+    val initialOwnerName = viewModel.ownerName.value
+    val initialPassword = viewModel.password.value
+
+    val isCardEdited by remember {
+        derivedStateOf {
+            cardNumber != initialCardNumber || expiredDate != initialExpiredDate || ownerName != initialOwnerName || password != initialPassword
+        }
+    }
+
     CardEditScreen(
         card = viewModel.readCurrentCard(),
+        cardChanged = isCardEdited,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -67,6 +83,7 @@ internal fun CardEditScreen(
 @Composable
 private fun CardEditScreen(
     card: Card,
+    cardChanged: Boolean,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -86,6 +103,7 @@ private fun CardEditScreen(
                 onBackClick = onBackButtonClicked,
                 onSaveClick = onSaveButtonClicked,
                 title = stringResource(id = R.string.card_edit_screen_top_bar_title),
+                cardChanged = cardChanged
             )
         },
         modifier = modifier
@@ -183,6 +201,7 @@ private fun StatelessCardEditScreenPreview() {
                 cardCompany = "BC카드",
                 color = 0xFFF04651
             ),
+            cardChanged = false,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "최고심",
