@@ -24,7 +24,6 @@ import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.NewCardViewModel
 
-// Stateful
 @Composable
 internal fun NewCardScreen(
     viewModel: NewCardViewModel,
@@ -44,7 +43,7 @@ internal fun NewCardScreen(
         if (cardAdded) navigateToCardList()
     }
 
-    NewCardScreen(
+    NewCardScreenContent(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -59,9 +58,8 @@ internal fun NewCardScreen(
     )
 }
 
-// Stateless
 @Composable
-private fun NewCardScreen(
+private fun NewCardScreenContent(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -106,29 +104,29 @@ private fun NewCardScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = expiredDate,
-                onValueChange = { setExpiredDate(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_expired_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_expired_hint)) },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = setExpiredDate,
+                labelResId = R.string.new_card_screen_card_expired_label,
+                placeholderResId = R.string.new_card_screen_card_expired_hint,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = ownerName,
-                onValueChange = { setOwnerName(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_owner_name_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_owner_name_hint)) },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = setOwnerName,
+                labelResId = R.string.new_card_screen_card_owner_name_label,
+                placeholderResId = R.string.new_card_screen_card_owner_name_hint,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = password,
-                onValueChange = { setPassword(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_password_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_password_hint)) },
+                onValueChange = setPassword,
+                labelResId = R.string.new_card_screen_card_password_label,
+                placeholderResId = R.string.new_card_screen_card_password_hint,
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = PasswordVisualTransformation()
             )
         }
     }
@@ -136,7 +134,7 @@ private fun NewCardScreen(
 
 @Preview
 @Composable
-fun StatefulNewCardScreenPreview() {
+fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             viewModel = NewCardViewModel().apply {
@@ -154,9 +152,9 @@ fun StatefulNewCardScreenPreview() {
 
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
+private fun NewCardScreenContentPreview() {
     PaymentsTheme {
-        NewCardScreen(
+        NewCardScreenContent(
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "최고심",

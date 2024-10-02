@@ -39,6 +39,11 @@ internal fun CardEditScreen(
     onBackButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
 ) {
+    val initialCardNumber = viewModel.cardNumber.value
+    val initialExpiredDate = viewModel.expiredDate.value
+    val initialOwnerName = viewModel.ownerName.value
+    val initialPassword = viewModel.password.value
+
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -51,18 +56,13 @@ internal fun CardEditScreen(
         if (cardEdited) navigateToCardList()
     }
 
-    val initialCardNumber = viewModel.cardNumber.value
-    val initialExpiredDate = viewModel.expiredDate.value
-    val initialOwnerName = viewModel.ownerName.value
-    val initialPassword = viewModel.password.value
-
     val isCardEdited by remember {
         derivedStateOf {
             cardNumber != initialCardNumber || expiredDate != initialExpiredDate || ownerName != initialOwnerName || password != initialPassword
         }
     }
 
-    CardEditScreen(
+    CardEditScreenContent(
         card = viewModel.readCurrentCard(),
         cardChanged = isCardEdited,
         cardNumber = cardNumber,
@@ -79,9 +79,8 @@ internal fun CardEditScreen(
     )
 }
 
-// Stateless
 @Composable
-private fun CardEditScreen(
+private fun CardEditScreenContent(
     card: Card,
     cardChanged: Boolean,
     cardNumber: String,
@@ -124,7 +123,7 @@ private fun CardEditScreen(
                 ),
                 cardCompany = cardCompanyState.name,
                 content = {
-                    CardInformation(
+                    PaymentCardBottomField(
                         card = card
                     )
                 }
@@ -140,38 +139,37 @@ private fun CardEditScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = expiredDate,
-                onValueChange = { setExpiredDate(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_expired_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_expired_hint)) },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = setExpiredDate,
+                labelResId = R.string.new_card_screen_card_expired_label,
+                placeholderResId = R.string.new_card_screen_card_expired_hint,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = ownerName,
-                onValueChange = { setOwnerName(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_owner_name_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_owner_name_hint)) },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = setOwnerName,
+                labelResId = R.string.new_card_screen_card_owner_name_label,
+                placeholderResId = R.string.new_card_screen_card_owner_name_hint,
+                modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
+            CardTextField(
                 value = password,
-                onValueChange = { setPassword(it) },
-                label = { Text(stringResource(id = R.string.new_card_screen_card_password_label)) },
-                placeholder = { Text(stringResource(id = R.string.new_card_screen_card_password_hint)) },
+                onValueChange = setPassword,
+                labelResId = R.string.new_card_screen_card_password_label,
+                placeholderResId = R.string.new_card_screen_card_password_hint,
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = PasswordVisualTransformation()
             )
         }
     }
 }
 
-
 @Preview
 @Composable
-fun StatefulCardEditScreenPreview() {
+fun CardEditScreenPreview() {
     PaymentsTheme {
         CardEditScreen(
             viewModel = CardEditViewModel().apply {
@@ -189,9 +187,9 @@ fun StatefulCardEditScreenPreview() {
 
 @Preview
 @Composable
-private fun StatelessCardEditScreenPreview() {
+private fun CardEditScreenContentPreview() {
     PaymentsTheme {
-        CardEditScreen(
+        CardEditScreenContent(
             card = Card(
                 id = 0,
                 cardNumber = "0000 - 0000 - 0000 - 0000",

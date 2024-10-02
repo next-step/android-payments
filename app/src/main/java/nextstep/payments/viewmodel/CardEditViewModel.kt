@@ -30,12 +30,7 @@ class CardEditViewModel(private val repository: PaymentCardsRepository = Payment
     val cardCompanyType: StateFlow<CardCompanyType> = _cardCompanyType.asStateFlow()
 
     private var _cardId = 0
-    val cardId: Int
-        get() = _cardId
-
     private var _cardColor = 0L
-    val cardColor: Long
-        get() = _cardColor
 
     private var _cardCompany = ""
     val cardCompany: String
