@@ -9,8 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import nextstep.payments.ui.NewCardRoute
+import androidx.navigation.compose.rememberNavController
+import nextstep.payments.ui.AppNavHost
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,12 +20,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = Color.White,
                 ) {
-                    NewCardRoute()
+                    AppNavHost(navController = rememberNavController())
                 }
             }
         }
