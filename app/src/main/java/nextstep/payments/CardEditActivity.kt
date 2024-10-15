@@ -39,16 +39,7 @@ class CardEditActivity : ComponentActivity() {
                     },
                     onSaveButtonClicked = {
                         viewModel.editCard(
-                            cardId = card?.id ?: 0,
-                            card = Card(
-                                id = card?.id ?: 0,
-                                cardNumber = viewModel.cardNumber.value,
-                                expiredDate = viewModel.expiredDate.value,
-                                ownerName = viewModel.ownerName.value,
-                                password = viewModel.password.value,
-                                color = viewModel.cardCompanyType.value.color,
-                                cardCompany = viewModel.cardCompanyType.value.name,
-                            )
+                            cardId = card?.id ?: 0
                         )
                     },
                 )

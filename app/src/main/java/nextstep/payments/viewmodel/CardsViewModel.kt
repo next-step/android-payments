@@ -28,9 +28,23 @@ class CardsViewModel(private val repository: PaymentCardsRepository = PaymentCar
     fun updateCardUiState() {
         _uiState.update { currentState ->
             when (currentState) {
-                is CardUiState.Empty -> CardUiState.One
-                is CardUiState.One -> CardUiState.Many
-                is CardUiState.Many -> CardUiState.Many
+                is CardUiState.Empty -> {
+                    if (_cards.value.isNotEmpty()) {
+                        CardUiState.One(_cards.value.first())
+                    } else {
+                        CardUiState.Empty
+                    }
+                }
+
+                is CardUiState.One -> {
+                    if (_cards.value.size > 1) {
+                        CardUiState.Many(_cards.value)
+                    } else {
+                        CardUiState.One(_cards.value.first())
+                    }
+                }
+
+                is CardUiState.Many -> CardUiState.Many(_cards.value)
             }
         }
     }

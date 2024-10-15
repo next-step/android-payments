@@ -4,57 +4,89 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompanyType
+import nextstep.payments.model.CardEditUiState
 import nextstep.payments.repository.PaymentCardsRepository
 
 class CardEditViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
     ViewModel() {
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
-    private val _cardEdited = MutableStateFlow(false)
-    val cardEdited: StateFlow<Boolean> = _cardEdited.asStateFlow()
-
-    private val _cardCompanyType = MutableStateFlow<CardCompanyType>(CardCompanyType.None)
-    val cardCompanyType: StateFlow<CardCompanyType> = _cardCompanyType.asStateFlow()
+    private val _uiState = MutableStateFlow(CardEditUiState())
+    val uiState: StateFlow<CardEditUiState> = _uiState.asStateFlow()
 
     private var _cardId = 0
     private var _cardColor = 0L
-
     private var _cardCompany = ""
-    val cardCompany: String
-        get() = _cardCompany
+
+    init {
+        _uiState.update { uiState ->
+            uiState.copy(
+                isCardEdited = uiState.cardNumber != uiState.initialCardNumber ||
+                        uiState.expiredDate != uiState.initialExpiredDate ||
+                        uiState.ownerName != uiState.initialOwnerName ||
+                        uiState.password != uiState.initialPassword
+            )
+        }
+    }
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        if (_uiState.value.cardNumber != cardNumber) {
+            _uiState.value = _uiState.value.copy(
+                initialCardNumber = _uiState.value.cardNumber,
+                cardNumber = cardNumber,
+                isCardEdited = true,
+                currentCard = readCurrentCard().copy(cardNumber = cardNumber)
+            )
+        }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        if (_uiState.value.expiredDate != expiredDate) {
+            _uiState.value = _uiState.value.copy(
+                initialExpiredDate = _uiState.value.expiredDate,
+                expiredDate = expiredDate,
+                isCardEdited = true,
+                currentCard = readCurrentCard().copy(expiredDate = expiredDate)
+            )
+        }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        if (_uiState.value.ownerName != ownerName) {
+            _uiState.value = _uiState.value.copy(
+                initialOwnerName = _uiState.value.ownerName,
+                ownerName = ownerName,
+                isCardEdited = true,
+                currentCard = readCurrentCard().copy(ownerName = ownerName)
+            )
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        if (_uiState.value.password != password) {
+            _uiState.value = _uiState.value.copy(
+                initialPassword = _uiState.value.password,
+                password = password,
+                isCardEdited = true,
+                currentCard = readCurrentCard().copy(password = password)
+            )
+        }
     }
 
-    fun editCard(cardId: Int, card: Card) {
+    fun editCard(cardId: Int) {
+        val card = Card(
+            id = cardId,
+            cardNumber = _uiState.value.cardNumber,
+            expiredDate = _uiState.value.expiredDate,
+            ownerName = _uiState.value.ownerName,
+            password = _uiState.value.password,
+            color = _cardColor,
+            cardCompany = _cardCompany
+        )
         repository.updateCard(cardId, card)
-        _cardEdited.value = true
+        _uiState.value = _uiState.value.copy(cardEdited = true)
     }
 
     private fun updateCardCompany(cardCompanyName: String) {
@@ -69,30 +101,37 @@ class CardEditViewModel(private val repository: PaymentCardsRepository = Payment
             "국민카드" -> CardCompanyType.Kb(cardCompanyName)
             else -> CardCompanyType.None
         }
-        _cardCompanyType.value = cardCompanyType
+        _uiState.value = _uiState.value.copy(cardCompanyType = cardCompanyType)
     }
 
     fun resetCardData(card: Card) {
         _cardId = card.id
-        _cardNumber.value = card.cardNumber
-        _expiredDate.value = card.expiredDate
-        _ownerName.value = card.ownerName
-        _password.value = card.password
         _cardColor = card.color
         _cardCompany = card.cardCompany
+        _uiState.value = CardEditUiState(
+            cardNumber = card.cardNumber,
+            expiredDate = card.expiredDate,
+            ownerName = card.ownerName,
+            password = card.password,
+            cardCompanyType = _uiState.value.cardCompanyType,
+            initialCardNumber = card.cardNumber,
+            initialExpiredDate = card.expiredDate,
+            initialOwnerName = card.ownerName,
+            initialPassword = card.password,
+            currentCard = card
+        )
         updateCardCompany(card.cardCompany)
     }
 
-    fun readCurrentCard(): Card {
+    private fun readCurrentCard(): Card {
         return Card(
             id = _cardId,
-            cardNumber = _cardNumber.value,
-            expiredDate = _expiredDate.value,
-            ownerName = _ownerName.value,
-            password = _password.value,
+            cardNumber = _uiState.value.cardNumber,
+            expiredDate = _uiState.value.expiredDate,
+            ownerName = _uiState.value.ownerName,
+            password = _uiState.value.password,
             color = _cardColor,
             cardCompany = _cardCompany
         )
     }
 }
-

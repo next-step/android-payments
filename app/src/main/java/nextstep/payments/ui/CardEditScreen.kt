@@ -39,43 +39,26 @@ internal fun CardEditScreen(
     onBackButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
 ) {
-    val initialCardNumber = viewModel.cardNumber.value
-    val initialExpiredDate = viewModel.expiredDate.value
-    val initialOwnerName = viewModel.ownerName.value
-    val initialPassword = viewModel.password.value
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardCompanyState by viewModel.cardCompanyType.collectAsStateWithLifecycle()
-
-    val cardEdited by viewModel.cardEdited.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardEdited) {
-        if (cardEdited) navigateToCardList()
-    }
-
-    val isCardEdited by remember {
-        derivedStateOf {
-            cardNumber != initialCardNumber || expiredDate != initialExpiredDate || ownerName != initialOwnerName || password != initialPassword
-        }
+    LaunchedEffect(uiState.cardEdited) {
+        if (uiState.cardEdited) navigateToCardList()
     }
 
     CardEditScreenContent(
-        card = viewModel.readCurrentCard(),
-        cardChanged = isCardEdited,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        card = uiState.currentCard,
+        cardChanged = uiState.isCardEdited,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackButtonClicked = onBackButtonClicked,
         onSaveButtonClicked = onSaveButtonClicked,
-        cardCompanyState = cardCompanyState,
+        cardCompanyState = uiState.cardCompanyType,
     )
 }
 

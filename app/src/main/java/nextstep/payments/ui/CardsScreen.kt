@@ -164,20 +164,21 @@ private fun CardNotExistListPreview() {
 @Preview
 @Composable
 private fun CardOneExistListPreview() {
+    val card = Card(
+        cardNumber = "1234-5678-9012-3456",
+        expiredDate = "12/34",
+        ownerName = "홍길동",
+        password = "1234",
+        color = 0xFFF04651,
+        cardCompany = "BC카드"
+    )
     PaymentsTheme {
         CardsScreenContent(
             onCardAddClicked = {},
             cards = listOf(
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/34",
-                    ownerName = "홍길동",
-                    password = "1234",
-                    color = 0xFFF04651,
-                    cardCompany = "BC카드"
-                )
+                card
             ),
-            cardUiState = CardUiState.One,
+            cardUiState = CardUiState.One(card),
             onCardEditClicked = {}
         )
     }
@@ -186,28 +187,30 @@ private fun CardOneExistListPreview() {
 @Preview
 @Composable
 private fun CardManyExistListPreview() {
+    val cards = listOf(
+        Card(
+            cardNumber = "1234-5678-9012-3456",
+            expiredDate = "12/27",
+            ownerName = "제임스",
+            password = "1111",
+            color = 0xFFF04651,
+            cardCompany = "BC카드"
+        ),
+        Card(
+            cardNumber = "1234-5678-9012-3456",
+            expiredDate = "02/26",
+            ownerName = "홍길동",
+            password = "0000",
+            color = 0xFF0E19ED,
+            cardCompany = "신한카드"
+        )
+    )
+
     PaymentsTheme {
         CardsScreenContent(
             onCardAddClicked = {},
-            cards = listOf(
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/27",
-                    ownerName = "제임스",
-                    password = "1111",
-                    color = 0xFFF04651,
-                    cardCompany = "BC카드"
-                ),
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "02/26",
-                    ownerName = "홍길동",
-                    password = "0000",
-                    color = 0xFF0E19ED,
-                    cardCompany = "신한카드"
-                )
-            ),
-            cardUiState = CardUiState.Many,
+            cards = cards,
+            cardUiState = CardUiState.Many(cards),
             onCardEditClicked = {}
         )
     }
