@@ -35,11 +35,9 @@ fun CardsScreen(
     viewModel: CardsViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val cards by viewModel.cards.collectAsState()
 
     CardsScreenContent(
         onCardAddClicked = onCardAddClicked,
-        cards = cards,
         cardUiState = uiState,
         onCardEditClicked = onCardEditClicked
     )
@@ -48,7 +46,6 @@ fun CardsScreen(
 @Composable
 fun CardsScreenContent(
     onCardAddClicked: () -> Unit,
-    cards: List<Card>,
     cardUiState: CardUiState,
     onCardEditClicked: (Card) -> Unit
 ) {
@@ -78,7 +75,6 @@ fun CardsScreenContent(
         ) {
             CardList(
                 cardUiState = cardUiState,
-                cards = cards,
                 onCardAddClicked = onCardAddClicked,
                 onCardEditClicked = onCardEditClicked
             )
@@ -89,20 +85,19 @@ fun CardsScreenContent(
 @Composable
 fun CardList(
     cardUiState: CardUiState,
-    cards: List<Card>,
     onCardAddClicked: () -> Unit,
     onCardEditClicked: (Card) -> Unit
 ) {
     when (cardUiState) {
         CardUiState.Empty -> EmptyCardState(onCardAddClicked = onCardAddClicked)
         is CardUiState.One -> OneCardState(
-            cards = cards,
+            cards = listOf(cardUiState.card),
             onCardAddClicked = onCardAddClicked,
             onCardEditClicked = onCardEditClicked
         )
 
         is CardUiState.Many -> ManyCardState(
-            cards = cards,
+            cards = cardUiState.cards,
             onCardEditClicked = onCardEditClicked
         )
     }
@@ -154,7 +149,6 @@ private fun CardNotExistListPreview() {
     PaymentsTheme {
         CardsScreenContent(
             onCardAddClicked = {},
-            cards = emptyList(),
             cardUiState = CardUiState.Empty,
             onCardEditClicked = {}
         )
@@ -175,9 +169,6 @@ private fun CardOneExistListPreview() {
     PaymentsTheme {
         CardsScreenContent(
             onCardAddClicked = {},
-            cards = listOf(
-                card
-            ),
             cardUiState = CardUiState.One(card),
             onCardEditClicked = {}
         )
@@ -209,7 +200,6 @@ private fun CardManyExistListPreview() {
     PaymentsTheme {
         CardsScreenContent(
             onCardAddClicked = {},
-            cards = cards,
             cardUiState = CardUiState.Many(cards),
             onCardEditClicked = {}
         )
