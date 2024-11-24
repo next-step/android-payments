@@ -36,26 +36,41 @@ fun CardCompanySelectBottomSheet(
     }
 
     if (!showBottomSheet) {
-        ModalBottomSheet(
-            sheetState = bottomSheetState,
+        CardCompanySelectBottomSheetContent(
+            bottomSheetState = bottomSheetState,
+            cardCompanies = viewModel.cardCompanies,
+            onCompanySelected = { company ->
+                showBottomSheet = true
+                onCompanySelected(company)
+            },
             onDismissRequest = {
                 showBottomSheet = true
                 onDismissRequest()
-            },
-            properties = ModalBottomSheetDefaults.properties(
-                shouldDismissOnBackPress = false,
-            ),
-        ) {
-            BankSelectRow(
-                cardCompanies = viewModel.cardCompanies,
-                onCompanySelected = { company ->
-                    showBottomSheet = true
-                    onCompanySelected(company)
-                },
-            )
-        }
+            }
+        )
     }
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardCompanySelectBottomSheetContent(
+    bottomSheetState: SheetState,
+    cardCompanies: List<CardCompany>,
+    onCompanySelected: (CardCompany) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    ModalBottomSheet(
+        sheetState = bottomSheetState,
+        onDismissRequest = onDismissRequest,
+        properties = ModalBottomSheetDefaults.properties(
+            shouldDismissOnBackPress = false,
+        ),
+    ) {
+        BankSelectRow(
+            cardCompanies = cardCompanies,
+            onCompanySelected = onCompanySelected,
+        )
+    }
 }
 
 private const val COLUMN_COUNT = 4

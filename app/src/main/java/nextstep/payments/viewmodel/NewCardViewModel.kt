@@ -25,12 +25,11 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _cardAdded = MutableStateFlow<Boolean>(false)
+    private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     private val _cardCompanyType = MutableStateFlow<CardCompanyType>(CardCompanyType.None)
     val cardCompanyType: StateFlow<CardCompanyType> = _cardCompanyType.asStateFlow()
-
 
     val cardCompanies: List<CardCompany> = CardCompaniesRepository.data
 

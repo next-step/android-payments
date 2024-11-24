@@ -28,24 +28,30 @@ import nextstep.payments.model.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardsViewModel
 
-
 @Composable
-fun CardsScreenStateful(onCardAddClicked: () -> Unit, viewModel: CardsViewModel) {
+fun CardsScreen(
+    onCardAddClicked: () -> Unit,
+    onCardEditClicked: (Card) -> Unit,
+    viewModel: CardsViewModel
+) {
     val uiState by viewModel.uiState.collectAsState()
-    val cards by viewModel.cards.collectAsState()
 
-    CardsScreenStateless(
+    CardsScreenContent(
         onCardAddClicked = onCardAddClicked,
-        cards = cards,
-        uiState = uiState
+        cardUiState = uiState,
+        onCardEditClicked = onCardEditClicked
     )
 }
 
 @Composable
-fun CardsScreenStateless(onCardAddClicked: () -> Unit, cards: List<Card>, uiState: CardUiState) {
+fun CardsScreenContent(
+    onCardAddClicked: () -> Unit,
+    cardUiState: CardUiState,
+    onCardEditClicked: (Card) -> Unit
+) {
     Scaffold(
         topBar = {
-            when (uiState) {
+            when (cardUiState) {
                 is CardUiState.Empty -> {
                     CardsTopBar()
                 }
@@ -67,8 +73,33 @@ fun CardsScreenStateless(onCardAddClicked: () -> Unit, cards: List<Card>, uiStat
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            uiState.Render(cards, onCardAddClicked)
+            CardList(
+                cardUiState = cardUiState,
+                onCardAddClicked = onCardAddClicked,
+                onCardEditClicked = onCardEditClicked
+            )
         }
+    }
+}
+
+@Composable
+fun CardList(
+    cardUiState: CardUiState,
+    onCardAddClicked: () -> Unit,
+    onCardEditClicked: (Card) -> Unit
+) {
+    when (cardUiState) {
+        CardUiState.Empty -> EmptyCardState(onCardAddClicked = onCardAddClicked)
+        is CardUiState.One -> OneCardState(
+            cards = listOf(cardUiState.card),
+            onCardAddClicked = onCardAddClicked,
+            onCardEditClicked = onCardEditClicked
+        )
+
+        is CardUiState.Many -> ManyCardState(
+            cards = cardUiState.cards,
+            onCardEditClicked = onCardEditClicked
+        )
     }
 }
 
@@ -116,10 +147,10 @@ private fun CardsTopBarWithButton(onCardAddClicked: () -> Unit) {
 @Composable
 private fun CardNotExistListPreview() {
     PaymentsTheme {
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
-            cards = emptyList(),
-            uiState = CardUiState.Empty
+            cardUiState = CardUiState.Empty,
+            onCardEditClicked = {}
         )
     }
 }
@@ -127,22 +158,19 @@ private fun CardNotExistListPreview() {
 @Preview
 @Composable
 private fun CardOneExistListPreview() {
+    val card = Card(
+        cardNumber = "1234-5678-9012-3456",
+        expiredDate = "12/34",
+        ownerName = "홍길동",
+        password = "1234",
+        color = 0xFFF04651,
+        cardCompany = "BC카드"
+    )
     PaymentsTheme {
-        val cardViewModel = CardsViewModel()
-        cardViewModel.updateCardUiState()
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
-            cards = listOf(
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/34",
-                    ownerName = "홍길동",
-                    password = "1234",
-                    color = 0xFFF04651,
-                    cardCompany = "BC카드"
-                )
-            ),
-            uiState = CardUiState.One
+            cardUiState = CardUiState.One(card),
+            onCardEditClicked = {}
         )
     }
 }
@@ -150,31 +178,30 @@ private fun CardOneExistListPreview() {
 @Preview
 @Composable
 private fun CardManyExistListPreview() {
+    val cards = listOf(
+        Card(
+            cardNumber = "1234-5678-9012-3456",
+            expiredDate = "12/27",
+            ownerName = "제임스",
+            password = "1111",
+            color = 0xFFF04651,
+            cardCompany = "BC카드"
+        ),
+        Card(
+            cardNumber = "1234-5678-9012-3456",
+            expiredDate = "02/26",
+            ownerName = "홍길동",
+            password = "0000",
+            color = 0xFF0E19ED,
+            cardCompany = "신한카드"
+        )
+    )
+
     PaymentsTheme {
-        val cardViewModel = CardsViewModel()
-        cardViewModel.updateCardUiState()
-        cardViewModel.updateCardUiState()
-        CardsScreenStateless(
+        CardsScreenContent(
             onCardAddClicked = {},
-            cards = listOf(
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/27",
-                    ownerName = "제임스",
-                    password = "1111",
-                    color = 0xFFF04651,
-                    cardCompany = "BC카드"
-                ),
-                Card(
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "02/26",
-                    ownerName = "홍길동",
-                    password = "0000",
-                    color = 0xFF0E19ED,
-                    cardCompany = "신한카드"
-                )
-            ),
-            uiState = CardUiState.Many
+            cardUiState = CardUiState.Many(cards),
+            onCardEditClicked = {}
         )
     }
 }

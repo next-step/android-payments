@@ -1,11 +1,14 @@
 package nextstep.payments.ui
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -14,52 +17,53 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.model.Card
 import nextstep.payments.model.CardCompanyType
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.viewmodel.NewCardViewModel
+import nextstep.payments.viewmodel.CardEditViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-internal fun NewCardScreen(
-    viewModel: NewCardViewModel,
+internal fun CardEditScreen(
+    viewModel: CardEditViewModel,
     navigateToCardList: () -> Unit,
     onBackButtonClicked: () -> Unit,
     onSaveButtonClicked: () -> Unit,
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardCompanyState by viewModel.cardCompanyType.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(uiState.cardEdited) {
+        if (uiState.cardEdited) navigateToCardList()
     }
 
-    NewCardScreenContent(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+    CardEditScreenContent(
+        card = uiState.currentCard,
+        cardChanged = uiState.isCardEdited,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackButtonClicked = onBackButtonClicked,
         onSaveButtonClicked = onSaveButtonClicked,
-        cardCompanyState = cardCompanyState,
+        cardCompanyState = uiState.cardCompanyType,
     )
 }
 
 @Composable
-private fun NewCardScreenContent(
+private fun CardEditScreenContent(
+    card: Card,
+    cardChanged: Boolean,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -78,7 +82,8 @@ private fun NewCardScreenContent(
             CardTopBar(
                 onBackClick = onBackButtonClicked,
                 onSaveClick = onSaveButtonClicked,
-                title = stringResource(id = R.string.new_card_screen_top_bar_title)
+                title = stringResource(id = R.string.card_edit_screen_top_bar_title),
+                cardChanged = cardChanged
             )
         },
         modifier = modifier
@@ -92,7 +97,18 @@ private fun NewCardScreenContent(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            cardCompanyState.Render()
+            PaymentCard(
+                modifier = Modifier.background(
+                    color = Color(cardCompanyState.color),
+                    shape = RoundedCornerShape(5.dp),
+                ),
+                cardCompany = cardCompanyState.name,
+                content = {
+                    PaymentCardBottomField(
+                        card = card
+                    )
+                }
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -134,10 +150,10 @@ private fun NewCardScreenContent(
 
 @Preview
 @Composable
-fun NewCardScreenPreview() {
+fun CardEditScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
+        CardEditScreen(
+            viewModel = CardEditViewModel().apply {
                 setCardNumber("0000 - 0000 - 0000 - 0000")
                 setExpiredDate("00 / 00")
                 setOwnerName("최고심")
@@ -152,9 +168,19 @@ fun NewCardScreenPreview() {
 
 @Preview
 @Composable
-private fun NewCardScreenContentPreview() {
+private fun CardEditScreenContentPreview() {
     PaymentsTheme {
-        NewCardScreenContent(
+        CardEditScreenContent(
+            card = Card(
+                id = 0,
+                cardNumber = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "최고심",
+                password = "1234",
+                cardCompany = "BC카드",
+                color = 0xFFF04651
+            ),
+            cardChanged = false,
             cardNumber = "0000 - 0000 - 0000 - 0000",
             expiredDate = "00 / 00",
             ownerName = "최고심",

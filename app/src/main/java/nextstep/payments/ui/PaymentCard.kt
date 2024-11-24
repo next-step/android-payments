@@ -68,8 +68,6 @@ fun BcCardPreview() {
     PaymentsTheme {
         PaymentCard(
             modifier = Modifier
-                .shadow(8.dp)
-                .size(width = 208.dp, height = 124.dp)
                 .background(
                     color = Color(0xFFF04651),
                     shape = RoundedCornerShape(5.dp),
