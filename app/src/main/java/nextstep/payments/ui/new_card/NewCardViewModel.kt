@@ -69,6 +69,9 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setPassword(password: String) {
+        if (password.length > 4 || !password.last().isDigit()) {
+            return
+        }
         _cardState.update {
             it.copy(password = password)
         }

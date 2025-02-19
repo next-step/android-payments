@@ -4,4 +4,6 @@
     <string name="expired_date_placeholder">MM / YY</string>
     <string name="card_number_label">카드 번호</string>
     <string name="card_number_placeholder">0000 - 0000 - 0000 - 0000</string>
+    <string name="password_label">비밀번호</string>
+    <string name="password_placeholder">0000</string>
 </resources>

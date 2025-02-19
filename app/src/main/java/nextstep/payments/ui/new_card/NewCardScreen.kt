@@ -106,8 +106,11 @@ private fun NewCardScreen(
                 onValueChange = {
                     onAction(NewCardAction.OnPasswordChange(it))
                 },
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                ),
+                label = { Text(stringResource(R.string.password_label)) },
+                placeholder = { Text(stringResource(R.string.password_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
             )
