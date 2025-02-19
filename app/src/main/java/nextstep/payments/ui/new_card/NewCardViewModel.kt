@@ -22,7 +22,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setCardNumber(cardNumber: TextFieldValue) {
-        if (cardNumber.text.length > 19 || !cardNumber.text.last().isDigit()) {
+        if (cardNumber.text.length > 19 || cardNumber.text.lastOrNull()?.isDigit() == false) {
             return
         }
         _cardState.update {
@@ -41,7 +41,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setExpiredDate(expiredDate: TextFieldValue) {
-        if (expiredDate.text.length > 5 || !expiredDate.text.last().isDigit()) {
+        if (expiredDate.text.length > 5 || expiredDate.text.lastOrNull()?.isDigit() == false) {
             return
         }
         _cardState.update {
@@ -69,7 +69,7 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setPassword(password: String) {
-        if (password.length > 4 || !password.last().isDigit()) {
+        if (password.length > 4 || password.lastOrNull()?.isDigit() == false) {
             return
         }
         _cardState.update {
