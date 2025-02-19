@@ -26,34 +26,19 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val state by viewModel.cardState.collectAsStateWithLifecycle()
 
     NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = modifier,
     )
 }
 
 @Composable
 private fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
+    state: NewCardState,
+    onAction: (NewCardAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -74,32 +59,40 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
+                value = state.cardNumber,
+                onValueChange = {
+                    onAction(NewCardAction.OnCartNumberChange(it))
+                },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
-                value = expiredDate,
-                onValueChange = setExpiredDate,
+                value = state.expiredDate,
+                onValueChange = {
+                    onAction(NewCardAction.OnExpiredDateChange(it))
+                },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
+                value = state.ownerName,
+                onValueChange = {
+                    onAction(NewCardAction.OnOwnerNameChange(it))
+                },
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
+                value = state.password,
+                onValueChange = {
+                    onAction(NewCardAction.OnPasswordChange(it))
+                },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -111,33 +104,16 @@ private fun NewCardScreen(
 
 @Preview
 @Composable
-private fun StatefulNewCardScreenPreview() {
-    PaymentsTheme {
-        // 데이터가 채워진 상태를 확인하기 위해 아래와 같이 ViewModel을 이용하는 것이 적절할까?
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("1111-1111-1111-1111")
-                setExpiredDate("00 / 00")
-                setOwnerName("홍길동")
-                setPassword("0000")
-            }
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun StatelessNewCardScreenPreview() {
+private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "1111-1111-1111-1111",
-            expiredDate = "00 / 00",
-            ownerName = "홍길동",
-            password = "0000",
-            setCardNumber = {},
-            setExpiredDate = {},
-            setOwnerName = {},
-            setPassword = {},
+            state = NewCardState(
+                cardNumber = "1111-1111-1111-1111",
+                expiredDate = "00 / 00",
+                ownerName = "홍길동",
+                password = "0000",
+            ),
+            onAction = { },
         )
     }
 }
