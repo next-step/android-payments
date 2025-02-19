@@ -1,23 +1,30 @@
 package nextstep.payments.ui.new_card
 
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.R
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -63,8 +70,11 @@ private fun NewCardScreen(
                 onValueChange = {
                     onAction(NewCardAction.OnCartNumberChange(it))
                 },
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                ),
+                label = { Text(stringResource(R.string.card_number_label)) },
+                placeholder = { Text(stringResource(R.string.card_number_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -73,8 +83,11 @@ private fun NewCardScreen(
                 onValueChange = {
                     onAction(NewCardAction.OnExpiredDateChange(it))
                 },
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                ),
+                label = { Text(stringResource(R.string.expired_date_label)) },
+                placeholder = { Text(stringResource(R.string.expired_date_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -108,8 +121,8 @@ private fun NewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             state = NewCardState(
-                cardNumber = "1111-1111-1111-1111",
-                expiredDate = "00 / 00",
+                cardNumber = TextFieldValue("1111-1111-1111-1111"),
+                expiredDate = TextFieldValue("00 / 00"),
                 ownerName = "홍길동",
                 password = "0000",
             ),

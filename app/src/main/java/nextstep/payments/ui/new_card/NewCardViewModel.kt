@@ -1,5 +1,7 @@
 package nextstep.payments.ui.new_card
 
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,15 +21,41 @@ class NewCardViewModel : ViewModel() {
         }
     }
 
-    private fun setCardNumber(cardNumber: String) {
+    private fun setCardNumber(cardNumber: TextFieldValue) {
+        if (cardNumber.text.length > 19 || !cardNumber.text.last().isDigit()) {
+            return
+        }
         _cardState.update {
-            it.copy(cardNumber = cardNumber)
+            if (it.cardNumber.text.length % 5 == 3 && cardNumber.text.length % 5 == 4 && cardNumber.text.length != 19) {
+                val newText = "${cardNumber.text}-"
+                it.copy(
+                    cardNumber = TextFieldValue(
+                        text = newText,
+                        selection = TextRange(newText.length)
+                    )
+                )
+            } else {
+                it.copy(cardNumber = cardNumber)
+            }
         }
     }
 
-    private fun setExpiredDate(expiredDate: String) {
+    private fun setExpiredDate(expiredDate: TextFieldValue) {
+        if (expiredDate.text.length > 5 || !expiredDate.text.last().isDigit()) {
+            return
+        }
         _cardState.update {
-            it.copy(expiredDate = expiredDate)
+            if (it.expiredDate.text.length == 2 && expiredDate.text.length == 3) {
+                val newText = "${expiredDate.text.substring(0, 2)}/${expiredDate.text[2]}"
+                it.copy(
+                    expiredDate = TextFieldValue(
+                        text = newText,
+                        selection = TextRange(newText.length)
+                    )
+                )
+            } else {
+                it.copy(expiredDate = expiredDate)
+            }
         }
     }
 

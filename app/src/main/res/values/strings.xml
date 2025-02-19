@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Payments</string>
+    <string name="expired_date_label">만료일</string>
+    <string name="expired_date_placeholder">MM / YY</string>
+    <string name="card_number_label">카드 번호</string>
+    <string name="card_number_placeholder">0000 - 0000 - 0000 - 0000</string>
 </resources>
