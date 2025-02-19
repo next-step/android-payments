@@ -96,8 +96,8 @@ private fun NewCardScreen(
                 onValueChange = {
                     onAction(NewCardAction.OnOwnerNameChange(it))
                 },
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
+                label = { Text(stringResource(R.string.owner_name_label)) },
+                placeholder = { Text(stringResource(R.string.owner_name_placeholder)) },
                 modifier = Modifier.fillMaxWidth(),
             )
 
