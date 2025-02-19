@@ -22,11 +22,17 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setCardNumber(cardNumber: TextFieldValue) {
-        if (cardNumber.text.length > 19 || cardNumber.text.lastOrNull()?.isDigit() == false) {
+        if (cardNumber.text.length > CARD_NUMBER_MAX_LENGTH || cardNumber.text.lastOrNull()
+                ?.isDigit() == false
+        ) {
             return
         }
         _cardState.update {
-            if (it.cardNumber.text.length % 5 == 3 && cardNumber.text.length % 5 == 4 && cardNumber.text.length != 19) {
+            if (shouldAddSignAtCardNumber(
+                    it.cardNumber.text,
+                    cardNumber.text
+                ) && cardNumber.text.length != CARD_NUMBER_MAX_LENGTH
+            ) {
                 val newText = "${cardNumber.text}-"
                 it.copy(
                     cardNumber = TextFieldValue(
@@ -40,12 +46,19 @@ class NewCardViewModel : ViewModel() {
         }
     }
 
+    private fun shouldAddSignAtCardNumber(beforeText: String, afterText: String): Boolean {
+        return beforeText.length % 5 == 3 && afterText.length % 5 == 4
+    }
+
+
     private fun setExpiredDate(expiredDate: TextFieldValue) {
-        if (expiredDate.text.length > 5 || expiredDate.text.lastOrNull()?.isDigit() == false) {
+        if (expiredDate.text.length > CARD_EXPIRED_DATE_MAX_LENGTH || expiredDate.text.lastOrNull()
+                ?.isDigit() == false
+        ) {
             return
         }
         _cardState.update {
-            if (it.expiredDate.text.length == 2 && expiredDate.text.length == 3) {
+            if (shouldAddSignAtExpiredDate(it.expiredDate.text, expiredDate.text)) {
                 val newText = "${expiredDate.text.substring(0, 2)}/${expiredDate.text[2]}"
                 it.copy(
                     expiredDate = TextFieldValue(
@@ -59,8 +72,12 @@ class NewCardViewModel : ViewModel() {
         }
     }
 
+    private fun shouldAddSignAtExpiredDate(beforeText: String, afterText: String): Boolean {
+        return beforeText.length == 2 && afterText.length == 3
+    }
+
     private fun setOwnerName(ownerName: String) {
-        if (ownerName.length > 30) {
+        if (ownerName.length > CARD_OWNER_NAME_MAX_LENGTH) {
             return
         }
         _cardState.update {
@@ -69,11 +86,20 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setPassword(password: String) {
-        if (password.length > 4 || password.lastOrNull()?.isDigit() == false) {
+        if (password.length > CARD_PASSWORD_MAX_LENGTH || password.lastOrNull()
+                ?.isDigit() == false
+        ) {
             return
         }
         _cardState.update {
             it.copy(password = password)
         }
+    }
+
+    companion object {
+        private const val CARD_NUMBER_MAX_LENGTH = 19
+        private const val CARD_EXPIRED_DATE_MAX_LENGTH = 5
+        private const val CARD_OWNER_NAME_MAX_LENGTH = 30
+        private const val CARD_PASSWORD_MAX_LENGTH = 4
     }
 }
