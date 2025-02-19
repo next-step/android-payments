@@ -32,6 +32,9 @@ class NewCardViewModel : ViewModel() {
     }
 
     private fun setOwnerName(ownerName: String) {
+        if (ownerName.length > 30) {
+            return
+        }
         _cardState.update {
             it.copy(ownerName = ownerName)
         }
