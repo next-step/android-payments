@@ -51,6 +51,16 @@ fun CardListScreen(
                 if (cards.isEmpty()) {
                     item { CardAddAffordance() }
                 }
+                items(
+                    items = cards,
+                    key = { it.number }
+                ) { card ->
+                    PaymentCard()
+                }
+
+                if (cards.size < 2) {
+                    item { CardAdd() }
+                }
             }
         }
     }
