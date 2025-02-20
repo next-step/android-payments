@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import nextstep.payments.data.model.Card
 
 @Composable
 fun PaymentCard(

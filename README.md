@@ -5,7 +5,7 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 - [x] 카드 화면 UI 구현
 
 # step2
-- [ ] 카드 목록화면 구현
+- [x] 카드 목록화면 구현
   - LazyColumn 이용
 - [ ] 카드 목록 -> 카드 추가 화면 이동
 - [ ] 새로운 카드 추가 시, 카드 목록 업데이트

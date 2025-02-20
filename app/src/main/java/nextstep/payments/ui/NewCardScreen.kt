@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,12 +15,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.R
 import nextstep.payments.ui.component.CardInputField
+import nextstep.payments.ui.component.CardTopBar
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.viewmodel.NewCardViewModel
 
 @Composable
 fun NewCardScreen(
-    modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
@@ -37,7 +40,7 @@ fun NewCardScreen(
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
         onPasswordChange = viewModel::setPassword,
-        modifier = modifier,
+        modifier = Modifier,
     )
 }
 
@@ -54,7 +57,13 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { }, onSaveClick = { }) },
+        topBar = {
+            CardTopBar(
+                title = stringResource(R.string.add_card),
+                onBackClick = { },
+                onSaveClick = { },
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
 

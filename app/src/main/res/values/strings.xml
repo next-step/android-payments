@@ -8,4 +8,8 @@
     <string name="card_expired_date_placeholder">MM / YY</string>
     <string name="card_password_label">비밀번호</string>
     <string name="card_password_placeholder">0000</string>
+    <string name="add_card">카드 추가</string>
+    <string name="back">뒤로 가기</string>
+    <string name="complete">완료</string>
+    <string name="payments">Payments</string>
 </resources>
