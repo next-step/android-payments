@@ -48,7 +48,9 @@ fun CardListScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
+                if (cards.isEmpty()) {
+                    item { CardAddAffordance() }
+                }
             }
         }
     }
