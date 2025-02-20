@@ -3,21 +3,19 @@ package nextstep.payments
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.ui.component.CardInputField
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -35,10 +33,10 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        setCardNumber = viewModel::setCardNumber, // { viewModel.setCarddNumber() }랑 뭐가 다를까? - 불안정한 케이스가 있음
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
+        onCardNumberChange = viewModel::setCardNumber,
+        onExpiredDateChange = viewModel::setExpiredDate,
+        onOwnerNameChange = viewModel::setOwnerName,
+        onPasswordChange = viewModel::setPassword,
         modifier = modifier,
     )
 }
@@ -49,14 +47,14 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
+    onCardNumberChange: (String) -> Unit,
+    onExpiredDateChange: (String) -> Unit,
+    onOwnerNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = { }, onSaveClick = { }) },
         modifier = modifier
     ) { innerPadding ->
 
@@ -73,37 +71,32 @@ fun NewCardScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
+            CardInputField(
                 value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = onCardNumberChange,
+                labelText = stringResource(R.string.card_number_label),
+                placeHolderText = stringResource(R.string.card_number_placeholder),
             )
 
-            OutlinedTextField(
+            CardInputField(
                 value = expiredDate,
-                onValueChange = setExpiredDate,
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = onExpiredDateChange,
+                labelText = stringResource(R.string.card_expired_date_label),
+                placeHolderText = stringResource(R.string.card_expired_date_placeholder),
             )
 
-            OutlinedTextField(
+            CardInputField(
                 value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = onOwnerNameChange,
+                labelText = stringResource(R.string.card_owner_name_label),
+                placeHolderText = stringResource(R.string.card_owner_name_placeholder),
             )
 
-            OutlinedTextField(
+            CardInputField(
                 value = password,
-                onValueChange = setPassword,
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                onValueChange = onPasswordChange,
+                labelText = stringResource(R.string.card_password_label),
+                placeHolderText = stringResource(R.string.card_password_placeholder),
             )
         }
     }
@@ -133,10 +126,10 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "00 / 00",
             ownerName = "홍길동",
             password = "0000",
-            setCardNumber = {},
-            setExpiredDate = {},
-            setOwnerName = {},
-            setPassword = {},
+            onCardNumberChange = {},
+            onExpiredDateChange = {},
+            onOwnerNameChange = {},
+            onPasswordChange = {},
         )
     }
 }
