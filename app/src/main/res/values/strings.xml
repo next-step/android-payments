@@ -12,4 +12,5 @@
     <string name="back">뒤로 가기</string>
     <string name="complete">완료</string>
     <string name="payments">Payments</string>
+    <string name="card_add_affordance">새로운 카드를 등록해주세요</string>
 </resources>

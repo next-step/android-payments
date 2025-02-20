@@ -60,8 +60,8 @@ fun NewCardScreen(
         topBar = {
             CardTopBar(
                 title = stringResource(R.string.add_card),
-                onBackClick = { },
-                onSaveClick = { },
+                isCenter = false,
+                showBackButton = true,
             )
         },
         modifier = modifier
