@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun CardListScreen(
     modifier: Modifier = Modifier,
+    onAddCardClick: () -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -38,7 +39,7 @@ fun CardListScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
         AddCardContainer(
-            onClick = {}
+            onClick = onAddCardClick
         )
     }
 }
@@ -75,5 +76,7 @@ fun AddCardContainerPreview() {
 @Preview(showBackground = true)
 @Composable
 fun CardListScreenPreview() {
-    CardListScreen()
+    CardListScreen(
+        onAddCardClick = {}
+    )
 }
