@@ -1,4 +1,4 @@
-package nextstep.payments.ui.theme
+package nextstep.payments.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
