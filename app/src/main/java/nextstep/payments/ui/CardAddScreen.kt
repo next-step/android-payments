@@ -3,20 +3,18 @@ package nextstep.payments.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.data.model.CardModel
 import nextstep.payments.ui.component.Card
@@ -24,28 +22,6 @@ import nextstep.payments.ui.component.CardAddTopBar
 import nextstep.payments.ui.component.CardInputField
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.toCardList
-import nextstep.payments.viewmodel.CardAddViewModel
-
-@Composable
-fun CardAddScreen(
-    viewModel: CardAddViewModel = viewModel(),
-    onBackPressed: () -> Unit,
-) {
-    val cardModel by viewModel.cardModel.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    CardAddScreen(
-        cardModel = cardModel,
-        cardAdded = cardAdded,
-        onCardNumberChange = viewModel::setCardNumber,
-        onExpiredDateChange = viewModel::setExpiredDate,
-        onOwnerNameChange = viewModel::setOwnerName,
-        onPasswordChange = viewModel::setPassword,
-        onBackPressed = onBackPressed,
-        onAddClicked = viewModel::addCard,
-        modifier = Modifier,
-    )
-}
 
 @Composable
 fun CardAddScreen(
@@ -57,7 +33,6 @@ fun CardAddScreen(
     onPasswordChange: (String) -> Unit,
     onBackPressed: () -> Unit,
     onAddClicked: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
 
     val context = LocalContext.current
@@ -73,7 +48,6 @@ fun CardAddScreen(
                 onCheckClick = { onAddClicked() },
             )
         },
-        modifier = modifier,
     ) { innerPadding ->
 
         Column(
@@ -117,22 +91,6 @@ fun CardAddScreen(
                 placeHolderText = stringResource(R.string.card_password_placeholder),
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun StatefulNewCardScreenPreview() {
-    PaymentsTheme {
-        CardAddScreen(
-            viewModel = CardAddViewModel().apply {
-                setCardNumber(cardNumber = "0000 - 0000 - 0000 - 0000")
-                setExpiredDate("00 / 00")
-                setOwnerName("홍길동")
-                setPassword("0000")
-            },
-            onBackPressed = {},
-        )
     }
 }
 
