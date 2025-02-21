@@ -11,7 +11,9 @@ class NewCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                NewCardScreen(
+                    onBackPressed = { onBackPressedDispatcher.onBackPressed() }
+                )
             }
         }
     }

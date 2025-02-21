@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
-class NewCardViewModel(
+class CardAddViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 

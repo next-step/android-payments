@@ -16,15 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.ui.component.CardAddTopBar
 import nextstep.payments.ui.component.CardInputField
-import nextstep.payments.ui.component.CardTopBar
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.viewmodel.NewCardViewModel
+import nextstep.payments.viewmodel.CardAddViewModel
 
 @Composable
 fun NewCardScreen(
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: CardAddViewModel = viewModel(),
+    onBackPressed: () -> Unit,
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
@@ -40,6 +41,7 @@ fun NewCardScreen(
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
         onPasswordChange = viewModel::setPassword,
+        onBackPressed = onBackPressed,
         modifier = Modifier,
     )
 }
@@ -54,17 +56,17 @@ fun NewCardScreen(
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
-            CardTopBar(
-                title = stringResource(R.string.add_card),
-                isCenter = false,
-                showBackButton = true,
+            CardAddTopBar(
+                onBackClick = onBackPressed,
+                onCheckClick = { },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
 
         Column(
@@ -116,12 +118,13 @@ fun NewCardScreen(
 private fun StatefulNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            viewModel = NewCardViewModel().apply {
+            viewModel = CardAddViewModel().apply {
                 setCardNumber(cardNumber = "0000 - 0000 - 0000 - 0000")
                 setExpiredDate("00 / 00")
                 setOwnerName("홍길동")
                 setPassword("0000")
-            }
+            },
+            onBackPressed = {},
         )
     }
 }
@@ -139,6 +142,7 @@ private fun StatelessNewCardScreenPreview() {
             onExpiredDateChange = {},
             onOwnerNameChange = {},
             onPasswordChange = {},
+            onBackPressed = {},
         )
     }
 }
