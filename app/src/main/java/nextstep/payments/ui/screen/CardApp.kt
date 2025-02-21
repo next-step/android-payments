@@ -2,25 +2,18 @@ package nextstep.payments.ui.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import nextstep.payments.ui.screen.navigation.CardRoute
 
-enum class CardRoute(val route: String) {
-    CARD_LIST("cardList"),
-    NEW_CARD("newCard"),
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,18 +26,6 @@ fun CardApp(
 
     Scaffold(
         modifier = modifier,
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "Payments",
-                        fontWeight = FontWeight.W400,
-                        fontSize = 22.sp
-                    )
-                },
-                modifier = modifier,
-            )
-        }
     ) {
         NavHost(
             navController = navController,
@@ -57,7 +38,7 @@ fun CardApp(
                 route = CardRoute.CARD_LIST.route
             ) {
                 CardListScreen(
-                    onAddCardClick = {
+                    navigateToNewCard = {
                         navController.navigate(CardRoute.NEW_CARD.route)
                     }
                 )
@@ -65,7 +46,11 @@ fun CardApp(
             composable(
                 route = CardRoute.NEW_CARD.route
             ) {
-                NewCardScreen()
+                NewCardScreen(
+                    navigateToCardList = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
     }
