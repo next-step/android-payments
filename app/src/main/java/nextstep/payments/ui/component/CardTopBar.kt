@@ -135,12 +135,12 @@ fun CardAddTopBar(
 
 @Composable
 fun CardListTopBar(
-    onSaveClick: (() -> Unit)?,
+    onAddClick: (() -> Unit)?,
 ) {
     CardTopBar(
         title = stringResource(R.string.payments),
         isCenter = true,
-        onActionClick = onSaveClick,
+        onActionClick = onAddClick,
         actionButtonText = stringResource(R.string.add)
     )
 }
@@ -196,7 +196,7 @@ private fun CardTopBarPreview() {
                 onCheckClick = {},
             )
             CardListTopBar(
-                onSaveClick = {},
+                onAddClick = {},
             )
         }
     }

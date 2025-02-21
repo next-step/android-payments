@@ -14,13 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.utils.toNewCard
+import nextstep.payments.utils.toCardAdd
 
 @Composable
 fun CardAdd(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
-    Card(modifier.clickable { context.toNewCard() }) {
+    Card(modifier.clickable { context.toCardAdd() }) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = stringResource(R.string.add_card),

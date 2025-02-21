@@ -7,63 +7,70 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.data.model.CardModel
+import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAddTopBar
 import nextstep.payments.ui.component.CardInputField
-import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.utils.toCardList
 import nextstep.payments.viewmodel.CardAddViewModel
 
 @Composable
-fun NewCardScreen(
+fun CardAddScreen(
     viewModel: CardAddViewModel = viewModel(),
     onBackPressed: () -> Unit,
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardModel by viewModel.cardModel.collectAsStateWithLifecycle()
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
-    NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+    CardAddScreen(
+        cardModel = cardModel,
+        cardAdded = cardAdded,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
         onPasswordChange = viewModel::setPassword,
         onBackPressed = onBackPressed,
+        onAddClicked = viewModel::addCard,
         modifier = Modifier,
     )
 }
 
 @Composable
-fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+fun CardAddScreen(
+    cardModel: CardModel,
+    cardAdded: Boolean,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onBackPressed: () -> Unit,
+    onAddClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) context.toCardList()
+    }
+
     Scaffold(
         topBar = {
             CardAddTopBar(
                 onBackClick = onBackPressed,
-                onCheckClick = { },
+                onCheckClick = { onAddClicked() },
             )
         },
         modifier = modifier,
@@ -78,33 +85,33 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            Card(model = cardModel)
 
             Spacer(modifier = Modifier.height(10.dp))
 
             CardInputField(
-                value = cardNumber,
+                value = cardModel.number,
                 onValueChange = onCardNumberChange,
                 labelText = stringResource(R.string.card_number_label),
                 placeHolderText = stringResource(R.string.card_number_placeholder),
             )
 
             CardInputField(
-                value = expiredDate,
+                value = cardModel.expiredDate,
                 onValueChange = onExpiredDateChange,
                 labelText = stringResource(R.string.card_expired_date_label),
                 placeHolderText = stringResource(R.string.card_expired_date_placeholder),
             )
 
             CardInputField(
-                value = ownerName,
+                value = cardModel.ownerName,
                 onValueChange = onOwnerNameChange,
                 labelText = stringResource(R.string.card_owner_name_label),
                 placeHolderText = stringResource(R.string.card_owner_name_placeholder),
             )
 
             CardInputField(
-                value = password,
+                value = cardModel.password,
                 onValueChange = onPasswordChange,
                 labelText = stringResource(R.string.card_password_label),
                 placeHolderText = stringResource(R.string.card_password_placeholder),
@@ -117,7 +124,7 @@ fun NewCardScreen(
 @Composable
 private fun StatefulNewCardScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
+        CardAddScreen(
             viewModel = CardAddViewModel().apply {
                 setCardNumber(cardNumber = "0000 - 0000 - 0000 - 0000")
                 setExpiredDate("00 / 00")
@@ -133,16 +140,20 @@ private fun StatefulNewCardScreenPreview() {
 @Composable
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "00 / 00",
-            ownerName = "홍길동",
-            password = "0000",
+        CardAddScreen(
+            cardModel = CardModel(
+                number = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "홍길동",
+                password = "0000",
+            ),
+            cardAdded = true,
             onCardNumberChange = {},
             onExpiredDateChange = {},
             onOwnerNameChange = {},
             onPasswordChange = {},
             onBackPressed = {},
+            onAddClicked = {},
         )
     }
 }

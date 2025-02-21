@@ -3,15 +3,15 @@ package nextstep.payments
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import nextstep.payments.ui.NewCardScreen
+import nextstep.payments.ui.CardAddScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class NewCardActivity : ComponentActivity() {
+class CardAddActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen(
+                CardAddScreen(
                     onBackPressed = { onBackPressedDispatcher.onBackPressed() }
                 )
             }
