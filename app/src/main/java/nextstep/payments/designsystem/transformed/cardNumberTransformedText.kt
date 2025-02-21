@@ -5,11 +5,15 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 
 
-fun cardNumberTransformedText(text: AnnotatedString): TransformedText {
+fun cardNumberTransformedText(text: AnnotatedString, isMasked: Boolean = false): TransformedText {
 
     val annotatedString = AnnotatedString.Builder().run {
         for (i in text.indices) {
-            append(text[i])
+            if (isMasked && i >= 8) {
+                append('*')
+            } else {
+                append(text[i])
+            }
             if (i == 3 || i == 7 || i == 11) {
                 append(" – ")
             }
