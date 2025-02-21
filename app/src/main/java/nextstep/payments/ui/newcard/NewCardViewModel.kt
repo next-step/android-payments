@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.newcard
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,11 +20,11 @@ class NewCardViewModel : ViewModel() {
     val password: StateFlow<String> = _password.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        _cardNumber.value = cardNumber.take(16)
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        _expiredDate.value = expiredDate.take(4)
     }
 
     fun setOwnerName(ownerName: String) {
@@ -32,6 +32,6 @@ class NewCardViewModel : ViewModel() {
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        _password.value = password.take(4)
     }
 }
