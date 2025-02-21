@@ -39,14 +39,15 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        setCardNumber = viewModel::setCardNumber, // { viewModel.setCardNumber } 랑 뭐가 다를가?
+        setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackCLick = navigateToCardList,
-        onSaveClick = {
-
-        },
+        onSaveClick =  {
+            viewModel.addCard(cardNumber, expiredDate, ownerName, password)
+            navigateToCardList()
+        }
     )
 }
 
