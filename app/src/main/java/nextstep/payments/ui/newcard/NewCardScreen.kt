@@ -1,34 +1,47 @@
-package nextstep.payments
+package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.designsystem.component.PaymentCard
+import nextstep.payments.designsystem.theme.PaymentsTheme
+import nextstep.payments.ui.newcard.component.CardExpiredDateTextFiled
+import nextstep.payments.ui.newcard.component.CardNumberTextFiled
+import nextstep.payments.ui.newcard.component.CardOwnerNameTextFiled
+import nextstep.payments.ui.newcard.component.CardPasswordTextFiled
+import nextstep.payments.ui.newcard.component.NewCardTopBar
 
 @Composable
 fun NewCardScreen(
+    onBackClick: () -> Unit,
+    onRouteToCardList: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: NewCardViewModel = viewModel()
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) {
+            onRouteToCardList()
+        }
+    }
 
     NewCardScreen(
         cardNumber = cardNumber,
@@ -39,6 +52,9 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onBackClick = onBackClick,
+        onSaveClick = { viewModel.addCard() },
+        modifier = modifier
     )
 }
 
@@ -53,10 +69,12 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -72,38 +90,10 @@ fun NewCardScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = expiredDate,
-                onValueChange = setExpiredDate,
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-            )
+            CardNumberTextFiled(value = cardNumber, onValueChange = setCardNumber)
+            CardExpiredDateTextFiled(value = expiredDate, onValueChange = setExpiredDate)
+            CardOwnerNameTextFiled(value = ownerName, onValueChange = setOwnerName)
+            CardPasswordTextFiled(value = password, onValueChange = setPassword)
         }
     }
 }
@@ -112,12 +102,15 @@ fun NewCardScreen(
 @Composable
 private fun StatefulNewCardScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(viewModel = NewCardViewModel().apply {
-            setCardNumber("0000 - 0000 - 0000 - 0000")
-            setExpiredDate("00 / 00")
-            setOwnerName("홍길동")
-            setPassword("0000")
-        })
+        NewCardScreen(
+            onBackClick = {},
+            onRouteToCardList = {},
+            viewModel = NewCardViewModel().apply {
+                setCardNumber("0000000000000000")
+                setExpiredDate("0000")
+                setOwnerName("홍길동")
+                setPassword("0000")
+            })
     }
 }
 
@@ -126,14 +119,16 @@ private fun StatefulNewCardScreenPreview() {
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "00 / 00",
+            cardNumber = "0000000000000000",
+            expiredDate = "0000",
             ownerName = "홍길동",
             password = "0000",
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
+            onSaveClick = {},
+            onBackClick = {}
         )
     }
 }
