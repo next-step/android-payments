@@ -53,10 +53,23 @@ fun PaymentsScreen(
     val localContext = LocalContext.current
     val onAddCardClick = { launcher.launch(NewCardActivity.getIntent(localContext)) }
 
-    when (val currentState = uiState) {
+    PaymentsScreen(
+        uiState = uiState,
+        onAddCardClick = onAddCardClick,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun PaymentsScreen(
+    uiState: PaymentsUiState,
+    onAddCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (uiState) {
         is PaymentsUiState.Empty -> PaymentsEmptyScreen(onAddCardClick, modifier)
-        is PaymentsUiState.One -> PaymentsOneScreen(currentState, onAddCardClick, modifier)
-        is PaymentsUiState.Many -> PaymentsManyScreen(currentState, onAddCardClick, modifier)
+        is PaymentsUiState.One -> PaymentsOneScreen(uiState, onAddCardClick, modifier)
+        is PaymentsUiState.Many -> PaymentsManyScreen(uiState, onAddCardClick, modifier)
     }
 }
 

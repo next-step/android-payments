@@ -31,7 +31,7 @@ fun PaymentCardAddition(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_add),
-            contentDescription = "카드 추가",
+            contentDescription = "카드 추가 버튼",
         )
     }
 }
