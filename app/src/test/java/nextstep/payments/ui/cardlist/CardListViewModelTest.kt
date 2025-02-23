@@ -1,11 +1,13 @@
 package nextstep.payments.ui.cardlist
 
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.time.YearMonth
 
 class CardListViewModelTest {
 
@@ -36,10 +38,11 @@ class CardListViewModelTest {
 
         //given
         val card = Card(
-            number = "",
-            expiredDate = "",
-            ownerName = "",
-            password = ""
+            type = BankType.HANA,
+            number = "1",
+            expiredDate = YearMonth.of(24, 12),
+            ownerName = "1",
+            password = "1"
         )
 
         //when
@@ -57,26 +60,30 @@ class CardListViewModelTest {
         //given
         val cards = listOf(
             Card(
+                type = BankType.HANA,
                 number = "1",
-                expiredDate = "1",
+                expiredDate = YearMonth.of(24, 12),
                 ownerName = "1",
                 password = "1"
             ),
             Card(
+                type = BankType.KB,
                 number = "2",
-                expiredDate = "2",
+                expiredDate = YearMonth.of(24, 12),
                 ownerName = "2",
                 password = "2"
             ),
             Card(
+                type = BankType.HYUNDAI,
                 number = "3",
-                expiredDate = "3",
+                expiredDate = YearMonth.of(24, 12),
                 ownerName = "3",
                 password = "3"
             ),
             Card(
+                type = BankType.WOORI,
                 number = "4",
-                expiredDate = "4",
+                expiredDate = YearMonth.of(24, 12),
                 ownerName = "4",
                 password = "4"
             )
