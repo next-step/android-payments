@@ -78,9 +78,10 @@ private fun PaymentsEmptyScreen(
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(modifier = modifier, topBar = {
-        PaymentsTopBar(isAddable = false)
-    }) { innerPadding ->
+    Scaffold(
+        modifier = modifier,
+        topBar = { PaymentsTopBar(isAddable = false) }
+    ) { innerPadding ->
         Column(
             Modifier
                 .padding(innerPadding)

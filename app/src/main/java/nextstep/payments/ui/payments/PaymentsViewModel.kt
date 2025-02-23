@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import nextstep.payments.model.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
 
 class PaymentsViewModel(
