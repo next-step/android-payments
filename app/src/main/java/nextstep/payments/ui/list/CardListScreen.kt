@@ -7,34 +7,47 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
-import nextstep.payments.ui.add.CardAddViewModel
 
 @Composable
 internal fun CardListScreen(
+    cardListViewModel: CardListViewModel,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CardAddViewModel = viewModel(),
 ) {
-    CardListScreen(
+    val cardListUiState by cardListViewModel.uiState.collectAsStateWithLifecycle()
 
+    CardListScreen(
+        cardListUiState = cardListUiState,
+        onAddCardClick = onAddCardClick,
         modifier = modifier,
     )
 }
 
 @Composable
 internal fun CardListScreen(
+    cardListUiState: CardListUiState,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = { TopBar() },
         modifier = modifier
     ) { innerPadding ->
-        CardListContent(modifier = Modifier.padding(innerPadding))
+        when (cardListUiState) {
+            CardListUiState.Empty -> EmptyListContent(
+                onAddCardClick = onAddCardClick,
+                modifier = Modifier.padding(innerPadding)
+            )
+
+            else -> {}
+        }
     }
 }
 
@@ -55,13 +68,11 @@ private fun TopBar(
     )
 }
 
-@Composable
-private fun CardListContent(modifier: Modifier = Modifier) {
-
-}
-
 @Preview(showBackground = true)
 @Composable
-private fun StatefulCardListScreenPreview() {
-    CardListScreen()
+private fun StatefulCardListScreenPreview_Empty() {
+    CardListScreen(
+        cardListUiState = CardListUiState.Empty,
+        onAddCardClick = {}
+    )
 }

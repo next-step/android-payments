@@ -1,5 +1,7 @@
 package nextstep.payments
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +25,13 @@ class CardAddActivity : ComponentActivity() {
                     CardAddScreen()
                 }
             }
+        }
+    }
+
+    companion object {
+        fun open(activity: Activity) {
+            val intent = Intent(activity, CardAddActivity::class.java)
+            activity.startActivity(intent)
         }
     }
 }

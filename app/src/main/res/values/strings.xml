@@ -11,4 +11,6 @@
     <string name="expired_date_place_holder">MM / YY</string>
     <string name="owner_name_place_holder">카드에 표시된 이름을 입력하세요.</string>
     <string name="password_place_holder">0000</string>
+
+    <string name="card_add_guide">새로운 카드를 등록해주세요</string>
 </resources>
