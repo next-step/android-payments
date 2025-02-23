@@ -17,6 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.designsystem.component.PaymentCard
 import nextstep.payments.designsystem.theme.PaymentsTheme
+import nextstep.payments.model.BankType
+import nextstep.payments.ui.newcard.component.BankSelectBottomSheet
 import nextstep.payments.ui.newcard.component.CardExpiredDateTextFiled
 import nextstep.payments.ui.newcard.component.CardNumberTextFiled
 import nextstep.payments.ui.newcard.component.CardOwnerNameTextFiled
@@ -36,6 +38,7 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val selectBank by viewModel.selectBank.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) {
@@ -48,10 +51,12 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        bankType = selectBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        setBankType = viewModel::setBankType,
         onBackClick = onBackClick,
         onSaveClick = { viewModel.addCard() },
         modifier = modifier
@@ -65,10 +70,12 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    setBankType: (BankType) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -86,7 +93,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(type = bankType)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -95,6 +102,7 @@ fun NewCardScreen(
             CardOwnerNameTextFiled(value = ownerName, onValueChange = setOwnerName)
             CardPasswordTextFiled(value = password, onValueChange = setPassword)
         }
+        BankSelectBottomSheet(selectedBank = bankType, onItemClick = setBankType)
     }
 }
 
@@ -110,6 +118,7 @@ private fun StatefulNewCardScreenPreview() {
                 setExpiredDate("0000")
                 setOwnerName("홍길동")
                 setPassword("0000")
+                setBankType(BankType.KB)
             })
     }
 }
@@ -123,10 +132,12 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "0000",
             ownerName = "홍길동",
             password = "0000",
+            bankType = BankType.NOT_SELECTED,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
+            setBankType = {},
             onSaveClick = {},
             onBackClick = {}
         )
