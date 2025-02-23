@@ -141,7 +141,8 @@ private val defaultCard = Card(
     number = "1111 - 1111 - **** - ****",
     ownerName = "홍길동",
     expiredDate = "10/04",
-    password = "1111"
+    password = "1111",
+    company = null,
 )
 
 @Preview(name = "카드 0 개일 경우 목록")

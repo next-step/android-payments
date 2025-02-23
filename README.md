@@ -17,8 +17,8 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 - [x] 백버튼 구현
 
 # step3
-- [ ] 카드사 선택 UI 구현
-  - [ ] 선택 가능한 카드사 UI FlowRow
-  - [ ] 화면 진입 시, 카드사 선택 ModalBottomSheet 로 노출
+- [x] 카드사 선택 UI 구현
+  - [x] 선택 가능한 카드사 UI FlowRow
+  - [x] 화면 진입 시, 카드사 선택 ModalBottomSheet 로 노출
 - [ ] 카드사 필수로 선택
-- [ ] 선택한 카드에 따라 미리보기 변경
+- [x] 선택한 카드에 따라 미리보기 변경

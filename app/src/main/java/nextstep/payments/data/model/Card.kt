@@ -5,13 +5,15 @@ data class Card(
     val ownerName: String,
     val password: String,
     val expiredDate: String,
+    val company: CardCompany?,
 ) {
     companion object {
         val Empty = Card(
             number = "",
             ownerName = "",
             password = "",
-            expiredDate = ""
+            expiredDate = "",
+            company = null,
         )
     }
 }

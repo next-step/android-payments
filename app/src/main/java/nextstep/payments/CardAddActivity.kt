@@ -16,18 +16,22 @@ class CardAddActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 val viewModel: CardAddViewModel = viewModel()
-                val cardModel by viewModel.card.collectAsStateWithLifecycle()
+                val card by viewModel.card.collectAsStateWithLifecycle()
                 val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+                val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
 
                 CardAddScreen(
-                    card = cardModel,
+                    card = card,
                     cardAdded = cardAdded,
                     onCardNumberChange = viewModel::setCardNumber,
-                    onExpiredDateChange = viewModel::setCardNumber,
-                    onOwnerNameChange = viewModel::setCardNumber,
-                    onPasswordChange = viewModel::setCardNumber,
+                    onExpiredDateChange = viewModel::setExpiredDate,
+                    onOwnerNameChange = viewModel::setOwnerName,
+                    onPasswordChange = viewModel::setPassword,
                     onBackPressed = { onBackPressedDispatcher.onBackPressed() },
                     onAddClicked = viewModel::addCard,
+                    bottomSheetState = cardCompanyBottomSheet,
+                    onCardCompanyChange = viewModel::setCardCompany,
+                    onCardCompanyBottomSheetState = viewModel::setCardCompanyBottomSheetState,
                 )
             }
         }

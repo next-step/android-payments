@@ -34,14 +34,23 @@ import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
 @Composable
-fun CardCompany(company: CardCompany, selected: Boolean) {
-    if (selected) SelectedCardCompany(company) else SelectedCardCompany(company)
+fun CardCompany(
+    company: CardCompany,
+    onSelect: (CardCompany) -> Unit,
+    selected: Boolean,
+) {
+    if (selected) {
+        SelectedCardCompany(company = company, onSelect = onSelect)
+    } else {
+        UnSelectedCardCompany(company = company, onSelect = onSelect)
+    }
 }
 
 @Composable
-private fun CardCompany(company: CardCompany) {
+private fun CardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
     Column(
-        modifier = Modifier.clickable { },
+        modifier = Modifier
+            .clickable { onSelect(company) },
         verticalArrangement = Arrangement.spacedBy(9.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -64,9 +73,9 @@ private fun CardCompany(company: CardCompany) {
 }
 
 @Composable
-private fun SelectedCardCompany(company: CardCompany) {
+private fun SelectedCardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
     Box {
-        CardCompany(company)
+        CardCompany(company = company, onSelect = onSelect)
         Row(
             modifier = Modifier.offset(x = 32.dp, y = (-4).dp),
             horizontalArrangement = Arrangement.End
@@ -80,8 +89,8 @@ private fun SelectedCardCompany(company: CardCompany) {
 }
 
 @Composable
-private fun UnSelectedCardCompany(company: CardCompany) {
-    CardCompany(company)
+private fun UnSelectedCardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
+    CardCompany(company = company, onSelect = onSelect)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -96,8 +105,14 @@ private fun CardCompanyPreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            SelectedCardCompany(cardCompanyList.first())
-            UnSelectedCardCompany(cardCompanyList.first())
+            SelectedCardCompany(
+                cardCompanyList.first(),
+                onSelect = {}
+            )
+            UnSelectedCardCompany(
+                cardCompanyList.first(),
+                onSelect = {}
+            )
         }
     }
 }
