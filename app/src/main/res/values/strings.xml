@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Payments</string>
     <string name="payments_empty_headline">새로운 카드를 등록해주세요</string>
+    <string name="title_activity_new_card">NewCardActivity</string>
 </resources>
