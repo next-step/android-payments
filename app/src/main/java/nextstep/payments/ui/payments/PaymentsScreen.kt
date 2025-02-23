@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.components.PaymentCard
@@ -29,14 +32,15 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentsScreen(
-    uiState: PaymentsUiState,
     onAddCardClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PaymentsViewModel = viewModel()
 ) {
-    when (uiState) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    when (val currentState = uiState) {
         is PaymentsUiState.Empty -> PaymentsEmptyScreen(onAddCardClick, modifier)
-        is PaymentsUiState.One -> PaymentsOneScreen(uiState, onAddCardClick, modifier)
-        is PaymentsUiState.Many -> PaymentsManyScreen(uiState, onAddCardClick, modifier)
+        is PaymentsUiState.One -> PaymentsOneScreen(currentState, onAddCardClick, modifier)
+        is PaymentsUiState.Many -> PaymentsManyScreen(currentState, onAddCardClick, modifier)
     }
 }
 

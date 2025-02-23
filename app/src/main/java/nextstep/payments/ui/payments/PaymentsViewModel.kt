@@ -5,13 +5,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import nextstep.payments.model.CreditCard
 import nextstep.payments.repository.PaymentCardsRepository
 
 class PaymentsViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
-    private val _cards: MutableStateFlow<PaymentsUiState> = MutableStateFlow(PaymentsUiState.Empty)
-    val cards: StateFlow<PaymentsUiState> = _cards.asStateFlow()
+    private val _uiState: MutableStateFlow<PaymentsUiState> = MutableStateFlow(PaymentsUiState.Empty)
+    val uiState: StateFlow<PaymentsUiState> = _uiState.asStateFlow()
 
     fun getCards() {
         val cards = repository.cards
@@ -23,6 +24,6 @@ class PaymentsViewModel(
             else -> PaymentsUiState.Many(cards)
         }
 
-        _cards.update { newState }
+        _uiState.update { newState }
     }
 }
