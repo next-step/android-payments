@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.components.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
@@ -111,14 +112,16 @@ fun NewCardScreen(
 @Preview
 @Composable
 private fun NewCardScreenPreview() {
-    NewCardScreen(
-        cardNumber = "1234 - 5678 - 1234 - 5678",
-        expiredDate = "12 / 34",
-        ownerName = "홍길동",
-        password = "1234",
-        setCardNumber = {},
-        setExpiredDate = {},
-        setOwnerName = {},
-        setPassword = {},
-    )
+    PaymentsTheme {
+        NewCardScreen(
+            cardNumber = "1234 - 5678 - 1234 - 5678",
+            expiredDate = "12 / 34",
+            ownerName = "홍길동",
+            password = "1234",
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+        )
+    }
 }
