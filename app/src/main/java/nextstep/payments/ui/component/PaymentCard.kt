@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PaymentCard(
+internal fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
     Box(
