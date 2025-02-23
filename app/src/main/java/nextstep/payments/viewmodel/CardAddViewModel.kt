@@ -4,45 +4,46 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.data.model.CardModel
+import kotlinx.coroutines.flow.update
+import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
 class CardAddViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 
-    private val _cardModel = MutableStateFlow<CardModel>(CardModel())
-    val cardModel: StateFlow<CardModel> = _cardModel.asStateFlow()
+    private val _card = MutableStateFlow<Card>(Card.Empty)
+    val card: StateFlow<Card> = _card.asStateFlow()
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    fun setCardNumber(cardNumber: String) {
-        _cardModel.value = _cardModel.value.copy(
-            number = cardNumber
-        )
+    fun setCardNumber(value: String) {
+        _card.update {
+            it.copy(number = value)
+        }
     }
 
-    fun setExpiredDate(expiredDate: String) {
-        _cardModel.value = _cardModel.value.copy(
-            expiredDate = expiredDate
-        )
+    fun setExpiredDate(value: String) {
+        _card.update {
+            it.copy(expiredDate = value)
+        }
     }
 
-    fun setOwnerName(ownerName: String) {
-        _cardModel.value = _cardModel.value.copy(
-            ownerName = ownerName
-        )
+    fun setOwnerName(value: String) {
+        _card.update {
+            it.copy(ownerName = value)
+        }
     }
 
-    fun setPassword(password: String) {
-        _cardModel.value = _cardModel.value.copy(
-            password = password
-        )
+    fun setPassword(value: String) {
+        _card.update {
+            it.copy(password = value)
+        }
     }
 
     fun addCard() {
-        repository.addCard(_cardModel.value)
+        repository.addCard(_card.value)
         _cardAdded.value = true
     }
 }

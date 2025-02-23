@@ -16,11 +16,11 @@ class CardAddActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 val viewModel: CardAddViewModel = viewModel()
-                val cardModel by viewModel.cardModel.collectAsStateWithLifecycle()
+                val cardModel by viewModel.card.collectAsStateWithLifecycle()
                 val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
                 CardAddScreen(
-                    cardModel = cardModel,
+                    card = cardModel,
                     cardAdded = cardAdded,
                     onCardNumberChange = viewModel::setCardNumber,
                     onExpiredDateChange = viewModel::setCardNumber,

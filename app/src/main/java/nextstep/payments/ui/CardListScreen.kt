@@ -1,7 +1,9 @@
 package nextstep.payments.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,19 +11,39 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.model.CardModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.currentStateAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAdd
 import nextstep.payments.ui.component.CardAddAffordance
 import nextstep.payments.ui.component.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.toCardAdd
+import nextstep.payments.viewmodel.CardListViewModel
 import nextstep.payments.viewmodel.CardsUiState
+
+@Composable
+fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val currentLifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
+
+    if (currentLifecycleState == Lifecycle.State.RESUMED) viewModel.fetchCards()
+
+    val cardsUiState by viewModel.cardsUiState.collectAsStateWithLifecycle()
+
+    CardListScreen(cardsUiState)
+}
 
 @Composable
 fun CardListScreen(
@@ -38,7 +60,9 @@ fun CardListScreen(
     ) { innerPadding ->
         CardList(
             cardsUiState = cardsUiState,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         )
     }
 }
@@ -48,41 +72,72 @@ private fun CardList(
     cardsUiState: CardsUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.TopCenter,
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(32.dp),
-            contentPadding = PaddingValues(top = 32.dp)
-        ) {
-
-            when (cardsUiState) {
-                is CardsUiState.Empty -> {
-                    item { CardAddAffordance() }
-                    item { CardAdd() }
-                }
-
-                is CardsUiState.One -> {
-                    item { Card(cardsUiState.card) }
-                    item { CardAdd() }
-                }
-
-                is CardsUiState.Many -> {
-                    items(
-                        items = cardsUiState.cards,
-                        key = { it -> it.number }
-                    ) { card ->
-                        Card(card)
-                    }
-                }
-            }
+        when (cardsUiState) {
+            is CardsUiState.Empty -> EmptyCardList()
+            is CardsUiState.One -> OneCardList(card = cardsUiState.card)
+            is CardsUiState.Many -> ManyCardList(cards = cardsUiState.cards)
         }
     }
 }
 
-private val defaultCard = CardModel(
+@Composable
+private fun ParentCardList(modifier: Modifier, content: @Composable ColumnScope.() -> Unit) {
+    Column(
+        modifier = modifier.padding(vertical = verticalPadding),
+        verticalArrangement = Arrangement.spacedBy(verticalPadding),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun EmptyCardList(modifier: Modifier = Modifier) {
+    ParentCardList(modifier) {
+        CardAddAffordance()
+        CardAdd()
+    }
+}
+
+@Composable
+private fun OneCardList(
+    card: Card,
+    modifier: Modifier = Modifier
+) {
+    ParentCardList(modifier) {
+        Card(card)
+        CardAdd()
+    }
+}
+
+@Composable
+private fun ManyCardList(
+    cards: List<Card>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(verticalPadding),
+        contentPadding = PaddingValues(top = verticalPadding)
+    ) {
+
+        items(
+            items = cards,
+            key = { it -> it.number }
+        ) { card ->
+            Card(card)
+        }
+    }
+}
+
+private val verticalPadding = 32.dp
+
+private val defaultCard = Card(
     number = "1111 - 1111 - **** - ****",
     ownerName = "홍길동",
     expiredDate = "10/04",
@@ -93,9 +148,7 @@ private val defaultCard = CardModel(
 @Composable
 private fun CardListScreenPreview() {
     PaymentsTheme {
-        CardListScreen(
-            cardsUiState = CardsUiState.Empty,
-        )
+        CardListScreen(CardsUiState.Empty)
     }
 }
 
@@ -104,9 +157,7 @@ private fun CardListScreenPreview() {
 @Composable
 private fun CardListScreenPreview1() {
     PaymentsTheme {
-        CardListScreen(
-            cardsUiState = CardsUiState.One(defaultCard),
-        )
+        CardListScreen(CardsUiState.One(card = defaultCard))
     }
 }
 
@@ -122,10 +173,9 @@ private fun CardListScreenPreview2() {
         defaultCard.copy(ownerName = "홍길동5"),
         defaultCard.copy(ownerName = "홍길동6"),
         defaultCard.copy(ownerName = "홍길동7"),
-    )
+    ).toList()
+
     PaymentsTheme {
-        CardListScreen(
-            cardsUiState = CardsUiState.Many(cards = cards),
-        )
+        CardListScreen(CardsUiState.Many(cards = cards))
     }
 }

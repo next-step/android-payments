@@ -3,7 +3,6 @@ package nextstep.payments.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -16,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.data.model.CardModel
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAddTopBar
 import nextstep.payments.ui.component.CardInputField
@@ -25,7 +24,7 @@ import nextstep.payments.utils.toCardList
 
 @Composable
 fun CardAddScreen(
-    cardModel: CardModel,
+    card: Card,
     cardAdded: Boolean,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
@@ -59,33 +58,33 @@ fun CardAddScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            Card(model = cardModel)
+            Card(model = card)
 
             Spacer(modifier = Modifier.height(10.dp))
 
             CardInputField(
-                value = cardModel.number,
+                value = card.number,
                 onValueChange = onCardNumberChange,
                 labelText = stringResource(R.string.card_number_label),
                 placeHolderText = stringResource(R.string.card_number_placeholder),
             )
 
             CardInputField(
-                value = cardModel.expiredDate,
+                value = card.expiredDate,
                 onValueChange = onExpiredDateChange,
                 labelText = stringResource(R.string.card_expired_date_label),
                 placeHolderText = stringResource(R.string.card_expired_date_placeholder),
             )
 
             CardInputField(
-                value = cardModel.ownerName,
+                value = card.ownerName,
                 onValueChange = onOwnerNameChange,
                 labelText = stringResource(R.string.card_owner_name_label),
                 placeHolderText = stringResource(R.string.card_owner_name_placeholder),
             )
 
             CardInputField(
-                value = cardModel.password,
+                value = card.password,
                 onValueChange = onPasswordChange,
                 labelText = stringResource(R.string.card_password_label),
                 placeHolderText = stringResource(R.string.card_password_placeholder),
@@ -99,7 +98,7 @@ fun CardAddScreen(
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         CardAddScreen(
-            cardModel = CardModel(
+            card = Card(
                 number = "0000 - 0000 - 0000 - 0000",
                 expiredDate = "00 / 00",
                 ownerName = "홍길동",

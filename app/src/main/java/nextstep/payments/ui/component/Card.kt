@@ -18,12 +18,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.model.CardModel
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
 @Composable
-fun Card(model: CardModel) {
+fun Card(model: Card) {
     Card(backgroundColor = Color(0xFF333333)) {
         Column(
             modifier = Modifier
@@ -96,7 +96,7 @@ fun Card(
 private fun PaymentCardPreview() {
     PaymentsTheme {
         Card(
-            model = CardModel(
+            model = Card(
                 number = "1111 - 2222 - **** - ****",
                 ownerName = "CREW",
                 password = "Rebbecca",
