@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.repository.PaymentCardsRepository
 
 class CardListViewModel(
@@ -12,6 +13,12 @@ class CardListViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CardListUiState.of(repository.cards))
     val uiState: StateFlow<CardListUiState> = _uiState.asStateFlow()
+
+    fun refresh() {
+        _uiState.update {
+            CardListUiState.of(repository.cards)
+        }
+    }
 
     companion object {
         fun getFactory(repository: PaymentCardsRepository) =

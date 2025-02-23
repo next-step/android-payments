@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,15 +19,18 @@ internal fun CardInputField(
     onValueChange: (String) -> Unit,
     label: String,
     placeholder: String,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
     modifier: Modifier = Modifier,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(text = label) },
+        singleLine = true,
         placeholder = { Text(text = placeholder) },
         visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
         modifier = modifier,
     )
 }

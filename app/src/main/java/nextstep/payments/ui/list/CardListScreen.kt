@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.data.model.Card
 
 @Composable
 internal fun CardListScreen(
@@ -41,12 +42,19 @@ internal fun CardListScreen(
         modifier = modifier
     ) { innerPadding ->
         when (cardListUiState) {
-            CardListUiState.Empty -> EmptyListContent(
+            is CardListUiState.Empty -> EmptyListContent(
                 onAddCardClick = onAddCardClick,
                 modifier = Modifier.padding(innerPadding)
             )
 
-            else -> {}
+            is CardListUiState.One -> OneCardContent(
+                card = cardListUiState.card,
+                onAddCardClick = onAddCardClick,
+                modifier = Modifier.padding(innerPadding)
+            )
+
+            is CardListUiState.Many -> {
+            }
         }
     }
 }
@@ -73,6 +81,22 @@ private fun TopBar(
 private fun StatefulCardListScreenPreview_Empty() {
     CardListScreen(
         cardListUiState = CardListUiState.Empty,
+        onAddCardClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StatefulCardListScreenPreview_One() {
+    CardListScreen(
+        cardListUiState = CardListUiState.One(
+            card = Card(
+                number = "0000 - 0000 - 0000 - 0000",
+                expiredDate = "00 / 00",
+                ownerName = "홍길동",
+                password = "0000"
+            )
+        ),
         onAddCardClick = {}
     )
 }

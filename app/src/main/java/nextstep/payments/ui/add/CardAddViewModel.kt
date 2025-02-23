@@ -1,37 +1,60 @@
 package nextstep.payments.ui.add
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import nextstep.payments.data.model.Card
+import nextstep.payments.data.repository.PaymentCardsRepository
 
-class CardAddViewModel : ViewModel() {
+class CardAddViewModel(
+    private val repository: PaymentCardsRepository,
+) : ViewModel() {
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
+    private val _card = MutableStateFlow(Card())
+    val card: StateFlow<Card> = _card.asStateFlow()
 
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
+    private val _cardAdded = MutableStateFlow(false)
+    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        _card.update {
+            it.copy(number = cardNumber)
+        }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        _card.update {
+            it.copy(expiredDate = expiredDate)
+        }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _card.update {
+            it.copy(ownerName = ownerName)
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        _card.update {
+            it.copy(password = password)
+        }
+    }
+
+    fun addCard() {
+        repository.addCard(_card.value)
+        _cardAdded.value = true
+    }
+
+    companion object {
+        fun getFactory(repository: PaymentCardsRepository) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CardAddViewModel(repository) as T
+                }
+            }
+
     }
 }

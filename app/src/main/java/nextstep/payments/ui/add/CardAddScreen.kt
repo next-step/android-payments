@@ -6,41 +6,50 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.CardDetailTopBar
 import nextstep.payments.ui.component.CardInputField
 import nextstep.payments.ui.component.PaymentCard
 
 @Composable
 internal fun CardAddScreen(
+    cardAddViewModel: CardAddViewModel,
+    onBackClick: () -> Unit,
+    onSaveCard: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CardAddViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val card by cardAddViewModel.card.collectAsStateWithLifecycle()
+    val cardAdded by cardAddViewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) onSaveCard()
+    }
 
     CardAddScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
+        cardNumber = card.number,
+        expiredDate = card.expiredDate,
+        ownerName = card.ownerName,
+        password = card.password,
+        setCardNumber = cardAddViewModel::setCardNumber,
+        setExpiredDate = cardAddViewModel::setExpiredDate,
+        setOwnerName = cardAddViewModel::setOwnerName,
+        setPassword = cardAddViewModel::setPassword,
+        onBackClick = onBackClick,
+        onSaveClick = cardAddViewModel::addCard,
         modifier = modifier
     )
 }
@@ -51,18 +60,20 @@ internal fun CardAddScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    modifier: Modifier = Modifier,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             CardDetailTopBar(
                 title = stringResource(R.string.add_card),
-                onBackClick = { },
-                onSaveClick = { }
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick
             )
         },
         modifier = modifier
@@ -85,6 +96,7 @@ internal fun CardAddScreen(
                 onValueChange = setCardNumber,
                 label = stringResource(R.string.card_number),
                 placeholder = stringResource(R.string.card_number_place_holder),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -93,6 +105,7 @@ internal fun CardAddScreen(
                 onValueChange = setExpiredDate,
                 label = stringResource(R.string.expired_date),
                 placeholder = stringResource(R.string.expired_date_place_holder),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -101,6 +114,7 @@ internal fun CardAddScreen(
                 onValueChange = setOwnerName,
                 label = stringResource(R.string.owner_name_label),
                 placeholder = stringResource(R.string.owner_name_place_holder),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -109,6 +123,7 @@ internal fun CardAddScreen(
                 onValueChange = setPassword,
                 label = stringResource(R.string.password),
                 placeholder = stringResource(R.string.password_place_holder),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -120,12 +135,14 @@ internal fun CardAddScreen(
 @Composable
 private fun StatefulCardAddScreenPreview() {
     CardAddScreen(
-        viewModel = CardAddViewModel().apply {
+        cardAddViewModel = CardAddViewModel(PaymentCardsRepository).apply {
             setCardNumber("0000 - 0000 - 0000 - 0000")
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
             setPassword("0000")
-        }
+        },
+        onBackClick = {},
+        onSaveCard = {}
     )
 }
 
@@ -141,5 +158,7 @@ private fun StatelessCardAddScreenPreview() {
         setExpiredDate = { },
         setOwnerName = { },
         setPassword = { },
+        onBackClick = {},
+        onSaveClick = {}
     )
 }
