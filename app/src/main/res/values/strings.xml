@@ -16,4 +16,5 @@
     <string name="new_card_password_placeholder">0000</string>
     <string name="payments_top_bar_action_add">추가</string>
     <string name="payments_top_bar_title">Payments</string>
+    <string name="new_card_top_bar_title">카드 추가</string>
 </resources>
