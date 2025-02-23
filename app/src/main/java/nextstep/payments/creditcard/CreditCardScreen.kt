@@ -16,9 +16,8 @@ import nextstep.payments.ui.theme.common.component.Loading
 fun CreditCardScreen(
     onNavigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CreditCardViewModel = viewModel(),
+    uiState : CreditCardUiState
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CreditCardContent(
         uiState = uiState,
         onNavigateToNewCard = { onNavigateToNewCard() },

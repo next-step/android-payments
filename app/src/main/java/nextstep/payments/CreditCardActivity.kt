@@ -9,6 +9,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.creditcard.CreditCardScreen
 import nextstep.payments.creditcard.CreditCardViewModel
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -26,7 +28,10 @@ class CreditCardActivity : ComponentActivity() {
                     }
                 }
             PaymentsTheme {
-                CreditCardScreen(onNavigateToNewCard = { navigateToNewCard(launcher) })
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                CreditCardScreen(
+                    uiState = uiState,
+                    onNavigateToNewCard = { navigateToNewCard(launcher) })
             }
         }
     }
