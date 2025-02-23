@@ -14,4 +14,6 @@
     <string name="new_card_owner_name_placeholder">카드에 표시된 이름을 입력하세요.</string>
     <string name="new_card_password_label">비밀번호</string>
     <string name="new_card_password_placeholder">0000</string>
+    <string name="payments_top_bar_action_add">추가</string>
+    <string name="payments_top_bar_title">Payments</string>
 </resources>
