@@ -15,8 +15,8 @@ class CardAddViewModel(
 
     private val _card = MutableStateFlow<Card>(Card.Empty)
     val card: StateFlow<Card> = _card.asStateFlow()
-    private val _cardAdded = MutableStateFlow<Boolean>(false)
-    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+    private val _cardAdded = MutableStateFlow<Long>(System.currentTimeMillis())
+    val cardAdded: StateFlow<Long> = _cardAdded.asStateFlow()
 
     private val _cardCompanyBottomSheet =
         MutableStateFlow<CardCompanyBottomSheetState>(CardCompanyBottomSheetState.Show)
@@ -49,8 +49,8 @@ class CardAddViewModel(
     }
 
     fun addCard() {
+        _cardAdded.value = System.currentTimeMillis()
         repository.addCard(_card.value)
-        _cardAdded.value = true
     }
 
     fun setCardCompanyBottomSheetState(state: CardCompanyBottomSheetState) {

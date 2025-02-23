@@ -1,5 +1,7 @@
 package nextstep.payments.ui
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +39,7 @@ import nextstep.payments.viewmodel.CardCompanyBottomSheetState
 @Composable
 fun CardAddScreen(
     card: Card,
-    cardAdded: Boolean,
+    cardAdded: Long,
     bottomSheetState: CardCompanyBottomSheetState,
     onCardCompanyChange: (CardCompany) -> Unit,
     onCardCompanyBottomSheetState: (CardCompanyBottomSheetState) -> Unit,
@@ -52,7 +54,13 @@ fun CardAddScreen(
     val context = LocalContext.current
 
     LaunchedEffect(cardAdded) {
-        if (cardAdded) context.toCardList()
+        if (card.company != null) {
+            context.showToast(context.getString(R.string.success_add_card))
+            context.toCardList()
+        } else {
+            context.showToast(context.getString(R.string.request_select_card_company))
+            onCardCompanyBottomSheetState(CardCompanyBottomSheetState.Show)
+        }
     }
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -105,6 +113,14 @@ fun CardAddScreen(
                 }
             }
         }
+    }
+}
+
+private val Context.toast get() = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+private fun Context.showToast(message: String) {
+    toast.apply {
+        setText(message)
+        show()
     }
 }
 

@@ -6,6 +6,7 @@ data class Card(
     val password: String,
     val expiredDate: String,
     val company: CardCompany?,
+    val created: Long = System.currentTimeMillis(),
 ) {
     companion object {
         val Empty = Card(

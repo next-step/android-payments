@@ -82,7 +82,7 @@ private fun SelectedCardCompany(company: CardCompany, onSelect: (CardCompany) ->
         ) {
             Icon(
                 imageVector = Icons.Filled.Check,
-                contentDescription = stringResource(R.string.selected)
+                contentDescription = stringResource(R.string.card_company_selected)
             )
         }
     }

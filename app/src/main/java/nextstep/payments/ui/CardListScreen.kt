@@ -128,7 +128,7 @@ private fun ManyCardList(
 
         items(
             items = cards,
-            key = { it -> it.number }
+            key = { it -> it.created }
         ) { card ->
             Card(card)
         }
