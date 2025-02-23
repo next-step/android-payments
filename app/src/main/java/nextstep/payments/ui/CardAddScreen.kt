@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.model.CardCompany
+import nextstep.payments.data.model.CardInputType
 import nextstep.payments.data.model.cardCompanyList
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAddTopBar
@@ -116,6 +118,11 @@ fun CardAddScreen(
     }
 }
 
+private fun cardNumberFormattedText(text: String) {
+    text.replace("-", "")
+        .format("")
+}
+
 private val Context.toast get() = Toast.makeText(this, "", Toast.LENGTH_SHORT)
 private fun Context.showToast(message: String) {
     toast.apply {
@@ -168,6 +175,7 @@ private fun CardInputFields(
             onValueChange = onCardNumberChange,
             labelText = stringResource(R.string.card_number_label),
             placeHolderText = stringResource(R.string.card_number_placeholder),
+            type = CardInputType.CardNumber,
         )
 
         CardInputField(
@@ -175,6 +183,7 @@ private fun CardInputFields(
             onValueChange = onExpiredDateChange,
             labelText = stringResource(R.string.card_expired_date_label),
             placeHolderText = stringResource(R.string.card_expired_date_placeholder),
+            type = CardInputType.ExpiredDate,
         )
 
         CardInputField(
@@ -182,6 +191,7 @@ private fun CardInputFields(
             onValueChange = onOwnerNameChange,
             labelText = stringResource(R.string.card_owner_name_label),
             placeHolderText = stringResource(R.string.card_owner_name_placeholder),
+            type = CardInputType.OwnerName,
         )
 
         CardInputField(
@@ -189,6 +199,7 @@ private fun CardInputFields(
             onValueChange = onPasswordChange,
             labelText = stringResource(R.string.card_password_label),
             placeHolderText = stringResource(R.string.card_password_placeholder),
+            type = CardInputType.Password,
         )
     }
 }
