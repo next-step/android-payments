@@ -27,7 +27,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
-    paymentCard: CreditCard,
+    creditCard: CreditCard,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -50,7 +50,7 @@ fun PaymentCard(
                 )
         )
         PaymentCardContent(
-            paymentCard = paymentCard,
+            paymentCard = creditCard,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
@@ -133,7 +133,7 @@ private fun PaymentCardPreview(
 ) {
     PaymentsTheme {
         PaymentCard(
-            paymentCard = paymentCard
+            creditCard = paymentCard
         )
     }
 }

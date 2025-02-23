@@ -24,7 +24,6 @@ import nextstep.payments.R
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
-import kotlin.math.sign
 
 @Composable
 fun NewCardScreen(
@@ -88,7 +87,7 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                paymentCard = CreditCard(
+                creditCard = CreditCard(
                     cardNumber = cardNumber,
                     expiredDate = expiredDate,
                     ownerName = ownerName,
