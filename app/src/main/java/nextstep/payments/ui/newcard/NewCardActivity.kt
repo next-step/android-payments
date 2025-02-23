@@ -15,7 +15,11 @@ class NewCardActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 NewCardScreen(
-                    onFinishNewCard = { finish() },
+                    navigateToPayments = {
+                        setResult(RESULT_OK)
+                        finish()
+                    },
+                    onBackClick = ::finish
                 )
             }
         }

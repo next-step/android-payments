@@ -1,5 +1,8 @@
 package nextstep.payments.ui.payments
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,16 +31,28 @@ import nextstep.payments.R
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.components.PaymentCardAddition
+import nextstep.payments.ui.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
 @Composable
 fun PaymentsScreen(
-    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PaymentsViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            viewModel.getCards()
+        }
+    }
+
+    val localContext = LocalContext.current
+    val onAddCardClick = { launcher.launch(NewCardActivity.getIntent(localContext)) }
+
     when (val currentState = uiState) {
         is PaymentsUiState.Empty -> PaymentsEmptyScreen(onAddCardClick, modifier)
         is PaymentsUiState.One -> PaymentsOneScreen(currentState, onAddCardClick, modifier)
