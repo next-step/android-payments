@@ -7,10 +7,12 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import nextstep.payments.designsystem.component.PaymentCard
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import java.time.YearMonth
 
 class PaymentCardTest {
 
@@ -44,12 +46,30 @@ class PaymentCardTest {
     }
 
     @Test
+    fun `카드타입이_있는경우_카드사가_보여야_한다`() {
+
+        //given, when
+        composeTestRule.setContent {
+            PaymentCard(
+                type = BankType.HANA
+            )
+        }
+
+        //then
+        composeTestRule
+            .onNodeWithText("하나은행")
+            .assertIsNotDisplayed()
+    }
+
+
+    @Test
     fun `카드정보가_있는경우_카드번호가_올바르게_보여야_한다`() {
 
         //given
         val card = Card(
+            type = BankType.BC,
             number = "1234123412341234",
-            expiredDate = "1225",
+            expiredDate = YearMonth.of(25, 12),
             ownerName = "",
             password = ""
         )
@@ -71,8 +91,9 @@ class PaymentCardTest {
 
         //given
         val card = Card(
+            type = BankType.KB,
             number = "2345234523452345",
-            expiredDate = "1226",
+            expiredDate = YearMonth.of(26, 12),
             ownerName = "",
             password = ""
         )
@@ -90,13 +111,40 @@ class PaymentCardTest {
     }
 
     @Test
+    fun `카드정보가_있는경우_카드사가_올바르게_보여야_한다`() {
+
+        //given
+        val card = Card(
+            type = BankType.WOORI,
+            number = "2345234523452345",
+            expiredDate = YearMonth.of(27, 12),
+            ownerName = "",
+            password = ""
+        )
+
+        //when
+        composeTestRule.setContent {
+            PaymentCard(item = card, onItemClick = {})
+        }
+
+        //then
+        composeTestRule
+            .onNodeWithText("우리카드")
+            .assertIsDisplayed()
+
+
+    }
+
+
+    @Test
     fun `카드정보가_있는경우_카드를_클릭시_카드정보를_전달하는_이벤트가_발생해야_한다`() {
 
 
         //given
         val card = Card(
+            type = BankType.HYUNDAI,
             number = "3456345634563456",
-            expiredDate = "1227",
+            expiredDate = YearMonth.of(27, 12),
             ownerName = "",
             password = ""
         )
