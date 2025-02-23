@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -69,7 +70,14 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                paymentCard = CreditCard(
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                    password = password,
+                ),
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 

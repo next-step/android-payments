@@ -17,9 +17,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentsTopBar(
-    onAddClick: () -> Unit,
     isAddable: Boolean,
     modifier: Modifier = Modifier,
+    onAddClick: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = "Payments", fontSize = 22.sp) },
