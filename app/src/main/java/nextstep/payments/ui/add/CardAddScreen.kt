@@ -1,4 +1,4 @@
-package nextstep.payments.ui
+package nextstep.payments.ui.add
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,24 +21,23 @@ import nextstep.payments.R
 import nextstep.payments.ui.component.CardDetailTopBar
 import nextstep.payments.ui.component.CardInputField
 import nextstep.payments.ui.component.PaymentCard
-import nextstep.payments.viewmodel.NewCardViewModel
 
 @Composable
-internal fun NewCardScreen(
+internal fun CardAddScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: CardAddViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
 
-    NewCardScreen(
+    CardAddScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        setCardNumber = viewModel::setCardNumber, // { viewmodel.setCardNumber() } 랑 뭐가 다를까?
+        setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
@@ -47,7 +46,7 @@ internal fun NewCardScreen(
 }
 
 @Composable
-internal fun NewCardScreen(
+internal fun CardAddScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -119,9 +118,9 @@ internal fun NewCardScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun StatefulNewCardScreenPreview() {
-    NewCardScreen(
-        viewModel = NewCardViewModel().apply {
+private fun StatefulCardAddScreenPreview() {
+    CardAddScreen(
+        viewModel = CardAddViewModel().apply {
             setCardNumber("0000 - 0000 - 0000 - 0000")
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
@@ -132,8 +131,8 @@ private fun StatefulNewCardScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun StatelessNewCardScreenPreview() {
-    NewCardScreen(
+private fun StatelessCardAddScreenPreview() {
+    CardAddScreen(
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",

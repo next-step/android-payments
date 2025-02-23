@@ -13,12 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
-import nextstep.payments.viewmodel.NewCardViewModel
+import nextstep.payments.ui.add.CardAddViewModel
 
 @Composable
 internal fun CardListScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: CardAddViewModel = viewModel(),
 ) {
     CardListScreen(
 

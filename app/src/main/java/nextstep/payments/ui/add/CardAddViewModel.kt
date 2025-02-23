@@ -1,11 +1,11 @@
-package nextstep.payments.viewmodel
+package nextstep.payments.ui.add
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class NewCardViewModel : ViewModel() {
+class CardAddViewModel : ViewModel() {
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()

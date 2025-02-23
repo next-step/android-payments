@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import nextstep.payments.ui.NewCardScreen
+import nextstep.payments.ui.add.CardAddScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class NewCardActivity : ComponentActivity() {
+class CardAddActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -20,7 +20,7 @@ class NewCardActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NewCardScreen()
+                    CardAddScreen()
                 }
             }
         }
