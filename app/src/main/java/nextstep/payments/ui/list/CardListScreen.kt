@@ -6,11 +6,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
@@ -38,7 +40,12 @@ internal fun CardListScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { TopBar() },
+        topBar = {
+            TopBar(
+                cardListUiState = cardListUiState,
+                onAddCardClick = onAddCardClick
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         when (cardListUiState) {
@@ -54,6 +61,10 @@ internal fun CardListScreen(
             )
 
             is CardListUiState.Many -> {
+                ManyCardContent(
+                    cards = cardListUiState.cards,
+                    modifier = Modifier.padding(innerPadding)
+                )
             }
         }
     }
@@ -62,6 +73,8 @@ internal fun CardListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
+    cardListUiState: CardListUiState,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
@@ -73,12 +86,26 @@ private fun TopBar(
             )
         },
         modifier = modifier,
+        actions = {
+            if (cardListUiState is CardListUiState.Many) {
+                TextButton(
+                    onClick = onAddCardClick
+                ) {
+                    Text(
+                        text = stringResource(R.string.add),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                }
+            }
+        }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun StatefulCardListScreenPreview_Empty() {
+private fun CardListScreenPreview_Empty() {
     CardListScreen(
         cardListUiState = CardListUiState.Empty,
         onAddCardClick = {}
@@ -87,7 +114,7 @@ private fun StatefulCardListScreenPreview_Empty() {
 
 @Preview(showBackground = true)
 @Composable
-private fun StatefulCardListScreenPreview_One() {
+private fun CardListScreenPreview_One() {
     CardListScreen(
         cardListUiState = CardListUiState.One(
             card = Card(
@@ -95,6 +122,30 @@ private fun StatefulCardListScreenPreview_One() {
                 expiredDate = "00 / 00",
                 ownerName = "홍길동",
                 password = "0000"
+            )
+        ),
+        onAddCardClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardListScreenPreview_Many() {
+    CardListScreen(
+        cardListUiState = CardListUiState.Many(
+            cards = listOf(
+                Card(
+                    number = "0000 - 0000 - 0000 - 0000",
+                    expiredDate = "00 / 00",
+                    ownerName = "홍길동",
+                    password = "0000"
+                ),
+                Card(
+                    number = "0000 - 0000 - 0000 - 0001",
+                    expiredDate = "00 / 00",
+                    ownerName = "홍길동",
+                    password = "0000"
+                )
             )
         ),
         onAddCardClick = {}
