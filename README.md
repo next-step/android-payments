@@ -15,3 +15,10 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 - [x] 카드 목록 아이템 1개 이하일 경우, 카드 추가 UI 아이템으로 노출
 - [x] 카드 목록 아이템 2개 이상일 경우, 카드 추가 버튼 탑바에 노출
 - [x] 백버튼 구현
+
+# step3
+- [ ] 카드사 선택 UI 구현
+  - [ ] 선택 가능한 카드사 UI FlowRow
+  - [ ] 화면 진입 시, 카드사 선택 ModalBottomSheet 로 노출
+- [ ] 카드사 필수로 선택
+- [ ] 선택한 카드에 따라 미리보기 변경
