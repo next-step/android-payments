@@ -27,19 +27,23 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return
+        _cardNumber.value = cardNumber.filter { it.isDigit() }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        if (expiredDate.length > MAX_EXPIRED_DATE_LENGTH) return
+        _expiredDate.value = expiredDate.filter { it.isDigit() }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        if (ownerName.length > MAX_OWNER_NAME_LENGTH) return
+        _ownerName.value = ownerName.filter { it.isLetter() }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        if (password.length > MAX_PASSWORD_LENGTH) return
+        _password.value = password.filter { it.isDigit() }
     }
 
     fun onSaveClick() {
@@ -52,5 +56,12 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
             )
         )
         _cardAdded.update { true }
+    }
+
+    companion object {
+        const val MAX_CARD_NUMBER_LENGTH = 16
+        const val MAX_EXPIRED_DATE_LENGTH = 4
+        const val MAX_OWNER_NAME_LENGTH = 10
+        const val MAX_PASSWORD_LENGTH = 4
     }
 }
