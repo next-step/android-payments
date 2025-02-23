@@ -15,4 +15,6 @@
     <string name="complete">완료</string>
     <string name="payments">Payments</string>
     <string name="card_add_affordance">새로운 카드를 등록해주세요</string>
+    <string name="company_image">%s 이미지</string>
+    <string name="selected">선택됨</string>
 </resources>
