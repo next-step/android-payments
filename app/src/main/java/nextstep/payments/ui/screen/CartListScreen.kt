@@ -184,19 +184,19 @@ private fun CardListConatinerPreview() {
         cardList = listOf(
             Card(
                 cardNumber = "1234-5678-1234-5678",
-                expiredDate = "12/34",
+                expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412"
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
-                expiredDate = "12/34",
+                expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412"
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
-                expiredDate = "12/34",
+                expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412"
             ),
