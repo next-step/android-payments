@@ -13,3 +13,5 @@ val Pink40 = Color(0xFF7D5260)
 val TextColor = Color(0xFF333333)
 
 val AddButtonColor = Color(0xFFE5E5E5)
+
+val BankNameColor = Color(0xFF525252)
