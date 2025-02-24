@@ -45,7 +45,7 @@ fun NewCardScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-        NewCardScreen(
+    NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -94,7 +94,7 @@ private fun NewCardScreen(
                 }
             })
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState)  },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = modifier
     ) { innerPadding ->
         Column(
