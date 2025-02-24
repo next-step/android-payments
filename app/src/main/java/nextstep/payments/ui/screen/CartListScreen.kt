@@ -35,8 +35,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.viewmodel.CardListViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.CardUiState
 import nextstep.payments.ui.screen.component.PaymentCard
+import nextstep.payments.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,14 +58,20 @@ fun CardListScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Payments", fontWeight = FontWeight.W400, fontSize = 22.sp) },
+                title = {
+                    Text(
+                        text = stringResource(R.string.card_app_title),
+                        fontWeight = FontWeight.W400,
+                        fontSize = 22.sp
+                    )
+                },
                 actions = {
-                    if(cardsState is CardUiState.Many) {
+                    if (cardsState is CardUiState.Many) {
                         IconButton(
                             onClick = navigateToNewCard
                         ) {
                             Text(
-                                text = "추가",
+                                text = stringResource(R.string.app_bar_add_action_button),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.W700,
                             )
@@ -73,15 +82,17 @@ fun CardListScreen(
         }
     ) {
         Column(
-            modifier = modifier.padding(it).fillMaxSize(),
+            modifier = modifier
+                .padding(it)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            when(cardsState) {
+            when (cardsState) {
                 is CardUiState.Empty -> {
                     Text(
-                        text = "새로운 카드를 등록해주세요",
+                        text = stringResource(R.string.new_card_register_text),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.W700,
                     )
@@ -90,6 +101,7 @@ fun CardListScreen(
                         onClick = navigateToNewCard
                     )
                 }
+
                 is CardUiState.One -> {
                     PaymentCard(
                         cardNumber = cardsState.data.cardNumber,
@@ -101,22 +113,32 @@ fun CardListScreen(
                         onClick = navigateToNewCard
                     )
                 }
+
                 is CardUiState.Many -> {
-                    LazyColumn(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(36.dp),
-                        contentPadding = PaddingValues(12.dp),
-                    ) {
-                        items(cardsState.data) { card ->
-                            PaymentCard(
-                                cardNumber = card.cardNumber,
-                                expiredDate = card.expiredDate,
-                                ownerName = card.ownerName,
-                            )
-                        }
-                    }
+                    CardListContainer(
+                        cardList = cardsState.data
+                    )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun CardListContainer(
+    cardList: List<Card>,
+) {
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(36.dp),
+        contentPadding = PaddingValues(12.dp),
+    ) {
+        items(cardList) { card ->
+            PaymentCard(
+                cardNumber = card.cardNumber,
+                expiredDate = card.expiredDate,
+                ownerName = card.ownerName,
+            )
         }
     }
 }
@@ -146,13 +168,40 @@ private fun AddCardContainer(
 
 @Preview(showBackground = true)
 @Composable
-fun AddCardContainerPreview() {
+private fun AddCardContainerPreview() {
     AddCardContainer(onClick = {})
 }
 
 @Preview(showBackground = true)
 @Composable
-fun CardListScreenPreview() {
+private fun CardListConatinerPreview() {
+    CardListContainer(
+        cardList = listOf(
+            Card(
+                cardNumber = "1234-5678-1234-5678",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "12421412"
+            ),
+            Card(
+                cardNumber = "1234-5678-1234-5678",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "12421412"
+            ),
+            Card(
+                cardNumber = "1234-5678-1234-5678",
+                expiredDate = "12/34",
+                ownerName = "홍길동",
+                password = "12421412"
+            ),
+        )
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardListScreenPreview() {
     CardListScreen(
         navigateToNewCard = {}
     )
