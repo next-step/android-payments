@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Payments</string>
+    <string name="add">추가</string>
+    <string name="payments">Payments</string>
 </resources>
