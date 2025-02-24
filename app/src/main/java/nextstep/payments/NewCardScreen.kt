@@ -31,6 +31,7 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     NewCardScreen(
+        modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
