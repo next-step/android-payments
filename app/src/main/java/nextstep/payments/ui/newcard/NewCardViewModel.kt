@@ -58,16 +58,15 @@ class NewCardViewModel(
             expiredDate.value,
             DateTimeFormatter.ofPattern(YEAR_DATE_FORMAT)
         )
-
-        repository.addCard(
-            Card(
-                type = selectedBank.value,
-                number = cardNumber.value,
-                expiredDate = toYearMonth,
-                ownerName = ownerName.value,
-                password = password.value
-            )
+        val card = Card(
+            type = selectedBank.value,
+            number = cardNumber.value,
+            expiredDate = toYearMonth,
+            ownerName = ownerName.value,
+            password = password.value
         )
-        _cardAdded.value = true
+        if (repository.upsertCard(card)) {
+            _cardAdded.value = true
+        }
     }
 }

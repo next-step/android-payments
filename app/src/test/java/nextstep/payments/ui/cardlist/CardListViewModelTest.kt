@@ -46,7 +46,7 @@ class CardListViewModelTest {
         )
 
         //when
-        repository.addCard(card)
+        repository.upsertCard(card)
         cardListViewModel.fetchCards()
 
         //then
@@ -91,7 +91,7 @@ class CardListViewModelTest {
         )
 
         //when
-        cards.forEach(repository::addCard)
+        cards.forEach(repository::upsertCard)
         cardListViewModel.fetchCards()
 
         //then
