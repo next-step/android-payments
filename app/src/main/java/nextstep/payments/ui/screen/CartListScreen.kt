@@ -165,7 +165,7 @@ private fun AddCardContainer(
     ) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = "Cart",
+            contentDescription = stringResource(R.string.register_card_icon_content_description),
             tint = Color.Black
         )
     }

@@ -29,7 +29,7 @@ fun NewCardTopBar(
             IconButton(onClick = { onBackClick() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "뒤로 가기",
+                    contentDescription = stringResource(R.string.back_stack_icon_content_description),
                 )
             }
         },
@@ -37,7 +37,7 @@ fun NewCardTopBar(
             IconButton(onClick = { onSaveClick() }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
-                    contentDescription = "완료",
+                    contentDescription = stringResource(R.string.add_card_check_icon_content_description),
                 )
             }
         },
