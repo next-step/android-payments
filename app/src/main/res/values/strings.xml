@@ -2,8 +2,8 @@
     <string name="app_name">Payments</string>
 
     <string name="app_bar_add_action_button">추가</string>
-
     <string name="card_app_title">"Payments"</string>
+    <string name="card_add_app_bar_title">카드 추가</string>
     <string name="new_card_register_text">새로운 카드를 등록해주세요</string>
 
 </resources>

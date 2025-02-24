@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +22,9 @@ fun NewCardTopBar(
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(
+            stringResource(R.string.card_add_app_bar_title)
+        ) },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -37,5 +42,14 @@ fun NewCardTopBar(
             }
         },
         modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun NewCardTopBarPreview() {
+    NewCardTopBar(
+        onBackClick = { },
+        onSaveClick = { },
     )
 }
