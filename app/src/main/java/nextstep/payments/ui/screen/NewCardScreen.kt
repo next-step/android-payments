@@ -26,9 +26,9 @@ import nextstep.payments.ui.viewmodel.NewCardViewModel
 
 @Composable
 fun NewCardScreen(
+    navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
-    navigateToCardList: () -> Unit,
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
@@ -36,7 +36,6 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     NewCardScreen(
-        modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -49,13 +48,13 @@ fun NewCardScreen(
         onSaveClick = {
             viewModel.addCard(cardNumber, expiredDate, ownerName, password)
             navigateToCardList()
-        }
+        },
+        modifier = modifier
     )
 }
 
 @Composable
 fun NewCardScreen(
-    modifier: Modifier = Modifier,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -66,6 +65,7 @@ fun NewCardScreen(
     setPassword: (String) -> Unit,
     onBackCLick: () -> Unit,
     onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = { NewCardTopBar(onBackClick = onBackCLick, onSaveClick = onSaveClick) },
@@ -125,8 +125,8 @@ fun NewCardScreen(
 @Composable
 private fun CardNumberInputField(
     cardNumber: String,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedInputField(
         value = cardNumber,
@@ -142,49 +142,49 @@ private fun CardNumberInputField(
 @Composable
 private fun ExpireDateInputField(
     expiredDate: String,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedInputField(
         value = expiredDate,
         label = "만료일",
         placeholder = "MM / YY",
-        modifier = modifier,
         keyboardType = KeyboardType.Number,
         visualTransformation = ExpiryDateVisualTransformation(),
         onValueChange = onValueChange,
+        modifier = modifier,
     )
 }
 
 @Composable
 private fun OwnerNameInputField(
     ownerName: String,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedInputField(
         value = ownerName,
         label = "카드 소유자 이름(선택)",
         placeholder = "카드에 표시된 이름을 입력하세요.",
         keyboardType = KeyboardType.Text,
-        modifier = modifier,
         onValueChange = onValueChange,
+        modifier = modifier,
     )
 }
 
 @Composable
 private fun PasswordInputField(
     password: String,
-    modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedInputField(
         value = password,
         label = "비밀번호",
         placeholder = "0000",
-        modifier = modifier,
         visualTransformation = PasswordVisualTransformation(),
         onValueChange = onValueChange,
+        modifier = modifier,
     )
 }
 

@@ -15,10 +15,10 @@ fun OutlinedInputField(
     value: String,
     label: String,
     placeholder: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onValueChange: (String) -> Unit,
 ) {
     OutlinedTextField(
         value = value,

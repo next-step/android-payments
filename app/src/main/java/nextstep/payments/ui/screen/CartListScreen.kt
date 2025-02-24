@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -40,9 +41,9 @@ import nextstep.payments.ui.screen.component.PaymentCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListScreen(
+    navigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
-    navigateToNewCard: () -> Unit,
 ) {
     val cards by viewModel.cards.collectAsState()
     val cardsState = cards
@@ -90,7 +91,11 @@ fun CardListScreen(
                     )
                 }
                 is CardUiState.One -> {
-                    PaymentCard()
+                    PaymentCard(
+                        cardNumber = cardsState.data.cardNumber,
+                        expiredDate = cardsState.data.expiredDate,
+                        ownerName = cardsState.data.ownerName,
+                    )
                     Spacer(modifier = Modifier.height(36.dp))
                     AddCardContainer(
                         onClick = navigateToNewCard
@@ -102,8 +107,12 @@ fun CardListScreen(
                         verticalArrangement = Arrangement.spacedBy(36.dp),
                         contentPadding = PaddingValues(12.dp),
                     ) {
-                        items(cardsState.data.size) { index ->
-                            PaymentCard()
+                        items(cardsState.data) { card ->
+                            PaymentCard(
+                                cardNumber = card.cardNumber,
+                                expiredDate = card.expiredDate,
+                                ownerName = card.ownerName,
+                            )
                         }
                     }
                 }
@@ -113,9 +122,9 @@ fun CardListScreen(
 }
 
 @Composable
-fun AddCardContainer(
-    modifier: Modifier = Modifier,
+private fun AddCardContainer(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
