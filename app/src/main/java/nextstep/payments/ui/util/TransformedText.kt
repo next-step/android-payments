@@ -10,7 +10,7 @@ fun String.toCardNumberTransformedText(): TransformedText {
         .apply {
             take(16).forEachIndexed { i, c ->
                 append(if (i < 8) c else '*')
-                if (i == 3 || i == 7 || i == 11) append('-')
+                if (i == 3 || i == 7 || i == 11) append(" - ")
             }
         }
         .toAnnotatedString()
@@ -18,17 +18,17 @@ fun String.toCardNumberTransformedText(): TransformedText {
     val offsetMapping = object : OffsetMapping {
         override fun originalToTransformed(offset: Int): Int {
             if (offset <= 3) return offset
-            if (offset <= 7) return offset + 1
-            if (offset <= 11) return offset + 2
-            if (offset <= 15) return offset + 3
-            return 19
+            if (offset <= 7) return offset + 3
+            if (offset <= 11) return offset + 6
+            if (offset <= 15) return offset + 9
+            return 25
         }
 
         override fun transformedToOriginal(offset: Int): Int {
             if (offset <= 4) return offset
-            if (offset <= 9) return offset - 1
-            if (offset <= 14) return offset - 2
-            if (offset <= 19) return offset - 3
+            if (offset <= 11) return offset - 3
+            if (offset <= 18) return offset - 6
+            if (offset <= 25) return offset - 9
             return 16
         }
     }
@@ -42,7 +42,7 @@ fun String.toCardExpiredDateTransformedText(): TransformedText {
         .apply {
             take(4).forEachIndexed { i, c ->
                 append(c)
-                if (i == 1) append('/')
+                if (i == 1) append(" / ")
             }
         }
         .toAnnotatedString()
@@ -50,13 +50,13 @@ fun String.toCardExpiredDateTransformedText(): TransformedText {
     val offsetMapping = object : OffsetMapping {
         override fun originalToTransformed(offset: Int): Int {
             if (offset <= 1) return offset
-            if (offset <= 3) return offset + 1
-            return 5
+            if (offset <= 3) return offset + 3
+            return 7
         }
 
         override fun transformedToOriginal(offset: Int): Int {
-            if (offset <= 1) return offset
-            if (offset <= 5) return offset - 1
+            if (offset <= 2) return offset
+            if (offset <= 7) return offset - 3
             return 4
         }
     }

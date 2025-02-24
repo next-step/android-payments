@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +31,10 @@ internal fun NewPaymentCard(
             .size(width = 208.dp, height = 124.dp)
             .clip(shape = RoundedCornerShape(5.dp))
             .background(color = Color(0xFFE5E5E5))
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .semantics{
+                contentDescription = "카드 추가"
+            },
         contentAlignment = Alignment.Center
     ) {
         Text(
