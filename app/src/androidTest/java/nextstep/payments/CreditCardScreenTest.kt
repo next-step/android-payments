@@ -34,7 +34,7 @@ class CreditCardScreenTest {
         // then
         composeTestRule
             .onNodeWithTag("Loading")
-            .assertDoesNotExist()
+            .assertExists()
     }
 
     @Test
@@ -45,7 +45,7 @@ class CreditCardScreenTest {
         // then
         composeTestRule
             .onNodeWithText("새로운 카드를 등록해주세요")
-            .assertDoesNotExist()
+            .assertExists()
     }
 
     @Test
