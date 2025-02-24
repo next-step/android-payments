@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
@@ -35,7 +41,11 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
 
-    NewCardScreen(
+    // 스낵바 상태 저장
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+        NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -44,6 +54,8 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        snackbarHostState = snackbarHostState,
+        coroutineScope = coroutineScope,
         onBackCLick = navigateToCardList,
         onSaveClick = {
             viewModel.addCard(cardNumber, expiredDate, ownerName, password)
@@ -54,11 +66,13 @@ fun NewCardScreen(
 }
 
 @Composable
-fun NewCardScreen(
+private fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    snackbarHostState: SnackbarHostState,
+    coroutineScope: CoroutineScope,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -68,7 +82,19 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = onBackCLick, onSaveClick = onSaveClick) },
+        topBar = {
+            NewCardTopBar(onBackClick = onBackCLick, onSaveClick = {
+                if (cardNumber.length == 16 && expiredDate.length == 4 && password.isNotEmpty()) {
+                    onSaveClick()
+                    return@NewCardTopBar
+                }
+
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar("카드 정보를 확인해주세요.")
+                }
+            })
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState)  },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -246,6 +272,8 @@ private fun StatelessNewCardScreenPreView() {
         expiredDate = "12 / 34",
         ownerName = "홍길동",
         password = "1234",
+        snackbarHostState = SnackbarHostState(),
+        coroutineScope = rememberCoroutineScope(),
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
