@@ -62,7 +62,7 @@ class CreditCardScreenTest {
     }
 
     @Test
-    fun 카드가_1개_이상이_주어지면_카드_n개_화면이_노출된다() {
+    fun 카드가_2개_이상_주어지면_카드_n개_화면이_노출된다() {
         // when
         fakeUiState.value = CreditCardUiState.Many(
             cards = cards,
