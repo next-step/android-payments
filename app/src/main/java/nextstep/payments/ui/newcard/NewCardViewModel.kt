@@ -15,8 +15,8 @@ class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 
-    private val _selectBank = MutableStateFlow(BankType.NOT_SELECTED)
-    val selectBank: StateFlow<BankType> = _selectBank.asStateFlow()
+    private val _selectedBank = MutableStateFlow(BankType.NOT_SELECTED)
+    val selectedBank: StateFlow<BankType> = _selectedBank.asStateFlow()
 
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
@@ -50,7 +50,7 @@ class NewCardViewModel(
     }
 
     fun setBankType(bankType: BankType) {
-        _selectBank.value = bankType
+        _selectedBank.value = bankType
     }
 
     fun addCard() {
@@ -61,7 +61,7 @@ class NewCardViewModel(
 
         repository.addCard(
             Card(
-                type = selectBank.value,
+                type = selectedBank.value,
                 number = cardNumber.value,
                 expiredDate = toYearMonth,
                 ownerName = ownerName.value,

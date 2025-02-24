@@ -151,7 +151,7 @@ fun PaymentCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun PaymentCardContainerPreview1() {
+private fun PaymentCardContainerPreview() {
     PaymentsTheme {
         PaymentCard(
             modifier = Modifier
@@ -166,7 +166,7 @@ private fun PaymentCardContainerPreview1() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PaymentCardPreview2() {
+private fun PaymentCardPreview_OnlyBankType() {
     PaymentsTheme {
         PaymentCard(type = BankType.HANA)
     }
@@ -174,7 +174,7 @@ private fun PaymentCardPreview2() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PaymentCardPreview3() {
+private fun PaymentCardPreview_OnlyCard() {
     val card = Card(
         type = BankType.BC,
         number = "1111222233334444",

@@ -38,7 +38,7 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val selectBank by viewModel.selectBank.collectAsStateWithLifecycle()
+    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) {
@@ -51,7 +51,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        bankType = selectBank,
+        bankType = selectedBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
