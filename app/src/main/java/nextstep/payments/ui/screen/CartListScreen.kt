@@ -58,30 +58,19 @@ fun CardListScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.card_app_title),
-                        fontWeight = FontWeight.W400,
-                        fontSize = 22.sp
-                    )
-                },
-                actions = {
-                    CenterTopBar(
-                        composeActionButton = {
-                            if (cardsState is CardUiState.Many) {
-                                IconButton(
-                                    onClick = navigateToNewCard
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.app_bar_add_action_button),
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.W700,
-                                    )
-                                }
-                            }
+            CenterTopBar(
+                composeActionButton = {
+                    if (cardsState is CardUiState.Many) {
+                        IconButton(
+                            onClick = navigateToNewCard
+                        ) {
+                            Text(
+                                text = stringResource(R.string.app_bar_add_action_button),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.W700,
+                            )
                         }
-                    )
+                    }
                 }
             )
         }
