@@ -40,6 +40,7 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.ui.CardUiState
 import nextstep.payments.ui.screen.component.PaymentCard
 import nextstep.payments.R
+import nextstep.payments.ui.screen.component.CenterTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,17 +67,21 @@ fun CardListScreen(
                     )
                 },
                 actions = {
-                    if (cardsState is CardUiState.Many) {
-                        IconButton(
-                            onClick = navigateToNewCard
-                        ) {
-                            Text(
-                                text = stringResource(R.string.app_bar_add_action_button),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.W700,
-                            )
+                    CenterTopBar(
+                        composeActionButton = {
+                            if (cardsState is CardUiState.Many) {
+                                IconButton(
+                                    onClick = navigateToNewCard
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.app_bar_add_action_button),
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.W700,
+                                    )
+                                }
+                            }
                         }
-                    }
+                    )
                 }
             )
         }
