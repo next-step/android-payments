@@ -29,6 +29,9 @@ class MainActivity : BaseComponentActivity() {
                 launcher.launch(
                     NewCardActivity.newInstance(context = this)
                 )
+            },
+            onRouteToUpdateCard = {
+
             }
         )
     }
