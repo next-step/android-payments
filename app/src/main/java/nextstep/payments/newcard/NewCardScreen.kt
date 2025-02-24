@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.newcard
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -13,21 +13,36 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.newcard.component.NewCardTopBar
+import nextstep.payments.newcard.component.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
+    viewModel: NewCardViewModel,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
 ) {
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) navigateToCardList()
+    }
 
     NewCardScreen(
         modifier = modifier,
@@ -38,7 +53,9 @@ fun NewCardScreen(
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
+        setPassword = viewModel::setPassword,
+        onBackClick = { onBackClick() },
+        onSaveClick = { onSaveClick() }
     )
 }
 
@@ -52,10 +69,23 @@ private fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                modifier = modifier,
+                onBackClick = { onBackClick() },
+                onSaveClick = { onSaveClick() },
+                title = "카드 추가",
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationIconContentDescription = "뒤로 가기",
+                actionIcon = Icons.Filled.Check,
+                actionIconContentDescription = "완료"
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -110,27 +140,36 @@ private fun NewCardScreen(
 @Preview
 @Composable
 private fun StatefulNewCardScreenPreview() {
-    NewCardScreen(
-        viewModel = NewCardViewModel().apply {
-            setCardNumber("1234 - 5678 - 9012 - 3456")
-            setExpiredDate("12 / 25")
-            setOwnerName("홍길동")
-            setPassword("1234")
-        }
-    )
+    PaymentsTheme {
+        NewCardScreen(
+            viewModel = NewCardViewModel().apply {
+                setCardNumber("1234 - 5678 - 9012 - 3456")
+                setExpiredDate("12 / 25")
+                setOwnerName("홍길동")
+                setPassword("1234")
+            },
+            navigateToCardList = {},
+            onSaveClick = {},
+            onBackClick = {}
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
-    NewCardScreen(
-        cardNumber = "1234 - 5678 - 9012 - 3456",
-        expiredDate = "12 / 25",
-        ownerName = "홍길동",
-        password = "1234",
-        setCardNumber = {},
-        setExpiredDate = {},
-        setOwnerName = {},
-        setPassword = {}
-    )
+    PaymentsTheme {
+        NewCardScreen(
+            cardNumber = "1234 - 5678 - 9012 - 3456",
+            expiredDate = "12 / 25",
+            ownerName = "홍길동",
+            password = "1234",
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+            onSaveClick = {},
+            onBackClick = {}
+        )
+    }
 }
