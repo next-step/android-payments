@@ -3,39 +3,24 @@ package nextstep.payments.data
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import java.time.YearMonth
 
 class PaymentCardsRepositoryTest {
 
-    @Test
-    fun `초기에_저장된_카드리스트가_비어있어야_한다`() {
+    private val paymentRepository = PaymentCardsRepository
 
-        //given , when
-        val repository = PaymentCardsRepository
-
-        //then
-        assertTrue(repository.cards.isEmpty())
-
+    @Before
+    fun setUp() {
+        paymentRepository.clear()
     }
 
     @Test
-    fun `카드_추가시_카드리스트에_추가되어야_한다`() {
-        //given
-        val card = Card(
-            type = BankType.HANA,
-            number = "1",
-            expiredDate = YearMonth.of(24, 12),
-            ownerName = "1",
-            password = "1"
-        )
-        val repository = PaymentCardsRepository
-
-        //when
-        repository.addCard(card)
+    fun `초기에_저장된_카드리스트가_비어있어야_한다`() {
 
         //then
-        assertTrue(repository.cards.contains(card))
+        assertTrue(paymentRepository.cards.isEmpty())
     }
 
     @Test
@@ -45,19 +30,52 @@ class PaymentCardsRepositoryTest {
         val card = Card(
             type = BankType.KAKAO,
             number = "2",
-            expiredDate = YearMonth.of(24,12),
+            expiredDate = YearMonth.of(24, 12),
             ownerName = "2",
             password = "2"
         )
-        val repository = PaymentCardsRepository
-        repository.addCard(card)
+        paymentRepository.upsertCard(card)
 
         //when
-        repository.clear()
+        paymentRepository.clear()
 
         //then
-        assertTrue(repository.cards.isEmpty())
-
+        assertTrue(paymentRepository.cards.isEmpty())
     }
 
+
+    @Test
+    fun `새로운_카드를_추가시_리턴값이_true이어야_한다`() {
+        //given
+        val card = Card(
+            type = BankType.HANA,
+            number = "1",
+            expiredDate = YearMonth.of(24, 12),
+            ownerName = "1",
+            password = "1"
+        )
+
+        //when , then
+        assertTrue(paymentRepository.upsertCard(card))
+    }
+
+
+    @Test
+    fun `동일한_카드를_추가시_리턴값이_false이어야_한다`() {
+
+        //given
+        val card = Card(
+            type = BankType.HANA,
+            number = "1",
+            expiredDate = YearMonth.of(24, 12),
+            ownerName = "1",
+            password = "1"
+        )
+
+        //when
+        paymentRepository.upsertCard(card)
+
+        //then
+        assertFalse(paymentRepository.upsertCard(card))
+    }
 }
