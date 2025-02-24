@@ -11,7 +11,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun OutlinedInputField(
+fun OutlinedInputTextField(
     value: String,
     label: String,
     placeholder: String,
@@ -37,8 +37,8 @@ fun OutlinedInputField(
 
 @Preview(showBackground = true)
 @Composable
-private fun OutlinedInputFieldPreview() {
-    OutlinedInputField(
+private fun OutlinedInputTextFieldPreview() {
+    OutlinedInputTextField(
         value = "",
         label = "Card Number",
         placeholder = "1234 1234 1234 1234",

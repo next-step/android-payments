@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.screen.component.NewCardTopBar
-import nextstep.payments.ui.screen.component.OutlinedInputField
+import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
 import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
@@ -128,7 +128,7 @@ private fun CardNumberInputField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedInputField(
+    OutlinedInputTextField(
         value = cardNumber,
         label = "카드 번호",
         placeholder = "0000 - 0000 - 0000 - 0000",
@@ -145,7 +145,7 @@ private fun ExpireDateInputField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedInputField(
+    OutlinedInputTextField(
         value = expiredDate,
         label = "만료일",
         placeholder = "MM / YY",
@@ -162,7 +162,7 @@ private fun OwnerNameInputField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedInputField(
+    OutlinedInputTextField(
         value = ownerName,
         label = "카드 소유자 이름(선택)",
         placeholder = "카드에 표시된 이름을 입력하세요.",
@@ -178,7 +178,7 @@ private fun PasswordInputField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedInputField(
+    OutlinedInputTextField(
         value = password,
         label = "비밀번호",
         placeholder = "0000",
@@ -192,7 +192,7 @@ private fun PasswordInputField(
 @Composable
 private fun CardNumberInputFieldPreview() {
     CardNumberInputField(
-        cardNumber = "1234 - 5678 - 1234 - 5678",
+        cardNumber = "1234567812345678",
         onValueChange = {},
     )
 }
@@ -201,7 +201,7 @@ private fun CardNumberInputFieldPreview() {
 @Composable
 private fun ExpireDateInputFieldPreview() {
     ExpireDateInputField(
-        expiredDate = "12 / 34",
+        expiredDate = "1230",
         onValueChange = {},
     )
 }
@@ -229,7 +229,7 @@ private fun PasswordInputFieldPreview() {
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
         viewModel = NewCardViewModel().apply {
-            setCardNumber("1234 - 5678 - 1234 - 5678")
+            setCardNumber("1234567812345678")
             setExpiredDate("12 / 34")
             setOwnerName("홍길동")
             setPassword("1234")
@@ -242,7 +242,7 @@ private fun StatefulNewCardScreenPreview() {
 @Composable
 private fun StatelessNewCardScreenPreView() {
     NewCardScreen(
-        cardNumber = "1234 - 5678 - 1234 - 5678",
+        cardNumber = "1234567812345678",
         expiredDate = "12 / 34",
         ownerName = "홍길동",
         password = "1234",
