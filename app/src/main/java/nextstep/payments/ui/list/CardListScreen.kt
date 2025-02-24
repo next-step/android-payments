@@ -118,8 +118,8 @@ private fun CardListScreenPreview_One() {
     CardListScreen(
         cardListUiState = CardListUiState.One(
             card = Card(
-                number = "0000 - 0000 - 0000 - 0000",
-                expiredDate = "00 / 00",
+                number = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "홍길동",
                 password = "0000"
             )
@@ -135,14 +135,14 @@ private fun CardListScreenPreview_Many() {
         cardListUiState = CardListUiState.Many(
             cards = listOf(
                 Card(
-                    number = "0000 - 0000 - 0000 - 0000",
-                    expiredDate = "00 / 00",
+                    number = "0000000000000000",
+                    expiredDate = "0000",
                     ownerName = "홍길동",
                     password = "0000"
                 ),
                 Card(
                     number = "0000 - 0000 - 0000 - 0001",
-                    expiredDate = "00 / 00",
+                    expiredDate = "0000",
                     ownerName = "홍길동",
                     password = "0000"
                 )

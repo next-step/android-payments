@@ -21,6 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.data.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.util.toCardExpiredDateTransformedText
+import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @Composable
 internal fun PaymentCard(
@@ -45,10 +47,10 @@ internal fun PaymentCard(
         ) {
             val textStyle = MaterialTheme.typography.bodySmall.copy(color = Color.White)
             Text(
-                text = card.number,
+                text = card.number.toCardNumberTransformedText().text,
                 style = textStyle,
                 maxLines = 1,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -59,7 +61,7 @@ internal fun PaymentCard(
                     style = textStyle,
                 )
                 Text(
-                    text = card.expiredDate,
+                    text = card.expiredDate.toCardExpiredDateTransformedText().text,
                     style = textStyle,
                 )
             }
@@ -109,8 +111,8 @@ private fun PaymentCardPreview_card() {
     PaymentsTheme {
         PaymentCard(
             card = Card(
-                number = "0000 - 0000 - 0000 - 0000",
-                expiredDate = "00 / 00",
+                number = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "홍길동",
                 password = "0000"
             )

@@ -21,13 +21,13 @@ class CardAddViewModel(
 
     fun setCardNumber(cardNumber: String) {
         _card.update {
-            it.copy(number = cardNumber)
+            it.copy(number = cardNumber.take(16))
         }
     }
 
     fun setExpiredDate(expiredDate: String) {
         _card.update {
-            it.copy(expiredDate = expiredDate)
+            it.copy(expiredDate = expiredDate.take(4))
         }
     }
 

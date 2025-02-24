@@ -42,8 +42,8 @@ private fun OneCardContentPreview() {
     PaymentsTheme {
         OneCardContent(
             card = Card(
-                number = "0000 - 0000 - 0000 - 0000",
-                expiredDate = "00 / 00",
+                number = "0000000000000000",
+                expiredDate = "0000",
                 ownerName = "홍길동",
                 password = "0000"
             ),

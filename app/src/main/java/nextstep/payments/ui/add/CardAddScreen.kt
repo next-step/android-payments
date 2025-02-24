@@ -24,6 +24,8 @@ import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.CardDetailTopBar
 import nextstep.payments.ui.component.CardInputField
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.util.toCardExpiredDateTransformedText
+import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @Composable
 internal fun CardAddScreen(
@@ -97,6 +99,7 @@ internal fun CardAddScreen(
                 label = stringResource(R.string.card_number),
                 placeholder = stringResource(R.string.card_number_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                visualTransformation = { cardNumber.toCardNumberTransformedText() },
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -106,6 +109,7 @@ internal fun CardAddScreen(
                 label = stringResource(R.string.expired_date),
                 placeholder = stringResource(R.string.expired_date_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                visualTransformation = { expiredDate.toCardExpiredDateTransformedText() },
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -136,8 +140,8 @@ internal fun CardAddScreen(
 private fun StatefulCardAddScreenPreview() {
     CardAddScreen(
         cardAddViewModel = CardAddViewModel(PaymentCardsRepository).apply {
-            setCardNumber("0000 - 0000 - 0000 - 0000")
-            setExpiredDate("00 / 00")
+            setCardNumber("00001111222233333")
+            setExpiredDate("0000")
             setOwnerName("홍길동")
             setPassword("0000")
         },
@@ -150,8 +154,8 @@ private fun StatefulCardAddScreenPreview() {
 @Composable
 private fun StatelessCardAddScreenPreview() {
     CardAddScreen(
-        cardNumber = "0000 - 0000 - 0000 - 0000",
-        expiredDate = "00 / 00",
+        cardNumber = "00001111222233333",
+        expiredDate = "0000",
         ownerName = "홍길동",
         password = "0000",
         setCardNumber = { },

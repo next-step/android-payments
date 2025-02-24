@@ -42,14 +42,14 @@ private fun ManyCardContentPreview() {
         ManyCardContent(
             cards = listOf(
                 Card(
-                    number = "0000 - 0000 - 0000 - 0000",
-                    expiredDate = "00 / 00",
+                    number = "0000000000000000",
+                    expiredDate = "0000",
                     ownerName = "홍길동",
                     password = "0000"
                 ),
                 Card(
                     number = "1000 - 0000 - 0000 - 0000",
-                    expiredDate = "00 / 00",
+                    expiredDate = "0000",
                     ownerName = "홍길동",
                     password = "0000"
                 )

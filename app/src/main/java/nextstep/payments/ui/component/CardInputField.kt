@@ -45,7 +45,7 @@ private fun CardInputFieldPreview() {
             value = value,
             onValueChange = onValueChange,
             label = "카드 번호",
-            placeholder = "0000 - 0000 - 0000 - 0000",
+            placeholder = "",
             modifier = Modifier.fillMaxWidth()
         )
     }
