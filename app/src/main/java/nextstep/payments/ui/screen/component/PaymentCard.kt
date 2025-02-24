@@ -156,7 +156,7 @@ private fun CardNumberPreview() {
     CardNumber("1234")
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun DividerPreview() {
     Divider()
