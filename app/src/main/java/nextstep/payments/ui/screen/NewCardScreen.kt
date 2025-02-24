@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import nextstep.payments.R
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
@@ -81,6 +84,9 @@ private fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
+    val snackbarMessage = remember { context.getString(R.string.validate_snack_bar_message) }
+
     Scaffold(
         topBar = {
             NewCardTopBar(onBackClick = onBackCLick, onSaveClick = {
@@ -90,7 +96,7 @@ private fun NewCardScreen(
                 }
 
                 coroutineScope.launch {
-                    snackbarHostState.showSnackbar("카드 정보를 확인해주세요.")
+                    snackbarHostState.showSnackbar(snackbarMessage)
                 }
             })
         },

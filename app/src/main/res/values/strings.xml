@@ -5,5 +5,5 @@
     <string name="card_app_title">"Payments"</string>
     <string name="card_add_app_bar_title">카드 추가</string>
     <string name="new_card_register_text">새로운 카드를 등록해주세요</string>
-
+    <string name="validate_snack_bar_message">카드 정보를 확인해주세요.</string>
 </resources>
