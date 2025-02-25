@@ -1,9 +1,15 @@
 package nextstep.payments.ui.list
 
+import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -15,7 +21,6 @@ class CardListScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
 
     @Test
     fun `카드가_없는_경우_가이드_문구가_보여진다`() {
@@ -53,7 +58,7 @@ class CardListScreenTest {
     }
 
     @Test
-    fun `카드가_한개만_있는_경우_한개의_카드가_보여진다`() {
+    fun `카드가_한개만_있는_경우_한개의_완성_카드가_보여진다`() {
         val uiState = CardListUiState.One(
             card = Card(
                 number = "1234123412341234",
@@ -77,7 +82,7 @@ class CardListScreenTest {
     }
 
     @Test
-    fun `카드가_한개만_있는_경우_카드_추가_버튼이_클릭_가능하다`() {
+    fun `카드가_한개만_있는_경우_카드목록_마지막에_위치한_카드_추가_버튼이_클릭_가능하다`() {
         val uiState = CardListUiState.One(
             card = Card()
         )
@@ -91,13 +96,19 @@ class CardListScreenTest {
                 )
             }
 
-        composeTestRule
-            .onNodeWithContentDescription("카드 추가")
-            .assertIsDisplayed()
+        val lastInCardList = composeTestRule
+            .onNodeWithContentDescription("카드 목록")
+            .onChildren()
+            .onLast()
+
+        lastInCardList.performClick()
+
+        assert(clicked == true)
+        lastInCardList.assertContentDescriptionEquals("카드 추가")
     }
 
     @Test
-    fun `주어진_카드의_갯수만큼_카드가_보여진다`() {
+    fun `주어진_카드의_갯수만큼_완성_카드가_보여진다`() {
         val uiState = CardListUiState.Many(
             cards = listOf(
                 Card(
@@ -126,7 +137,7 @@ class CardListScreenTest {
     }
 
     @Test
-    fun `카드가_여러장인_경우_카드_추가_버튼이_클릭_가능하다`() {
+    fun `카드가_여러장인_경우_탑바에_위치한_카드_추가_버튼이_클릭_가능하다`() {
         val uiState = CardListUiState.Many(
             cards = listOf(
                 Card(
@@ -146,9 +157,13 @@ class CardListScreenTest {
                 )
             }
 
-        composeTestRule
-            .onNodeWithText("추가")
-            .performClick()
+        val buttonInTopBar = composeTestRule
+            .onNodeWithContentDescription("탑바")
+            .onChildren()
+            .filter(hasText("추가"))
+            .onFirst()
+
+        buttonInTopBar.performClick()
 
         assert(clicked == true)
     }
