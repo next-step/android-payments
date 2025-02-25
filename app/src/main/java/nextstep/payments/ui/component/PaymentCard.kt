@@ -27,7 +27,7 @@ import nextstep.payments.ui.util.toCardExpiredDateTransformedText
 import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @Composable
-internal fun PaymentCard(
+internal fun EmptyPaymentCard(
     modifier: Modifier = Modifier,
 ) {
     PaymentCardFrame(
@@ -108,9 +108,9 @@ private fun PaymentCardFrame(
 
 @Preview
 @Composable
-private fun PaymentCardPreview_empty() {
+private fun EmptyPaymentCardPreview() {
     PaymentsTheme {
-        PaymentCard()
+        EmptyPaymentCard()
     }
 }
 

@@ -25,7 +25,7 @@ import nextstep.payments.R
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.CardDetailTopBar
 import nextstep.payments.ui.component.CardInputField
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.EmptyPaymentCard
 import nextstep.payments.ui.util.toCardExpiredDateTransformedText
 import nextstep.payments.ui.util.toCardNumberTransformedText
 
@@ -91,7 +91,7 @@ internal fun CardAddScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            EmptyPaymentCard()
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -102,9 +102,11 @@ internal fun CardAddScreen(
                 placeholder = stringResource(R.string.card_number_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 visualTransformation = { cardNumber.toCardNumberTransformedText() },
-                modifier = Modifier.fillMaxWidth().semantics{
-                    contentDescription = "카드 번호 입력"
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        contentDescription = "카드 번호 입력"
+                    },
             )
 
             CardInputField(
@@ -114,9 +116,11 @@ internal fun CardAddScreen(
                 placeholder = stringResource(R.string.expired_date_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 visualTransformation = { expiredDate.toCardExpiredDateTransformedText() },
-                modifier = Modifier.fillMaxWidth().semantics{
-                    contentDescription = "만료일 입력"
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        contentDescription = "만료일 입력"
+                    },
             )
 
             CardInputField(
@@ -125,9 +129,11 @@ internal fun CardAddScreen(
                 label = stringResource(R.string.owner_name_label),
                 placeholder = stringResource(R.string.owner_name_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                modifier = Modifier.fillMaxWidth().semantics{
-                    contentDescription = "카드 소유자 입력"
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        contentDescription = "카드 소유자 입력"
+                    },
             )
 
             CardInputField(
@@ -137,9 +143,11 @@ internal fun CardAddScreen(
                 placeholder = stringResource(R.string.password_place_holder),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth().semantics{
-                    contentDescription = "비밀번호 입력"
-                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics {
+                        contentDescription = "비밀번호 입력"
+                    },
             )
         }
     }
