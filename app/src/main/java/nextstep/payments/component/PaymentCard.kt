@@ -19,10 +19,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
+import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
+    card: CreditCard,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -75,7 +77,7 @@ fun EmptyPaymentCard(
 private fun PaymentCardPreview() {
     PaymentsTheme {
         Column {
-            PaymentCard()
+            PaymentCard(card = CreditCard.emptyCard)
             EmptyPaymentCard()
         }
     }
