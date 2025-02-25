@@ -25,7 +25,7 @@ class BankSelectBottomSheetTest {
 
         //given, when
         composeTestRule.setContent {
-            BankSelectBottomSheet(selectedBank = BankType.NOT_SELECTED) { }
+            BankSelectBottomSheet(selectedBank = BankType.NOT_SELECTED, onItemClick = {})
         }
 
         //then
@@ -40,9 +40,9 @@ class BankSelectBottomSheetTest {
         //given
         var selectBank by mutableStateOf(BankType.NOT_SELECTED)
         composeTestRule.setContent {
-            BankSelectBottomSheet(selectedBank = selectBank) {
+            BankSelectBottomSheet(selectedBank = selectBank, onItemClick = {
                 selectBank = it
-            }
+            })
         }
 
         //when
