@@ -10,6 +10,7 @@ import nextstep.payments.base.BaseComponentActivity
 import nextstep.payments.ui.cardlist.CardListScreen
 import nextstep.payments.ui.cardlist.CardListViewModel
 import nextstep.payments.ui.newcard.NewCardActivity
+import nextstep.payments.ui.updatecard.UpdateCardActivity
 
 class MainActivity : BaseComponentActivity() {
     private val viewModel: CardListViewModel by viewModels()
@@ -30,8 +31,10 @@ class MainActivity : BaseComponentActivity() {
                     NewCardActivity.newInstance(context = this)
                 )
             },
-            onRouteToUpdateCard = {
-
+            onRouteToUpdateCard = { card ->
+                launcher.launch(
+                    UpdateCardActivity.newInstance(context = this, item = card)
+                )
             }
         )
     }
