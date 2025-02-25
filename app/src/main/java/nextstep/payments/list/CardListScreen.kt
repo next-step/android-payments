@@ -12,21 +12,35 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.R
 import nextstep.payments.component.EmptyPaymentCard
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun CardListScreen(modifier: Modifier = Modifier) {
+fun CardListScreen(
+    onAddClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CardListViewModel = viewModel()
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-
+    CardListScreen(
+        modifier = modifier,
+        state = state,
+        onAddClick = onAddClick
+    )
 }
 
 @Composable
@@ -67,10 +81,12 @@ private fun EmptyCardContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize().padding(top = 30.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "새로운 카드를 등록해주세요")
+        Text(text = stringResource(R.string.add_new_card_description))
 
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -85,7 +101,9 @@ private fun SingleCardContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize().padding(top = 30.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PaymentCard(card = card)
@@ -102,7 +120,9 @@ private fun MultipleCardContent(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxSize().padding(top = 30.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
