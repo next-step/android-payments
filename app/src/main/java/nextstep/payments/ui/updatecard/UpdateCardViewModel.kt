@@ -11,6 +11,7 @@ import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ext.getSerializable
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
+import nextstep.payments.ui.updatecard.UpdateCardActivity.Companion.KEY_CARD_ITEM
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
@@ -84,8 +85,6 @@ class UpdateCardViewModel(
     }
 
     companion object {
-
-        const val KEY_CARD_ITEM = "key_card_Item"
 
         fun createViewModelFactory(repository: PaymentCardsRepository = PaymentCardsRepository) =
             object : AbstractSavedStateViewModelFactory() {
