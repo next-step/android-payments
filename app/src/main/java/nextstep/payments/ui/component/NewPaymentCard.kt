@@ -49,7 +49,6 @@ internal fun NewPaymentCard(
 @Composable
 private fun NewPaymentCardPreview() {
     PaymentsTheme {
-        Box(modifier = Modifier.fillMaxSize())
         NewPaymentCard(onClick = {})
     }
 }
