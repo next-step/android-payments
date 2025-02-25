@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +19,6 @@ import nextstep.payments.ui.newcard.component.CardExpiredDateTextFiled
 import nextstep.payments.ui.newcard.component.CardNumberTextFiled
 import nextstep.payments.ui.newcard.component.CardOwnerNameTextFiled
 import nextstep.payments.ui.newcard.component.CardPasswordTextFiled
-import nextstep.payments.ui.newcard.component.NewCardTopBar
 
 
 @Composable
@@ -33,12 +33,11 @@ fun CardInfoScreen(
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     setBankType: (BankType) -> Unit,
-    onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    topBar: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
+        topBar = topBar,
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -63,9 +62,9 @@ fun CardInfoScreen(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun CardInfoScreenPreview() {
+private fun CardInfoScreenPreview_BankType_Not_Selected() {
     PaymentsTheme {
         CardInfoScreen(
             cardNumber = "0000000000000000",
@@ -73,13 +72,39 @@ private fun CardInfoScreenPreview() {
             ownerName = "홍길동",
             password = "0000",
             bankType = BankType.NOT_SELECTED,
+            topBar = {},
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             setBankType = {},
-            onSaveClick = {},
-            onBackClick = {}
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun CardInfoScreenPreview_BankType_Selected() {
+    PaymentsTheme {
+        CardInfoScreen(
+            cardNumber = "0000000000000000",
+            expiredDate = "0000",
+            ownerName = "홍길동",
+            password = "0000",
+            bankType = BankType.KB,
+            topBar = {
+                CardTopBar(
+                    title = { Text("타이틀") },
+                    onBackClick = {},
+                    onSaveClick = {}
+                )
+            },
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+            setBankType = {},
         )
     }
 }

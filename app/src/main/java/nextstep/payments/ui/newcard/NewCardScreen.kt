@@ -10,6 +10,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.designsystem.component.CardInfoScreen
 import nextstep.payments.designsystem.theme.PaymentsTheme
 import nextstep.payments.model.BankType
+import nextstep.payments.ui.newcard.component.NewCardTopBar
 
 @Composable
 fun NewCardScreen(
@@ -38,13 +39,12 @@ fun NewCardScreen(
         ownerName = ownerName,
         password = password,
         bankType = selectedBank,
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = viewModel::addCard) },
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         setBankType = viewModel::setBankType,
-        onBackClick = onBackClick,
-        onSaveClick = { viewModel.addCard() },
         modifier = modifier
     )
 }
