@@ -30,7 +30,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
-    onAddClick: () -> Unit,
+    navigateToAdd: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel()
 ) {
@@ -39,7 +39,7 @@ fun CardListScreen(
     CardListScreen(
         modifier = modifier,
         state = state,
-        onAddClick = onAddClick
+        onAddClick = navigateToAdd
     )
 }
 

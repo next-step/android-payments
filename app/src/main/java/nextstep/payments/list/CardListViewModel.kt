@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.CardRepository
 
 class CardListViewModel(
-    cardRepository: CardRepository = CardRepository
+    private val cardRepository: CardRepository = CardRepository
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow<CardListState>(CardListState.Empty)
     val uiState: StateFlow<CardListState> = _uiState.asStateFlow()
 
-    init {
+    fun fetchCards() {
         when (cardRepository.cards.size) {
             0 -> _uiState.value = CardListState.Empty
             1 -> _uiState.value = cardRepository.cards.firstOrNull()?.let { CardListState.Single(it) } ?: CardListState.Empty
