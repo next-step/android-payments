@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.component.NewCardTopBar
+import nextstep.payments.NewCardViewModel
+import nextstep.payments.component.topbar.NewCardTopBar
 import nextstep.payments.component.PaymentCard
 
 @Composable
@@ -39,7 +40,8 @@ fun NewCardScreen(
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
+        setPassword = viewModel::setPassword,
+        modifier = modifier
     )
 
 }
