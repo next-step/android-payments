@@ -33,7 +33,7 @@ internal fun ManyCardContent(
     ) {
         items(
             items = cards,
-            key = { it.number }
+            key = { it.id }
         ) {
             PaymentCard(card = it)
         }

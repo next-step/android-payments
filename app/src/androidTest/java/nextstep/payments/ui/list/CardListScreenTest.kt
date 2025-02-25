@@ -112,8 +112,10 @@ class CardListScreenTest {
         val uiState = CardListUiState.Many(
             cards = listOf(
                 Card(
+                    id = 0,
                     number = "1234123412341234"
                 ), Card(
+                    id = 1,
                     number = "4321432143214321"
                 )
             )
@@ -141,8 +143,10 @@ class CardListScreenTest {
         val uiState = CardListUiState.Many(
             cards = listOf(
                 Card(
+                    id = 0,
                     number = "1234123412341234"
                 ), Card(
+                    id = 1,
                     number = "4321432143214321"
                 )
             )
