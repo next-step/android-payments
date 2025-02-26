@@ -24,6 +24,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
+    navigateToList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
@@ -41,7 +42,12 @@ fun NewCardScreen(
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
+        setPassword = viewModel::setPassword,
+        onBackClick = navigateToList,
+        onSaveClick = {
+            viewModel.addCard()
+            navigateToList()
+        }
     )
 }
 
@@ -55,11 +61,13 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -122,7 +130,8 @@ private fun StatefulNewCardScreenPreview() {
                 setExpiredDate("12 / 24")
                 setOwnerName("홍길동")
                 setPassword("1234")
-            }
+            },
+            navigateToList = {}
         )
     }
 }
@@ -139,7 +148,9 @@ private fun StatelessNewCardScreenPreview() {
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
-            setPassword = {}
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {}
         )
     }
 }
