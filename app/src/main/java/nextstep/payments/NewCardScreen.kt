@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
@@ -110,22 +111,26 @@ private fun NewCardScreen(
 @Preview
 @Composable
 private fun StatefulNewCardScreenPreview() {
-    NewCardScreen(viewModel = NewCardViewModel().apply {
-        setCardNumber("0000 - 0000 - 0000 - 0000")
-    })
+    PaymentsTheme {
+        NewCardScreen(viewModel = NewCardViewModel().apply {
+            setCardNumber("0000 - 0000 - 0000 - 0000")
+        })
+    }
 }
 
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
-    NewCardScreen(
-        cardNumber = "0000 - 0000 - 0000 - 0000",
-        expiredDate = "2025-02-19",
-        ownerName = "홍순동",
-        password = "12345",
-        setCardNumber = {},
-        setExpiredDate = {},
-        setOwnerName = {},
-        setPassword = {},
-    )
+    PaymentsTheme {
+        NewCardScreen(
+            cardNumber = "0000 - 0000 - 0000 - 0000",
+            expiredDate = "2025-02-19",
+            ownerName = "홍순동",
+            password = "12345",
+            setCardNumber = {},
+            setExpiredDate = {},
+            setOwnerName = {},
+            setPassword = {},
+        )
+    }
 }
