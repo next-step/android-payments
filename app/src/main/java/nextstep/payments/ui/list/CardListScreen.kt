@@ -140,15 +140,17 @@ private fun CardListScreenPreview_Many() {
         cardListUiState = CardListUiState.Many(
             cards = listOf(
                 Card(
+                    id = 0,
                     number = "0000000000000000",
                     expiredDate = "0000",
                     ownerName = "홍길동",
                     password = "0000"
                 ),
                 Card(
-                    number = "0000 - 0000 - 0000 - 0001",
+                    id = 1,
+                    number = "0000000000000000",
                     expiredDate = "0000",
-                    ownerName = "홍길동",
+                    ownerName = "이춘향",
                     password = "0000"
                 )
             )
