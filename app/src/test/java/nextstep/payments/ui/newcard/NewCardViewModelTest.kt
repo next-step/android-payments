@@ -15,7 +15,7 @@ class NewCardViewModelTest {
         val newCardViewModel = NewCardViewModel()
 
         //then
-        assertFalse(newCardViewModel.cardAdded.value)
+        assertFalse(newCardViewModel.uiState.value.cardAdded)
     }
 
     @Test
@@ -27,7 +27,7 @@ class NewCardViewModelTest {
         newCardViewModel.setBankType(BankType.KB)
 
         //then
-        assertTrue(newCardViewModel.selectedBank.value == BankType.KB)
+        assertTrue(newCardViewModel.uiState.value.selectedBank == BankType.KB)
     }
 
     @Test
@@ -39,7 +39,7 @@ class NewCardViewModelTest {
         newCardViewModel.setCardNumber("1234")
 
         //then
-        assertTrue(newCardViewModel.cardNumber.value == "1234")
+        assertTrue(newCardViewModel.uiState.value.cardNumber == "1234")
     }
 
     @Test
@@ -51,7 +51,7 @@ class NewCardViewModelTest {
         newCardViewModel.setCardNumber("1234123412341234" + "234")
 
         //then
-        assertTrue(newCardViewModel.cardNumber.value == "1234123412341234")
+        assertTrue(newCardViewModel.uiState.value.cardNumber == "1234123412341234")
     }
 
     @Test
@@ -63,7 +63,7 @@ class NewCardViewModelTest {
         newCardViewModel.setExpiredDate("04")
 
         //then
-        assertTrue(newCardViewModel.expiredDate.value == "04")
+        assertTrue(newCardViewModel.uiState.value.expiredDate == "04")
     }
 
     @Test
@@ -75,7 +75,7 @@ class NewCardViewModelTest {
         newCardViewModel.setExpiredDate("0424" + "25")
 
         //then
-        assertTrue(newCardViewModel.expiredDate.value == "0424")
+        assertTrue(newCardViewModel.uiState.value.expiredDate == "0424")
     }
 
     @Test
@@ -87,7 +87,7 @@ class NewCardViewModelTest {
         newCardViewModel.setOwnerName("qwer")
 
         //then
-        assertTrue(newCardViewModel.ownerName.value == "qwer")
+        assertTrue(newCardViewModel.uiState.value.ownerName == "qwer")
     }
 
     @Test
@@ -99,7 +99,7 @@ class NewCardViewModelTest {
         newCardViewModel.setPassword("1234")
 
         //then
-        assertTrue(newCardViewModel.password.value == "1234")
+        assertTrue(newCardViewModel.uiState.value.password == "1234")
     }
 
     @Test
@@ -111,7 +111,7 @@ class NewCardViewModelTest {
         newCardViewModel.setPassword("1234" + "12")
 
         //then
-        assertTrue(newCardViewModel.password.value == "1234")
+        assertTrue(newCardViewModel.uiState.value.password == "1234")
     }
 
     @Test
@@ -132,7 +132,7 @@ class NewCardViewModelTest {
         viewModel.addCard()
 
         //then
-        assertTrue(viewModel.cardAdded.value)
+        assertTrue(viewModel.uiState.value.cardAdded)
     }
 
 }

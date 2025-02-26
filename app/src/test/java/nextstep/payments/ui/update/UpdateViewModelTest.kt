@@ -29,7 +29,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertTrue(updateCardViewModel.selectedBank.value == card.type)
+        assertTrue(updateCardViewModel.uiState.value.selectedBank == card.type)
     }
 
     @Test
@@ -48,7 +48,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertFalse(updateCardViewModel.cardUpdated.value)
+        assertFalse(updateCardViewModel.uiState.value.cardUpdated)
 
     }
 
@@ -68,7 +68,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertTrue(updateCardViewModel.cardNumber.value == card.number)
+        assertTrue(updateCardViewModel.uiState.value.cardNumber == card.number)
 
     }
 
@@ -88,7 +88,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertTrue(updateCardViewModel.expiredDate.value == card.getStringExpiredDate())
+        assertTrue(updateCardViewModel.uiState.value.expiredDate == card.getStringExpiredDate())
     }
 
     @Test
@@ -106,7 +106,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertTrue(updateCardViewModel.ownerName.value == card.ownerName)
+        assertTrue(updateCardViewModel.uiState.value.ownerName == card.ownerName)
     }
 
     @Test
@@ -125,7 +125,7 @@ class UpdateCardViewModelTest {
         val updateCardViewModel = createViewModel(card)
 
         //then
-        assertTrue(updateCardViewModel.password.value == card.password)
+        assertTrue(updateCardViewModel.uiState.value.password == card.password)
     }
 
     @Test
@@ -145,7 +145,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.setCardNumber("2345234523452345")
 
         //then
-        assertTrue(updateCardViewModel.cardNumber.value == "2345234523452345")
+        assertTrue(updateCardViewModel.uiState.value.cardNumber == "2345234523452345")
     }
 
     @Test
@@ -165,7 +165,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.setExpiredDate("1234")
 
         //then
-        assertTrue(updateCardViewModel.expiredDate.value == "1234")
+        assertTrue(updateCardViewModel.uiState.value.expiredDate == "1234")
     }
 
     @Test
@@ -185,7 +185,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.setOwnerName("abcd")
 
         //then
-        assertTrue(updateCardViewModel.ownerName.value == "abcd")
+        assertTrue(updateCardViewModel.uiState.value.ownerName == "abcd")
     }
 
     @Test
@@ -205,7 +205,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.setPassword("5678")
 
         //then
-        assertTrue(updateCardViewModel.password.value == "5678")
+        assertTrue(updateCardViewModel.uiState.value.password == "5678")
     }
 
     @Test
@@ -226,7 +226,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.updateCard()
 
         //then
-        assertTrue(updateCardViewModel.cardUpdated.value)
+        assertTrue(updateCardViewModel.uiState.value.cardUpdated)
 
     }
 
@@ -248,7 +248,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.updateCard()
 
         //then
-        assertTrue(updateCardViewModel.cardUpdated.value)
+        assertTrue(updateCardViewModel.uiState.value.cardUpdated)
 
     }
 
@@ -270,7 +270,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.updateCard()
 
         //then
-        assertTrue(updateCardViewModel.cardUpdated.value)
+        assertTrue(updateCardViewModel.uiState.value.cardUpdated)
 
 
     }
@@ -293,7 +293,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.updateCard()
 
         //then
-        assertTrue(updateCardViewModel.cardUpdated.value)
+        assertTrue(updateCardViewModel.uiState.value.cardUpdated)
 
 
     }
@@ -319,7 +319,7 @@ class UpdateCardViewModelTest {
         updateCardViewModel.updateCard()
 
         //then
-        assertFalse(updateCardViewModel.cardUpdated.value)
+        assertFalse(updateCardViewModel.uiState.value.cardUpdated)
     }
 
 
