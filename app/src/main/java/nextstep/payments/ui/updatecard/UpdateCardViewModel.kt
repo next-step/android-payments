@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.constants.DateConstants.YEAR_DATE_FORMAT
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.ext.getSerializable
-import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.updatecard.UpdateCardActivity.Companion.KEY_CARD_ITEM
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 class UpdateCardViewModel(
     savedStateHandle: SavedStateHandle,
@@ -24,63 +21,51 @@ class UpdateCardViewModel(
         savedStateHandle.getSerializable<Card>(KEY_CARD_ITEM)
     ) { "Card is Null" }
 
-    private val _selectedBank = MutableStateFlow(BankType.NOT_SELECTED)
-    val selectedBank: StateFlow<BankType> = _selectedBank.asStateFlow()
+    private val _uiState = MutableStateFlow(UpdateCardState())
+    val uiState: StateFlow<UpdateCardState> = _uiState.asStateFlow()
 
-    private val _cardUpdated = MutableStateFlow(false)
-    val cardUpdated: StateFlow<Boolean> = _cardUpdated.asStateFlow()
-
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
 
     init {
-        _selectedBank.value = getCard.type
-        _cardNumber.value = getCard.number
-        _expiredDate.value = getCard.getStringExpiredDate()
-        _ownerName.value = getCard.ownerName
-        _password.value = getCard.password
+        _uiState.update {
+            it.copy(
+                selectedBank = getCard.type,
+                cardNumber = getCard.number,
+                expiredDate = getCard.getStringExpiredDate(),
+                ownerName = getCard.ownerName,
+                password = getCard.password
+            )
+        }
     }
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber.take(16)
+        _uiState.update {
+            it.copy(cardNumber = cardNumber.take(16))
+        }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate.take(4)
+        _uiState.update {
+            it.copy(expiredDate = expiredDate.take(4))
+        }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _uiState.update {
+            it.copy(ownerName = ownerName)
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password.take(4)
+        _uiState.update {
+            it.copy(password = password.take(4))
+        }
     }
 
     fun updateCard() {
-        val toYearMonth = YearMonth.parse(
-            expiredDate.value,
-            DateTimeFormatter.ofPattern(YEAR_DATE_FORMAT)
-        )
-        val card = Card(
-            type = selectedBank.value,
-            number = cardNumber.value,
-            expiredDate = toYearMonth,
-            ownerName = ownerName.value,
-            password = password.value
-        )
-
-        if (paymentCardsRepository.upsertCard(card)) {
-            _cardUpdated.value = true
+        if (paymentCardsRepository.upsertCard(_uiState.value.toCard())) {
+            _uiState.update {
+                it.copy(cardUpdated = true)
+            }
         }
     }
 

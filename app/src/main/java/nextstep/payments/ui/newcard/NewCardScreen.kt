@@ -19,26 +19,21 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel()
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
 
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) {
+    LaunchedEffect(uiState.cardAdded) {
+        if (uiState.cardAdded) {
             onRouteToCardList()
         }
     }
 
     CardInfoScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        bankType = selectedBank,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
+        bankType = uiState.selectedBank,
         topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = viewModel::addCard) },
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,

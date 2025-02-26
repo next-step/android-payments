@@ -16,26 +16,21 @@ fun UpdateCardScreen(
     modifier: Modifier = Modifier
 ) {
 
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val cardUpdated by viewModel.cardUpdated.collectAsStateWithLifecycle()
-    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardUpdated) {
-        if (cardUpdated) {
+    LaunchedEffect(uiState.cardUpdated) {
+        if (uiState.cardUpdated) {
             onUpdate()
         }
     }
 
     CardInfoScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        bankType = selectedBank,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
+        bankType = uiState.selectedBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
