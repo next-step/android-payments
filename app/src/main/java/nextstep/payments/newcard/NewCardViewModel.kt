@@ -1,9 +1,6 @@
 package nextstep.payments.newcard
 
 import nextstep.payments.base.BaseViewModel
-import nextstep.payments.newcard.model.NewCardEvent
-import nextstep.payments.newcard.model.NewCardSideEffect
-import nextstep.payments.newcard.model.NewCardState
 
 class NewCardViewModel : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEffect>() {
     override fun initState() = NewCardState()

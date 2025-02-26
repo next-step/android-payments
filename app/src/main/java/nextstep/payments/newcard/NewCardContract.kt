@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.model
+package nextstep.payments.newcard
 
 import nextstep.payments.base.ScreenEvent
 import nextstep.payments.base.ScreenSideEffect

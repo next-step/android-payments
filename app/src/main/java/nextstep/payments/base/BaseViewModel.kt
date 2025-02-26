@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE : ScreenState, EVENT : ScreenEvent, SIDE_EFFECT : ScreenSideEffect>
     : ViewModel() {
@@ -24,9 +25,9 @@ abstract class BaseViewModel<STATE : ScreenState, EVENT : ScreenEvent, SIDE_EFFE
     val sideEffect: SharedFlow<SIDE_EFFECT> = _sideEffect.asSharedFlow()
 
     init {
-        _event.onEach { event ->
-            handleEvent(event)
-        }.launchIn(viewModelScope)
+        _event
+            .onEach { handleEvent(it) }
+            .launchIn(viewModelScope)
     }
 
     fun currentState(): STATE = _state.value
@@ -38,6 +39,6 @@ abstract class BaseViewModel<STATE : ScreenState, EVENT : ScreenEvent, SIDE_EFFE
     }
 
     fun sendEvent(event: EVENT) {
-        _event.tryEmit(event)
+        viewModelScope.launch { _event.emit(event) }
     }
 }
