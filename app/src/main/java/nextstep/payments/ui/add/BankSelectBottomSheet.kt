@@ -29,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -46,7 +48,9 @@ internal fun BankSelectBottomSheet(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = {},
-        modifier = modifier,
+        modifier = modifier.semantics {
+            contentDescription = "카드사 선택 목록 보기"
+        },
         properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
     ) {
         BanksContainer(
@@ -75,7 +79,10 @@ private fun BanksContainer(
         verticalArrangement = Arrangement.spacedBy(23.dp),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 44.dp, vertical = 36.dp),
+            .padding(horizontal = 44.dp, vertical = 36.dp)
+            .semantics {
+                contentDescription = "카드사 목록"
+            },
     ) {
         bankTypes.forEach {
             Box(
@@ -84,7 +91,9 @@ private fun BanksContainer(
                 BankItem(
                     bankType = it,
                     onBankSelect = onBankSelect,
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier =
+                    Modifier
+                        .align(Alignment.Center),
                 )
             }
         }
@@ -97,11 +106,16 @@ private fun BankItem(
     onBankSelect: (BankType) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val bankName = stringResource(bankType.nameResId)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.clickable(
-            onClick = { onBankSelect(bankType) }
-        ),
+        modifier = modifier
+            .clickable(
+                onClick = { onBankSelect(bankType) }
+            ).semantics {
+                contentDescription = bankName
+            },
     ) {
         Image(
             painter = painterResource(bankType.iconResId),
@@ -109,8 +123,9 @@ private fun BankItem(
             modifier = Modifier.size(37.dp)
         )
         Spacer(modifier = Modifier.height(9.dp))
+
         Text(
-            text = stringResource(bankType.nameResId),
+            text = bankName,
             style = MaterialTheme.typography.titleMedium,
             color = Color(0xFF525252),
         )
