@@ -1,17 +1,16 @@
 package nextstep.payments
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import nextstep.payments.ui.theme.PaymentsTheme
+import androidx.activity.viewModels
+import androidx.compose.runtime.Composable
+import nextstep.payments.base.BaseActivity
+import nextstep.payments.newcard.NewCardScreen
+import nextstep.payments.newcard.NewCardViewModel
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            PaymentsTheme {
-                NewCardScreen()
-            }
-        }
+class MainActivity() : BaseActivity() {
+    private val viewModel by viewModels<NewCardViewModel>()
+
+    @Composable
+    override fun Screen() {
+        NewCardScreen(viewModel = viewModel)
     }
 }

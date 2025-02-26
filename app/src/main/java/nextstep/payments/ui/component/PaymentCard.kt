@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
@@ -35,5 +37,13 @@ fun PaymentCard(
                     shape = RoundedCornerShape(4.dp),
                 )
         )
+    }
+}
+
+@Preview
+@Composable
+private fun PaymentCardPreview() {
+    PaymentsTheme {
+        PaymentCard()
     }
 }
