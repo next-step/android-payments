@@ -41,7 +41,19 @@ import nextstep.payments.ui.theme.PaymentsTheme
 internal fun BankSelectBottomSheet(
     onBankSelect: (BankType) -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: SheetState = rememberModalBottomSheetState(confirmValueChange = { false })
+) {
+    BankSelectBottomSheet(
+        onBankSelect = onBankSelect,
+        sheetState = rememberModalBottomSheetState(confirmValueChange = { false }),
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun BankSelectBottomSheet(
+    onBankSelect: (BankType) -> Unit,
+    modifier: Modifier = Modifier,
+    sheetState: SheetState,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -111,9 +123,8 @@ private fun BankItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .clickable(
-                onClick = { onBankSelect(bankType) }
-            ).semantics {
+            .clickable(onClick = { onBankSelect(bankType) })
+            .semantics {
                 contentDescription = bankName
             },
     ) {
