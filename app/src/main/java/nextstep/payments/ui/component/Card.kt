@@ -29,6 +29,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
+import nextstep.payments.data.model.CardInputType
 import nextstep.payments.data.model.cardCompanyList
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
@@ -62,7 +63,7 @@ fun Card(model: Card) {
                     ),
             )
             Text(
-                text = model.number,
+                text = CardInputType.CardNumber.maskingText(model.number),
                 style = Typography.bodySmall,
                 color = textColor,
             )
@@ -73,19 +74,19 @@ fun Card(model: Card) {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = model.ownerName,
+                    text = CardInputType.OwnerName.maskingText(model.ownerName),
                     style = Typography.bodySmall,
                     color = textColor,
                 )
                 Text(
-                    text = model.expiredDate,
+                    text = CardInputType.ExpiredDate.maskingText(model.expiredDate),
                     style = Typography.bodySmall,
                     color = textColor,
                 )
             }
         }
 
-        model.company?.let {company ->
+        model.company?.let { company ->
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(company.imageUrl)
@@ -100,10 +101,6 @@ fun Card(model: Card) {
             )
         }
     }
-}
-
-private fun String.toCardNumberFormat(): String {
-    return ""
 }
 
 @Composable
@@ -136,30 +133,30 @@ private fun PaymentCardPreview() {
         ) {
             Card(
                 model = Card(
-                    number = "1111 - 2222 - **** - ****",
+                    number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
-                    expiredDate = "04 / 21",
+                    expiredDate = "0421",
                     company = cardCompanyList.getOrNull(0),
                 )
             )
 
             Card(
                 model = Card(
-                    number = "1111 - 2222 - **** - ****",
+                    number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
-                    expiredDate = "04 / 21",
+                    expiredDate = "0421",
                     company = cardCompanyList.getOrNull(1),
                 )
             )
 
             Card(
                 model = Card(
-                    number = "1111 - 2222 - **** - ****",
+                    number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
-                    expiredDate = "04 / 21",
+                    expiredDate = "0421",
                     company = cardCompanyList.getOrNull(2),
                 )
             )

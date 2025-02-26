@@ -23,4 +23,3 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 - [x] 카드사 필수로 선택
 - [x] 선택한 카드에 따라 미리보기 변경
 - [x] 입력값 포맷팅
-- [ ] 유효성 검사
