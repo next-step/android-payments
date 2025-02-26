@@ -1,4 +1,4 @@
-package nextstep.payments.screens.card
+package nextstep.payments.screens.card.new
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
-import nextstep.payments.screens.card.components.NewCardTopBar
-import nextstep.payments.screens.card.components.PaymentCard
+import nextstep.payments.screens.card.new.components.NewCardTopBar
+import nextstep.payments.components.PaymentCard
 
 @Composable
 fun NewCardScreen(
