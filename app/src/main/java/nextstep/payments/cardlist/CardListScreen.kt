@@ -1,5 +1,6 @@
 package nextstep.payments.cardlist
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -37,15 +38,27 @@ fun CardListScreen(
     ) { paddingValue ->
         when (cardCount) {
             CardCount.NO_CARD -> {
-                CardListNoCardContent(modifier = Modifier.padding(paddingValue))
+                CardListNoCardContent(
+                    modifier = Modifier
+                        .padding(paddingValue)
+                        .fillMaxSize()
+                )
             }
 
             CardCount.ONE_CARD -> {
-                CardListOneCardContent(modifier = Modifier.padding(paddingValue))
+                CardListOneCardContent(
+                    modifier = Modifier
+                        .padding(paddingValue)
+                        .fillMaxSize()
+                )
             }
 
             CardCount.CARDS -> {
-                CardListCardsContent(modifier = Modifier.padding(paddingValue))
+                CardListCardsContent(
+                    modifier = Modifier
+                        .padding(paddingValue)
+                        .fillMaxSize()
+                )
             }
         }
     }
