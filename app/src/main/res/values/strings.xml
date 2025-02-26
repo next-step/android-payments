@@ -14,4 +14,13 @@
 
     <string name="card_add_guide">새로운 카드를 등록해주세요</string>
     <string name="add">추가</string>
+
+    <string name="bc_card">BC카드</string>
+    <string name="sinhan_card">신한카드</string>
+    <string name="kakao_bank">카카오뱅크</string>
+    <string name="hyondai_card">현대카드</string>
+    <string name="woori_card">우리카드</string>
+    <string name="lotte_card">롯데카드</string>
+    <string name="hana_card">하나카드</string>
+    <string name="kookmin_card">국민카드</string>
 </resources>
