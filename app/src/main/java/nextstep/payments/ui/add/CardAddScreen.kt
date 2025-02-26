@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
+import nextstep.payments.data.model.BankType
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.CardDetailTopBar
 import nextstep.payments.ui.component.CardInputField
@@ -48,26 +50,31 @@ internal fun CardAddScreen(
         expiredDate = card.expiredDate,
         ownerName = card.ownerName,
         password = card.password,
+        bankType = card.bankType,
         setCardNumber = cardAddViewModel::setCardNumber,
         setExpiredDate = cardAddViewModel::setExpiredDate,
         setOwnerName = cardAddViewModel::setOwnerName,
         setPassword = cardAddViewModel::setPassword,
+        setBank = cardAddViewModel::setBankType,
         onBackClick = onBackClick,
         onSaveClick = cardAddViewModel::addCard,
         modifier = modifier
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CardAddScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType: BankType,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    setBank: (BankType) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -91,7 +98,7 @@ internal fun CardAddScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            EmptyPaymentCard()
+            EmptyPaymentCard(bankType)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -150,6 +157,11 @@ internal fun CardAddScreen(
                     },
             )
         }
+        if (bankType == BankType.NOT_SELECTED) {
+            BankSelectBottomSheet(
+                onBankSelect = setBank,
+            )
+        }
     }
 }
 
@@ -162,6 +174,7 @@ private fun StatefulCardAddScreenPreview() {
             setExpiredDate("0000")
             setOwnerName("홍길동")
             setPassword("0000")
+            setBankType(BankType.WOORI)
         },
         onBackClick = {},
         onSaveCard = {}
@@ -176,10 +189,12 @@ private fun StatelessCardAddScreenPreview() {
         expiredDate = "0000",
         ownerName = "홍길동",
         password = "0000",
+        bankType = BankType.BC,
         setCardNumber = { },
         setExpiredDate = { },
         setOwnerName = { },
         setPassword = { },
+        setBank = {},
         onBackClick = {},
         onSaveClick = {}
     )

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
@@ -40,6 +41,12 @@ class CardAddViewModel(
     fun setPassword(password: String) {
         _card.update {
             it.copy(password = password)
+        }
+    }
+
+    fun setBankType(bankType: BankType) {
+        _card.update {
+            it.copy(bankType = bankType)
         }
     }
 
