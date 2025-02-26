@@ -15,10 +15,10 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.designsystem.theme.PaymentsTheme
 import nextstep.payments.model.BankType
 import nextstep.payments.ui.newcard.component.BankSelectBottomSheet
-import nextstep.payments.ui.newcard.component.CardExpiredDateTextFiled
-import nextstep.payments.ui.newcard.component.CardNumberTextFiled
-import nextstep.payments.ui.newcard.component.CardOwnerNameTextFiled
-import nextstep.payments.ui.newcard.component.CardPasswordTextFiled
+import nextstep.payments.ui.newcard.component.CardExpiredDateTextField
+import nextstep.payments.ui.newcard.component.CardNumberTextField
+import nextstep.payments.ui.newcard.component.CardOwnerNameTextField
+import nextstep.payments.ui.newcard.component.CardPasswordTextField
 
 
 @Composable
@@ -53,10 +53,10 @@ fun CardInfoScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            CardNumberTextFiled(value = cardNumber, onValueChange = setCardNumber)
-            CardExpiredDateTextFiled(value = expiredDate, onValueChange = setExpiredDate)
-            CardOwnerNameTextFiled(value = ownerName, onValueChange = setOwnerName)
-            CardPasswordTextFiled(value = password, onValueChange = setPassword)
+            CardNumberTextField(value = cardNumber, onValueChange = setCardNumber)
+            CardExpiredDateTextField(value = expiredDate, onValueChange = setExpiredDate)
+            CardOwnerNameTextField(value = ownerName, onValueChange = setOwnerName)
+            CardPasswordTextField(value = password, onValueChange = setPassword)
         }
         BankSelectBottomSheet(selectedBank = bankType, onItemClick = setBankType)
     }

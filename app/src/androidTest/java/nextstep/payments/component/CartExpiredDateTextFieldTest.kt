@@ -7,25 +7,25 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.requestFocus
-import nextstep.payments.ui.newcard.component.CardPasswordTextFiled
+import nextstep.payments.ui.newcard.component.CardExpiredDateTextField
 import org.junit.Rule
 import org.junit.Test
 
-class CardPasswordTextFiledTest {
-
+class CartExpiredDateTextFieldTest {
     @get:Rule
     val composeTestRule = createComposeRule()
+
 
     @Test
     fun `초기화면에_라벨이_보여야한다`() {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardPasswordTextFiled(input.value, onValueChange = { input.value = it })
+            CardExpiredDateTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithText("비밀번호")
+            .onNodeWithText("만료일")
             .assertIsDisplayed()
     }
 
@@ -34,15 +34,15 @@ class CardPasswordTextFiledTest {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardPasswordTextFiled(input.value, onValueChange = { input.value = it })
+            CardExpiredDateTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithContentDescription("CardPasswordTextFiled")
+            .onNodeWithContentDescription("CardExpiredDateTextField")
             .requestFocus()
 
         composeTestRule
-            .onNodeWithText("0000")
+            .onNodeWithText("MM / YY")
             .assertIsDisplayed()
     }
 
@@ -51,11 +51,22 @@ class CardPasswordTextFiledTest {
         val input = mutableStateOf("12")
 
         composeTestRule.setContent {
-            CardPasswordTextFiled(input.value, onValueChange = { input.value = it })
+            CardExpiredDateTextField(input.value, onValueChange = { input.value = it })
         }
         composeTestRule
-            .onNodeWithText("0000")
+            .onNodeWithText("MM / YY")
             .assertIsNotDisplayed()
     }
 
+    @Test
+    fun `입력이_포멧에_맞게_올바르게_나와야_한다`() {
+        val input = mutableStateOf("0225")
+
+        composeTestRule.setContent {
+            CardExpiredDateTextField(input.value, onValueChange = { input.value = it })
+        }
+        composeTestRule
+            .onNodeWithText("02 / 25")
+            .assertIsDisplayed()
+    }
 }

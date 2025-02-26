@@ -14,13 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 import nextstep.payments.designsystem.theme.PaymentsTheme
 
 
 @Composable
-fun CardOwnerNameTextFiled(
+fun CardPasswordTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -28,22 +29,27 @@ fun CardOwnerNameTextFiled(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.text_filed_label_owner_name)) },
-        placeholder = { Text(stringResource(R.string.text_filed_placeholder_owner_name)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        label = { Text(stringResource(R.string.text_filed_label_password)) },
+        placeholder = { Text(stringResource(R.string.text_filed_placeholder_password)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = modifier
             .fillMaxWidth()
-            .semantics { contentDescription = "CardOwnerNameTextFiled" },
+            .semantics { contentDescription = "CardPasswordTextField" },
+        visualTransformation = PasswordVisualTransformation(),
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun CardOwnerNameTextFiledPreview() {
+private fun CardPasswordTextFiledPreview() {
 
-    var input by remember { mutableStateOf("") }
+    var input by remember { mutableStateOf("1234123412341234") }
 
     PaymentsTheme {
-        CardOwnerNameTextFiled(value = input, onValueChange = { input = it })
+        CardPasswordTextField(
+            value = input,
+            onValueChange = { input = it }
+        )
     }
+
 }
