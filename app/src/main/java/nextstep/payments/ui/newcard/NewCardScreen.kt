@@ -27,7 +27,6 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
-    navigateToPayments: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
@@ -36,13 +35,6 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) {
-            navigateToPayments()
-        }
-    }
 
     NewCardScreen(
         cardNumber = cardNumber,
