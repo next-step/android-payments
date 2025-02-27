@@ -19,6 +19,6 @@
     <!-- CardList -->
     <string name="card_list_title">Payments</string>
     <string name="card_list_button_add">추가</string>
-    <string name="card_list_add_card_description">Add</string>
+    <string name="card_list_add_card_description">카드추가</string>
     <string name="card_list_empty_please_add_your_new_card">새로운 카드를 등록해주세요</string>
 </resources>
