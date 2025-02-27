@@ -11,6 +11,8 @@ import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
+private const val EXPIRED_DATE_SEPARATOR = " / "
+
 @Composable
 fun PaymentCard.ExpiredDate(modifier: Modifier = Modifier) {
     Text(
@@ -24,7 +26,7 @@ fun PaymentCard.ExpiredDate(modifier: Modifier = Modifier) {
 private fun formatExpiredDate(expiredDate: String): String {
     return expiredDate
         .chunked(2)
-        .joinToString(separator = " / ")
+        .joinToString(separator = EXPIRED_DATE_SEPARATOR)
 }
 
 @Preview

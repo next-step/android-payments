@@ -12,6 +12,9 @@ import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
+private const val MASK_SYMBOL = "*"
+private const val CARD_NUMBERS_SEPARATOR = " - "
+
 @Composable
 fun PaymentCard.Numbers(modifier: Modifier = Modifier) {
     Text(
@@ -23,10 +26,10 @@ fun PaymentCard.Numbers(modifier: Modifier = Modifier) {
 }
 
 private fun formatCardNumbers(numbers: String): String {
-    val maskedCardNumbers = numbers.take(8) + "*".repeat(8)
+    val maskedCardNumbers = numbers.take(8) + MASK_SYMBOL.repeat(8)
     return maskedCardNumbers
         .chunked(4)
-        .joinToString(separator = " - ")
+        .joinToString(separator = CARD_NUMBERS_SEPARATOR)
 }
 
 @Preview
