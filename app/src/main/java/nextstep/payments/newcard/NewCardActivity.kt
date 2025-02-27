@@ -1,5 +1,7 @@
 package nextstep.payments.newcard
 
+import android.content.Context
+import android.content.Intent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import nextstep.payments.base.BaseActivity
@@ -9,6 +11,15 @@ class NewCardActivity() : BaseActivity() {
 
     @Composable
     override fun Screen() {
-        NewCardScreen(viewModel = viewModel)
+        NewCardScreen(
+            viewModel = viewModel,
+            popBackStack = { finish() }
+        )
+    }
+
+    companion object {
+        fun newIntent(context: Context): Intent {
+            return Intent(context, NewCardActivity::class.java)
+        }
     }
 }

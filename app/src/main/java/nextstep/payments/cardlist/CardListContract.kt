@@ -16,9 +16,13 @@ data class CardListState(
         }
 }
 
-sealed class CardListEvent: ScreenEvent
+sealed class CardListEvent: ScreenEvent {
+    data object OnClickCreateCardButton: CardListEvent()
+}
 
-sealed class CardListSideEffect: ScreenSideEffect
+sealed class CardListSideEffect: ScreenSideEffect {
+    data object NavigateToNewCardScreen: CardListSideEffect()
+}
 
 enum class CardCount {
     NO_CARD, ONE_CARD, CARDS

@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.cardlist.CardCount
+import nextstep.payments.cardlist.CardListEvent
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreateCardButton
 import nextstep.payments.ui.component.PaymentCard
@@ -20,6 +21,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListContent(
     cardList: List<Card>,
     cardCountState: CardCount,
+    sendEvent: (CardListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -42,7 +44,7 @@ fun CardListContent(
         if (cardCountState == CardCount.ONE_CARD)  {
             item {
                 CreateCardButton(
-                    onClick = {},
+                    onClick = { sendEvent(CardListEvent.OnClickCreateCardButton) },
                     modifier = Modifier.testTag("CreateCardButton"),
                 )
             }
@@ -65,6 +67,7 @@ private fun CardListContentOneCardPreview() {
                 )
             ),
             cardCountState = CardCount.ONE_CARD,
+            sendEvent = {},
         )
     }
 }
@@ -91,6 +94,7 @@ private fun CardListContentCardsPreview() {
                 ),
             ),
             cardCountState = CardCount.ONE_CARD,
+            sendEvent = {},
         )
     }
 }

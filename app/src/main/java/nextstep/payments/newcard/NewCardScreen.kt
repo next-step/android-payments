@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -25,9 +27,18 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
+    popBackStack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collectLatest {
+            when (it) {
+                is NewCardSideEffect.PopBackStack -> popBackStack()
+            }
+        }
+    }
 
     NewCardScreen(
         cardNumber = state.cardNumber,
@@ -49,7 +60,7 @@ private fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(sendEvent) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -109,7 +120,10 @@ private fun NewCardScreen(
 @Composable
 private fun StatefulNewCardScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(viewModel = NewCardViewModel())
+        NewCardScreen(
+            viewModel = NewCardViewModel(),
+            popBackStack = {},
+        )
     }
 }
 

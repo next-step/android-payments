@@ -41,4 +41,8 @@ abstract class BaseViewModel<STATE : ScreenState, EVENT : ScreenEvent, SIDE_EFFE
     fun sendEvent(event: EVENT) {
         viewModelScope.launch { _event.emit(event) }
     }
+
+    fun sendSideEffect(sideEffect: SIDE_EFFECT) {
+        viewModelScope.launch { _sideEffect.emit(sideEffect) }
+    }
 }

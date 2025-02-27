@@ -1,5 +1,6 @@
 package nextstep.payments.cardlist.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import nextstep.payments.cardlist.CardListEvent
 import nextstep.payments.parameters.BooleanPreviewParameter
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Bold18
@@ -15,6 +17,7 @@ import nextstep.payments.ui.theme.TypoTokens.Bold18
 @Composable
 fun CardListTopBar(
     isShowAddButton: Boolean,
+    sendEvent: (CardListEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     CenterAlignedTopAppBar(
@@ -24,6 +27,7 @@ fun CardListTopBar(
                 Text(
                     text = "추가",
                     style = Bold18,
+                    modifier = Modifier.clickable { sendEvent(CardListEvent.OnClickCreateCardButton) }
                 )
             }
         },
@@ -37,6 +41,9 @@ private fun CardListTopBarPreview(
     @PreviewParameter(BooleanPreviewParameter::class) isShowAddButton: Boolean,
 ) {
     PaymentsTheme {
-        CardListTopBar(isShowAddButton = isShowAddButton)
+        CardListTopBar(
+            isShowAddButton = isShowAddButton,
+            sendEvent = {},
+        )
     }
 }

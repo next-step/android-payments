@@ -11,6 +11,7 @@ class NewCardViewModel : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEf
             is NewCardEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
             is NewCardEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
             is NewCardEvent.OnPasswordChanged -> setPassword(event.password)
+            is NewCardEvent.OnClickBackButton -> sendSideEffect(NewCardSideEffect.PopBackStack)
         }
     }
 
