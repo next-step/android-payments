@@ -19,19 +19,30 @@ class NewCardViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+    fun setCardNumber(newCardNumber: String) {
+        if (newCardNumber.length > MAX_CARD_NUMBER_LENGTH) return
+        _cardNumber.value = newCardNumber
     }
 
-    fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+    fun setExpiredDate(newExpiredDate: String) {
+        if (newExpiredDate.length > MAX_EXPIRED_DATE_LENGTH) return
+        _expiredDate.value = newExpiredDate
     }
 
-    fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+    fun setOwnerName(newOwnerName: String) {
+        if (newOwnerName.length > MAX_OWNER_NAME_LENGTH) return
+        _ownerName.value = newOwnerName
     }
 
-    fun setPassword(password: String) {
-        _password.value = password
+    fun setPassword(newPassword: String) {
+        if (newPassword.length > MAX_PASSWORD_LENGTH) return
+        _password.value = newPassword
+    }
+
+    companion object {
+        private const val MAX_CARD_NUMBER_LENGTH = 16
+        private const val MAX_EXPIRED_DATE_LENGTH = 4
+        private const val MAX_OWNER_NAME_LENGTH = 30
+        private const val MAX_PASSWORD_LENGTH = 4
     }
 }
