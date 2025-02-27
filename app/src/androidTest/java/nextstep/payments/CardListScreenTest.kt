@@ -10,7 +10,7 @@ import nextstep.payments.cardlist.CardListScreen
 import nextstep.payments.model.Card
 import org.junit.Test
 
-class CardListScreenTest: BaseComposableTest() {
+class CardListScreenTest : BaseComposableTest() {
 
     @Test
     fun `카드_목록이_비어있을_때에는_새로운_카드를_등록해주세요_안내가_노출되어야_한다`() {
@@ -22,12 +22,13 @@ class CardListScreenTest: BaseComposableTest() {
             CardListScreen(
                 cards = cards,
                 cardCount = CardCount.NO_CARD,
+                sendEvent = {},
             )
         }
 
         // then
         composeTestRule
-            .onNodeWithText("새로운 카드를 등록해주세요")
+            .onNodeWithText("새로운 카드를 등록해주세요", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
@@ -49,6 +50,7 @@ class CardListScreenTest: BaseComposableTest() {
             CardListScreen(
                 cards = cards,
                 cardCount = CardCount.ONE_CARD,
+                sendEvent = {},
             )
         }
 
@@ -57,7 +59,7 @@ class CardListScreenTest: BaseComposableTest() {
             .onNodeWithTag("CreateCardButton")
             .assertIsDisplayed()
     }
-    
+
     @Test
     fun `카드_목록에_카드가_여러_개_있을_때_카드_추가_UI가_노출되지_않는다`() {
         // given
@@ -90,12 +92,13 @@ class CardListScreenTest: BaseComposableTest() {
             CardListScreen(
                 cards = cards,
                 cardCount = CardCount.CARDS,
+                sendEvent = {},
             )
         }
 
         // then
         composeTestRule
-            .onNodeWithTag("CreateCardButton")
+            .onNodeWithTag("CreateCardButton", useUnmergedTree = true)
             .assertIsNotDisplayed()
     }
 
@@ -131,6 +134,7 @@ class CardListScreenTest: BaseComposableTest() {
             CardListScreen(
                 cards = cards,
                 cardCount = CardCount.CARDS,
+                sendEvent = {}
             )
         }
 
@@ -158,6 +162,7 @@ class CardListScreenTest: BaseComposableTest() {
             CardListScreen(
                 cards = cards,
                 cardCount = CardCount.ONE_CARD,
+                sendEvent = {},
             )
         }
 
