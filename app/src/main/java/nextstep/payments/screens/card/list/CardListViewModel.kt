@@ -14,6 +14,10 @@ class CardListViewModel(
     private val _uiState: MutableStateFlow<CardListUiState> = MutableStateFlow(CardListUiState.Empty)
     val uiState: StateFlow<CardListUiState> = _uiState.asStateFlow()
 
+    init {
+        fetchCards()
+    }
+
     fun fetchCards() {
         val cards = paymentCardsRepository.getCards()
 
