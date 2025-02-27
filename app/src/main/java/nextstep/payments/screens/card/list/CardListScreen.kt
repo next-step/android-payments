@@ -1,10 +1,14 @@
 package nextstep.payments.screens.card.list
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,7 +51,10 @@ fun CardListScreen(
             )
 
         is CardListUiState.Many -> {
-
+            CardListWithManyCardScreen(
+                cards = (state as CardListUiState.Many).cards,
+                onAddCardClick = {},
+            )
         }
     }
 }
@@ -104,6 +111,31 @@ fun CardListWithOneCardScreen(
     }
 }
 
+@Composable
+fun CardListWithManyCardScreen(
+    cards: List<Card>,
+    onAddCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = { CardListTopBar(onAddClick = onAddCardClick) },
+        containerColor = Color.White,
+    ) { paddingValues ->
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(36.dp),
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            contentPadding = PaddingValues(vertical = 12.dp)
+        ) {
+            items(items = cards, key = { it.numbers }) { card ->
+                RegisteredPaymentCard(card)
+            }
+        }
+    }
+}
+
+
 @Preview(name = "카드 목록에 카드가 하나도 없을 때")
 @Composable
 private fun Preview1() {
@@ -128,3 +160,29 @@ private fun Preview2() {
         )
     }
 }
+
+@Preview(name = "카드 목록에 카드가 두개 이상 있을 때")
+@Composable
+private fun Preview3() {
+    PaymentsTheme {
+        val cards = listOf(
+            Card(
+                numbers = "1111222200000000",
+                expiredDate = "0522",
+                ownerName = "CREW",
+                password = "0000"
+            ),
+            Card(
+                numbers = "0000000000000000",
+                expiredDate = "0421",
+                ownerName = "BANDAL",
+                password = "0000"
+            ),
+        )
+        CardListWithManyCardScreen(
+            cards = cards,
+            onAddCardClick = {},
+        )
+    }
+}
+
