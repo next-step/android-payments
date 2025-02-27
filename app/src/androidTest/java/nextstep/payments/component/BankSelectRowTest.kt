@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import nextstep.payments.model.BankType
 import nextstep.payments.ui.newcard.component.BankSelectRow
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -86,7 +87,7 @@ class BankSelectRowTest {
 
 
         //then
-        assert(selectType == BankType.HYUNDAI)
+        assertTrue(selectType == BankType.HYUNDAI)
     }
 
 }

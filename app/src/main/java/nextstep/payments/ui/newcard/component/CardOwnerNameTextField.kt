@@ -17,10 +17,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 import nextstep.payments.designsystem.theme.PaymentsTheme
-import nextstep.payments.designsystem.transformed.expiredDateTransformedText
+
 
 @Composable
-fun CardExpiredDateTextFiled(
+fun CardOwnerNameTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -28,29 +28,22 @@ fun CardExpiredDateTextFiled(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        visualTransformation = { expiredDateTransformedText(it) },
-        label = { Text(stringResource(R.string.text_filed_label_expired_date)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        placeholder = { Text(stringResource(R.string.text_filed_placeholder_expired_date)) },
+        label = { Text(stringResource(R.string.text_filed_label_owner_name)) },
+        placeholder = { Text(stringResource(R.string.text_filed_placeholder_owner_name)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         modifier = modifier
             .fillMaxWidth()
-            .semantics {
-                contentDescription = "CardExpiredDateTextFiled"
-            },
+            .semantics { contentDescription = "CardOwnerNameTextField" },
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ExpiredDateTextFiledPreview() {
-    var input by remember { mutableStateOf("") }
-    PaymentsTheme {
-        CardExpiredDateTextFiled(
-            value = input,
-            onValueChange = {
-                input = it.take(4)
-            }
-        )
-    }
+private fun CardOwnerNameTextFiledPreview() {
 
+    var input by remember { mutableStateOf("") }
+
+    PaymentsTheme {
+        CardOwnerNameTextField(value = input, onValueChange = { input = it })
+    }
 }

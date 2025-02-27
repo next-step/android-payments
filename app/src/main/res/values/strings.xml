@@ -4,6 +4,7 @@
     <string name="crew">CREW</string>
 
     <string name="top_app_bar_new_card_title">카드 추가</string>
+    <string name="top_app_bar_update_card_title">카드 수정</string>
     <string name="top_app_bar_card_list">Payments</string>
 
     <string name="text_filed_label_card_number">카드 번호</string>

@@ -7,11 +7,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.requestFocus
-import nextstep.payments.ui.newcard.component.CardOwnerNameTextFiled
+import nextstep.payments.ui.newcard.component.CardPasswordTextField
 import org.junit.Rule
 import org.junit.Test
 
-class CardOwnerNameTextFiledText {
+class CardPasswordTextFieldTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -21,11 +21,11 @@ class CardOwnerNameTextFiledText {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardOwnerNameTextFiled(input.value, onValueChange = { input.value = it })
+            CardPasswordTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithText("카드 소유자 이름(선택)")
+            .onNodeWithText("비밀번호")
             .assertIsDisplayed()
     }
 
@@ -34,15 +34,15 @@ class CardOwnerNameTextFiledText {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardOwnerNameTextFiled(input.value, onValueChange = { input.value = it })
+            CardPasswordTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithContentDescription("CardOwnerNameTextFiled")
+            .onNodeWithContentDescription("CardPasswordTextField")
             .requestFocus()
 
         composeTestRule
-            .onNodeWithText("카드에 표시된 이름을 입력하세요.")
+            .onNodeWithText("0000")
             .assertIsDisplayed()
     }
 
@@ -51,10 +51,10 @@ class CardOwnerNameTextFiledText {
         val input = mutableStateOf("12")
 
         composeTestRule.setContent {
-            CardOwnerNameTextFiled(input.value, onValueChange = { input.value = it })
+            CardPasswordTextField(input.value, onValueChange = { input.value = it })
         }
         composeTestRule
-            .onNodeWithText("카드에 표시된 이름을 입력하세요.")
+            .onNodeWithText("0000")
             .assertIsNotDisplayed()
     }
 

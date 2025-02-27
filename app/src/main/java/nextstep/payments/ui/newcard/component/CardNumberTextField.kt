@@ -14,14 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 import nextstep.payments.designsystem.theme.PaymentsTheme
+import nextstep.payments.designsystem.transformed.cardNumberTransformedText
 
 
 @Composable
-fun CardPasswordTextFiled(
+fun CardNumberTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -29,27 +29,27 @@ fun CardPasswordTextFiled(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(stringResource(R.string.text_filed_label_password)) },
-        placeholder = { Text(stringResource(R.string.text_filed_placeholder_password)) },
+        visualTransformation = { cardNumberTransformedText(it) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        label = { Text(stringResource(R.string.text_filed_label_card_number)) },
+        placeholder = { Text(stringResource(R.string.text_filed_placeholder_card_number)) },
         modifier = modifier
             .fillMaxWidth()
-            .semantics { contentDescription = "CardPasswordTextFiled" },
-        visualTransformation = PasswordVisualTransformation(),
+            .semantics { contentDescription = "CardNumberTextField" },
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun CardPasswordTextFiledPreview() {
-
+private fun CardNumberTextFiledPreview() {
     var input by remember { mutableStateOf("1234123412341234") }
 
     PaymentsTheme {
-        CardPasswordTextFiled(
+        CardNumberTextField(
             value = input,
-            onValueChange = { input = it }
+            onValueChange = {
+                input = it.take(16)
+            }
         )
     }
-
 }

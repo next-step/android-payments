@@ -19,6 +19,7 @@ import java.time.YearMonth
 fun CardListScreen(
     uiState: CardListUiState,
     onRouteToNewCard: () -> Unit,
+    onRouteToUpdateCard: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -41,7 +42,7 @@ fun CardListScreen(
             is CardListUiState.One -> {
                 OneCardContainer(
                     item = uiState.card,
-                    onItemClick = {},
+                    onItemClick = onRouteToUpdateCard,
                     onRouteToNewCard = onRouteToNewCard,
                     modifier = modifier.padding(paddingValue)
                 )
@@ -50,7 +51,7 @@ fun CardListScreen(
             is CardListUiState.Many -> {
                 ManyCardContainer(
                     items = uiState.cards,
-                    onItemClick = {},
+                    onItemClick = onRouteToUpdateCard,
                     modifier = modifier.padding(paddingValue)
                 )
             }
@@ -65,7 +66,8 @@ private fun CardListScreenUiStateEmptyPreview() {
     PaymentsTheme {
         CardListScreen(
             uiState = CardListUiState.Empty,
-            onRouteToNewCard = {}
+            onRouteToNewCard = {},
+            onRouteToUpdateCard = {}
         )
     }
 }
@@ -84,7 +86,8 @@ private fun CardListScreenUiStateOnePreview() {
     PaymentsTheme {
         CardListScreen(
             uiState = CardListUiState.One(card),
-            onRouteToNewCard = {}
+            onRouteToNewCard = {},
+            onRouteToUpdateCard = {}
         )
     }
 }
@@ -128,7 +131,8 @@ private fun CardListScreenUiStateManyPreview() {
     PaymentsTheme {
         CardListScreen(
             uiState = CardListUiState.Many(cards),
-            onRouteToNewCard = {}
+            onRouteToNewCard = {},
+            onRouteToUpdateCard = {}
         )
     }
 }

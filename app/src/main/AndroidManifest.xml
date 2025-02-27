@@ -27,6 +27,10 @@
         <activity
             android:name=".ui.newcard.NewCardActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.updatecard.UpdateCardActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

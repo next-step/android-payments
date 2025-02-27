@@ -7,11 +7,11 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.requestFocus
-import nextstep.payments.ui.newcard.component.CardNumberTextFiled
+import nextstep.payments.ui.newcard.component.CardOwnerNameTextField
 import org.junit.Rule
 import org.junit.Test
 
-class CardNumberTextFiledTest {
+class CardOwnerNameTextFieldText {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -21,11 +21,11 @@ class CardNumberTextFiledTest {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardNumberTextFiled(input.value, onValueChange = { input.value = it })
+            CardOwnerNameTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithText("카드 번호")
+            .onNodeWithText("카드 소유자 이름(선택)")
             .assertIsDisplayed()
     }
 
@@ -34,15 +34,15 @@ class CardNumberTextFiledTest {
         val input = mutableStateOf("")
 
         composeTestRule.setContent {
-            CardNumberTextFiled(input.value, onValueChange = { input.value = it })
+            CardOwnerNameTextField(input.value, onValueChange = { input.value = it })
         }
 
         composeTestRule
-            .onNodeWithContentDescription("CardNumberTextFiled")
+            .onNodeWithContentDescription("CardOwnerNameTextField")
             .requestFocus()
 
         composeTestRule
-            .onNodeWithText("0000 – 0000 – 0000 – 0000")
+            .onNodeWithText("카드에 표시된 이름을 입력하세요.")
             .assertIsDisplayed()
     }
 
@@ -51,23 +51,11 @@ class CardNumberTextFiledTest {
         val input = mutableStateOf("12")
 
         composeTestRule.setContent {
-            CardNumberTextFiled(input.value, onValueChange = { input.value = it })
+            CardOwnerNameTextField(input.value, onValueChange = { input.value = it })
         }
         composeTestRule
-            .onNodeWithText("0000 – 0000 – 0000 – 0000")
+            .onNodeWithText("카드에 표시된 이름을 입력하세요.")
             .assertIsNotDisplayed()
     }
 
-    @Test
-    fun `입력이_포멧에_맞게_올바르게_나와야_한다`() {
-        val input = mutableStateOf("1234123412341234")
-
-        composeTestRule.setContent {
-            CardNumberTextFiled(input.value, onValueChange = { input.value = it })
-        }
-
-        composeTestRule
-            .onNodeWithText("1234 – 1234 – 1234 – 1234")
-            .assertIsDisplayed()
-    }
 }

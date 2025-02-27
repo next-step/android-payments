@@ -21,7 +21,10 @@ class CardListScreenTest {
     fun `카드리스트가_비어있는경우_추가_텍스트가_보이지_않아야_한다`() {
         //given, when
         composeTestRule.setContent {
-            CardListScreen(uiState = CardListUiState.Empty, onRouteToNewCard = {})
+            CardListScreen(
+                uiState = CardListUiState.Empty,
+                onRouteToNewCard = {},
+                onRouteToUpdateCard = {})
         }
         //then
         composeTestRule
@@ -43,7 +46,10 @@ class CardListScreenTest {
         )
         //when
         composeTestRule.setContent {
-            CardListScreen(uiState = CardListUiState.One(card), onRouteToNewCard = {})
+            CardListScreen(
+                uiState = CardListUiState.One(card),
+                onRouteToNewCard = {},
+                onRouteToUpdateCard = {})
         }
 
         //then
@@ -75,7 +81,10 @@ class CardListScreenTest {
 
         //when
         composeTestRule.setContent {
-            CardListScreen(uiState = CardListUiState.Many(cards), onRouteToNewCard = {})
+            CardListScreen(
+                uiState = CardListUiState.Many(cards),
+                onRouteToNewCard = {},
+                onRouteToUpdateCard = {})
         }
 
         //then

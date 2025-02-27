@@ -17,8 +17,8 @@ import nextstep.payments.model.BankType
 @Composable
 fun BankSelectBottomSheet(
     selectedBank: BankType,
-    modifier: Modifier = Modifier,
-    onItemClick: (BankType) -> Unit
+    onItemClick: (BankType) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
@@ -51,7 +51,7 @@ fun BankSelectBottomSheet(
 
 @Preview(showBackground = true)
 @Composable
-private fun BankSelectBottomSheetPreview1() {
+private fun BankSelectBottomSheetPreview_NotSelected() {
     PaymentsTheme {
         BankSelectBottomSheet(
             selectedBank = BankType.NOT_SELECTED,
@@ -62,7 +62,7 @@ private fun BankSelectBottomSheetPreview1() {
 
 @Preview(showBackground = true)
 @Composable
-private fun BankSelectBottomSheetPreview2() {
+private fun BankSelectBottomSheetPreview_Selected() {
     PaymentsTheme {
         BankSelectBottomSheet(
             selectedBank = BankType.KB,
