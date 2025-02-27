@@ -8,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.cardlist.component.CardListCardsContent
+import nextstep.payments.cardlist.component.CardListContent
 import nextstep.payments.cardlist.component.CardListNoCardContent
-import nextstep.payments.cardlist.component.CardListOneCardContent
 import nextstep.payments.cardlist.component.CardListTopBar
+import nextstep.payments.model.Card
 import nextstep.payments.parameters.CardCountPreviewParameter
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -22,22 +22,22 @@ fun CardListScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     CardListScreen(
-        cardCount = state.value.currentCardCount,
+        cards = state.value.cards,
         modifier = modifier,
     )
 }
 
 @Composable
 fun CardListScreen(
-    cardCount: CardCount,
+    cards: List<Card>,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = { CardListTopBar() },
         modifier = modifier,
     ) { paddingValue ->
-        when (cardCount) {
-            CardCount.NO_CARD -> {
+        when (cards.size) {
+            0 -> {
                 CardListNoCardContent(
                     modifier = Modifier
                         .padding(paddingValue)
@@ -45,16 +45,20 @@ fun CardListScreen(
                 )
             }
 
-            CardCount.ONE_CARD -> {
-                CardListOneCardContent(
+            1 -> {
+                CardListContent(
+                    cardList = cards,
+                    cardCountState = CardCount.ONE_CARD,
                     modifier = Modifier
                         .padding(paddingValue)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 )
             }
 
-            CardCount.CARDS -> {
-                CardListCardsContent(
+            else -> {
+                CardListContent(
+                    cardList = cards,
+                    cardCountState = CardCount.CARDS,
                     modifier = Modifier
                         .padding(paddingValue)
                         .fillMaxSize()
@@ -71,7 +75,6 @@ private fun CardListScreenPreview(
 ) {
     PaymentsTheme {
         CardListScreen(
-            cardCount = cardCount,
-        )
+            cards = emptyList(),)
     }
 }

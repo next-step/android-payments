@@ -10,8 +10,7 @@
 - 카드 추가 버튼 UI 구현
 - 카드 내용 UI 구현
 - 카드가 없는 케이스 화면 구현
-- 카드가 한 개인 케이스 화면 구현
-- 카드가 n 개인 케이스 화면 구혐
+- 카드가 n 개인 케이스 화면 구현
 - 시작 화면을 카드 CardListScreen으로 변경
 - CardListScreen UI 및 ViewModel 구현
 - CardListScreen 기능 구현
