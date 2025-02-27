@@ -13,8 +13,14 @@ class NewCardActivity() : BaseActivity() {
     override fun Screen() {
         NewCardScreen(
             viewModel = viewModel,
-            popBackStack = { finish() }
+            popBackStack = { finish() },
+            popBackStackWithResult = { popBackStackWithResult() },
         )
+    }
+
+    fun popBackStackWithResult()  {
+        setResult(RESULT_OK)
+        finish()
     }
 
     companion object {

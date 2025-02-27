@@ -1,8 +1,13 @@
 package nextstep.payments.newcard
 
 import nextstep.payments.base.BaseViewModel
+import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.Card
+import java.util.UUID.randomUUID
 
-class NewCardViewModel : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEffect>() {
+class NewCardViewModel(
+    private val repository: PaymentCardsRepository = PaymentCardsRepository
+) : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEffect>() {
     override fun initState() = NewCardState()
 
     override fun handleEvent(event: NewCardEvent) {
@@ -12,6 +17,7 @@ class NewCardViewModel : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEf
             is NewCardEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
             is NewCardEvent.OnPasswordChanged -> setPassword(event.password)
             is NewCardEvent.OnClickBackButton -> sendSideEffect(NewCardSideEffect.PopBackStack)
+            is NewCardEvent.OnClickCompleteButton -> createNewCard()
         }
     }
 
@@ -29,5 +35,19 @@ class NewCardViewModel : BaseViewModel<NewCardState, NewCardEvent, NewCardSideEf
 
     private fun setPassword(password: String) {
         updateState(currentState().copy(password = password))
+    }
+
+    private fun createNewCard() {
+        val card = currentState().let {
+            Card(
+                id = randomUUID().hashCode(),
+                cardNumber = it.cardNumber,
+                expiredDate = it.expiredDate,
+                ownerName = it.ownerName,
+                password = it.password,
+            )
+        }
+        repository.addCard(card)
+        sendSideEffect(NewCardSideEffect.PopBackStackWithResult)
     }
 }

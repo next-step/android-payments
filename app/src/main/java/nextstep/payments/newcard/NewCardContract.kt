@@ -17,8 +17,10 @@ sealed class NewCardEvent: ScreenEvent {
     data class OnOwnerNameChanged(val ownerName: String): NewCardEvent()
     data class OnPasswordChanged(val password: String): NewCardEvent()
     data object OnClickBackButton: NewCardEvent()
+    data object OnClickCompleteButton: NewCardEvent()
 }
 
 sealed class NewCardSideEffect: ScreenSideEffect {
     data object PopBackStack: NewCardSideEffect()
+    data object PopBackStackWithResult: NewCardSideEffect()
 }

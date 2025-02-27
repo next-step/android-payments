@@ -29,7 +29,7 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = { sendEvent(NewCardEvent.OnClickCompleteButton) }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",

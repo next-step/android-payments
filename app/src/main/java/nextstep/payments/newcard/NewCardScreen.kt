@@ -26,9 +26,10 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
-    viewModel: NewCardViewModel = viewModel(),
     popBackStack: () -> Unit,
+    popBackStackWithResult: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: NewCardViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -36,6 +37,7 @@ fun NewCardScreen(
         viewModel.sideEffect.collectLatest {
             when (it) {
                 is NewCardSideEffect.PopBackStack -> popBackStack()
+                is NewCardSideEffect.PopBackStackWithResult -> popBackStackWithResult()
             }
         }
     }
@@ -123,6 +125,7 @@ private fun StatefulNewCardScreenPreview() {
         NewCardScreen(
             viewModel = NewCardViewModel(),
             popBackStack = {},
+            popBackStackWithResult = {},
         )
     }
 }
