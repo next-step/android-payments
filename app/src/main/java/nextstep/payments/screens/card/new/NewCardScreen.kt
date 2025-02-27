@@ -22,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.screens.card.new.components.NewCardTopBar
 import nextstep.payments.components.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
@@ -64,7 +65,6 @@ fun NewCardScreen(
         modifier = modifier
     ) { innerPadding ->
         Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(innerPadding)
@@ -74,41 +74,68 @@ fun NewCardScreen(
             
             PaymentCard()
             
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-            OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text(stringResource(R.string.new_card_card_number_label)) },
-                placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = expiredDate,
-                onValueChange = setExpiredDate,
-                label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
-                placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text(stringResource(R.string.new_card_card_owner_name_label)) },
-                placeholder = { Text(stringResource(R.string.new_card_card_owner_name_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
-                label = { Text(stringResource(R.string.new_card_password_label)) },
-                placeholder = { Text(stringResource(R.string.new_card_password_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+            CardInformationInputFields(
+                cardNumber = cardNumber,
+                setCardNumber = setCardNumber,
+                expiredDate = expiredDate,
+                setExpiredDate = setExpiredDate,
+                ownerName = ownerName,
+                setOwnerName = setOwnerName,
+                password = password,
+                setPassword = setPassword,
             )
         }
+    }
+}
+
+@Composable
+private fun CardInformationInputFields(
+    cardNumber: String,
+    setCardNumber: (String) -> Unit,
+    expiredDate: String,
+    setExpiredDate: (String) -> Unit,
+    ownerName: String,
+    setOwnerName: (String) -> Unit,
+    password: String,
+    setPassword: (String) -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+        OutlinedTextField(
+            value = cardNumber,
+            onValueChange = setCardNumber,
+            label = { Text(stringResource(R.string.new_card_card_number_label)) },
+            placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        OutlinedTextField(
+            value = expiredDate,
+            onValueChange = setExpiredDate,
+            label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
+            placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
+            modifier = Modifier.fillMaxWidth(fraction = 0.5f),
+        )
+
+        OutlinedTextField(
+            value = ownerName,
+            onValueChange = setOwnerName,
+            label = { Text(stringResource(R.string.new_card_card_owner_name_label)) },
+            placeholder = { Text(stringResource(R.string.new_card_card_owner_name_placeholder)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = setPassword,
+            label = { Text(stringResource(R.string.new_card_password_label)) },
+            placeholder = { Text(stringResource(R.string.new_card_password_placeholder)) },
+            modifier = Modifier.fillMaxWidth(fraction = 0.5f),
+            visualTransformation = PasswordVisualTransformation(),
+        )
     }
 }
 
@@ -125,4 +152,21 @@ private fun NewCardScreenPreview() {
         setOwnerName = {},
         setPassword = {},
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardInformationInputFieldsPreview() {
+    PaymentsTheme {
+        CardInformationInputFields(
+            cardNumber = "",
+            setCardNumber = {},
+            expiredDate = "",
+            setExpiredDate = {},
+            ownerName = "",
+            setOwnerName = {},
+            password = "",
+            setPassword = {}
+        )
+    }
 }
