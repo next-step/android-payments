@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.screens.card.new.components.NewCardTopBar
-import nextstep.payments.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -49,9 +49,9 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
-    cardNumber : String,
-    expiredDate : String,
-    ownerName : String,
+    cardNumber: String,
+    expiredDate: String,
+    ownerName: String,
     password: String,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
@@ -70,9 +70,9 @@ fun NewCardScreen(
                 .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(14.dp))
-            
-            PaymentCard()
-            
+
+            EmptyPaymentCard()
+
             Spacer(modifier = Modifier.height(40.dp))
 
             CardInformationInputFields(
