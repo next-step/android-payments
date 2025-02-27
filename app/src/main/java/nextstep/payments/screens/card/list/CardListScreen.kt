@@ -32,6 +32,7 @@ import nextstep.payments.ui.theme.Typography
 
 @Composable
 fun CardListScreen(
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
 ) {
@@ -40,20 +41,20 @@ fun CardListScreen(
     when (state) {
         CardListUiState.Empty ->
             CardListEmptyScreen(
-                onAddCardClick = {},
+                onAddCardClick = onAddCardClick,
                 modifier = modifier,
             )
 
         is CardListUiState.One ->
             CardListWithOneCardScreen(
                 card = (state as CardListUiState.One).card,
-                onAddCardClick = {},
+                onAddCardClick = onAddCardClick,
             )
 
         is CardListUiState.Many -> {
             CardListWithManyCardScreen(
                 cards = (state as CardListUiState.Many).cards,
-                onAddCardClick = {},
+                onAddCardClick = onAddCardClick,
             )
         }
     }

@@ -10,9 +10,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,12 +29,20 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun NewCardScreen(
     modifier: Modifier = Modifier,
+    navigateToCardList: () -> Unit,
+    onBackClick: () -> Unit,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) navigateToCardList()
+    }
 
     NewCardScreen(
         cardNumber = cardNumber,
@@ -43,6 +53,8 @@ fun NewCardScreen(
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
         onPasswordChange = viewModel::setPassword,
+        onBackClick = onBackClick,
+        onSaveClick = viewModel::addCard,
         modifier = modifier,
     )
 }
@@ -57,11 +69,14 @@ fun NewCardScreen(
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
-        modifier = modifier
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
+        modifier = modifier,
+        containerColor = Color.White
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -150,6 +165,8 @@ private fun NewCardScreenPreview() {
         onExpiredDateChange = {},
         onOwnerNameChange = {},
         onPasswordChange = {},
+        onBackClick = {},
+        onSaveClick = {},
     )
 }
 
