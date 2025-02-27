@@ -39,14 +39,13 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
+        onCardNumberChange = viewModel::setCardNumber,
+        onExpiredDateChange = viewModel::setExpiredDate,
+        onOwnerNameChange = viewModel::setOwnerName,
+        onPasswordChange = viewModel::setPassword,
         modifier = modifier,
     )
 }
-
 
 @Composable
 fun NewCardScreen(
@@ -54,10 +53,10 @@ fun NewCardScreen(
     expiredDate : String,
     ownerName : String,
     password: String,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
+    onCardNumberChange: (String) -> Unit,
+    onExpiredDateChange: (String) -> Unit,
+    onOwnerNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -78,13 +77,13 @@ fun NewCardScreen(
 
             CardInformationInputFields(
                 cardNumber = cardNumber,
-                setCardNumber = setCardNumber,
                 expiredDate = expiredDate,
-                setExpiredDate = setExpiredDate,
                 ownerName = ownerName,
-                setOwnerName = setOwnerName,
                 password = password,
-                setPassword = setPassword,
+                onCardNumberChange = onCardNumberChange,
+                onExpiredDateChange = onExpiredDateChange,
+                onOwnerNameChange = onOwnerNameChange,
+                onPasswordChange = onPasswordChange,
             )
         }
     }
@@ -93,20 +92,20 @@ fun NewCardScreen(
 @Composable
 private fun CardInformationInputFields(
     cardNumber: String,
-    setCardNumber: (String) -> Unit,
     expiredDate: String,
-    setExpiredDate: (String) -> Unit,
     ownerName: String,
-    setOwnerName: (String) -> Unit,
     password: String,
-    setPassword: (String) -> Unit,
+    onCardNumberChange: (String) -> Unit,
+    onExpiredDateChange: (String) -> Unit,
+    onOwnerNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
         OutlinedTextField(
             value = cardNumber,
-            onValueChange = setCardNumber,
+            onValueChange = onCardNumberChange,
             label = { Text(stringResource(R.string.new_card_card_number_label)) },
             placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
@@ -114,7 +113,7 @@ private fun CardInformationInputFields(
 
         OutlinedTextField(
             value = expiredDate,
-            onValueChange = setExpiredDate,
+            onValueChange = onExpiredDateChange,
             label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
             placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
@@ -122,7 +121,7 @@ private fun CardInformationInputFields(
 
         OutlinedTextField(
             value = ownerName,
-            onValueChange = setOwnerName,
+            onValueChange = onOwnerNameChange,
             label = { Text(stringResource(R.string.new_card_card_owner_name_label)) },
             placeholder = { Text(stringResource(R.string.new_card_card_owner_name_placeholder)) },
             modifier = Modifier.fillMaxWidth(),
@@ -130,7 +129,7 @@ private fun CardInformationInputFields(
 
         OutlinedTextField(
             value = password,
-            onValueChange = setPassword,
+            onValueChange = onPasswordChange,
             label = { Text(stringResource(R.string.new_card_password_label)) },
             placeholder = { Text(stringResource(R.string.new_card_password_placeholder)) },
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
@@ -147,10 +146,10 @@ private fun NewCardScreenPreview() {
         expiredDate = "00 / 00",
         ownerName = "홍길동",
         password = "0000",
-        setCardNumber = {},
-        setExpiredDate = {},
-        setOwnerName = {},
-        setPassword = {},
+        onCardNumberChange = {},
+        onExpiredDateChange = {},
+        onOwnerNameChange = {},
+        onPasswordChange = {},
     )
 }
 
@@ -160,13 +159,13 @@ private fun CardInformationInputFieldsPreview() {
     PaymentsTheme {
         CardInformationInputFields(
             cardNumber = "",
-            setCardNumber = {},
+            onCardNumberChange = {},
             expiredDate = "",
-            setExpiredDate = {},
+            onExpiredDateChange = {},
             ownerName = "",
-            setOwnerName = {},
+            onOwnerNameChange = {},
             password = "",
-            setPassword = {}
+            onPasswordChange = {}
         )
     }
 }
