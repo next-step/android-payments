@@ -7,14 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.cardlist.component.CardListContent
 import nextstep.payments.cardlist.component.CardListNoCardContent
 import nextstep.payments.cardlist.component.CardListTopBar
 import nextstep.payments.model.Card
-import nextstep.payments.parameters.CardCountPreviewParameter
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -53,6 +52,7 @@ fun CardListScreen(
             CardListTopBar(
                 isShowAddButton = cardCount == CardCount.CARDS,
                 sendEvent = sendEvent,
+                modifier = Modifier.padding(horizontal = 20.dp),
             )
         },
         modifier = modifier,
@@ -94,13 +94,65 @@ fun CardListScreen(
 
 @Preview
 @Composable
-private fun CardListScreenPreview(
-    @PreviewParameter(CardCountPreviewParameter::class) cardCount: CardCount,
-) {
+private fun CardListScreenNoCardPreview() {
     PaymentsTheme {
         CardListScreen(
-            cardCount = cardCount,
+            cardCount = CardCount.NO_CARD,
             cards = emptyList(),
+            sendEvent = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CardListScreenOneCardPreview() {
+    PaymentsTheme {
+        CardListScreen(
+            cardCount = CardCount.ONE_CARD,
+            cards = listOf(
+                Card(
+                    id = 1,
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/34",
+                    ownerName = "홍길동",
+                    password = "1234",
+                )
+            ),
+            sendEvent = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CardListScreenCardsPreview() {
+    PaymentsTheme {
+        CardListScreen(
+            cardCount = CardCount.CARDS,
+            cards = listOf(
+                Card(
+                    id = 1,
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/34",
+                    ownerName = "홍길동",
+                    password = "1234",
+                ),
+                Card(
+                    id = 2,
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/34",
+                    ownerName = "홍길동",
+                    password = "1234",
+                ),
+                Card(
+                    id = 3,
+                    cardNumber = "1234-5678-9012-3456",
+                    expiredDate = "12/34",
+                    ownerName = "홍길동",
+                    password = "1234",
+                ),
+            ),
             sendEvent = {},
         )
     }
