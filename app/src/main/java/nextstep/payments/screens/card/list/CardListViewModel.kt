@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class CardListViewModel: ViewModel() {
     private val _uiState: MutableStateFlow<CardListUiState> = MutableStateFlow(CardListUiState.Empty)
-    private val uiState: StateFlow<CardListUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<CardListUiState> = _uiState.asStateFlow()
 }
