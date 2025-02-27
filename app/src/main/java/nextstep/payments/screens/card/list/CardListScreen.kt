@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.components.card.RegisteredPaymentCard
 import nextstep.payments.domain.Card
@@ -34,7 +33,7 @@ import nextstep.payments.ui.theme.Typography
 fun CardListScreen(
     onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CardListViewModel = viewModel(),
+    viewModel: CardListViewModel,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -49,12 +48,14 @@ fun CardListScreen(
             CardListWithOneCardScreen(
                 card = (state as CardListUiState.One).card,
                 onAddCardClick = onAddCardClick,
+                modifier = modifier,
             )
 
         is CardListUiState.Many -> {
             CardListWithManyCardScreen(
                 cards = (state as CardListUiState.Many).cards,
                 onAddCardClick = onAddCardClick,
+                modifier = modifier,
             )
         }
     }
