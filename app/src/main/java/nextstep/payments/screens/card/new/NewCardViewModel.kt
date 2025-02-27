@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
+import nextstep.payments.domain.PaymentCardsRepository
 
 class NewCardViewModel(
-    private val paymentCardsRepository: PaymentCardsRepository = PaymentCardsRepository,
+    private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
 ) : ViewModel() {
 
     private val _cardNumber = MutableStateFlow("")
@@ -53,7 +54,7 @@ class NewCardViewModel(
                 numbers = cardNumber.value,
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
-                password = password.value
+                password = password.value,
             )
         )
         _cardAdded.value = true
