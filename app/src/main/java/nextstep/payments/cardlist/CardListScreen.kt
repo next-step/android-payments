@@ -71,7 +71,7 @@ fun CardListScreen(
                 CardListContent(
                     cardList = cards,
                     cardCountState = CardCount.ONE_CARD,
-                    sendEvent = {},
+                    sendEvent = sendEvent,
                     modifier = Modifier
                         .padding(paddingValue)
                         .fillMaxSize(),
@@ -82,7 +82,7 @@ fun CardListScreen(
                 CardListContent(
                     cardList = cards,
                     cardCountState = CardCount.CARDS,
-                    sendEvent = {},
+                    sendEvent = sendEvent,
                     modifier = Modifier
                         .padding(paddingValue)
                         .fillMaxSize()
