@@ -70,7 +70,7 @@ fun PaymentCardInfo(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = cardNumber,
+            text = cardNumber.toCardNumberFormat(),
             style = Medium12,
             color = Color.White
         )
@@ -93,6 +93,22 @@ fun PaymentCardInfo(
     }
 }
 
+val cardNumberPattern = Regex("""^\d{4}-\d{4}-\d{4}-\d{4}$""")
+private fun String.toCardNumberFormat(): String {
+    if (cardNumberPattern.matches(this).not()) {
+        return ""
+    }
+    return this.split("-")
+        .mapIndexed { index, number ->
+            if (index > 1) {
+                "****"
+            } else {
+                number
+            }
+        }
+        .joinToString(" - ")
+}
+
 @Preview
 @Composable
 private fun PaymentCardEmptyPreview() {
@@ -110,7 +126,7 @@ private fun PaymentCardEmptyPreview() {
 private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
-            cardNumber = "1111 - 2222 - **** - ****",
+            cardNumber = "1111-2222-3333-4444",
             ownerName = "CREW",
             expiredDate = "04 / 31"
         )
