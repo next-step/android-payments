@@ -15,4 +15,8 @@
     <string name="new_card_card_owner_name_placeholder">카드에 표시된 이름을 입력하세요.</string>
     <string name="new_card_password_label">비밀번호</string>
     <string name="new_card_password_placeholder">0000</string>
+
+    <!-- CardList -->
+    <string name="card_list_title">Payments</string>
+    <string name="card_list_button_add">추가</string>
 </resources>
