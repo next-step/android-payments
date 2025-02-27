@@ -18,8 +18,7 @@ fun CardAddAffordance(
 ) {
     Text(
         text = stringResource(R.string.card_add_affordance),
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         style = Typography.titleSmall,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center,

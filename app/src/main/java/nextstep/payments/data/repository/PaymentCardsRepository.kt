@@ -1,12 +1,12 @@
 package nextstep.payments.data.repository
 
-import nextstep.payments.data.model.CardModel
+import nextstep.payments.data.model.Card
 
 object PaymentCardsRepository {
-    private val _cards = mutableListOf<CardModel>()
-    val cards: List<CardModel> get() = _cards.toList()
+    private val _cards = mutableListOf<Card>()
+    val cards: List<Card> get() = _cards.toList()
 
-    fun addCard(card: CardModel) {
+    fun addCard(card: Card) {
         _cards.add(card)
     }
 }

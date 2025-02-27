@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -24,65 +25,14 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.theme.PaymentsTheme
 
-@Composable
-fun CardTopBar(
-    isCenter: Boolean,
-    modifier: Modifier = Modifier,
-    onBackClick: (() -> Unit)? = null,
-    onActionClick: (() -> Unit)? = null,
-    actionButtonText: String? = null,
-) {
-    if (onActionClick != null) {
-        require(actionButtonText == null) {
-            "must set the buttonText"
-        }
-    }
-    CardTopBar(
-        isCenter = isCenter,
-        modifier = modifier,
-        onBackClick = onBackClick,
-        onActionClick = onActionClick,
-        actionButtonText = actionButtonText,
-    )
-}
-
-
-@Composable
-fun CardTopBar(
-    isCenter: Boolean,
-    modifier: Modifier = Modifier,
-    onBackClick: (() -> Unit)? = null,
-    onActionClick: (() -> Unit)? = null,
-    actionButtonVector: ImageVector? = null,
-    actionButtonContentDescription: String? = null,
-) {
-    if (onActionClick != null) {
-        require(actionButtonVector == null) {
-            "must set the buttonVector"
-        }
-    }
-
-    CardTopBar(
-        isCenter = isCenter,
-        modifier = modifier,
-        onBackClick = onBackClick,
-        onActionClick = onActionClick,
-        actionButtonVector = actionButtonVector,
-        actionButtonContentDescription = actionButtonContentDescription,
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CardTopBar(
     title: String,
-    isCenter: Boolean,
+    titleTextAlign: TextAlign,
     modifier: Modifier = Modifier,
-    onBackClick: (() -> Unit)? = null,
-    onActionClick: (() -> Unit)? = null,
-    actionButtonText: String? = null,
-    actionButtonVector: ImageVector? = null,
-    actionButtonContentDescription: String? = null,
+    onBackClick: (() -> Unit),
+    actionButton: @Composable RowScope.() -> Unit,
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
@@ -90,7 +40,7 @@ private fun CardTopBar(
             Text(
                 text = title,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = if (isCenter) TextAlign.Center else TextAlign.Start
+                textAlign = titleTextAlign
             )
         },
         navigationIcon = {
@@ -101,19 +51,8 @@ private fun CardTopBar(
             )
         },
         actions = {
-            actionButtonVector?.let {
-                TopBarIcon(
-                    onClick = onActionClick?.let { onActionClick },
-                    imageVector = actionButtonVector,
-                    contentDescription = actionButtonContentDescription.orEmpty(),
-                )
-            }
-            actionButtonText?.let {
-                TopBarActionText(
-                    onClick = onActionClick?.let { onActionClick },
-                    text = actionButtonText
-                )
-            }
+            actionButton()
+
         },
     )
 }
@@ -125,11 +64,15 @@ fun CardAddTopBar(
 ) {
     CardTopBar(
         title = stringResource(R.string.add),
-        isCenter = false,
-        onActionClick = onCheckClick,
+        titleTextAlign = TextAlign.Start,
         onBackClick = onBackClick,
-        actionButtonVector = Icons.Filled.Check,
-        actionButtonContentDescription = stringResource(R.string.check),
+        actionButton = {
+            TopBarIcon(
+                onClick = onCheckClick,
+                imageVector = Icons.Filled.Check,
+                contentDescription = stringResource(R.string.check),
+            )
+        },
     )
 }
 
@@ -139,9 +82,14 @@ fun CardListTopBar(
 ) {
     CardTopBar(
         title = stringResource(R.string.payments),
-        isCenter = true,
-        onActionClick = onAddClick,
-        actionButtonText = stringResource(R.string.add)
+        titleTextAlign = TextAlign.Center,
+        actionButton = {
+            TopBarActionText(
+                onClick = onAddClick,
+                text = stringResource(R.string.add)
+            )
+        },
+        onBackClick = {},
     )
 }
 

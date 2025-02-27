@@ -14,11 +14,12 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.requestFocus
+import nextstep.payments.data.model.CardInputType
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CardModelInputFieldTest {
+class CardInputFieldTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -34,7 +35,8 @@ class CardModelInputFieldTest {
                 onValueChange = { value = it },
                 labelText = "라벨",
                 placeHolderText = "플레이스홀더",
-                modifier = Modifier.testTag("cardInputField")
+                modifier = Modifier.testTag("cardInputField"),
+                type = CardInputType.CardNumber,
             )
         }
     }
