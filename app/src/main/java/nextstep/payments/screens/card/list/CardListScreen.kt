@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
+import nextstep.payments.components.card.RegisteredPaymentCard
+import nextstep.payments.domain.Card
 import nextstep.payments.screens.card.list.components.AddCard
 import nextstep.payments.screens.card.list.components.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -32,12 +34,19 @@ fun CardListScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (state) {
-        CardListUiState.Empty -> CardListEmptyScreen(onAddCardClick = {}, modifier = modifier)
+        CardListUiState.Empty ->
+            CardListEmptyScreen(
+                onAddCardClick = {},
+                modifier = modifier,
+            )
+
+        is CardListUiState.One ->
+            CardListWithOneCardScreen(
+                card = (state as CardListUiState.One).card,
+                onAddCardClick = {},
+            )
+
         is CardListUiState.Many -> {
-
-        }
-
-        is CardListUiState.One -> {
 
         }
     }
@@ -70,10 +79,52 @@ fun CardListEmptyScreen(
     }
 }
 
+@Composable
+fun CardListWithOneCardScreen(
+    card: Card,
+    onAddCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = { CardListTopBar() },
+        containerColor = Color.White,
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(Modifier.height(12.dp))
+            RegisteredPaymentCard(card = card)
+            Spacer(Modifier.height(36.dp))
+            AddCard(onAddCardClick = onAddCardClick)
+        }
+    }
+}
+
 @Preview(name = "카드 목록에 카드가 하나도 없을 때")
 @Composable
 private fun Preview1() {
     PaymentsTheme {
         CardListEmptyScreen(onAddCardClick = {})
+    }
+}
+
+@Preview(name = "카드 목록에 카드가 하나 있을 때")
+@Composable
+private fun Preview2() {
+    PaymentsTheme {
+        val card = Card(
+            numbers = "0000000000000000",
+            expiredDate = "0000",
+            ownerName = "CREW",
+            password = "0000"
+        )
+        CardListWithOneCardScreen(
+            card = card,
+            onAddCardClick = {},
+        )
     }
 }
