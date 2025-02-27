@@ -23,6 +23,7 @@ fun CardListScreen(
     val state = viewModel.state.collectAsStateWithLifecycle()
     CardListScreen(
         cards = state.value.cards,
+        cardCount = state.value.currentCardCount,
         modifier = modifier,
     )
 }
@@ -30,14 +31,15 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     cards: List<Card>,
+    cardCount: CardCount,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { CardListTopBar() },
+        topBar = { CardListTopBar(cardCount == CardCount.CARDS) },
         modifier = modifier,
     ) { paddingValue ->
-        when (cards.size) {
-            0 -> {
+        when (cardCount) {
+            CardCount.NO_CARD -> {
                 CardListNoCardContent(
                     modifier = Modifier
                         .padding(paddingValue)
@@ -45,7 +47,7 @@ fun CardListScreen(
                 )
             }
 
-            1 -> {
+            CardCount.ONE_CARD -> {
                 CardListContent(
                     cardList = cards,
                     cardCountState = CardCount.ONE_CARD,
@@ -75,6 +77,8 @@ private fun CardListScreenPreview(
 ) {
     PaymentsTheme {
         CardListScreen(
-            cards = emptyList(),)
+            cardCount = cardCount,
+            cards = emptyList(),
+        )
     }
 }

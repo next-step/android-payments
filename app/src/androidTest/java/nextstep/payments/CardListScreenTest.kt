@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.base.BaseComposableTest
+import nextstep.payments.cardlist.CardCount
 import nextstep.payments.cardlist.CardListScreen
 import nextstep.payments.model.Card
 import org.junit.Test
@@ -17,7 +18,10 @@ class CardListScreenTest: BaseComposableTest() {
 
         // when
         composeTestRule.setContent {
-            CardListScreen(cards = cards)
+            CardListScreen(
+                cards = cards,
+                cardCount = CardCount.NO_CARD,
+            )
         }
 
         // then
@@ -41,7 +45,10 @@ class CardListScreenTest: BaseComposableTest() {
 
         // when
         composeTestRule.setContent {
-            CardListScreen(cards = cards)
+            CardListScreen(
+                cards = cards,
+                cardCount = CardCount.ONE_CARD,
+            )
         }
 
         // then
