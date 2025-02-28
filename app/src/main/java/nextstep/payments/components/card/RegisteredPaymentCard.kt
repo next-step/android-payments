@@ -1,7 +1,6 @@
 package nextstep.payments.components.card
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,21 +22,18 @@ fun RegisteredPaymentCard(
     modifier: Modifier = Modifier,
 ) {
     BaseCard(
-        card = card,
         modifier = modifier,
     ) {
-        Column {
-            Spacer(Modifier.weight(1f))
-            IcChip()
-            Spacer(Modifier.height(8.dp))
-            Numbers()
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                OwnerName()
-                ExpiredDate()
-            }
+        Spacer(Modifier.weight(1f))
+        IcChip()
+        Spacer(Modifier.height(8.dp))
+        Numbers(numbers = card.numbers)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            OwnerName(name = card.ownerName)
+            ExpiredDate(date = card.expiredDate)
         }
     }
 }
