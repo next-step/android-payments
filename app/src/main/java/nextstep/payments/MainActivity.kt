@@ -32,7 +32,9 @@ class MainActivity : ComponentActivity() {
                             CardListScreen()
                         }
                         composable<PaymentsRoute.Add> {
-                            NewCardScreen()
+                            NewCardScreen(
+                                onBack = navController::popBackStack
+                            )
                         }
                     }
                 }

@@ -26,6 +26,7 @@ import nextstep.payments.component.PaymentCard
 fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
+    onBack: () -> Unit,
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
@@ -41,6 +42,11 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onBack = onBack,
+        onSave = {
+            viewModel.addCard()
+            onBack()
+        },
         modifier = modifier
     )
 
@@ -56,10 +62,17 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBack: () -> Unit,
+    onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBack,
+                onSaveClick = onSave
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -70,11 +83,11 @@ fun NewCardScreen(
                 .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(14.dp))
-            
+
             PaymentCard()
-            
+
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             OutlinedTextField(
                 value = cardNumber,
                 onValueChange = setCardNumber,
@@ -82,7 +95,7 @@ fun NewCardScreen(
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = expiredDate,
                 onValueChange = setExpiredDate,
@@ -90,7 +103,7 @@ fun NewCardScreen(
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = ownerName,
                 onValueChange = setOwnerName,
@@ -98,7 +111,7 @@ fun NewCardScreen(
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = password,
                 onValueChange = setPassword,
@@ -120,7 +133,8 @@ private fun StatefulNewCardScreenPreview() {
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
             setPassword("0000")
-        }
+        },
+        onBack = {}
     )
 }
 
@@ -135,6 +149,8 @@ private fun StatelessNewCardScreenPreview() {
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
-        setPassword = {}
+        setPassword = {},
+        onSave = {},
+        onBack = {}
     )
 }
