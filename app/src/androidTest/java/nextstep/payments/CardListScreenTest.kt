@@ -1,7 +1,12 @@
 package nextstep.payments
 
+import androidx.compose.ui.test.assertContentDescriptionEquals
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onChildren
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.domain.Card
 import nextstep.payments.screens.card.list.CardListScreen
@@ -81,8 +86,12 @@ class CardListScreenTest {
 
         // then
         composeTestRule
-            .onNodeWithContentDescription("카드추가")
-            .assertExists()
+            .onNodeWithTag("cards")
+            .onChildren()
+            .onLast()
+            .assertContentDescriptionEquals("카드추가")
+            .assertIsDisplayed()
+
         composeTestRule
             .onNodeWithText("추가")
             .assertDoesNotExist()
