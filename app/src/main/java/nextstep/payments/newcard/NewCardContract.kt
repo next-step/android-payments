@@ -21,6 +21,6 @@ sealed class NewCardEvent: ScreenEvent {
 }
 
 sealed class NewCardSideEffect: ScreenSideEffect {
-    data object PopBackStack: NewCardSideEffect()
-    data object PopBackStackWithResult: NewCardSideEffect()
+    data object NavigateBack: NewCardSideEffect()
+    data object NavigateBackWithNeedReload: NewCardSideEffect()
 }

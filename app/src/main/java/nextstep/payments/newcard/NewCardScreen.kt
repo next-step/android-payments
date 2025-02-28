@@ -36,8 +36,8 @@ fun NewCardScreen(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collectLatest {
             when (it) {
-                is NewCardSideEffect.PopBackStack -> popBackStack()
-                is NewCardSideEffect.PopBackStackWithResult -> popBackStackWithResult()
+                is NewCardSideEffect.NavigateBack -> popBackStack()
+                is NewCardSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
             }
         }
     }

@@ -17,7 +17,7 @@ class CardListActivity : BaseActivity() {
     override fun Screen() {
         val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
-                viewModel.sendEvent(CardListEvent.OnCreateNewCard)
+                viewModel.sendEvent(CardListEvent.ReloadCardList)
             }
         }
 

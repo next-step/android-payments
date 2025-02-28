@@ -18,7 +18,7 @@ data class CardListState(
 
 sealed class CardListEvent: ScreenEvent {
     data object OnClickCreateCardButton: CardListEvent()
-    data object OnCreateNewCard: CardListEvent()
+    data object ReloadCardList: CardListEvent()
 }
 
 sealed class CardListSideEffect: ScreenSideEffect {

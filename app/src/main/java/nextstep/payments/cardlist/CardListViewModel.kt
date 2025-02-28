@@ -11,7 +11,7 @@ class CardListViewModel(
     override fun handleEvent(event: CardListEvent) {
         when (event) {
             is CardListEvent.OnClickCreateCardButton -> sendSideEffect(CardListSideEffect.NavigateToNewCardScreen)
-            is CardListEvent.OnCreateNewCard -> updateState(currentState().copy(cards = repository.cards))
+            is CardListEvent.ReloadCardList -> updateState(currentState().copy(cards = repository.cards))
         }
     }
 }
