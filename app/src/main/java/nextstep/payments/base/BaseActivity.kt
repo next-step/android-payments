@@ -1,17 +1,21 @@
-package nextstep.payments
+package nextstep.payments.base
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class MainActivity : ComponentActivity() {
+abstract class BaseActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                Screen()
             }
         }
     }
+
+    @Composable
+    abstract fun Screen()
 }
