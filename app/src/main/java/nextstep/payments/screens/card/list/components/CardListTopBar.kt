@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +25,7 @@ fun CardListTopBar(
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.card_list_title)) },
         actions = {
-            IconButton(onClick = onAddClick) {
+            TextButton(onClick = onAddClick) {
                 Text(
                     text = stringResource(R.string.card_list_button_add),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W700),
