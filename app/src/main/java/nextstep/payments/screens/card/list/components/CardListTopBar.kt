@@ -31,7 +31,7 @@ fun CardListTopBar(
                 )
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = Color.White),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
         modifier = modifier,
     )
 }
@@ -43,7 +43,7 @@ fun CardListTopBar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(R.string.card_list_title)) },
-        colors = TopAppBarDefaults.topAppBarColors().copy(containerColor = Color.White),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White),
         modifier = modifier,
     )
 }
