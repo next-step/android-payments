@@ -1,7 +1,13 @@
 package nextstep.payments
 
+import androidx.compose.ui.test.assertAny
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.onChild
+import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.base.BaseComposableTest
@@ -134,8 +140,10 @@ class CardListScreenTest : BaseComposableTest() {
 
         // then
         composeTestRule
-            .onNodeWithText("추가")
-            .assertIsDisplayed()
+            .onNodeWithTag("CardListTopBar")
+            .onChildren()
+            .filter(hasText("추가"))
+            .assertCountEquals(1)
     }
 
     @Test
@@ -159,7 +167,9 @@ class CardListScreenTest : BaseComposableTest() {
 
         // then
         composeTestRule
-            .onNodeWithText("추가")
-            .assertIsNotDisplayed()
+            .onNodeWithTag("CardListTopBar")
+            .onChildren()
+            .filter(hasText("추가"))
+            .assertCountEquals(0)
     }
 }
