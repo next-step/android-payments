@@ -19,8 +19,22 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium12
+
+@Composable
+fun PaymentCard(
+    card: Card,
+    modifier: Modifier = Modifier,
+) {
+    PaymentCard(
+        cardNumber = card.cardNumber,
+        expiredDate = card.expiredDate,
+        ownerName = card.ownerName,
+        modifier = modifier,
+    )
+}
 
 @Composable
 fun PaymentCard(

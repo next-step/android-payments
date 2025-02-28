@@ -8,11 +8,11 @@ import nextstep.payments.model.Card
 data class CardListState(
     val cards: List<Card> = emptyList(),
 ): ScreenState {
-    val currentCardCount
+    val currentCardsState
         get() = when(cards.size) {
-            0 -> CardCount.NO_CARD
-            1 -> CardCount.ONE_CARD
-            else -> CardCount.CARDS
+            0 -> CardsState.NoCard
+            1 -> CardsState.OneCard(cards.first())
+            else -> CardsState.Cards(cards)
         }
 }
 
@@ -25,6 +25,8 @@ sealed class CardListSideEffect: ScreenSideEffect {
     data object NavigateToNewCardScreen: CardListSideEffect()
 }
 
-enum class CardCount {
-    NO_CARD, ONE_CARD, CARDS
+sealed class CardsState {
+    data object NoCard: CardsState()
+    data class OneCard(val card: Card): CardsState()
+    data class Cards(val cards: List<Card>): CardsState()
 }

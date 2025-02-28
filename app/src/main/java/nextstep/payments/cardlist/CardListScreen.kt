@@ -10,8 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
-import nextstep.payments.cardlist.component.CardListContent
+import nextstep.payments.cardlist.component.CardListCardsContent
 import nextstep.payments.cardlist.component.CardListNoCardContent
+import nextstep.payments.cardlist.component.CardListOneCardContent
 import nextstep.payments.cardlist.component.CardListTopBar
 import nextstep.payments.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -33,8 +34,7 @@ fun CardListScreen(
     }
 
     CardListScreen(
-        cards = state.value.cards,
-        cardCount = state.value.currentCardCount,
+        cardsState = state.value.currentCardsState,
         sendEvent = viewModel::sendEvent,
         modifier = modifier,
     )
@@ -42,23 +42,22 @@ fun CardListScreen(
 
 @Composable
 fun CardListScreen(
-    cards: List<Card>,
-    cardCount: CardCount,
+    cardsState: CardsState,
     sendEvent: (CardListEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             CardListTopBar(
-                isShowAddButton = cardCount == CardCount.CARDS,
+                isShowAddButton = cardsState is CardsState.Cards,
                 sendEvent = sendEvent,
                 modifier = Modifier.padding(horizontal = 20.dp),
             )
         },
         modifier = modifier,
     ) { paddingValue ->
-        when (cardCount) {
-            CardCount.NO_CARD -> {
+        when (cardsState) {
+            is CardsState.NoCard -> {
                 CardListNoCardContent(
                     sendEvent = sendEvent,
                     modifier = Modifier
@@ -67,10 +66,9 @@ fun CardListScreen(
                 )
             }
 
-            CardCount.ONE_CARD -> {
-                CardListContent(
-                    cardList = cards,
-                    cardCountState = CardCount.ONE_CARD,
+            is CardsState.OneCard -> {
+                CardListOneCardContent(
+                    cardsStateState = cardsState,
                     sendEvent = sendEvent,
                     modifier = Modifier
                         .padding(paddingValue)
@@ -78,14 +76,12 @@ fun CardListScreen(
                 )
             }
 
-            else -> {
-                CardListContent(
-                    cardList = cards,
-                    cardCountState = CardCount.CARDS,
-                    sendEvent = sendEvent,
+            is CardsState.Cards -> {
+                CardListCardsContent(
+                    cardsStateState = cardsState,
                     modifier = Modifier
                         .padding(paddingValue)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 )
             }
         }
@@ -97,8 +93,7 @@ fun CardListScreen(
 private fun CardListScreenNoCardPreview() {
     PaymentsTheme {
         CardListScreen(
-            cardCount = CardCount.NO_CARD,
-            cards = emptyList(),
+            cardsState = CardsState.NoCard,
             sendEvent = {},
         )
     }
@@ -109,11 +104,10 @@ private fun CardListScreenNoCardPreview() {
 private fun CardListScreenOneCardPreview() {
     PaymentsTheme {
         CardListScreen(
-            cardCount = CardCount.ONE_CARD,
-            cards = listOf(
+            cardsState = CardsState.OneCard(
                 Card(
                     id = 1,
-                    cardNumber = "1234-5678-9012-3456",
+                    cardNumber = "1234-5678-9012-3451",
                     expiredDate = "12/34",
                     ownerName = "홍길동",
                     password = "1234",
@@ -129,29 +123,23 @@ private fun CardListScreenOneCardPreview() {
 private fun CardListScreenCardsPreview() {
     PaymentsTheme {
         CardListScreen(
-            cardCount = CardCount.CARDS,
-            cards = listOf(
-                Card(
-                    id = 1,
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/34",
-                    ownerName = "홍길동",
-                    password = "1234",
-                ),
-                Card(
-                    id = 2,
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/34",
-                    ownerName = "홍길동",
-                    password = "1234",
-                ),
-                Card(
-                    id = 3,
-                    cardNumber = "1234-5678-9012-3456",
-                    expiredDate = "12/34",
-                    ownerName = "홍길동",
-                    password = "1234",
-                ),
+            cardsState = CardsState.Cards(
+                listOf(
+                    Card(
+                        id = 1,
+                        cardNumber = "1234-5678-9012-3452",
+                        expiredDate = "12/34",
+                        ownerName = "홍길동",
+                        password = "1234",
+                    ),
+                    Card(
+                        id = 2,
+                        cardNumber = "1234-5678-9012-3455",
+                        expiredDate = "12/34",
+                        ownerName = "홍길동",
+                        password = "1234",
+                    ),
+                )
             ),
             sendEvent = {},
         )
