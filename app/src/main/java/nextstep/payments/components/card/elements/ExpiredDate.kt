@@ -1,5 +1,6 @@
 package nextstep.payments.components.card.elements
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,7 +10,6 @@ import nextstep.payments.components.card.DefaultPaymentCardScope
 import nextstep.payments.components.card.PaymentCard
 import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.ui.theme.Typography
 
 private const val EXPIRED_DATE_GROUP_SIZE = 2
 private const val EXPIRED_DATE_SEPARATOR = " / "
@@ -19,7 +19,7 @@ fun PaymentCard.ExpiredDate(modifier: Modifier = Modifier) {
     Text(
         text = formatExpiredDate(card.expiredDate),
         color = Color.White,
-        style = Typography.bodySmall,
+        style = MaterialTheme.typography.bodySmall,
         modifier = modifier,
     )
 }

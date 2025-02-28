@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +28,6 @@ import nextstep.payments.domain.Card
 import nextstep.payments.screens.card.list.components.AddCard
 import nextstep.payments.screens.card.list.components.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.ui.theme.Typography
 
 @Composable
 fun CardListScreen(
@@ -93,7 +93,7 @@ fun CardListEmptyScreen(
             Spacer(Modifier.height(32.dp))
             Text(
                 text = stringResource(R.string.card_list_empty_please_add_your_new_card),
-                style = Typography.titleMedium.copy(fontWeight = FontWeight.W700),
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W700),
             )
             Spacer(Modifier.height(32.dp))
             AddCard(onAddCardClick = onAddCardClick)

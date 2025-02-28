@@ -1,5 +1,6 @@
 package nextstep.payments.components.card.elements
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,14 +10,13 @@ import nextstep.payments.components.card.DefaultPaymentCardScope
 import nextstep.payments.components.card.PaymentCard
 import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.ui.theme.Typography
 
 @Composable
 fun PaymentCard.OwnerName(modifier: Modifier = Modifier) {
     Text(
         text = card.ownerName,
         color = Color.White,
-        style = Typography.bodySmall,
+        style = MaterialTheme.typography.bodySmall,
         modifier = modifier,
     )
 }

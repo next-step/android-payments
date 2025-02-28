@@ -1,5 +1,6 @@
 package nextstep.payments.components.card.elements
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +11,6 @@ import nextstep.payments.components.card.DefaultPaymentCardScope
 import nextstep.payments.components.card.PaymentCard
 import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
-import nextstep.payments.ui.theme.Typography
 
 private const val MASK_SYMBOL = "*"
 private const val CARD_NUMBERS_SEPARATOR = " - "
@@ -23,7 +23,7 @@ fun PaymentCard.Numbers(modifier: Modifier = Modifier) {
     Text(
         text = formatCardNumbers(card.numbers),
         color = Color.White,
-        style = Typography.bodySmall.copy(letterSpacing = 2.0.sp),
+        style = MaterialTheme.typography.bodySmall.copy(letterSpacing = 2.0.sp),
         modifier = modifier,
     )
 }
