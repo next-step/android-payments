@@ -28,9 +28,9 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
-    modifier: Modifier = Modifier,
     navigateToCardList: () -> Unit,
     onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
