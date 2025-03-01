@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,10 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
+import nextstep.payments.newcard.component.BankSelectBottomSheet
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     popBackStack: () -> Unit,
@@ -32,12 +37,14 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val bankSelectBottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collectLatest {
             when (it) {
                 is NewCardSideEffect.NavigateBack -> popBackStack()
                 is NewCardSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
+                is NewCardSideEffect.HideBankSelectBottomSheet -> bankSelectBottomSheetState.hide()
             }
         }
     }
@@ -47,11 +54,13 @@ fun NewCardScreen(
         expiredDate = state.expiredDate,
         ownerName = state.ownerName,
         password = state.password,
+        bankSelectBottomSheetState = bankSelectBottomSheetState,
         sendEvent = viewModel::sendEvent,
         modifier = modifier
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NewCardScreen(
     cardNumber: String,
@@ -60,6 +69,7 @@ private fun NewCardScreen(
     password: String,
     sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
+    bankSelectBottomSheetState: SheetState = rememberModalBottomSheetState(),
 ) {
     Scaffold(
         topBar = { NewCardTopBar(sendEvent) },
@@ -115,6 +125,10 @@ private fun NewCardScreen(
                 visualTransformation = PasswordVisualTransformation(),
             )
         }
+        BankSelectBottomSheet(
+            sendEvent = sendEvent,
+            sheetState = bankSelectBottomSheetState,
+        )
     }
 }
 
@@ -130,6 +144,7 @@ private fun StatefulNewCardScreenPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {

@@ -3,12 +3,14 @@ package nextstep.payments.newcard
 import nextstep.payments.base.ScreenEvent
 import nextstep.payments.base.ScreenSideEffect
 import nextstep.payments.base.ScreenState
+import nextstep.payments.model.BankType
 
 data class NewCardState(
     val cardNumber: String = "",
     val expiredDate: String = "",
     val ownerName: String = "",
     val password: String = "",
+    val bankType: BankType = BankType.NOT_SELECTED,
 ): ScreenState
 
 sealed class NewCardEvent: ScreenEvent {
@@ -23,4 +25,5 @@ sealed class NewCardEvent: ScreenEvent {
 sealed class NewCardSideEffect: ScreenSideEffect {
     data object NavigateBack: NewCardSideEffect()
     data object NavigateBackWithNeedReload: NewCardSideEffect()
+    data object HideBankSelectBottomSheet: NewCardSideEffect()
 }
