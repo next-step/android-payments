@@ -11,7 +11,7 @@ import nextstep.payments.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListTopBar(
-    rightButton: @Composable () -> Unit,
+    rightButton: @Composable () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
