@@ -20,10 +20,12 @@ sealed class NewCardEvent: ScreenEvent {
     data class OnPasswordChange(val password: String): NewCardEvent()
     data object OnClickBackButton: NewCardEvent()
     data object OnClickCompleteButton: NewCardEvent()
+    data object OnClickPreviewCard: NewCardEvent()
 }
 
 sealed class NewCardSideEffect: ScreenSideEffect {
     data object NavigateBack: NewCardSideEffect()
     data object NavigateBackWithNeedReload: NewCardSideEffect()
+    data object ShowBankSelectBottomSheet: NewCardSideEffect()
     data object HideBankSelectBottomSheet: NewCardSideEffect()
 }

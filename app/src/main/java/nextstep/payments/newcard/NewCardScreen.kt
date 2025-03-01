@@ -1,5 +1,6 @@
 package nextstep.payments.newcard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,13 +38,18 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val bankSelectBottomSheetState = rememberModalBottomSheetState()
+    val bankSelectBottomSheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
 
     LaunchedEffect(Unit) {
+        bankSelectBottomSheetState.show()
+
         viewModel.sideEffect.collectLatest {
             when (it) {
                 is NewCardSideEffect.NavigateBack -> popBackStack()
                 is NewCardSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
+                is NewCardSideEffect.ShowBankSelectBottomSheet -> bankSelectBottomSheetState.show()
                 is NewCardSideEffect.HideBankSelectBottomSheet -> bankSelectBottomSheetState.hide()
             }
         }
@@ -88,6 +94,7 @@ private fun NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
+                modifier = Modifier.clickable { sendEvent(NewCardEvent.OnClickPreviewCard) }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -125,10 +132,14 @@ private fun NewCardScreen(
                 visualTransformation = PasswordVisualTransformation(),
             )
         }
-        BankSelectBottomSheet(
-            sendEvent = sendEvent,
-            sheetState = bankSelectBottomSheetState,
-        )
+
+        if (bankSelectBottomSheetState.isVisible) {
+            BankSelectBottomSheet(
+                sendEvent = sendEvent,
+                sheetState = bankSelectBottomSheetState,
+            )
+
+        }
     }
 }
 

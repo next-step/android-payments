@@ -18,6 +18,7 @@ class NewCardViewModel(
             is NewCardEvent.OnPasswordChange -> setPassword(event.password)
             is NewCardEvent.OnClickBackButton -> sendSideEffect(NewCardSideEffect.NavigateBack)
             is NewCardEvent.OnClickCompleteButton -> createNewCard()
+            is NewCardEvent.OnClickPreviewCard -> sendSideEffect(NewCardSideEffect.ShowBankSelectBottomSheet)
         }
     }
 
