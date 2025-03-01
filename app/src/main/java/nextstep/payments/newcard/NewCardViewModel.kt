@@ -1,10 +1,11 @@
-package nextstep.payments
+package nextstep.payments.newcard
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.model.Card
+import nextstep.payments.PaymentCardsRepository
+import nextstep.payments.common.model.Card
 
 class NewCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = PaymentCardsRepository
@@ -39,7 +40,7 @@ class NewCardViewModel(
     }
 
     fun addCard() {
-        paymentCardsRepository.addCard(
+        PaymentCardsRepository.addCard(
             Card(
                 cardNumber = _cardNumber.value,
                 expiredDate = _expiredDate.value,

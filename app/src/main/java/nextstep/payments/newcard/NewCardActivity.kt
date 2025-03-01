@@ -1,11 +1,11 @@
-package nextstep.payments
+package nextstep.payments.newcard
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import nextstep.payments.screen.NewCardScreen
+import nextstep.payments.newcard.screen.NewCardScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class NewCardActivity : ComponentActivity() {

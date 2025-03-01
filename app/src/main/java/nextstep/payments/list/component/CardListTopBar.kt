@@ -1,4 +1,4 @@
-package nextstep.payments.component.topbar
+package nextstep.payments.list.component
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api

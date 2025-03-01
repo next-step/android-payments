@@ -1,4 +1,6 @@
-package nextstep.payments.model
+package nextstep.payments.list.model
+
+import nextstep.payments.common.model.Card
 
 sealed interface CardUiState {
     data object Empty : CardUiState

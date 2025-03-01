@@ -1,4 +1,4 @@
-package nextstep.payments.screen
+package nextstep.payments.list.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,11 +17,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.CardListViewModel
+import nextstep.payments.list.CardListViewModel
 import nextstep.payments.R
-import nextstep.payments.component.EmptyCard
-import nextstep.payments.component.topbar.CardListTopBar
-import nextstep.payments.model.CardUiState
+import nextstep.payments.common.component.EmptyCard
+import nextstep.payments.list.component.CardListTopBar
+import nextstep.payments.list.model.CardUiState
 
 @Composable
 fun CardListRoute(

@@ -1,6 +1,6 @@
 package nextstep.payments
 
-import nextstep.payments.model.Card
+import nextstep.payments.common.model.Card
 
 object PaymentCardsRepository {
     private val _cards = mutableListOf<Card>()

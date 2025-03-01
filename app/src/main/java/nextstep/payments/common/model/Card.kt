@@ -1,4 +1,4 @@
-package nextstep.payments.model
+package nextstep.payments.common.model
 
 data class Card(
     val cardNumber: String,
