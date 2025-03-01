@@ -19,7 +19,7 @@ class RegisteredPaymentCardTest {
         expiredDate = "0421",
         ownerName = "CREW",
         password = "0000",
-        cardCompany = CardCompany.LOTTE,
+        cardCompany = CardCompany(id = 1, name = "KAKAO"),
     )
 
     @Before
