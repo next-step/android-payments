@@ -29,8 +29,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
-import nextstep.payments.data.model.CardInputType
-import nextstep.payments.data.model.cardCompanyList
+import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
@@ -49,7 +48,7 @@ fun Card(model: Card) {
         )
         {
             Text(
-                text = model.company?.name.orEmpty(),
+                text = model.company?.displayName.orEmpty(),
                 style = Typography.bodySmall,
                 color = textColor,
             )
@@ -63,7 +62,7 @@ fun Card(model: Card) {
                     ),
             )
             Text(
-                text = CardInputType.CardNumber.maskingText(model.number),
+                text = cardNumberMaskingText(model.number),
                 style = Typography.bodySmall,
                 color = textColor,
             )
@@ -74,12 +73,12 @@ fun Card(model: Card) {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = CardInputType.OwnerName.maskingText(model.ownerName),
+                    text = model.ownerName,
                     style = Typography.bodySmall,
                     color = textColor,
                 )
                 Text(
-                    text = CardInputType.ExpiredDate.maskingText(model.expiredDate),
+                    text = expiredDateMaskingText(model.expiredDate),
                     style = Typography.bodySmall,
                     color = textColor,
                 )
@@ -97,7 +96,7 @@ fun Card(model: Card) {
                     .clip(CircleShape)
                     .size(24.dp),
                 placeholder = painterResource(R.drawable.loading_img),
-                contentDescription = stringResource(R.string.company_image, company.name),
+                contentDescription = stringResource(R.string.company_image, company.displayName),
             )
         }
     }
@@ -137,7 +136,7 @@ private fun PaymentCardPreview() {
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(0),
+                    company = CardCompany.BC,
                 )
             )
 
@@ -147,7 +146,7 @@ private fun PaymentCardPreview() {
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(1),
+                    company = CardCompany.SHINHAN,
                 )
             )
 
@@ -157,7 +156,7 @@ private fun PaymentCardPreview() {
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(2),
+                    company = CardCompany.KAKAO,
                 )
             )
         }
@@ -167,4 +166,17 @@ private fun PaymentCardPreview() {
 private fun Color.getTextColorForBackground(): Color {
     val luminance = (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue)
     return if (luminance > 0.5) Color.Black else Color.White
+}
+
+private fun cardNumberMaskingText(value: String): String {
+    val maskingText = value.take(8) + "*".repeat((value.length - 8).coerceAtLeast(0))
+    var output = ""
+    maskingText.forEachIndexed { index, c ->
+        output += c + if (index % 4 == 3) "-" else ""
+    }
+    return output.dropLastWhile { it == '-' }
+}
+
+private fun expiredDateMaskingText(value: String): String {
+    return if (value.length > 2) "${value.take(2)}/${value.takeLast(2)}" else value
 }

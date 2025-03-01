@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,11 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.model.CardCompany
-import nextstep.payments.data.model.CardInputType
-import nextstep.payments.data.model.cardCompanyList
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAddTopBar
-import nextstep.payments.ui.component.CardInputField
+import nextstep.payments.ui.component.CardInputFields
 import nextstep.payments.ui.component.CardSelectSheet
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.toCardList
@@ -73,7 +70,7 @@ fun CardAddScreen(
         topBar = {
             CardAddTopBar(
                 onBackClick = onBackPressed,
-                onCheckClick = { onAddClicked() },
+                onCheckClick = onAddClicked,
             )
         },
     ) { innerPadding ->
@@ -108,7 +105,6 @@ fun CardAddScreen(
                     onDismissRequest = { onCardCompanyBottomSheetState(CardCompanyBottomSheetState.Hide) },
                 ) {
                     CardSelectSheet(
-                        cardCompanyList = cardCompanyList,
                         selectedCompany = card.company,
                         onCardCompanyChange = onCardCompanyChange
                     )
@@ -154,54 +150,6 @@ fun CardAddScreen(
         onCardCompanyChange = viewModel::setCardCompany,
         onCardCompanyBottomSheetState = viewModel::setCardCompanyBottomSheetState,
     )
-}
-
-@Composable
-private fun CardInputFields(
-    card: Card,
-    onCardNumberChange: (String) -> Unit,
-    onExpiredDateChange: (String) -> Unit,
-    onOwnerNameChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 24.dp)
-    ) {
-        CardInputField(
-            value = card.number,
-            onValueChange = onCardNumberChange,
-            labelText = stringResource(R.string.card_number_label),
-            placeHolderText = stringResource(R.string.card_number_placeholder),
-            type = CardInputType.CardNumber,
-        )
-
-        CardInputField(
-            value = card.expiredDate,
-            onValueChange = onExpiredDateChange,
-            labelText = stringResource(R.string.card_expired_date_label),
-            placeHolderText = stringResource(R.string.card_expired_date_placeholder),
-            type = CardInputType.ExpiredDate,
-        )
-
-        CardInputField(
-            value = card.ownerName,
-            onValueChange = onOwnerNameChange,
-            labelText = stringResource(R.string.card_owner_name_label),
-            placeHolderText = stringResource(R.string.card_owner_name_placeholder),
-            type = CardInputType.OwnerName,
-        )
-
-        CardInputField(
-            value = card.password,
-            onValueChange = onPasswordChange,
-            labelText = stringResource(R.string.card_password_label),
-            placeHolderText = stringResource(R.string.card_password_placeholder),
-            type = CardInputType.Password,
-        )
-    }
 }
 
 @Preview

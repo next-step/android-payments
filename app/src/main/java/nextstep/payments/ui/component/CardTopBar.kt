@@ -3,8 +3,10 @@ package nextstep.payments.ui.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -25,109 +27,115 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.ui.theme.PaymentsTheme
 
+
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CardTopBar(
-    title: String,
-    titleTextAlign: TextAlign,
-    modifier: Modifier = Modifier,
-    onBackClick: (() -> Unit),
-    actionButton: @Composable RowScope.() -> Unit,
-) {
-    TopAppBar(
-        modifier = modifier.fillMaxWidth(),
-        title = {
-            Text(
-                text = title,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = titleTextAlign
-            )
-        },
-        navigationIcon = {
-            TopBarIcon(
-                onClick = onBackClick?.let { onBackClick },
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.back)
-            )
-        },
-        actions = {
-            actionButton()
-
-        },
-    )
-}
-
 @Composable
 fun CardAddTopBar(
     onBackClick: () -> Unit,
     onCheckClick: () -> Unit,
 ) {
-    CardTopBar(
-        title = stringResource(R.string.add),
-        titleTextAlign = TextAlign.Start,
-        onBackClick = onBackClick,
-        actionButton = {
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+            Title(
+                title = stringResource(R.string.add),
+                textAlign = TextAlign.Start,
+            )
+        },
+        navigationIcon = {
+            BackButton(onBackClick)
+        },
+        actions = {
             TopBarIcon(
                 onClick = onCheckClick,
-                imageVector = Icons.Filled.Check,
-                contentDescription = stringResource(R.string.check),
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = stringResource(R.string.check)
+                    )
+                }
             )
         },
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardListTopBar() {
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+            Title(
+                title = stringResource(R.string.payments),
+                textAlign = TextAlign.Center,
+            )
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListTopBar(
-    onAddClick: (() -> Unit)?,
+    onAddClick: (() -> Unit),
 ) {
-    CardTopBar(
-        title = stringResource(R.string.payments),
-        titleTextAlign = TextAlign.Center,
-        actionButton = {
-            TopBarActionText(
-                onClick = onAddClick,
-                text = stringResource(R.string.add)
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        title = {
+            Title(
+                title = stringResource(R.string.payments),
+                textAlign = TextAlign.Center,
             )
         },
-        onBackClick = {},
+        actions = {
+            TopBarIcon(
+                onClick = onAddClick,
+                icon = {
+                    Text(text = stringResource(R.string.add))
+                }
+            )
+        },
+        navigationIcon = {
+            Spacer(modifier = Modifier.size(iconSize))
+        }
+    )
+}
+
+private val iconSize = 50.dp
+
+@Composable
+private fun BackButton(onBackClick: () -> Unit) {
+    TopBarIcon(
+        onClick = onBackClick,
+        icon = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.back)
+            )
+        }
+    )
+}
+
+@Composable
+private fun Title(title: String, textAlign: TextAlign) {
+    Text(
+        text = title,
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = textAlign
     )
 }
 
 @Composable
 private fun TopBarIcon(
-    onClick: (() -> Unit)?,
-    imageVector: ImageVector,
-    contentDescription: String,
+    icon: (@Composable BoxScope.() -> Unit),
+    onClick: (() -> Unit),
 ) {
     Box(
         modifier = Modifier
-            .size(50.dp)
-            .then(if (onClick != null) Modifier.clickable { onClick.invoke() } else Modifier),
+            .size(iconSize)
+            .then(Modifier.clickable { onClick.invoke() }),
         contentAlignment = Alignment.Center,
     ) {
-        onClick?.let {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = contentDescription,
-            )
-        }
-    }
-}
-
-@Composable
-private fun TopBarActionText(
-    onClick: (() -> Unit)?,
-    text: String,
-) {
-    Box(
-        modifier = Modifier
-            .size(50.dp)
-            .then(if (onClick != null) Modifier.clickable { onClick.invoke() } else Modifier),
-        contentAlignment = Alignment.Center,
-    ) {
-        onClick?.let {
-            Text(text = text)
-        }
+        icon()
     }
 }
 

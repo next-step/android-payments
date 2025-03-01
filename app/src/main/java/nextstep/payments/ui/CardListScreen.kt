@@ -46,21 +46,12 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 }
 
 @Composable
-fun CardListScreen(
-    cardsUiState: CardsUiState,
-) {
-    val context = LocalContext.current
-
-    Scaffold(
-        topBar = {
-            CardListTopBar(
-                onAddClick = { context.toCardAdd() }.takeIf { cardsUiState is CardsUiState.Many }
-            )
-        }
-    ) { innerPadding ->
+fun CardListScreen(cardsUiState: CardsUiState) {
+    Scaffold(topBar = {
+        CardListTopBar(cardsUiState)
+    }) { innerPadding ->
         CardList(
-            cardsUiState = cardsUiState,
-            modifier = Modifier
+            cardsUiState = cardsUiState, modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         )
@@ -68,9 +59,19 @@ fun CardListScreen(
 }
 
 @Composable
+private fun CardListTopBar(cardsUiState: CardsUiState) {
+    val context = LocalContext.current
+
+    if (cardsUiState is CardsUiState.Many) {
+        CardListTopBar(onAddClick = { context.toCardAdd() })
+    } else {
+        CardListTopBar()
+    }
+}
+
+@Composable
 private fun CardList(
-    cardsUiState: CardsUiState,
-    modifier: Modifier = Modifier
+    cardsUiState: CardsUiState, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier,
@@ -105,8 +106,7 @@ private fun EmptyCardList(modifier: Modifier = Modifier) {
 
 @Composable
 private fun OneCardList(
-    card: Card,
-    modifier: Modifier = Modifier
+    card: Card, modifier: Modifier = Modifier
 ) {
     ParentCardList(modifier) {
         Card(card)
@@ -116,8 +116,7 @@ private fun OneCardList(
 
 @Composable
 private fun ManyCardList(
-    cards: List<Card>,
-    modifier: Modifier = Modifier
+    cards: List<Card>, modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier,
@@ -126,10 +125,7 @@ private fun ManyCardList(
         contentPadding = PaddingValues(top = verticalPadding)
     ) {
 
-        items(
-            items = cards,
-            key = { it -> it.number + it.updated }
-        ) { card ->
+        items(items = cards, key = { it -> it.number + it.updated }) { card ->
             Card(card)
         }
     }

@@ -1,9 +1,11 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,78 +13,201 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.data.model.CardInputType
+import nextstep.payments.R
+import nextstep.payments.data.model.Card
+import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.utils.CardNumberVisualTransformation
+import nextstep.payments.utils.ExpirationDateVisualTransformation
+
+@Composable
+internal fun CardInputFields(
+    card: Card,
+    onCardNumberChange: (String) -> Unit,
+    onExpiredDateChange: (String) -> Unit,
+    onOwnerNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .padding(vertical = 10.dp, horizontal = 24.dp)
+    ) {
+        CardNumberInputField(
+            value = card.number,
+            onValueChange = onCardNumberChange,
+        )
+        OwnerNameInputField(
+            value = card.ownerName,
+            onValueChange = onOwnerNameChange,
+        )
+        ExpireDateInputField(
+            value = card.expiredDate,
+            onValueChange = onExpiredDateChange,
+        )
+        PasswordInputField(
+            value = card.password,
+            onValueChange = onPasswordChange,
+        )
+    }
+}
 
 @Composable
 internal fun CardInputField(
     value: String,
     onValueChange: (String) -> Unit,
+    maxLength: Int,
     labelText: String,
     placeHolderText: String,
-    type: CardInputType,
+    keyboardType: KeyboardType,
+    visualTransformation: VisualTransformation,
     modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = { it -> onValueChange(it.take(type.maxLength)) },
+        onValueChange = { it -> onValueChange(it.take(maxLength)) },
         label = { Text(labelText) },
         placeholder = { Text(placeHolderText) },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
-        visualTransformation = type.visualTransformation,
-        keyboardOptions = type.keyboardOptions,
+        visualTransformation = visualTransformation,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+    )
+}
+
+@Composable
+private fun CardNumberInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CardInputField(
+        value = value,
+        onValueChange = onValueChange,
+        maxLength = 16,
+        labelText = stringResource(R.string.card_number_label),
+        placeHolderText = stringResource(R.string.card_number_placeholder),
+        keyboardType = KeyboardType.Number,
+        visualTransformation = CardNumberVisualTransformation(),
+    )
+}
+
+@Composable
+private fun OwnerNameInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CardInputField(
+        value = value,
+        onValueChange = onValueChange,
+        maxLength = 20,
+        labelText = stringResource(R.string.card_owner_name_label),
+        placeHolderText = stringResource(R.string.card_owner_name_placeholder),
+        keyboardType = KeyboardType.Text,
+        visualTransformation = VisualTransformation.None,
+    )
+}
+
+@Composable
+private fun ExpireDateInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CardInputField(
+        value = value,
+        onValueChange = onValueChange,
+        maxLength = 4,
+        labelText = stringResource(R.string.card_expired_date_label),
+        placeHolderText = stringResource(R.string.card_expired_date_placeholder),
+        keyboardType = KeyboardType.Number,
+        visualTransformation = ExpirationDateVisualTransformation()
+    )
+}
+
+@Composable
+private fun PasswordInputField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    CardInputField(
+        value = value,
+        onValueChange = onValueChange,
+        maxLength = 4,
+        labelText = stringResource(R.string.card_password_label),
+        placeHolderText = stringResource(R.string.card_password_placeholder),
+        keyboardType = KeyboardType.NumberPassword,
+        visualTransformation = PasswordVisualTransformation(),
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CardInputFiledPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
-    ) {
+private fun CardNumberInputFieldPreview() {
+    var cardNumber by remember { mutableStateOf("") }
 
-        var cardNumber by remember { mutableStateOf("") }
-        var name by remember { mutableStateOf("") }
-        var expiredDate by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+    PaymentsTheme {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            CardNumberInputField(
+                value = cardNumber,
+                onValueChange = { cardNumber = it },
+            )
+        }
+    }
+}
 
+@Preview(showBackground = true)
+@Composable
+private fun OwnerNameInputFieldPreview() {
+    var name by remember { mutableStateOf("") }
 
-        CardInputField(
-            value = cardNumber.take(16),
-            onValueChange = { cardNumber = it },
-            labelText = "카드번호",
-            placeHolderText = "0000-0000-0000-0000",
-            type = CardInputType.CardNumber,
-        )
+    PaymentsTheme {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OwnerNameInputField(
+                value = name,
+                onValueChange = { name = it },
+            )
+        }
+    }
+}
 
-        CardInputField(
-            value = expiredDate.take(4),
-            onValueChange = { expiredDate = it },
-            labelText = "만료일",
-            placeHolderText = "MM/YY",
-            type = CardInputType.ExpiredDate,
-        )
+@Preview(showBackground = true)
+@Composable
+private fun ExpireDateInputFieldPreview() {
+    var expiredDate by remember { mutableStateOf("") }
 
-        CardInputField(
-            value = name,
-            onValueChange = { name = it },
-            labelText = "이름 (선택)",
-            placeHolderText = "카드 소유자",
-            type = CardInputType.OwnerName,
-        )
+    PaymentsTheme {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            ExpireDateInputField(
+                value = expiredDate,
+                onValueChange = { expiredDate = it },
+            )
+        }
+    }
+}
 
-        CardInputField(
-            value = password.take(4),
-            onValueChange = { password = it },
-            labelText = "비밀번호",
-            placeHolderText = "비밀번호",
-            type = CardInputType.Password,
-        )
+@Preview(showBackground = true)
+@Composable
+private fun PasswordInputFiledPreview() {
+    var password by remember { mutableStateOf("") }
+
+    PaymentsTheme {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            PasswordInputField(
+                value = password,
+                onValueChange = { password = it },
+            )
+        }
     }
 }
