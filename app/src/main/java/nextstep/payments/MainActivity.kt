@@ -2,16 +2,12 @@ package nextstep.payments
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import nextstep.payments.model.PaymentsRoute
-import nextstep.payments.screen.CardListScreen
-import nextstep.payments.screen.NewCardScreen
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.screen.CardListRoute
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,25 +15,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                Scaffold(
-                    modifier = Modifier
-                ) { innerPadding ->
-                    val navController = rememberNavController()
-                    NavHost(
-                        navController = navController,
-                        startDestination = PaymentsRoute.List,
-                        modifier = Modifier.padding(innerPadding)
-                    ) {
-                        composable<PaymentsRoute.List> {
-                            CardListScreen()
-                        }
-                        composable<PaymentsRoute.Add> {
-                            NewCardScreen(
-                                onBack = navController::popBackStack
-                            )
-                        }
+                val context = LocalContext.current
+                val viewModel: CardListViewModel = viewModel()
+                val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                    if (it.resultCode == RESULT_OK) {
+                        viewModel.fetchCards()
                     }
                 }
+
+                CardListRoute(
+                    viewModel = viewModel,
+                    moveToAddCard = {
+                        launcher.launch(NewCardActivity.intent(context = context))
+                    }
+                )
             }
         }
     }
