@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +19,9 @@ import nextstep.payments.newcard.NewCardViewModel
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
 import nextstep.payments.newcard.component.CardNumberTextField
+import nextstep.payments.newcard.component.ExpiredDateTextField
+import nextstep.payments.newcard.component.OwnerNameTextField
+import nextstep.payments.newcard.component.PasswordTextField
 
 @Composable
 fun NewCardScreen(
@@ -90,45 +90,32 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             CardNumberTextField(
+                modifier = Modifier.fillMaxWidth(),
                 cardNumber = cardNumber,
                 setCardNumber = setCardNumber
             )
 
-            OutlinedTextField(
-                value = expiredDate,
-                onValueChange = {
-                    if (it.length < 4) {
-                        setExpiredDate(it)
-                    }
-                },
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
+            ExpiredDateTextField(
                 modifier = Modifier.fillMaxWidth(),
+                expiredDate = expiredDate,
+                setExpiredDate = setExpiredDate
             )
 
-            OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
+            OwnerNameTextField(
                 modifier = Modifier.fillMaxWidth(),
+                ownerName = ownerName,
+                setOwnerName = setOwnerName
             )
 
-            OutlinedTextField(
-                value = password,
-                onValueChange = {
-                    if (it.length < 4) {
-                        setOwnerName(it)
-                    }
-                },
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
+            PasswordTextField(
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                password = password,
+                setPassword = setPassword
             )
         }
     }
 }
+
 
 @Preview
 @Composable
