@@ -14,11 +14,11 @@ class CardListViewModel(
     val uiState: StateFlow<CardUiState> = _uiState.asStateFlow()
 
     fun fetchCards() {
-        val size = PaymentCardsRepository.cards.size
+        val size = cardsRepository.cards.size
         _uiState.value = when (size) {
             0 -> CardUiState.Empty
-            1 -> CardUiState.One(PaymentCardsRepository.cards.first())
-            else -> CardUiState.Many(PaymentCardsRepository.cards)
+            1 -> CardUiState.One(cardsRepository.cards.first())
+            else -> CardUiState.Many(cardsRepository.cards)
         }
     }
 }

@@ -40,7 +40,7 @@ class NewCardViewModel(
     }
 
     fun addCard() {
-        PaymentCardsRepository.addCard(
+        paymentCardsRepository.addCard(
             Card(
                 cardNumber = _cardNumber.value,
                 expiredDate = _expiredDate.value,
