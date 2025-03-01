@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.components.card.RegisteredPaymentCard
 import nextstep.payments.domain.Card
+import nextstep.payments.domain.CardCompany
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +18,8 @@ class RegisteredPaymentCardTest {
         numbers = "1111222233334444",
         expiredDate = "0421",
         ownerName = "CREW",
-        password = "0000"
+        password = "0000",
+        cardCompany = CardCompany.LOTTE,
     )
 
     @Before

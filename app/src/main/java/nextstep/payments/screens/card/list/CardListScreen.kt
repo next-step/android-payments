@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.components.card.RegisteredPaymentCard
 import nextstep.payments.domain.Card
+import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.list.components.AddCard
 import nextstep.payments.screens.card.list.components.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -169,7 +170,8 @@ private fun Preview2() {
             numbers = "0000000000000000",
             expiredDate = "0000",
             ownerName = "CREW",
-            password = "0000"
+            password = "0000",
+            cardCompany = CardCompany.KB,
         )
         CardListWithOneCardScreen(
             card = card,
@@ -187,13 +189,15 @@ private fun Preview3() {
                 numbers = "1111222200000000",
                 expiredDate = "0522",
                 ownerName = "CREW",
-                password = "0000"
+                password = "0000",
+                cardCompany = CardCompany.BC,
             ),
             Card(
                 numbers = "0000000000000000",
                 expiredDate = "0421",
                 ownerName = "BANDAL",
-                password = "0000"
+                password = "0000",
+                cardCompany = CardCompany.HANA,
             ),
         )
         CardListWithManyCardScreen(

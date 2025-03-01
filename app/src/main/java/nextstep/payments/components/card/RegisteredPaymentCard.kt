@@ -14,6 +14,7 @@ import nextstep.payments.components.card.elements.IcChip
 import nextstep.payments.components.card.elements.Numbers
 import nextstep.payments.components.card.elements.OwnerName
 import nextstep.payments.domain.Card
+import nextstep.payments.domain.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -46,7 +47,8 @@ private fun RegisteredPaymentCardPreview() {
             numbers = "1111222200000000",
             expiredDate = "0421",
             ownerName = "CREW",
-            password = "0000"
+            password = "0000",
+            cardCompany = CardCompany.KAKAO,
         )
         RegisteredPaymentCard(
             card = card,
