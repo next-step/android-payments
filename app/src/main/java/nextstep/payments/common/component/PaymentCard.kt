@@ -60,7 +60,7 @@ fun PaymentCard(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = card.cardNumber,
+                    text = maskCardNumber(card.cardNumber),
                     fontSize = 12.sp,
                     lineHeight = 14.06.sp,
                     letterSpacing = 2.04.sp,
@@ -95,11 +95,16 @@ fun PaymentCard(
     }
 }
 
+private fun maskCardNumber(cardNumber: String): String {
+    val parts = cardNumber.split(" - ")
+    return "${parts[0]} - ${parts[1]} - **** - ****"
+}
+
 class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
-            cardNumber = "1111 - 2222 - **** - ****",
+            cardNumber = "1111 - 2222 - 3333 - 4444",
             expiredDate = "12/25",
             ownerName = "CREW",
             password = "1234",
