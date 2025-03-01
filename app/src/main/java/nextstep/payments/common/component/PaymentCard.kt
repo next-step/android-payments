@@ -20,14 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.common.model.Card
 
 @Composable
 fun PaymentCard(
-    card: Card,
     modifier: Modifier = Modifier,
+    card: Card? = null,
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -49,52 +51,54 @@ fun PaymentCard(
                     shape = RoundedCornerShape(4.dp),
                 )
         )
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = card.cardNumber,
-                fontSize = 12.sp,
-                lineHeight = 14.06.sp,
-                letterSpacing = 2.04.sp,
-                fontWeight = FontWeight.W500,
-                color = Color.White,
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
+
+        if (card != null) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
             ) {
                 Text(
-                    text = card.ownerName,
+                    modifier = Modifier.fillMaxWidth(),
+                    text = card.cardNumber,
                     fontSize = 12.sp,
                     lineHeight = 14.06.sp,
-                    letterSpacing = 1.2.sp,
+                    letterSpacing = 2.04.sp,
                     fontWeight = FontWeight.W500,
                     color = Color.White,
                 )
-                Text(
-                    text = card.expiredDate,
-                    fontSize = 12.sp,
-                    lineHeight = 14.06.sp,
-                    letterSpacing = 0.96.sp,
-                    fontWeight = FontWeight.W500,
-                    color = Color.White,
-                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = card.ownerName,
+                        fontSize = 12.sp,
+                        lineHeight = 14.06.sp,
+                        letterSpacing = 1.2.sp,
+                        fontWeight = FontWeight.W500,
+                        color = Color.White,
+                    )
+                    Text(
+                        text = card.expiredDate,
+                        fontSize = 12.sp,
+                        lineHeight = 14.06.sp,
+                        letterSpacing = 0.96.sp,
+                        fontWeight = FontWeight.W500,
+                        color = Color.White,
+                    )
+                }
             }
         }
     }
 }
 
-@Preview
-@Composable
-private fun PaymentCardPreview() {
-    PaymentCard(
-        card = Card(
+class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
+    override val values = sequenceOf(
+        null,
+        Card(
             cardNumber = "1111 - 2222 - **** - ****",
             expiredDate = "12/25",
             ownerName = "CREW",
@@ -102,3 +106,13 @@ private fun PaymentCardPreview() {
         )
     )
 }
+@Preview
+@Composable
+private fun PaymentCardPreview(
+    @PreviewParameter(CardPreviewParameterProvider::class) card: Card?
+) {
+    PaymentCard(
+        card = card
+    )
+}
+
