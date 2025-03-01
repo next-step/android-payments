@@ -20,10 +20,12 @@ import nextstep.payments.R
 @Composable
 fun ExpiredDateTextField(
     expiredDate: String,
-    setExpiredDate: (String) -> Unit
+    setExpiredDate: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val placeholder = remember { "MM / YY" }
     OutlinedTextField(
+        modifier = modifier,
         value = expiredDate,
         onValueChange = {
             if (it.length <= 4) {
@@ -35,8 +37,8 @@ fun ExpiredDateTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
+
         visualTransformation = ExpiredDateVisualTransformation(),
-        modifier = Modifier.fillMaxWidth(),
     )
 }
 

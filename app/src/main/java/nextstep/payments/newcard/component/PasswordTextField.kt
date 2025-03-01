@@ -13,11 +13,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import nextstep.payments.R
 
 @Composable
-fun PasswordTextField(password: String, setPassword: (String) -> Unit) {
+fun PasswordTextField(
+    password: String,
+    setPassword: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val placeholder = remember { "0000" }
 
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         value = password,
         onValueChange = {
             if (it.length <= 4) {

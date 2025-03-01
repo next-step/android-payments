@@ -20,10 +20,12 @@ import nextstep.payments.R
 @Composable
 fun CardNumberTextField(
     cardNumber: String,
-    setCardNumber: (String) -> Unit
+    setCardNumber: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val placeholder = remember { "0000 - 0000 - 0000 - 0000" }
     OutlinedTextField(
+        modifier = modifier,
         value = cardNumber,
         onValueChange = { number ->
             if (number.length <= 16) {
@@ -36,7 +38,6 @@ fun CardNumberTextField(
             keyboardType = KeyboardType.Number
         ),
         visualTransformation = FourDigitDashVisualTransformation(),
-        modifier = Modifier.fillMaxWidth(),
     )
 }
 
