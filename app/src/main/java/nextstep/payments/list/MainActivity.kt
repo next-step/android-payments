@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.newcard.NewCardActivity
-import nextstep.payments.list.screen.CardListRoute
+import nextstep.payments.list.screen.CardListScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                CardListRoute(
+                CardListScreen(
                     viewModel = viewModel,
                     moveToAddCard = {
                         launcher.launch(NewCardActivity.intent(context = context))
