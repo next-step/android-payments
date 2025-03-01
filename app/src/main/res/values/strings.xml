@@ -2,4 +2,5 @@
     <string name="app_name">Payments</string>
     <string name="add">추가</string>
     <string name="add_new_card">새로운 카드를 등록해주세요</string>
+    <string name="card_number">카드 번호</string>
 </resources>

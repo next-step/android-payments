@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.newcard.NewCardViewModel
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
+import nextstep.payments.newcard.component.CardNumberTextField
 
 @Composable
 fun NewCardScreen(
@@ -88,17 +89,18 @@ fun NewCardScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
+            CardNumberTextField(
+                cardNumber = cardNumber,
+                setCardNumber = setCardNumber
             )
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = setExpiredDate,
+                onValueChange = {
+                    if (it.length < 4) {
+                        setExpiredDate(it)
+                    }
+                },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
@@ -114,7 +116,11 @@ fun NewCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = setPassword,
+                onValueChange = {
+                    if (it.length < 4) {
+                        setOwnerName(it)
+                    }
+                },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),

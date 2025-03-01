@@ -96,15 +96,17 @@ fun PaymentCard(
 }
 
 private fun maskCardNumber(cardNumber: String): String {
-    val parts = cardNumber.split(" - ")
-    return "${parts[0]} - ${parts[1]} - **** - ****"
+    val numbers = cardNumber.chunked(4)
+    val maskedNumber = "****"
+    val masked = numbers.subList(0, 2) + maskedNumber + maskedNumber
+    return masked.joinToString(separator = " - ")
 }
 
 class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
-            cardNumber = "1111 - 2222 - 3333 - 4444",
+            cardNumber = "1111222233334444",
             expiredDate = "12/25",
             ownerName = "CREW",
             password = "1234",
