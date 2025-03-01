@@ -12,13 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.common.component.EmptyCard
+import nextstep.payments.common.model.Card
 
 @Composable
-fun CardsEmptyScreen(
+fun EmptyCardsScreen(
     moveToAddCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,3 +43,12 @@ fun CardsEmptyScreen(
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyCardsScreenPreview() {
+    EmptyCardsScreen(
+        moveToAddCard = {}
+    )
+}
+
