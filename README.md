@@ -33,7 +33,7 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 - [ ] 카드 수정 기능 구현
     - [ ] 카드 목록에서 카드 선택 시, 수정 화면으로 이동
         - [x] CardAddActivity -> CardAddModifyActivity
-        - [ ] 카드 선택 시, CardAddActivity 에 Card의 id 를 파라미터로 전달
+        - [x] 카드 선택 시, CardAddActivity 에 Card의 id 를 파라미터로 전달
         - [ ] CardAddModify 에서, Card id 에 값이 있다면, Card 정보 repository 에서 호출
         - [ ] 받아온 카드 정보 입력창에 설정
         - [ ] 수정으로 진입 시, 상단 체크버튼 수정 버튼으로 변경

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -19,7 +18,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +29,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardAddTopBar(
+    title: String,
     onBackClick: () -> Unit,
     onCheckClick: () -> Unit,
 ) {
@@ -38,7 +37,7 @@ fun CardAddTopBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
             Title(
-                title = stringResource(R.string.add),
+                title = title,
                 textAlign = TextAlign.Start,
             )
         },
@@ -148,6 +147,7 @@ private fun CardTopBarPreview() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             CardAddTopBar(
+                title = stringResource(R.string.add_card),
                 onBackClick = {},
                 onCheckClick = {},
             )

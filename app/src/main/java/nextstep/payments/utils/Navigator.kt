@@ -11,7 +11,7 @@ fun Context.toCardAdd() {
     )
 }
 
-fun Context.toCardModify(cardId: Long) {
+fun Context.toCardModify(cardId: String) {
     startActivity(
         Intent(this, CardAddModifyActivity::class.java)
             .apply { putExtra(PARAM_CARD_ID, cardId) }

@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -32,14 +33,19 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
+import nextstep.payments.utils.toCardModify
 
 @Composable
 fun Card(model: Card) {
 
     val cardColor = model.company?.color ?: Color(0xFF333333)
     val textColor = cardColor.getTextColorForBackground()
+    val context = LocalContext.current
 
-    Card(backgroundColor = cardColor) {
+    Card(
+        modifier = Modifier.clickable { context.toCardModify(cardId = model.id) },
+        backgroundColor = cardColor,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -108,6 +114,7 @@ fun Card(
     backgroundColor: Color = Color(0xFFE5E5E5),
     content: @Composable BoxScope.() -> Unit,
 ) {
+    val context = LocalContext.current
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier

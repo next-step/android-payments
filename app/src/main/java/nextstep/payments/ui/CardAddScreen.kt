@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,8 +37,9 @@ import nextstep.payments.viewmodel.CardCompanyBottomSheetState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardAddModifyScreen(
+    isModify: Boolean,
     card: Card,
-    cardAdded: Long,
+    actionClicked: Long,
     bottomSheetState: CardCompanyBottomSheetState,
     onCardCompanyChange: (CardCompany) -> Unit,
     onCardCompanyBottomSheetState: (CardCompanyBottomSheetState) -> Unit,
@@ -51,7 +53,7 @@ fun CardAddModifyScreen(
 
     val context = LocalContext.current
 
-    LaunchedEffect(cardAdded) {
+    LaunchedEffect(actionClicked) {
         if (card.company != null) {
             context.showToast(context.getString(R.string.success_add_card))
             context.toCardList()
@@ -65,9 +67,12 @@ fun CardAddModifyScreen(
         confirmValueChange = { false }
     )
 
+    val title = stringResource(if (isModify) R.string.modify_card else R.string.add_card)
+
     Scaffold(
         topBar = {
             CardAddTopBar(
+                title = title,
                 onBackClick = onBackPressed,
                 onCheckClick = onAddClicked,
             )
@@ -130,6 +135,7 @@ private fun Context.showToast(message: String) {
 fun CardAddModifyScreen(
     onBackPressed: () -> Unit,
     viewModel: CardAddViewModel = viewModel(),
+    isModify: Boolean,
 ) {
 
     val card by viewModel.card.collectAsStateWithLifecycle()
@@ -137,8 +143,9 @@ fun CardAddModifyScreen(
     val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
 
     CardAddModifyScreen(
+        isModify = isModify,
         card = card,
-        cardAdded = cardAdded,
+        actionClicked = cardAdded,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setCardNumber,
         onOwnerNameChange = viewModel::setCardNumber,
@@ -153,8 +160,31 @@ fun CardAddModifyScreen(
 
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
+private fun CardAddPreview() {
     PaymentsTheme {
-        CardAddModifyScreen(onBackPressed = {})
+        CardAddModifyScreen(
+            isModify = false,
+            onBackPressed = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CardModifyPreview() {
+    val card = Card(
+        id = "0",
+        number = "1111 - 1111 - **** - ****",
+        ownerName = "홍길동",
+        expiredDate = "10/04",
+        password = "1111",
+        company = null,
+    )
+
+    PaymentsTheme {
+        CardAddModifyScreen(
+            isModify = true,
+            onBackPressed = {}
+        )
     }
 }
