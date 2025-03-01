@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.list.CardListViewModel
@@ -47,9 +49,12 @@ fun CardListScreen(
                 rightButton = {
                     if (uiState is CardUiState.Many) {
                         Text(
-                            modifier = Modifier.clickable { moveToAddCard() },
+                            modifier = Modifier
+                                .padding(end = 20.dp)
+                                .clickable { moveToAddCard() },
                             text = stringResource(R.string.add),
                             color = Color.Black,
+                            fontWeight = FontWeight.W700,
                             fontSize = 18.sp,
                             lineHeight = 36.sp,
                             letterSpacing = 0.5.sp
@@ -60,7 +65,7 @@ fun CardListScreen(
         }
     ) { innerPadding ->
         when (uiState) {
-            CardUiState.Empty -> CardsEmptyScreen(
+            CardUiState.Empty -> EmptyCardsScreen(
                 modifier = modifier.padding(innerPadding),
                 moveToAddCard = moveToAddCard,
             )
@@ -70,11 +75,14 @@ fun CardListScreen(
                 card = uiState.card,
                 moveToAddCard = moveToAddCard,
             )
-            is CardUiState.Many -> TODO() // TODO : 여러개 경우
+
+            is CardUiState.Many -> ManyCardsScreen(
+                modifier = modifier.padding(innerPadding),
+                cards = uiState.cards
+            )
         }
     }
 }
-
 
 
 private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiState> {
