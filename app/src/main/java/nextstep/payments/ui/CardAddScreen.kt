@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,7 +35,7 @@ import nextstep.payments.viewmodel.CardCompanyBottomSheetState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardAddScreen(
+fun CardAddModifyScreen(
     card: Card,
     cardAdded: Long,
     bottomSheetState: CardCompanyBottomSheetState,
@@ -128,7 +127,7 @@ private fun Context.showToast(message: String) {
 }
 
 @Composable
-fun CardAddScreen(
+fun CardAddModifyScreen(
     onBackPressed: () -> Unit,
     viewModel: CardAddViewModel = viewModel(),
 ) {
@@ -137,7 +136,7 @@ fun CardAddScreen(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
 
-    CardAddScreen(
+    CardAddModifyScreen(
         card = card,
         cardAdded = cardAdded,
         onCardNumberChange = viewModel::setCardNumber,
@@ -156,6 +155,6 @@ fun CardAddScreen(
 @Composable
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
-        CardAddScreen(onBackPressed = {})
+        CardAddModifyScreen(onBackPressed = {})
     }
 }

@@ -50,7 +50,9 @@ class CardAddViewModel(
 
     fun addCard() {
         _cardAdded.value = System.currentTimeMillis()
-        repository.addCard(_card.value.copy(updated = System.currentTimeMillis()))
+        repository.addCard(_card.value.copy(
+            updated = System.currentTimeMillis())
+        )
     }
 
     fun setCardCompanyBottomSheetState(state: CardCompanyBottomSheetState) {

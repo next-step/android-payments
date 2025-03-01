@@ -132,6 +132,7 @@ private fun PaymentCardPreview() {
         ) {
             Card(
                 model = Card(
+                    id = "0",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
@@ -142,6 +143,7 @@ private fun PaymentCardPreview() {
 
             Card(
                 model = Card(
+                    id = "1",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
@@ -152,6 +154,7 @@ private fun PaymentCardPreview() {
 
             Card(
                 model = Card(
+                    id = "2",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",

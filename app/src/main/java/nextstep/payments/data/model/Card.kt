@@ -1,6 +1,7 @@
 package nextstep.payments.data.model
 
 data class Card(
+    val id: String,
     val number: String,
     val ownerName: String,
     val password: String,
@@ -11,6 +12,7 @@ data class Card(
 ) {
     companion object {
         val Empty = Card(
+            id = "empty",
             number = "",
             ownerName = "",
             password = "",

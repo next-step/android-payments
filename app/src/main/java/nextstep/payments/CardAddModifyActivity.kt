@@ -6,11 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.ui.CardAddScreen
+import nextstep.payments.ui.CardAddModifyScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.viewmodel.CardAddViewModel
 
-class CardAddActivity : ComponentActivity() {
+class CardAddModifyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -20,7 +20,7 @@ class CardAddActivity : ComponentActivity() {
                 val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
                 val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
 
-                CardAddScreen(
+                CardAddModifyScreen(
                     card = card,
                     cardAdded = cardAdded,
                     onCardNumberChange = viewModel::setCardNumber,

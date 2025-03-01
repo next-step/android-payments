@@ -125,7 +125,7 @@ private fun ManyCardList(
         contentPadding = PaddingValues(top = verticalPadding)
     ) {
 
-        items(items = cards, key = { it -> it.number + it.updated }) { card ->
+        items(items = cards, key = { it -> it.id + it.updated }) { card ->
             Card(card)
         }
     }
@@ -134,6 +134,7 @@ private fun ManyCardList(
 private val verticalPadding = 32.dp
 
 private val defaultCard = Card(
+    id = "0",
     number = "1111 - 1111 - **** - ****",
     ownerName = "홍길동",
     expiredDate = "10/04",
@@ -163,13 +164,13 @@ private fun CardListScreenPreview1() {
 private fun CardListScreenPreview2() {
     val cards = listOf(
         defaultCard,
-        defaultCard.copy(ownerName = "홍길동1"),
-        defaultCard.copy(ownerName = "홍길동2"),
-        defaultCard.copy(ownerName = "홍길동3"),
-        defaultCard.copy(ownerName = "홍길동4"),
-        defaultCard.copy(ownerName = "홍길동5"),
-        defaultCard.copy(ownerName = "홍길동6"),
-        defaultCard.copy(ownerName = "홍길동7"),
+        defaultCard.copy(id = "1", ownerName = "홍길동1"),
+        defaultCard.copy(id = "2", ownerName = "홍길동2"),
+        defaultCard.copy(id = "3", ownerName = "홍길동3"),
+        defaultCard.copy(id = "4", ownerName = "홍길동4"),
+        defaultCard.copy(id = "5", ownerName = "홍길동5"),
+        defaultCard.copy(id = "6", ownerName = "홍길동6"),
+        defaultCard.copy(id = "7", ownerName = "홍길동7"),
     ).toList()
 
     PaymentsTheme {
