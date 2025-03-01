@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.components.card.elements.ExpiredDate
 import nextstep.payments.components.card.elements.IcChip
-import nextstep.payments.components.card.elements.Numbers
+import nextstep.payments.components.card.elements.CardNumbers
 import nextstep.payments.components.card.elements.OwnerName
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
@@ -28,7 +28,7 @@ fun RegisteredPaymentCard(
         Spacer(Modifier.weight(1f))
         IcChip()
         Spacer(Modifier.height(8.dp))
-        Numbers(numbers = card.numbers)
+        CardNumbers(cardNumbers = card.numbers)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -48,7 +48,7 @@ private fun RegisteredPaymentCardPreview() {
             expiredDate = "0421",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = CardCompany.KAKAO,
+            cardCompany = CardCompany(1, "BC"),
         )
         RegisteredPaymentCard(
             card = card,

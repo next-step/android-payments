@@ -16,12 +16,12 @@ private const val CARD_NUMBERS_NON_MASKED_LENGTH = 8
 private const val CARD_NUMBERS_MASKED_LENGTH = 8
 
 @Composable
-fun Numbers(
-    numbers: String,
+fun CardNumbers(
+    cardNumbers: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = formatCardNumbers(numbers),
+        text = formatCardNumbers(cardNumbers),
         color = Color.White,
         style = MaterialTheme.typography.bodySmall.copy(letterSpacing = 2.0.sp),
         modifier = modifier,
@@ -39,8 +39,8 @@ private fun formatCardNumbers(numbers: String): String {
 
 @Preview
 @Composable
-private fun NumbersPreview() {
+private fun CardNumbersPreview() {
     PaymentsTheme {
-        Numbers(numbers = "1111222200000000",)
+        CardNumbers(cardNumbers = "1111222200000000")
     }
 }
