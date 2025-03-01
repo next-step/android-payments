@@ -15,7 +15,9 @@ class NewCardActivity : ComponentActivity() {
         setContent {
             PaymentsTheme {
                 NewCardScreen(
-                    onBack = { finish() }
+                    onBack = {
+                        finish()
+                    }
                 )
             }
         }

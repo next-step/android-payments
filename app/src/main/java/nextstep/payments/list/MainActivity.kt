@@ -18,11 +18,10 @@ class MainActivity : ComponentActivity() {
             PaymentsTheme {
                 val context = LocalContext.current
                 val viewModel: CardListViewModel = viewModel()
-                val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                    if (it.resultCode == RESULT_OK) {
+                val launcher =
+                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                         viewModel.fetchCards()
                     }
-                }
 
                 CardListScreen(
                     viewModel = viewModel,
