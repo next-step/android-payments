@@ -94,7 +94,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = { sendEvent(NewCardEvent.OnCardNumberChanged(it)) },
+                onValueChange = { sendEvent(NewCardEvent.OnCardNumberChange(it)) },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -102,7 +102,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = { sendEvent(NewCardEvent.OnExpiredDateChanged(it)) },
+                onValueChange = { sendEvent(NewCardEvent.OnExpiredDateChange(it)) },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
@@ -110,7 +110,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = ownerName,
-                onValueChange = { sendEvent(NewCardEvent.OnOwnerNameChanged(it)) },
+                onValueChange = { sendEvent(NewCardEvent.OnOwnerNameChange(it)) },
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
@@ -118,7 +118,7 @@ private fun NewCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { sendEvent(NewCardEvent.OnPasswordChanged(it)) },
+                onValueChange = { sendEvent(NewCardEvent.OnPasswordChange(it)) },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),

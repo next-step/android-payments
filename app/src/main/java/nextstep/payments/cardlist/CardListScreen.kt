@@ -35,7 +35,7 @@ fun CardListScreen(
     }
 
     CardListScreen(
-        cardsState = state.value.currentCardsState,
+        cardsState = state.value.cardsState,
         sendEvent = viewModel::sendEvent,
         modifier = modifier,
     )

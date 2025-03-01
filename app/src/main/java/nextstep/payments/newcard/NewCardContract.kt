@@ -14,10 +14,10 @@ data class NewCardState(
 ): ScreenState
 
 sealed class NewCardEvent: ScreenEvent {
-    data class OnCardNumberChanged(val cardNumber: String): NewCardEvent()
-    data class OnExpiredDateChanged(val expiredDate: String): NewCardEvent()
-    data class OnOwnerNameChanged(val ownerName: String): NewCardEvent()
-    data class OnPasswordChanged(val password: String): NewCardEvent()
+    data class OnCardNumberChange(val cardNumber: String): NewCardEvent()
+    data class OnExpiredDateChange(val expiredDate: String): NewCardEvent()
+    data class OnOwnerNameChange(val ownerName: String): NewCardEvent()
+    data class OnPasswordChange(val password: String): NewCardEvent()
     data object OnClickBackButton: NewCardEvent()
     data object OnClickCompleteButton: NewCardEvent()
 }

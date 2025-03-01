@@ -6,15 +6,8 @@ import nextstep.payments.base.ScreenState
 import nextstep.payments.model.Card
 
 data class CardListState(
-    val cards: List<Card> = emptyList(),
-): ScreenState {
-    val currentCardsState
-        get() = when(cards.size) {
-            0 -> CardsState.NoCard
-            1 -> CardsState.OneCard(cards.first())
-            else -> CardsState.Cards(cards)
-        }
-}
+    val cardsState: CardsState = CardsState.NoCard,
+): ScreenState
 
 sealed class CardListEvent: ScreenEvent {
     data object OnClickCreateCardButton: CardListEvent()
