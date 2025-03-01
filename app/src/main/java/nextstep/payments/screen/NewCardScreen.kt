@@ -30,8 +30,37 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
 
+    NewCardScreen(
+        cardNumber = cardNumber,
+        expiredDate = expiredDate,
+        ownerName = ownerName,
+        password = password,
+        onBackClick = {},
+        onSaveClick = {},
+        onCardNumberChanged = viewModel::setCardNumber,
+        onExpiredDateChanged = viewModel::setExpiredDate,
+        onOwnerNameChanged = viewModel::setOwnerName,
+        onPasswordChanged = viewModel::setPassword,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun NewCardScreen(
+    cardNumber: String,
+    expiredDate: String,
+    ownerName: String,
+    password: String,
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
+    onCardNumberChanged: (String) -> Unit,
+    onExpiredDateChanged: (String) -> Unit,
+    onOwnerNameChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -49,7 +78,7 @@ fun NewCardScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = viewModel::setCardNumber,
+                onValueChange = onCardNumberChanged,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -57,7 +86,7 @@ fun NewCardScreen(
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = viewModel::setExpiredDate,
+                onValueChange = onExpiredDateChanged,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
@@ -65,7 +94,7 @@ fun NewCardScreen(
 
             OutlinedTextField(
                 value = ownerName,
-                onValueChange = viewModel::setOwnerName,
+                onValueChange = onOwnerNameChanged,
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
@@ -73,7 +102,7 @@ fun NewCardScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = viewModel::setPassword,
+                onValueChange = onPasswordChanged,
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
