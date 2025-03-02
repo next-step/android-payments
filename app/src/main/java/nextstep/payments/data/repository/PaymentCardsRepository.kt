@@ -16,8 +16,8 @@ object PaymentCardsRepository {
         return _cards.firstOrNull { it.id == id }
     }
 
-    fun modifyCard(id: String, card: Card) {
-        _cards.indexOfFirst { it.id == id }.takeIf { index ->
+    fun update(card: Card) {
+        _cards.indexOfFirst { it.id == card.id }.takeIf { index ->
             IntRange(0, _cards.size.dec()).contains(index)
         }?.let {
             _cards.set(

@@ -30,16 +30,16 @@ https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C
 
 # step4
 
-- [ ] 카드 수정 기능 구현
-    - [ ] 카드 목록에서 카드 선택 시, 수정 화면으로 이동
+- [x] 카드 수정 기능 구현
+    - [x] 카드 목록에서 카드 선택 시, 수정 화면으로 이동
         - [x] CardAddActivity -> CardAddModifyActivity
         - [x] 카드 선택 시, CardAddActivity 에 Card의 id 를 파라미터로 전달
-        - [ ] CardAddModify 에서, Card id 에 값이 있다면, Card 정보 repository 에서 호출
-        - [ ] 받아온 카드 정보 입력창에 설정
-        - [ ] 수정으로 진입 시, 상단 체크버튼 수정 버튼으로 변경
-        - [ ] 수정 버튼 클릭 시, Repository 에 수정 사항 업데이트
-          - [ ] updated 필드 업데이트
-    - [ ] 변경 사항이 없다면 수정 불가능
-        - [ ] 화면 진입 시 받아온 카드 정보와, 수정 하려는 카드 동등성 확인
-          - [ ] updated 필드는 동등성 비교에서 제외
-    - [ ] 카드 수정사항이 카드 목록에 반영
+        - [x] CardAddModify 에서, Card id 에 값이 있다면, Card 정보 repository 에서 호출
+        - [x] 받아온 카드 정보 입력창에 설정
+        - [x] 수정으로 진입 시, 상단 체크버튼 수정 버튼으로 변경
+        - [x] 수정 버튼 클릭 시, Repository 에 수정 사항 업데이트
+          - [x] ~updated 필드 업데이트~
+    - [x] 변경 사항이 없다면 수정 불가능
+        - [x] 화면 진입 시 받아온 카드 정보와, 수정 하려는 카드 동등성 확인
+          - [x] ~updated 필드는 동등성 비교에서 제외~
+    - [x] 카드 수정사항이 카드 목록에 반영

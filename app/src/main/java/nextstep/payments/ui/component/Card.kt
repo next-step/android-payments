@@ -36,14 +36,13 @@ import nextstep.payments.ui.theme.Typography
 import nextstep.payments.utils.toCardModify
 
 @Composable
-fun Card(model: Card) {
-
+fun Card(model: Card, enabled: Boolean) {
     val cardColor = model.company?.color ?: Color(0xFF333333)
     val textColor = cardColor.getTextColorForBackground()
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier.clickable { context.toCardModify(cardId = model.id) },
+        modifier = Modifier.clickable(enabled = enabled) { context.toCardModify(cardId = model.id) },
         backgroundColor = cardColor,
     ) {
         Column(
@@ -145,7 +144,8 @@ private fun PaymentCardPreview() {
                     password = "Rebbecca",
                     expiredDate = "0421",
                     company = CardCompany.BC,
-                )
+                ),
+                enabled = true,
             )
 
             Card(
@@ -156,7 +156,8 @@ private fun PaymentCardPreview() {
                     password = "Rebbecca",
                     expiredDate = "0421",
                     company = CardCompany.SHINHAN,
-                )
+                ),
+                enabled = true,
             )
 
             Card(
@@ -167,7 +168,8 @@ private fun PaymentCardPreview() {
                     password = "Rebbecca",
                     expiredDate = "0421",
                     company = CardCompany.KAKAO,
-                )
+                ),
+                enabled = true,
             )
         }
     }

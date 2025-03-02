@@ -4,24 +4,27 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.model.CardCompany
 import nextstep.payments.data.repository.PaymentCardsRepository
+import nextstep.payments.utils.ResultCode
 
 class CardAddViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
 
     private val _card = MutableStateFlow<Card>(Card.Empty)
-    val card: StateFlow<Card> = _card.asStateFlow()
-    private val _cardAdded = MutableStateFlow<Long>(0L)
-    val cardAdded: StateFlow<Long> = _cardAdded.asStateFlow()
+    val card: StateFlow<Card> = _card
+    private val _navigateToCardList = MutableStateFlow<Boolean>(false)
+    val navigateToCardList: StateFlow<Boolean> = _navigateToCardList
+    private val _showToast = MutableStateFlow<ResultCode>(ResultCode.IDLE)
+    val showToast: StateFlow<ResultCode> = _showToast.asStateFlow()
+
+    private lateinit var initialCard: Card
 
     private val _cardCompanyBottomSheet =
-        MutableStateFlow<CardCompanyBottomSheetState>(CardCompanyBottomSheetState.Show)
+        MutableStateFlow<CardCompanyBottomSheetState>(CardCompanyBottomSheetState.Hide)
 
     val cardCompanyBottomSheet: StateFlow<CardCompanyBottomSheetState> =
         _cardCompanyBottomSheet.asStateFlow()
@@ -51,12 +54,24 @@ class CardAddViewModel(
     }
 
     fun addCard() {
-        _cardAdded.value = System.currentTimeMillis()
-        repository.addCard(
-            _card.updateAndGet {
-                it.copy(updated = System.currentTimeMillis())
-            }
-        )
+        if (_card.value.company != null) {
+            repository.addCard(_card.value)
+            showToast(ResultCode.SUCCESS_ADD_CARD)
+            navigateToCardList()
+        } else {
+            showToast(ResultCode.SELECT_CARD_COMPANY)
+            setCardCompanyBottomSheetState(CardCompanyBottomSheetState.Show)
+        }
+    }
+
+    fun modifyCard() {
+        if (initialCard == _card.value) {
+            showToast(ResultCode.NOTHING_TO_MODIFY)
+        } else {
+            repository.update(card = _card.value)
+            showToast(ResultCode.SUCCESS_MODIFY_CARD)
+            navigateToCardList()
+        }
     }
 
     fun setCardCompanyBottomSheetState(state: CardCompanyBottomSheetState) {
@@ -68,7 +83,24 @@ class CardAddViewModel(
         setCardCompanyBottomSheetState(CardCompanyBottomSheetState.Hide)
     }
 
-    fun initialCard(id: String): Card {
-        return repository.getCardOrNull(id) ?: Card.Empty
+    fun initializeCard(cardId: String): Card {
+        initialCard = repository.getCardOrNull(cardId) ?: Card.Empty
+
+        updateCard(initialCard)
+        if (initialCard == Card.Empty) setCardCompanyBottomSheetState(CardCompanyBottomSheetState.Show)
+
+        return initialCard
+    }
+
+    private fun showToast(resultCode: ResultCode) {
+        _showToast.update { resultCode }
+    }
+
+    private fun updateCard(card: Card) {
+        _card.update { card }
+    }
+
+    private fun navigateToCardList() {
+        _navigateToCardList.update { true }
     }
 }

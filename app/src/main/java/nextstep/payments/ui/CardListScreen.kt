@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.data.model.Card
+import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAdd
 import nextstep.payments.ui.component.CardAddAffordance
@@ -109,7 +110,7 @@ private fun OneCardList(
     card: Card, modifier: Modifier = Modifier
 ) {
     ParentCardList(modifier) {
-        Card(card)
+        Card(model = card, enabled = true)
         CardAdd()
     }
 }
@@ -125,8 +126,8 @@ private fun ManyCardList(
         contentPadding = PaddingValues(top = verticalPadding)
     ) {
 
-        items(items = cards, key = { it -> it.id + it.updated }) { card ->
-            Card(card)
+        items(items = cards, key = { it -> it.id }) { card ->
+            Card(model = card, enabled = true)
         }
     }
 }
@@ -135,11 +136,11 @@ private val verticalPadding = 32.dp
 
 private val defaultCard = Card(
     id = "0",
-    number = "1111 - 1111 - **** - ****",
+    number = "1111222233334444",
     ownerName = "홍길동",
     expiredDate = "10/04",
     password = "1111",
-    company = null,
+    company = CardCompany.KAKAO,
 )
 
 @Preview(name = "카드 0 개일 경우 목록")
