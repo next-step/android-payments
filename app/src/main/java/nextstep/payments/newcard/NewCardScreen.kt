@@ -1,6 +1,5 @@
 package nextstep.payments.newcard
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,8 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
+import nextstep.payments.model.BankType
 import nextstep.payments.newcard.component.BankSelectBottomSheet
 import nextstep.payments.newcard.component.NewCardTopBar
+import nextstep.payments.newcard.model.BankTypeCardUiModel
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -43,14 +44,14 @@ fun NewCardScreen(
     )
 
     LaunchedEffect(Unit) {
-        bankSelectBottomSheetState.show()
-
         viewModel.sideEffect.collectLatest {
             when (it) {
                 is NewCardSideEffect.NavigateBack -> popBackStack()
                 is NewCardSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
-                is NewCardSideEffect.ShowBankSelectBottomSheet -> bankSelectBottomSheetState.show()
-                is NewCardSideEffect.HideBankSelectBottomSheet -> bankSelectBottomSheetState.hide()
+                is NewCardSideEffect.HideBottomSheet -> {
+                    bankSelectBottomSheetState.hide()
+                    viewModel.sendEvent(NewCardEvent.OnHideBottomSheet)
+                }
             }
         }
     }
@@ -60,9 +61,11 @@ fun NewCardScreen(
         expiredDate = state.expiredDate,
         ownerName = state.ownerName,
         password = state.password,
+        bankType = state.bankType,
+        isShowBottomSheet = state.isShowBottomSheet,
         bankSelectBottomSheetState = bankSelectBottomSheetState,
         sendEvent = viewModel::sendEvent,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -73,6 +76,8 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType: BankType,
+    isShowBottomSheet: Boolean,
     sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
     bankSelectBottomSheetState: SheetState = rememberModalBottomSheetState(),
@@ -94,7 +99,7 @@ private fun NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
-                modifier = Modifier.clickable { sendEvent(NewCardEvent.OnClickPreviewCard) }
+                bankType = BankTypeCardUiModel.from(bankType),
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -133,12 +138,11 @@ private fun NewCardScreen(
             )
         }
 
-        if (bankSelectBottomSheetState.isVisible) {
+        if (isShowBottomSheet) {
             BankSelectBottomSheet(
                 sendEvent = sendEvent,
                 sheetState = bankSelectBottomSheetState,
             )
-
         }
     }
 }
@@ -165,6 +169,8 @@ private fun StatelessNewCardScreenPreview() {
             expiredDate = "2025-02-19",
             ownerName = "홍순동",
             password = "12345",
+            bankType = BankType.LOTTE,
+            isShowBottomSheet = false,
             sendEvent = {},
         )
     }

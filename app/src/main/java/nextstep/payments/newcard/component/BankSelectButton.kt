@@ -1,6 +1,7 @@
 package nextstep.payments.newcard.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,13 +17,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
-import nextstep.payments.newcard.model.BankTypeUiModel
+import nextstep.payments.newcard.NewCardEvent
+import nextstep.payments.newcard.model.BankTypeButtonUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium16
 
 @Composable
-fun BankItem(
-    bankTypeUiModel: BankTypeUiModel,
+fun BankSelectButton(
+    bankTypeButtonUiModel: BankTypeButtonUiModel,
+    sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -33,15 +36,16 @@ fun BankItem(
             modifier = Modifier
                 .size(37.dp)
                 .clip(CircleShape)
+                .clickable { sendEvent(NewCardEvent.OnClickBankSelectButton(bankTypeButtonUiModel.bankType)) }
         ) {
             Image(
-                painter = painterResource(id = bankTypeUiModel.iconResId),
-                contentDescription = bankTypeUiModel.title,
+                painter = painterResource(id = bankTypeButtonUiModel.iconResId),
+                contentDescription = bankTypeButtonUiModel.title,
             )
         }
         Spacer(modifier = Modifier.height(11.dp))
         Text(
-            text = bankTypeUiModel.title,
+            text = bankTypeButtonUiModel.title,
             style = Medium16,
         )
     }
@@ -51,8 +55,9 @@ fun BankItem(
 @Composable
 private fun BankItemPreview() {
     PaymentsTheme {
-        BankItem(
-            bankTypeUiModel = BankTypeUiModel.from(BankType.KB),
+        BankSelectButton(
+            bankTypeButtonUiModel = BankTypeButtonUiModel.from(BankType.KB),
+            sendEvent = {},
         )
     }
 }

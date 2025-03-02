@@ -19,7 +19,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
+import nextstep.payments.newcard.model.BankTypeCardUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium12
 
@@ -32,6 +34,7 @@ fun PaymentCard(
         cardNumber = card.cardNumber,
         expiredDate = card.expiredDate,
         ownerName = card.ownerName,
+        bankType = BankTypeCardUiModel.from(card.bankType),
         modifier = modifier,
     )
 }
@@ -41,6 +44,7 @@ fun PaymentCard(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
+    bankType: BankTypeCardUiModel,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -48,10 +52,18 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = bankType.color,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
+        Text(
+            text = bankType.title,
+            style = Medium12,
+            color = Color.White,
+            modifier = Modifier
+                .padding(start = 14.dp, top = 10.dp)
+                .align(Alignment.TopStart)
+        )
         Box(
             modifier = Modifier
                 .align(Alignment.CenterStart)
@@ -130,7 +142,8 @@ private fun PaymentCardEmptyPreview() {
         PaymentCard(
             cardNumber = "",
             ownerName = "",
-            expiredDate = ""
+            expiredDate = "",
+            bankType = BankTypeCardUiModel.from(BankType.NOT_SELECTED),
         )
     }
 }
@@ -142,7 +155,8 @@ private fun PaymentCardPreview() {
         PaymentCard(
             cardNumber = "1111-2222-3333-4444",
             ownerName = "CREW",
-            expiredDate = "04 / 31"
+            expiredDate = "04 / 31",
+            bankType = BankTypeCardUiModel.from(BankType.KB),
         )
     }
 }

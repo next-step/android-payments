@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import nextstep.payments.R
 import nextstep.payments.model.BankType
 
-enum class BankTypeUiModel(
+enum class BankTypeButtonUiModel(
     val bankType: BankType,
     val title: String,
     @DrawableRes val iconResId: Int,
@@ -19,7 +19,7 @@ enum class BankTypeUiModel(
     HANA(BankType.HANA, "하나카드", R.drawable.bank_hana);
 
     companion object {
-        fun from(bankType: BankType): BankTypeUiModel {
+        fun from(bankType: BankType): BankTypeButtonUiModel {
             return entries.first { it.bankType == bankType }
         }
     }

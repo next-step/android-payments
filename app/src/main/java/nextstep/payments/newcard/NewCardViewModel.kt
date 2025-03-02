@@ -18,7 +18,11 @@ class NewCardViewModel(
             is NewCardEvent.OnPasswordChange -> setPassword(event.password)
             is NewCardEvent.OnClickBackButton -> sendSideEffect(NewCardSideEffect.NavigateBack)
             is NewCardEvent.OnClickCompleteButton -> createNewCard()
-            is NewCardEvent.OnClickPreviewCard -> sendSideEffect(NewCardSideEffect.ShowBankSelectBottomSheet)
+            is NewCardEvent.OnClickBankSelectButton -> {
+                updateState(currentState().copy(bankType = event.bankType))
+                sendSideEffect(NewCardSideEffect.HideBottomSheet)
+            }
+            is NewCardEvent.OnHideBottomSheet -> updateState(currentState().copy(isShowBottomSheet = false))
         }
     }
 
@@ -46,6 +50,7 @@ class NewCardViewModel(
                 expiredDate = it.expiredDate,
                 ownerName = it.ownerName,
                 password = it.password,
+                bankType = it.bankType,
             )
         }
         repository.addCard(card)

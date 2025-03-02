@@ -11,6 +11,7 @@ data class NewCardState(
     val ownerName: String = "",
     val password: String = "",
     val bankType: BankType = BankType.NOT_SELECTED,
+    val isShowBottomSheet: Boolean = true,
 ): ScreenState
 
 sealed class NewCardEvent: ScreenEvent {
@@ -20,12 +21,12 @@ sealed class NewCardEvent: ScreenEvent {
     data class OnPasswordChange(val password: String): NewCardEvent()
     data object OnClickBackButton: NewCardEvent()
     data object OnClickCompleteButton: NewCardEvent()
-    data object OnClickPreviewCard: NewCardEvent()
+    data class OnClickBankSelectButton(val bankType: BankType): NewCardEvent()
+    data object OnHideBottomSheet: NewCardEvent()
 }
 
 sealed class NewCardSideEffect: ScreenSideEffect {
     data object NavigateBack: NewCardSideEffect()
     data object NavigateBackWithNeedReload: NewCardSideEffect()
-    data object ShowBankSelectBottomSheet: NewCardSideEffect()
-    data object HideBankSelectBottomSheet: NewCardSideEffect()
+    data object HideBottomSheet: NewCardSideEffect()
 }

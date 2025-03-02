@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.NewCardEvent
-import nextstep.payments.newcard.model.BankTypeUiModel
+import nextstep.payments.newcard.model.BankTypeButtonUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
@@ -30,10 +30,11 @@ fun BankSelectBottomSheet(
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { },
+        onDismissRequest = {},
         modifier = modifier,
     ) {
         BankSelectBottomSheetContent(
+            sendEvent = sendEvent,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 36.dp, horizontal = 47.dp)
@@ -44,6 +45,7 @@ fun BankSelectBottomSheet(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BankSelectBottomSheetContent(
+    sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -53,8 +55,9 @@ fun BankSelectBottomSheetContent(
         maxItemsInEachRow = COLUMN_COUNT,
     ) {
         BankType.getBankTypes().forEach {
-            BankItem(
-                bankTypeUiModel = BankTypeUiModel.from(it),
+            BankSelectButton(
+                bankTypeButtonUiModel = BankTypeButtonUiModel.from(it),
+                sendEvent = sendEvent,
                 modifier = Modifier.defaultMinSize(minWidth = 70.dp)
             )
         }
@@ -67,7 +70,7 @@ fun BankSelectBottomSheetContent(
 private fun BankSelectBottomSheetPreview() {
     PaymentsTheme {
         BankSelectBottomSheet(
-            sendEvent = {}
+            sendEvent = {},
         )
     }
 }
