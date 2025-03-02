@@ -52,4 +52,18 @@ class CardListScreenTest {
         composeTestRule.onNodeWithTag("AddNewCardButton").assertIsDisplayed()
     }
 
+    @Test
+    fun 카드_목록에서_카드의_번호는_마지막_8자리가_마스킹_처리되어_표시된다() {
+        val card = Card(
+            number = "1234-1234-1234-1234",
+            expiredDate = "12/26",
+            ownerName = "홍길동",
+            password = "1234",
+        )
+
+        cardUiState = CardUiState.One(card)
+
+        composeTestRule.onNodeWithText(card.maskedNumber).assertIsDisplayed()
+    }
+
 }
