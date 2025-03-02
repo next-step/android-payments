@@ -37,7 +37,7 @@ private fun formatCardNumbers(numbers: String): String {
         .joinToString(separator = CARD_NUMBERS_SEPARATOR)
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
 private fun CardNumbersPreview() {
     PaymentsTheme {
