@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -142,6 +143,7 @@ private fun NewCardScreen(
             BankSelectBottomSheet(
                 sendEvent = sendEvent,
                 sheetState = bankSelectBottomSheetState,
+                modifier = Modifier.testTag("카드사 선택 바텀 시트"),
             )
         }
     }

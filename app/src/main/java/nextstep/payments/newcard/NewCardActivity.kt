@@ -18,7 +18,7 @@ class NewCardActivity() : BaseActivity() {
         )
     }
 
-    fun popBackStackWithResult()  {
+    private fun popBackStackWithResult()  {
         setResult(RESULT_OK)
         finish()
     }

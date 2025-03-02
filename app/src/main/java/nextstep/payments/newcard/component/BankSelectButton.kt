@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ fun BankSelectButton(
                 .size(37.dp)
                 .clip(CircleShape)
                 .clickable { sendEvent(NewCardEvent.OnClickBankSelectButton(bankTypeButtonUiModel.bankType)) }
+                .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
         ) {
             Image(
                 painter = painterResource(id = bankTypeButtonUiModel.iconResId),
