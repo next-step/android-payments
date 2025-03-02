@@ -148,6 +148,7 @@ private fun CardInformationInputFields(
             onValueChange = onCardNumberChange,
             label = { Text(stringResource(R.string.new_card_card_number_label)) },
             placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
+            visualTransformation = CardNumberVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
 
