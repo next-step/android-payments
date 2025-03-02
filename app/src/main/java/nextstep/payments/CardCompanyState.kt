@@ -74,6 +74,8 @@ enum class CardCompanyState(
     ;
 
     companion object {
+        fun findCardCompanyById(id: Int): CardCompanyState = entries.find { it.id == id } ?: NOT_SELECTED
+
         fun getAllCardCompanies(): List<CardCompanyState> = entries.filter { it != NOT_SELECTED }
     }
 }
