@@ -52,6 +52,7 @@ fun CardListScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             CardListTopBar(
                 showAddButton = state is CardListState.Multiple,
@@ -61,16 +62,16 @@ fun CardListScreen(
     ) { innerPadding ->
         when (state) {
             CardListState.Empty -> EmptyCardContent(
-                modifier = modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding),
                 onAddClick = onAddClick
             )
             is CardListState.Single -> SingleCardContent(
-                modifier = modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding),
                 card = state.card,
                 onAddClick = onAddClick
             )
             is CardListState.Multiple -> MultipleCardContent(
-                modifier = modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding),
                 cards = state.cards
             )
         }
