@@ -4,17 +4,18 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import nextstep.payments.CardCompanyState
 import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
 import nextstep.payments.domain.PaymentCardsRepository
+import nextstep.payments.screens.card.toDomain
 
 class NewCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
 ) : ViewModel() {
 
-    private val _cardCompany = MutableStateFlow(CardCompany.NONE)
-    val cardCompany: StateFlow<CardCompany> = _cardCompany.asStateFlow()
+    private val _selectedCardCompany = MutableStateFlow(CardCompanyState.NOT_SELECTED)
+    val selectedCardCompany: StateFlow<CardCompanyState> = _selectedCardCompany.asStateFlow()
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -31,6 +32,10 @@ class NewCardViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
+    fun setSelectedCardCompany(newSelectedCardCompany: CardCompanyState) {
+        if (newSelectedCardCompany == _selectedCardCompany.value) return
+        _selectedCardCompany.value = newSelectedCardCompany
+    }
 
     fun setCardNumber(newCardNumber: String) {
         if (newCardNumber.length > MAX_CARD_NUMBER_LENGTH) return
@@ -59,7 +64,7 @@ class NewCardViewModel(
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
                 password = password.value,
-                cardCompany = cardCompany.value,
+                cardCompany = selectedCardCompany.value.toDomain(),
             )
         )
         _cardAdded.value = true

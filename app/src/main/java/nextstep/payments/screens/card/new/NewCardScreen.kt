@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,8 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.CardCompanyState
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
+import nextstep.payments.components.card.NewPaymentCard
+import nextstep.payments.screens.card.new.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.new.components.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -33,6 +39,8 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
+    val selectedCardCompany by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
+
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -45,10 +53,12 @@ fun NewCardScreen(
     }
 
     NewCardScreen(
+        selectedCardCompany = selectedCardCompany,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        onCardCompanyClick = viewModel::setSelectedCardCompany,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
@@ -61,10 +71,12 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
+    selectedCardCompany: CardCompanyState,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    onCardCompanyClick: (CardCompanyState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -73,11 +85,20 @@ fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
+
     Scaffold(
         topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier,
         containerColor = Color.White
     ) { innerPadding ->
+        if (showCardCompanyBottomSheet) {
+            CardCompanyBottomSheetDialog(
+                onDismissRequest = { showCardCompanyBottomSheet = false },
+                onCardCompanyClick = onCardCompanyClick,
+            )
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -86,7 +107,11 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            EmptyPaymentCard()
+            if (selectedCardCompany == CardCompanyState.NOT_SELECTED) {
+                EmptyPaymentCard()
+            } else {
+                NewPaymentCard(selectedCardCompany)
+            }
 
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -157,10 +182,12 @@ private fun CardInformationInputFields(
 @Composable
 private fun NewCardScreenPreview() {
     NewCardScreen(
+        selectedCardCompany = CardCompanyState.NOT_SELECTED,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",
         password = "0000",
+        onCardCompanyClick = {},
         onCardNumberChange = {},
         onExpiredDateChange = {},
         onOwnerNameChange = {},
