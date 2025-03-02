@@ -26,6 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
+import nextstep.payments.component.PaymentCardDefaults.CHUNKED_DUE_DATE_LENGTH
+import nextstep.payments.component.PaymentCardDefaults.CHUNKED_NUMBER_LENGTH
+import nextstep.payments.component.PaymentCardDefaults.CardSize
+import nextstep.payments.component.PaymentCardDefaults.DUE_DATE_LENGTH
+import nextstep.payments.component.PaymentCardDefaults.UNMASKED_NUMBER_LENGTH
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -41,7 +46,7 @@ fun PaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .size(CardSize)
             .background(
                 color = Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
@@ -84,16 +89,16 @@ fun PaymentCard(
 
 private fun String.formatCardNumber(): String {
     val builder = StringBuilder()
-    builder.append(this.take(8))
-    if (this.length - 8 > 0) {
-        builder.append("*".repeat(this.length - 8))
+    builder.append(this.take(UNMASKED_NUMBER_LENGTH))
+    if (this.length - UNMASKED_NUMBER_LENGTH > 0) {
+        builder.append("*".repeat(this.length - UNMASKED_NUMBER_LENGTH))
     }
 
-    return builder.toString().chunked(4).joinToString(" - ")
+    return builder.toString().chunked(CHUNKED_NUMBER_LENGTH).joinToString(" - ")
 }
 
 private fun String.formatCardDueDate(): String {
-    return this.take(4).chunked(2).joinToString("/")
+    return this.take(DUE_DATE_LENGTH).chunked(CHUNKED_DUE_DATE_LENGTH).joinToString("/")
 }
 
 @Composable
@@ -119,7 +124,7 @@ fun EmptyPaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .size(CardSize)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
