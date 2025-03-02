@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.view.NewCardTopBar
+import nextstep.payments.feature.newcard.view.NewCardTopBar
 import nextstep.payments.view.PaymentCard
 
 @Composable

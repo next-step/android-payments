@@ -1,4 +1,4 @@
-package nextstep.payments.view
+package nextstep.payments.feature.cardlist.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
