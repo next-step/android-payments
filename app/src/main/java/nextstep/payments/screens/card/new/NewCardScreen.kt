@@ -24,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.screens.card.CardCompanyState
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
+import nextstep.payments.screens.card.CardCompanyState
 import nextstep.payments.screens.card.new.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.new.components.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -157,6 +157,7 @@ private fun CardInformationInputFields(
             onValueChange = onExpiredDateChange,
             label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
             placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
+            visualTransformation = ExpiredDateVisualTransformation(),
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
         )
 
