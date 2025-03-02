@@ -46,7 +46,7 @@ fun PaymentsScreen(
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == Activity.RESULT_OK) {
-            viewModel.getCards()
+            viewModel.fetchCards()
         }
     }
 
