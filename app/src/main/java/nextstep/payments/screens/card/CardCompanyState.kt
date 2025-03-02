@@ -1,6 +1,7 @@
-package nextstep.payments
+package nextstep.payments.screens.card
 
 import androidx.compose.ui.graphics.Color
+import nextstep.payments.R
 import nextstep.payments.ui.theme.Black100
 import nextstep.payments.ui.theme.BlackHyundai
 import nextstep.payments.ui.theme.BlueShinhan

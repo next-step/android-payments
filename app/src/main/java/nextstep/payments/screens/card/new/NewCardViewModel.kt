@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.CardCompanyState
+import nextstep.payments.screens.card.CardCompanyState
 import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.PaymentCardsRepository

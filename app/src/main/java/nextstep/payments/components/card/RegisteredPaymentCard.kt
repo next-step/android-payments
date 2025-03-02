@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import nextstep.payments.CardCompanyState
+import nextstep.payments.screens.card.CardCompanyState
 import nextstep.payments.components.card.elements.CardCompanyName
 import nextstep.payments.components.card.elements.CardNumbers
 import nextstep.payments.components.card.elements.ExpiredDate
