@@ -58,14 +58,9 @@ private fun CardListNothing(
     Column(
         modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
-        Spacer(
-            modifier = Modifier.height(32.dp)
-        )
         AddNewCardInfoText()
-        Spacer(
-            modifier = Modifier.height(32.dp)
-        )
         AddNewCardImage(
             onAddClick = onAddClick
         )
