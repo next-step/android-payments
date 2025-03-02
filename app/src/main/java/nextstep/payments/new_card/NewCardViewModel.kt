@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.new_card
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
