@@ -22,6 +22,7 @@ fun CardListScreen(
     Scaffold(
         topBar = {
             CardListTopBar(
+                showAddButton = cardUiState is CardUiState.Many,
                 onAddClick = onAddClick
             )
         },

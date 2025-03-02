@@ -10,4 +10,9 @@ object PaymentCardsRepository {
     fun addCard(card: Card) {
         _cards.add(card)
     }
+
+    fun setCard(cards: List<Card>) {
+        _cards.clear()
+        _cards.addAll(cards)
+    }
 }
