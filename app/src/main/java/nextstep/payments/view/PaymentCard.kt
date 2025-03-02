@@ -15,12 +15,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.Card
 
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
-    creditCard: CreditCard? = null,
+    card: Card? = null,
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -43,21 +43,21 @@ fun PaymentCard(
                 .align(Alignment.CenterStart)
         )
 
-        if (creditCard != null) {
+        if (card != null) {
             PaymentCardText(
-                text = creditCard.maskedNumber,
+                text = card.maskedNumber,
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(top = 64.dp)
             )
 
             PaymentCardText(
-                text = creditCard.ownerName,
+                text = card.ownerName,
                 modifier = Modifier.align(Alignment.BottomStart)
             )
 
             PaymentCardText(
-                text = creditCard.expiredDate,
+                text = card.expiredDate,
                 modifier = Modifier.align(Alignment.BottomEnd)
             )
         }
@@ -82,6 +82,6 @@ private fun PaymentCardText(
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
-        creditCard = CreditCard.mock,
+        card = Card.mock,
     )
 }

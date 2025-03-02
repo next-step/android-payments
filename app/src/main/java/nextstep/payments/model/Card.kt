@@ -1,6 +1,6 @@
 package nextstep.payments.model
 
-data class CreditCard(
+data class Card(
     val number: String,
     val expiredDate: String,
     val ownerName: String,
@@ -18,7 +18,7 @@ data class CreditCard(
         }
 
     companion object {
-        val mock = CreditCard(
+        val mock = Card(
             number = "1234 - 5678 - 9012 - 3456",
             expiredDate = "12/26",
             ownerName = "홍길동",
