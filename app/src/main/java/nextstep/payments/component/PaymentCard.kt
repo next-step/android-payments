@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.data.Card
@@ -29,24 +30,13 @@ import nextstep.payments.data.dummyDataList
 fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    CardBackground(
         contentAlignment = Alignment.CenterStart,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
-            )
+        backgroundColor = Color(0xFF333333),
+        modifier = modifier,
     ) {
-        Box(
-            modifier = Modifier
-                .padding(start = 14.dp, bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
+        CardIcChipImage(
+            modifier = Modifier.padding(start = 14.dp, bottom = 10.dp)
         )
     }
 }
@@ -56,63 +46,33 @@ fun PaymentListCard(
     card: Card,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
-            )
+    CardBackground(
+        contentAlignment = Alignment.TopStart,
+        backgroundColor = Color(0xFF333333),
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
                 .padding(horizontal = 14.dp),
         ) {
             Spacer(modifier = Modifier.size(44.dp))
-            Box(
-                modifier = Modifier
-                    .size(width = 40.dp, height = 26.dp)
-                    .background(
-                        color = Color(0xFFCBBA64),
-                        shape = RoundedCornerShape(4.dp),
-                    ),
-            )
+
+            CardIcChipImage()
+
             Spacer(modifier = Modifier.size(8.dp))
-            Text(
-                text = card.formatCardNumber(),
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.White,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.W500,
-                letterSpacing = (12.sp * 0.17),
-                lineHeight = 14.06.sp,
+
+            CardNumber(
+                cardNumber = card.formatCardNumber(),
+                modifier = Modifier,
             )
             Spacer(modifier = Modifier.size(2.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = card.ownerName,
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W500,
-                    letterSpacing = (12.sp * 0.1),
-                    lineHeight = 14.06.sp,
-                )
-                Text(
-                    text = card.formatExpiredDate(),
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W500,
-                    letterSpacing = (12.sp * 0.08),
-                    lineHeight = 14.06.sp,
-                )
-            }
+
+            CardNameAndExpiredDate(
+                ownerName = card.ownerName,
+                expiredDate = card.formatExpiredDate(),
+                modifier = Modifier,
+            )
         }
     }
 }
@@ -122,18 +82,12 @@ fun EnrollmentPaymentCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
 ) {
-    Box(
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFFE5E5E5),
-                shape = RoundedCornerShape(5.dp),
-            )
-            .clickable {
-                onClick()
-            },
+    CardBackground(
         contentAlignment = Alignment.Center,
+        backgroundColor = Color(0xFFE5E5E5),
+        modifier = modifier.clickable {
+            onClick()
+        },
     ) {
         Text(
             text = "+",
@@ -142,6 +96,90 @@ fun EnrollmentPaymentCard(
             fontWeight = FontWeight.W400,
         )
     }
+}
+
+@Composable
+private fun CardBackground(
+    contentAlignment: Alignment = Alignment.TopStart,
+    backgroundColor: Color,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .shadow(8.dp)
+            .size(width = 208.dp, height = 124.dp)
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(5.dp),
+            ),
+        contentAlignment = contentAlignment
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun CardIcChipImage(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .size(width = 40.dp, height = 26.dp)
+            .background(
+                color = Color(0xFFCBBA64),
+                shape = RoundedCornerShape(4.dp),
+            ),
+    )
+}
+
+@Composable
+private fun CardNumber(
+    cardNumber: String,
+    modifier: Modifier = Modifier
+) {
+    CardText(
+        text = cardNumber,
+        modifier = modifier,
+        letterSpacing = (12.sp * 0.17),
+    )
+}
+
+@Composable
+private fun CardNameAndExpiredDate(
+    ownerName: String,
+    expiredDate: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        CardText(
+            text = ownerName,
+            letterSpacing = (12.sp * 0.1)
+        )
+        CardText(
+            text = expiredDate,
+            letterSpacing = (12.sp * 0.08)
+        )
+    }
+}
+
+@Composable
+private fun CardText(
+    text: String,
+    letterSpacing: TextUnit,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = Color.White,
+        fontSize = 12.sp,
+        fontWeight = FontWeight.W500,
+        letterSpacing = letterSpacing,
+        lineHeight = 14.06.sp,
+    )
 }
 
 @Preview(showBackground = true)
