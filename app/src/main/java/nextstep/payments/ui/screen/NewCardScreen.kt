@@ -48,7 +48,7 @@ fun NewCardScreen(
 
     // 저장 가능 여부 유효성 체크
     val isSaveEnabled = remember(cardNumber, expiredDate, password) {
-        cardNumber.length == 16 && expiredDate.length == 4 && password.isNotEmpty()
+        cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4
     }
 
     NewCardScreen(
@@ -149,7 +149,9 @@ private fun NewCardScreen(
             PasswordInputField(
                 password = password,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = setPassword,
+                onValueChange = { password ->
+                    setPassword(password.take(4))
+                },
             )
 
         }
