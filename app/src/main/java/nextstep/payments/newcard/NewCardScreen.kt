@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.component.BankSelectBottomSheet
 import nextstep.payments.newcard.component.NewCardTopBar
-import nextstep.payments.newcard.model.BankTypeCardUiModel
+import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -100,7 +100,7 @@ private fun NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
-                bankType = BankTypeCardUiModel.from(bankType),
+                bankType = BankTypeUiModel.from(bankType),
             )
 
             Spacer(modifier = Modifier.height(10.dp))

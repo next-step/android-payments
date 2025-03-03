@@ -1,6 +1,7 @@
 package nextstep.payments.newcard.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,32 +20,42 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.NewCardEvent
-import nextstep.payments.newcard.model.BankTypeButtonUiModel
+import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium16
 
 @Composable
 fun BankSelectButton(
-    bankTypeButtonUiModel: BankTypeButtonUiModel,
+    bankTypeButtonUiModel: BankTypeUiModel,
     sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
+        modifier = modifier.clickable {
+            sendEvent(
+                NewCardEvent.OnClickBankSelectButton(
+                    bankTypeButtonUiModel.bankType
+                )
+            )
+        },
     ) {
-        Box(
+        bankTypeButtonUiModel.iconResId?.let {
+            Image(
+                painter = painterResource(it),
+                contentDescription = bankTypeButtonUiModel.title,
+                modifier = Modifier
+                    .size(37.dp)
+                    .clip(CircleShape)
+                    .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
+            )
+        } ?: Box(
             modifier = Modifier
                 .size(37.dp)
                 .clip(CircleShape)
-                .clickable { sendEvent(NewCardEvent.OnClickBankSelectButton(bankTypeButtonUiModel.bankType)) }
+                .background(bankTypeButtonUiModel.color)
                 .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
-        ) {
-            Image(
-                painter = painterResource(id = bankTypeButtonUiModel.iconResId),
-                contentDescription = bankTypeButtonUiModel.title,
-            )
-        }
+        )
         Spacer(modifier = Modifier.height(11.dp))
         Text(
             text = bankTypeButtonUiModel.title,
@@ -58,7 +69,7 @@ fun BankSelectButton(
 private fun BankItemPreview() {
     PaymentsTheme {
         BankSelectButton(
-            bankTypeButtonUiModel = BankTypeButtonUiModel.from(BankType.KB),
+            bankTypeButtonUiModel = BankTypeUiModel.from(BankType.KB),
             sendEvent = {},
         )
     }

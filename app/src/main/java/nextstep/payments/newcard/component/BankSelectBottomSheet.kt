@@ -16,12 +16,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.NewCardEvent
-import nextstep.payments.newcard.model.BankTypeButtonUiModel
+import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BankSelectBottomSheet(
     sendEvent: (NewCardEvent) -> Unit,
@@ -56,7 +56,7 @@ fun BankSelectBottomSheetContent(
     ) {
         BankType.getBankTypes().forEach {
             BankSelectButton(
-                bankTypeButtonUiModel = BankTypeButtonUiModel.from(it),
+                bankTypeButtonUiModel = BankTypeUiModel.from(it),
                 sendEvent = sendEvent,
                 modifier = Modifier.defaultMinSize(minWidth = 70.dp)
             )

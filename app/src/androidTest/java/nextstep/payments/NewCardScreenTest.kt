@@ -19,10 +19,9 @@ class NewCardScreenTest: BaseComposableTest() {
                 popBackStackWithResult = {},
             )
         }
-
         // when
 
-        // then
+        // thena
         composeTestRule
             .onNodeWithTag("카드사 선택 바텀 시트")
             .assertIsDisplayed()

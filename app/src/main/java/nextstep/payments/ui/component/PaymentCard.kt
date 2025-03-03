@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
-import nextstep.payments.newcard.model.BankTypeCardUiModel
+import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium12
 
@@ -34,7 +34,7 @@ fun PaymentCard(
         cardNumber = card.cardNumber,
         expiredDate = card.expiredDate,
         ownerName = card.ownerName,
-        bankType = BankTypeCardUiModel.from(card.bankType),
+        bankType = BankTypeUiModel.from(card.bankType),
         modifier = modifier,
     )
 }
@@ -44,7 +44,7 @@ fun PaymentCard(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
-    bankType: BankTypeCardUiModel,
+    bankType: BankTypeUiModel,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -143,7 +143,7 @@ private fun PaymentCardEmptyPreview() {
             cardNumber = "",
             ownerName = "",
             expiredDate = "",
-            bankType = BankTypeCardUiModel.from(BankType.NOT_SELECTED),
+            bankType = BankTypeUiModel.from(BankType.NOT_SELECTED),
         )
     }
 }
@@ -156,7 +156,7 @@ private fun PaymentCardPreview() {
             cardNumber = "1111-2222-3333-4444",
             ownerName = "CREW",
             expiredDate = "04 / 31",
-            bankType = BankTypeCardUiModel.from(BankType.KB),
+            bankType = BankTypeUiModel.from(BankType.KB),
         )
     }
 }
