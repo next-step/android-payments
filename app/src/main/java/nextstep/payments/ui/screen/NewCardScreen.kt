@@ -16,7 +16,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -124,7 +123,7 @@ private fun NewCardScreen(
                 cardNumber = cardNumber,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { cardNum ->
-                    if (cardNum.length <= 16) setCardNumber(cardNum)
+                    setCardNumber(cardNum.take(16))
                 },
             )
 
@@ -132,9 +131,7 @@ private fun NewCardScreen(
                 expiredDate = expiredDate,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { expiredDate ->
-                    if (expiredDate.length <= 4) {
-                        setExpiredDate(expiredDate)
-                    }
+                    setExpiredDate(expiredDate.take(4))
                 },
             )
 
