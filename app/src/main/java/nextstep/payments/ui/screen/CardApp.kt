@@ -1,0 +1,55 @@
+package nextstep.payments.ui.screen
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import nextstep.payments.ui.screen.navigation.CardRoute
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CardApp(
+    modifier: Modifier = Modifier,
+) {
+    val navController = rememberNavController()
+
+    Scaffold(
+        modifier = modifier,
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = CardRoute.CardList,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            composable<CardRoute.CardList> {
+                CardListScreen(
+                    navigateToNewCard = {
+                        navController.navigate(CardRoute.NewCard)
+                    }
+                )
+            }
+            composable<CardRoute.NewCard> {
+                NewCardScreen(
+                    navigateToCardList = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CardAppPreview() {
+    CardApp()
+}
