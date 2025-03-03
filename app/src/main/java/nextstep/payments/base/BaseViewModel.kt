@@ -38,6 +38,10 @@ abstract class BaseViewModel<STATE : ScreenState, EVENT : ScreenEvent, SIDE_EFFE
         _state.value = state
     }
 
+    fun updateState(block: STATE.() -> STATE) {
+        _state.value = block(currentState())
+    }
+
     fun sendEvent(event: EVENT) {
         viewModelScope.launch { _event.emit(event) }
     }
