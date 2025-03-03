@@ -15,6 +15,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -40,6 +44,9 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
+
+    var showBottomSheet by remember { mutableStateOf(true) }
     val bankSelectBottomSheetState = rememberModalBottomSheetState(
         confirmValueChange = { false }
     )
@@ -49,10 +56,7 @@ fun NewCardScreen(
             when (it) {
                 is NewCardSideEffect.NavigateBack -> popBackStack()
                 is NewCardSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
-                is NewCardSideEffect.HideBottomSheet -> {
-                    bankSelectBottomSheetState.hide()
-                    viewModel.sendEvent(NewCardEvent.OnHideBottomSheet)
-                }
+                is NewCardSideEffect.HideBottomSheet -> { showBottomSheet = false }
             }
         }
     }
@@ -63,7 +67,7 @@ fun NewCardScreen(
         ownerName = state.ownerName,
         password = state.password,
         bankType = state.bankType,
-        isShowBottomSheet = state.isShowBottomSheet,
+        showBottomSheet = showBottomSheet,
         bankSelectBottomSheetState = bankSelectBottomSheetState,
         sendEvent = viewModel::sendEvent,
         modifier = modifier,
@@ -78,7 +82,7 @@ private fun NewCardScreen(
     ownerName: String,
     password: String,
     bankType: BankType,
-    isShowBottomSheet: Boolean,
+    showBottomSheet: Boolean,
     sendEvent: (NewCardEvent) -> Unit,
     modifier: Modifier = Modifier,
     bankSelectBottomSheetState: SheetState = rememberModalBottomSheetState(),
@@ -139,9 +143,10 @@ private fun NewCardScreen(
             )
         }
 
-        if (isShowBottomSheet) {
+        if (showBottomSheet) {
             BankSelectBottomSheet(
                 onClickBankSelectButton = { sendEvent(NewCardEvent.OnClickBankSelectButton(it)) },
+                onDismissRequest = { sendEvent(NewCardEvent.OnDismissBottomSheet) },
                 sheetState = bankSelectBottomSheetState,
                 modifier = Modifier.testTag("카드사 선택 바텀 시트"),
             )
@@ -172,7 +177,7 @@ private fun StatelessNewCardScreenPreview() {
             ownerName = "홍순동",
             password = "12345",
             bankType = BankType.LOTTE,
-            isShowBottomSheet = false,
+            showBottomSheet = false,
             sendEvent = {},
         )
     }

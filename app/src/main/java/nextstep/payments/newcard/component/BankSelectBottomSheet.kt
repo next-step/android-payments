@@ -11,9 +11,11 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -24,16 +26,24 @@ private const val COLUMN_COUNT = 4
 @Composable
 fun BankSelectBottomSheet(
     onClickBankSelectButton: (BankType) -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: SheetState = rememberModalBottomSheetState()
+    sheetState: SheetState = rememberModalBottomSheetState(),
 ) {
+    val scope = rememberCoroutineScope()
+
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = {},
+        onDismissRequest = onDismissRequest,
         modifier = modifier,
     ) {
         BankSelectBottomSheetContent(
-            onClickBankSelectButton = onClickBankSelectButton,
+            onClickBankSelectButton = {
+                onClickBankSelectButton(it)
+                scope.launch {
+                    sheetState.hide()
+                }.invokeOnCompletion { onDismissRequest() }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 36.dp, horizontal = 47.dp)
@@ -70,6 +80,7 @@ private fun BankSelectBottomSheetPreview() {
     PaymentsTheme {
         BankSelectBottomSheet(
             onClickBankSelectButton = {},
+            onDismissRequest = {},
         )
     }
 }

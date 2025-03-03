@@ -22,7 +22,7 @@ class NewCardViewModel(
                 updateState(currentState().copy(bankType = event.bankType))
                 sendSideEffect(NewCardSideEffect.HideBottomSheet)
             }
-            is NewCardEvent.OnHideBottomSheet -> updateState(currentState().copy(isShowBottomSheet = false))
+            is NewCardEvent.OnDismissBottomSheet -> sendSideEffect(NewCardSideEffect.HideBottomSheet)
         }
     }
 
