@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Payments</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_new_card">NewCardActivity</string>
+    <string name="title_activity_card_list">CardListActivity</string>
 </resources>
