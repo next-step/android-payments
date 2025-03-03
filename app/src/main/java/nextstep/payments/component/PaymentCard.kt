@@ -69,7 +69,7 @@ fun PaymentListCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(horizontal = 14.dp)
+                .padding(horizontal = 14.dp),
         ) {
             Spacer(modifier = Modifier.size(44.dp))
             Box(
@@ -78,7 +78,7 @@ fun PaymentListCard(
                     .background(
                         color = Color(0xFFCBBA64),
                         shape = RoundedCornerShape(4.dp),
-                    )
+                    ),
             )
             Spacer(modifier = Modifier.size(8.dp))
             Text(
@@ -94,7 +94,7 @@ fun PaymentListCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = card.ownerName,
@@ -133,7 +133,7 @@ fun EnrollmentPaymentCard(
             .clickable {
                 onClick()
             },
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "+",
@@ -154,7 +154,9 @@ private fun PaymentCardTypePreview() {
 @Composable
 private fun PaymentCardListTypePreview() {
     val card = dummyDataList.first()
-    PaymentListCard(card = card)
+    PaymentListCard(
+        card = card,
+    )
 }
 
 @Preview(showBackground = true)

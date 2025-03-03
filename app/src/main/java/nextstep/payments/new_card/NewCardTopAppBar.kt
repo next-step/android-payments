@@ -37,7 +37,7 @@ fun NewCardTopAppBar(
                 )
             }
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 

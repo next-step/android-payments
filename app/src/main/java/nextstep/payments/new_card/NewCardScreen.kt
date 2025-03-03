@@ -75,7 +75,7 @@ fun NewCardScreen(
                 onSaveClick = addCard
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(18.dp),

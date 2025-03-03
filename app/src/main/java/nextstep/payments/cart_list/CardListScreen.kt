@@ -26,7 +26,7 @@ import nextstep.payments.data.dummyDataList
 fun CardListScreen(
     cardListUiState: CardListUiState,
     onAddClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         modifier = modifier,
@@ -42,7 +42,7 @@ fun CardListScreen(
             CardListUiState.Empty -> {
                 CardListEmptyScreen(
                     onAddClick = onAddClick,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
                 )
             }
 
@@ -50,14 +50,14 @@ fun CardListScreen(
                 CardListOneScreen(
                     card = cardListUiState.card,
                     onAddClick = onAddClick,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
                 )
             }
 
             is CardListUiState.Many -> {
                 CardListManyScreen(
                     cardList = cardListUiState.cards,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
                 )
             }
         }
@@ -100,19 +100,22 @@ fun CardListOneScreen(
             .padding(top = 12.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(36.dp)
+        verticalArrangement = Arrangement.spacedBy(36.dp),
     ) {
         PaymentListCard(
-            card = card
+            card = card,
         )
         EnrollmentPaymentCard(
-            onClick = { onAddClick() }
+            onClick = { onAddClick() },
         )
     }
 }
 
 @Composable
-fun CardListManyScreen(cardList: List<Card>, modifier: Modifier = Modifier) {
+fun CardListManyScreen(
+    cardList: List<Card>,
+    modifier: Modifier = Modifier,
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 12.dp),
@@ -130,7 +133,7 @@ fun CardListManyScreen(cardList: List<Card>, modifier: Modifier = Modifier) {
 private fun CardListScreenPreview() {
     CardListScreen(
         cardListUiState = CardListUiState.Empty,
-        onAddClick = { }
+        onAddClick = { },
     )
 }
 
@@ -139,7 +142,7 @@ private fun CardListScreenPreview() {
 private fun CardListOneScreenPreview() {
     CardListScreen(
         cardListUiState = CardListUiState.One(dummyDataList.first()),
-        onAddClick = { }
+        onAddClick = { },
     )
 }
 
@@ -150,6 +153,6 @@ private fun CardListManyScreenPreview() {
 
     CardListScreen(
         cardListUiState = CardListUiState.Many(cardList),
-        onAddClick = { }
+        onAddClick = { },
     )
 }
