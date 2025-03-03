@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -157,8 +158,8 @@ private fun CardNumberInputField(
 ) {
     OutlinedInputTextField(
         value = cardNumber,
-        label = "카드 번호",
-        placeholder = "0000 - 0000 - 0000 - 0000",
+        label = stringResource(R.string.card_number_input_label),
+        placeholder = stringResource(R.string.card_number_input_placeholder),
         modifier = modifier,
         keyboardType = KeyboardType.Number,
         visualTransformation = CardNumberVisualTransformation(),
@@ -174,8 +175,8 @@ private fun ExpireDateInputField(
 ) {
     OutlinedInputTextField(
         value = expiredDate,
-        label = "만료일",
-        placeholder = "MM / YY",
+        label = stringResource(R.string.expire_date_input_label),
+        placeholder = stringResource(R.string.expire_date_input_placeholder),
         keyboardType = KeyboardType.Number,
         visualTransformation = ExpiryDateVisualTransformation(),
         onValueChange = onValueChange,
@@ -191,8 +192,8 @@ private fun OwnerNameInputField(
 ) {
     OutlinedInputTextField(
         value = ownerName,
-        label = "카드 소유자 이름(선택)",
-        placeholder = "카드에 표시된 이름을 입력하세요.",
+        label = stringResource(R.string.owner_name_input_label),
+        placeholder = stringResource(R.string.owner_name_input_placeholder),
         keyboardType = KeyboardType.Text,
         onValueChange = onValueChange,
         modifier = modifier,
@@ -207,8 +208,8 @@ private fun PasswordInputField(
 ) {
     OutlinedInputTextField(
         value = password,
-        label = "비밀번호",
-        placeholder = "0000",
+        label = stringResource(R.string.password_input_label),
+        placeholder = stringResource(R.string.password_input_placeholder),
         visualTransformation = PasswordVisualTransformation(),
         onValueChange = onValueChange,
         modifier = modifier,
