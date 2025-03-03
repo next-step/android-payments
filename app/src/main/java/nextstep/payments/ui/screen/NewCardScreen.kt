@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.ui.screen.component.NewCardTopBar
@@ -47,11 +46,17 @@ fun NewCardScreen(
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // 저장 가능 여부 유효성 체크
+    val isSaveEnabled = remember(cardNumber, expiredDate, password) {
+        cardNumber.length == 16 && expiredDate.length == 4 && password.isNotEmpty()
+    }
+
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -72,6 +77,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -88,7 +94,7 @@ private fun NewCardScreen(
     Scaffold(
         topBar = {
             NewCardTopBar(onBackClick = onBackCLick, onSaveClick = {
-                if (cardNumber.length == 16 && expiredDate.length == 4 && password.isNotEmpty()) {
+                if (isSaveEnabled) {
                     onSaveClick()
                     return@NewCardTopBar
                 }
@@ -274,6 +280,7 @@ private fun StatelessNewCardScreenPreView() {
         expiredDate = "12 / 34",
         ownerName = "홍길동",
         password = "1234",
+        isSaveEnabled = true,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},
