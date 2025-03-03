@@ -10,7 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.sp
+import nextstep.payments.data.dummyDataList
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,18 +47,18 @@ fun CardListTopAppbar(
     )
 }
 
-@Preview
+@Preview(showBackground = true, name = "showAddTextButton 이 true 면 추가 버튼이 보인다")
 @Composable
-private fun CardListTopAppbarShowAddTextButtonPreview() {
+private fun Preview1() {
     CardListTopAppbar(
         onAddClick = {},
         showAddTextButton = true,
     )
 }
 
-@Preview
+@Preview(showBackground = true, name = "showAddTextButton 이 false 면 추가 버튼이 안 보인다")
 @Composable
-private fun CardListTopAppbarPreview() {
+private fun Preview2() {
     CardListTopAppbar(
         onAddClick = {},
         showAddTextButton = false,

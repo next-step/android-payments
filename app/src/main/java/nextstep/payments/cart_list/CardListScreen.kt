@@ -67,7 +67,7 @@ fun CardListScreen(
 }
 
 @Composable
-fun CardListEmptyScreen(
+private fun CardListEmptyScreen(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -92,7 +92,7 @@ fun CardListEmptyScreen(
 }
 
 @Composable
-fun CardListOneScreen(
+private fun CardListOneScreen(
     card: Card,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -114,7 +114,7 @@ fun CardListOneScreen(
 }
 
 @Composable
-fun CardListManyScreen(
+private fun CardListManyScreen(
     cardList: List<Card>,
     modifier: Modifier = Modifier,
 ) {
@@ -130,7 +130,7 @@ fun CardListManyScreen(
     }
 }
 
-class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
+private class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
     override val values = sequenceOf(
         CardListUiState.Empty,
         CardListUiState.One(dummyDataList.first()),
