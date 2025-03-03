@@ -1,10 +1,14 @@
 package nextstep.payments.ui.newcard
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.IssuingBank
 import nextstep.payments.repository.PaymentCardsRepository
@@ -30,6 +34,9 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     private val _issuingBank = MutableStateFlow<IssuingBank>(IssuingBank.NOT_SELECTED)
     val issuingBank: StateFlow<IssuingBank> = _issuingBank.asStateFlow()
 
+    private val _effect = Channel<NewCardEffect>()
+    val effect = _effect.receiveAsFlow()
+
     fun setCardNumber(cardNumber: String) {
         if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return
         _cardNumber.value = cardNumber.filter { it.isDigit() }
@@ -54,7 +61,15 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         _issuingBank.value = issuingBank
     }
 
-    fun onSaveClick() {
+    fun onSaveClick() = viewModelScope.launch {
+        if (repository.cards.any { it.cardNumber == cardNumber.value }) {
+            _effect.send(NewCardEffect.ShowError("이미 등록된 카드 번호입니다."))
+            return@launch
+        }
+        saveCard()
+    }
+
+    private fun saveCard() {
         repository.addCard(
             CreditCard(
                 cardNumber = _cardNumber.value,
@@ -73,4 +88,8 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         const val MAX_OWNER_NAME_LENGTH = 10
         const val MAX_PASSWORD_LENGTH = 4
     }
+}
+
+sealed interface NewCardEffect {
+    data class ShowError(val message: String) : NewCardEffect
 }
