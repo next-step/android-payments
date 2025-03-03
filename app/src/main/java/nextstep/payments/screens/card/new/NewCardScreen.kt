@@ -6,16 +6,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +28,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
+import nextstep.payments.components.card.NewPaymentCard
+import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.new.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.new.components.NewCardTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -33,22 +41,15 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(uiState.cardAdded) {
+        if (uiState.cardAdded) navigateToCardList()
     }
 
     NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        uiState = uiState,
+        onCardCompanyClick = viewModel::setSelectedCardCompany,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setExpiredDate,
         onOwnerNameChange = viewModel::setOwnerName,
@@ -61,10 +62,8 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+    uiState: NewCardUiState,
+    onCardCompanyClick: (CardCompanyState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -73,11 +72,20 @@ fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
+
     Scaffold(
         topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier,
         containerColor = Color.White
     ) { innerPadding ->
+        if (showCardCompanyBottomSheet) {
+            CardCompanyBottomSheetDialog(
+                onDismissRequest = { showCardCompanyBottomSheet = false },
+                onCardCompanyClick = onCardCompanyClick,
+            )
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -86,15 +94,19 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            EmptyPaymentCard()
+            if (uiState.selectedCardCompany == null) {
+                EmptyPaymentCard()
+            } else {
+                NewPaymentCard(uiState.selectedCardCompany)
+            }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             CardInformationInputFields(
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
+                cardNumber = uiState.cardNumber,
+                expiredDate = uiState.expiredDate,
+                ownerName = uiState.ownerName,
+                password = uiState.password,
                 onCardNumberChange = onCardNumberChange,
                 onExpiredDateChange = onExpiredDateChange,
                 onOwnerNameChange = onOwnerNameChange,
@@ -123,6 +135,8 @@ private fun CardInformationInputFields(
             onValueChange = onCardNumberChange,
             label = { Text(stringResource(R.string.new_card_card_number_label)) },
             placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
+            visualTransformation = CardNumberVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -131,6 +145,8 @@ private fun CardInformationInputFields(
             onValueChange = onExpiredDateChange,
             label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
             placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
+            visualTransformation = ExpiredDateVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
         )
 
@@ -139,6 +155,7 @@ private fun CardInformationInputFields(
             onValueChange = onOwnerNameChange,
             label = { Text(stringResource(R.string.new_card_card_owner_name_label)) },
             placeholder = { Text(stringResource(R.string.new_card_card_owner_name_placeholder)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -148,6 +165,7 @@ private fun CardInformationInputFields(
             label = { Text(stringResource(R.string.new_card_password_label)) },
             placeholder = { Text(stringResource(R.string.new_card_password_placeholder)) },
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             visualTransformation = PasswordVisualTransformation(),
         )
     }
@@ -157,10 +175,8 @@ private fun CardInformationInputFields(
 @Composable
 private fun NewCardScreenPreview() {
     NewCardScreen(
-        cardNumber = "0000 - 0000 - 0000 - 0000",
-        expiredDate = "00 / 00",
-        ownerName = "홍길동",
-        password = "0000",
+        uiState = NewCardUiState(),
+        onCardCompanyClick = {},
         onCardNumberChange = {},
         onExpiredDateChange = {},
         onOwnerNameChange = {},

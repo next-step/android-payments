@@ -4,60 +4,68 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.PaymentCardsRepository
+import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.toDomain
 
 class NewCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
 ) : ViewModel() {
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
+    private val _uiState = MutableStateFlow(NewCardUiState())
+    val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
 
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
-    private val _cardAdded = MutableStateFlow(false)
-    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
-
+    fun setSelectedCardCompany(newSelectedCardCompany: CardCompanyState) {
+        if (newSelectedCardCompany == _uiState.value.selectedCardCompany) return
+        _uiState.update {
+            it.copy(selectedCardCompany = newSelectedCardCompany)
+        }
+    }
 
     fun setCardNumber(newCardNumber: String) {
         if (newCardNumber.length > MAX_CARD_NUMBER_LENGTH) return
-        _cardNumber.value = newCardNumber
+        _uiState.update {
+            it.copy(cardNumber = newCardNumber)
+        }
     }
 
     fun setExpiredDate(newExpiredDate: String) {
         if (newExpiredDate.length > MAX_EXPIRED_DATE_LENGTH) return
-        _expiredDate.value = newExpiredDate
+        _uiState.update {
+            it.copy(expiredDate = newExpiredDate)
+        }
     }
 
     fun setOwnerName(newOwnerName: String) {
         if (newOwnerName.length > MAX_OWNER_NAME_LENGTH) return
-        _ownerName.value = newOwnerName
+        _uiState.update {
+            it.copy(ownerName = newOwnerName)
+        }
     }
 
     fun setPassword(newPassword: String) {
         if (newPassword.length > MAX_PASSWORD_LENGTH) return
-        _password.value = newPassword
+        _uiState.update {
+            it.copy(password = newPassword)
+        }
     }
 
     fun addCard() {
         paymentCardsRepository.addCard(
             Card(
-                numbers = cardNumber.value,
-                expiredDate = expiredDate.value,
-                ownerName = ownerName.value,
-                password = password.value,
+                numbers = _uiState.value.cardNumber,
+                expiredDate = _uiState.value.expiredDate,
+                ownerName = _uiState.value.ownerName,
+                password = _uiState.value.password,
+                cardCompany = _uiState.value.selectedCardCompany?.toDomain() ?: return,
             )
         )
-        _cardAdded.value = true
+        _uiState.update {
+            it.copy(cardAdded = true)
+        }
     }
 
     companion object {

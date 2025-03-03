@@ -25,10 +25,12 @@ fun AddCard(
     Surface(
         shape = RoundedCornerShape(5.dp),
         color = Color(0xFFE5E5E5),
-        modifier = modifier.size(width = 208.dp, height = 124.dp),
         onClick = onAddCardClick,
     ) {
-        Box(contentAlignment = Alignment.Center) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = modifier.size(width = 208.dp, height = 124.dp),
+        ) {
             Icon(
                 imageVector = Icons.Filled.Add,
                 contentDescription = stringResource(R.string.card_list_add_card_description),

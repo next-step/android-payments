@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.domain.Card
+import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.list.CardListScreen
 import nextstep.payments.screens.card.list.CardListUiState
 import org.junit.Rule
@@ -24,31 +25,36 @@ class CardListScreenTest {
             numbers = "1111222233334444",
             expiredDate = "0522",
             ownerName = "CREW",
-            password = "0000"
+            password = "0000",
+            cardCompany = CardCompany.KAKAO,
         ),
         Card(
             numbers = "4444333322221111",
             expiredDate = "0421",
             ownerName = "BANDAL",
             password = "0000",
+            cardCompany = CardCompany.HYUNDAI,
         ),
         Card(
             numbers = "1111222233444433",
             expiredDate = "0522",
             ownerName = "LACO",
-            password = "0000"
+            password = "0000",
+            cardCompany = CardCompany.WOORI,
         ),
         Card(
             numbers = "2211334411224455",
             expiredDate = "0421",
             ownerName = "LEAH",
             password = "0000",
+            cardCompany = CardCompany.KB,
         ),
         Card(
             numbers = "2211334411224454",
             expiredDate = "0421",
             ownerName = "BEOKBEOK",
             password = "0000",
+            cardCompany = CardCompany.SHINHAN,
         )
     )
 
