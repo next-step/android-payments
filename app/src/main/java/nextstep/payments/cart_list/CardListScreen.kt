@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.component.EnrollmentPaymentCard
@@ -128,31 +130,21 @@ fun CardListManyScreen(
     }
 }
 
+class CardListScreenPreviewParameterProvider : PreviewParameterProvider<CardListUiState> {
+    override val values = sequenceOf(
+        CardListUiState.Empty,
+        CardListUiState.One(dummyDataList.first()),
+        CardListUiState.Many(dummyDataList)
+    )
+}
+
 @Preview
 @Composable
-private fun CardListScreenPreview() {
+fun CardListScreenPreview(
+    @PreviewParameter(CardListScreenPreviewParameterProvider::class) uiState: CardListUiState
+) {
     CardListScreen(
-        cardListUiState = CardListUiState.Empty,
-        onAddClick = { },
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CardListOneScreenPreview() {
-    CardListScreen(
-        cardListUiState = CardListUiState.One(dummyDataList.first()),
-        onAddClick = { },
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CardListManyScreenPreview() {
-    val cardList = dummyDataList
-
-    CardListScreen(
-        cardListUiState = CardListUiState.Many(cardList),
+        cardListUiState = uiState,
         onAddClick = { },
     )
 }
