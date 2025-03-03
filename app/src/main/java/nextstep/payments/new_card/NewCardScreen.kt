@@ -1,6 +1,5 @@
 package nextstep.payments.new_card
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +35,6 @@ fun NewCardScreen(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
-        Log.e("Test", "LaunchedEffect > $cardAdded")
         if (cardAdded) navigateToCardList()
     }
 
