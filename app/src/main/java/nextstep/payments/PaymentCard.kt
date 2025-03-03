@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,6 +67,7 @@ fun PaymentListCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(horizontal = 14.dp)
         ) {
             Spacer(modifier = Modifier.size(44.dp))
@@ -84,7 +86,8 @@ fun PaymentListCard(
                 color = Color.White,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,
-                letterSpacing = (12.sp * 0.17)
+                letterSpacing = (12.sp * 0.17),
+                lineHeight = 14.06.sp,
             )
             Spacer(modifier = Modifier.size(2.dp))
             Row(
@@ -97,7 +100,8 @@ fun PaymentListCard(
                     color = Color.White,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W500,
-                    letterSpacing = (12.sp * 0.1)
+                    letterSpacing = (12.sp * 0.1),
+                    lineHeight = 14.06.sp,
                 )
                 Text(
                     text = card.expiredDate,
@@ -105,6 +109,7 @@ fun PaymentListCard(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W500,
                     letterSpacing = (12.sp * 0.08),
+                    lineHeight = 14.06.sp,
                 )
             }
         }
