@@ -71,4 +71,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.intents)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.testing)
 }

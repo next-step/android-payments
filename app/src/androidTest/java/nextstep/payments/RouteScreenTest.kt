@@ -1,45 +1,62 @@
 package nextstep.payments
 
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.isDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
 import nextstep.payments.data.PaymentCardsRepository
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
+import nextstep.payments.navigation.rememberNavigator
 import nextstep.payments.ui.cardlist.CardListViewModel
+import nextstep.payments.ui.cardlist.navigation.CardList
+import nextstep.payments.ui.main.MainScreen
+import nextstep.payments.ui.newcard.navigation.NewCard
+import nextstep.payments.ui.updatecard.navigation.UpdateCard
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.time.YearMonth
 
-class RouteActivityTest {
-
+class RouteScreenTest {
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+    val composeTestRule = createComposeRule()
+    private lateinit var navController: TestNavHostController
 
     @Before
     fun setUp() {
         PaymentCardsRepository.clear()
+        composeTestRule.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            MainScreen(navigator = rememberNavigator(navController))
+        }
+    }
+
+    @Test
+    fun `시작경로가_올바르게_나와야_한다`() {
+        assertEquals(navController.currentDestination?.hasRoute<CardList>(), true)
     }
 
     @Test
     fun `카드가_비어있는_경우_카드추가_버튼을_클릭하면_새로운_카드를_추가하는_화면으로_이동해야_한다`() {
+
         //when
         composeTestRule.onNodeWithContentDescription("add_card_icon").performClick()
 
-        composeTestRule.waitForIdle()
-
         //then
-        composeTestRule.onNodeWithContentDescription("BankSelectBottomSheet").isDisplayed()
+        assertEquals(navController.currentDestination?.hasRoute<NewCard>(), true)
     }
 
     @Test
     fun `카드가_한개만_있는_경우_카드추가_버튼을_클릭하면_새로운_카드를_추가하는_화면으로_이동해야_한다`() {
-        //given
+        // given
         val card = Card(
             type = BankType.BC,
             number = "2345234523452345",
@@ -49,21 +66,18 @@ class RouteActivityTest {
         )
         PaymentCardsRepository.upsertCard(card)
 
-        val cardListViewModel =
-            ViewModelProvider(composeTestRule.activity)[CardListViewModel::class.java]
-
-        cardListViewModel.fetchCards()
+        navController.currentBackStackEntry?.let {
+            ViewModelProvider(it)[CardListViewModel::class.java].fetchCards()
+        }
         composeTestRule.waitForIdle()
-
 
         //when
         composeTestRule.onNodeWithContentDescription("add_card_icon").performClick()
 
-        composeTestRule.waitForIdle()
-
         //then
-        composeTestRule.onNodeWithContentDescription("BankSelectBottomSheet").isDisplayed()
+        assertEquals(navController.currentDestination?.hasRoute<NewCard>(), true)
     }
+
 
     @Test
     fun `카드가_여러개인_경우_추가_텍스트를_클릭하면_새로운_카드를_추가하는_화면으로_이동해야_한다`() {
@@ -86,19 +100,17 @@ class RouteActivityTest {
         )
         card.forEach(PaymentCardsRepository::upsertCard)
 
-        val cardListViewModel =
-            ViewModelProvider(composeTestRule.activity)[CardListViewModel::class.java]
-
-        cardListViewModel.fetchCards()
+        navController.currentBackStackEntry?.let {
+            ViewModelProvider(it)[CardListViewModel::class.java].fetchCards()
+        }
         composeTestRule.waitForIdle()
 
         //when
         composeTestRule.onNodeWithText("추가").performClick()
 
-        composeTestRule.waitForIdle()
 
         //then
-        composeTestRule.onNodeWithContentDescription("BankSelectBottomSheet").isDisplayed()
+        assertEquals(navController.currentDestination?.hasRoute<NewCard>(), true)
     }
 
     @Test
@@ -112,24 +124,17 @@ class RouteActivityTest {
             password = ""
         )
         PaymentCardsRepository.upsertCard(card)
-
-        val cardListViewModel =
-            ViewModelProvider(composeTestRule.activity)[CardListViewModel::class.java]
-
-        cardListViewModel.fetchCards()
+        navController.currentBackStackEntry?.let {
+            ViewModelProvider(it)[CardListViewModel::class.java].fetchCards()
+        }
         composeTestRule.waitForIdle()
-
 
         //when
         composeTestRule
             .onNodeWithText("비씨카드")
             .performClick()
 
-        composeTestRule.waitForIdle()
-
         //then
-        composeTestRule
-            .onNodeWithText("카드 수정")
-            .assertIsDisplayed()
+        assertEquals(navController.currentDestination?.hasRoute<UpdateCard>(), true)
     }
 }
