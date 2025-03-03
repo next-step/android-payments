@@ -25,23 +25,19 @@ fun CardApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = CardRoute.CARD_LIST.route,
+            startDestination = CardRoute.CardList,
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            composable(
-                route = CardRoute.CARD_LIST.route
-            ) {
+            composable<CardRoute.CardList> {
                 CardListScreen(
                     navigateToNewCard = {
-                        navController.navigate(CardRoute.NEW_CARD.route)
+                        navController.navigate(CardRoute.NewCard)
                     }
                 )
             }
-            composable(
-                route = CardRoute.NEW_CARD.route
-            ) {
+            composable<CardRoute.NewCard> {
                 NewCardScreen(
                     navigateToCardList = {
                         navController.navigateUp()
