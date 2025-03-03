@@ -5,16 +5,16 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class NewCardScreenTest {
+class NewCardScreenStatefulTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    @Test
-    fun `카드_번호_입력_필드가_노출되어야_한다`() {
-        // given
+    @Before
+    fun setUp() {
         composeTestRule.setContent {
             NewCardScreen(
                 onBackButtonClick = { },
@@ -22,7 +22,10 @@ class NewCardScreenTest {
                 viewModel = NewCardViewModel()
             )
         }
+    }
 
+    @Test
+    fun `카드_번호_입력_필드가_노출되어야_한다`() {
         // then
         composeTestRule
             .onNodeWithText("카드 번호")
@@ -31,15 +34,6 @@ class NewCardScreenTest {
 
     @Test
     fun `만료일_입력_필드가_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // then
         composeTestRule
             .onNodeWithText("만료일")
@@ -48,15 +42,6 @@ class NewCardScreenTest {
 
     @Test
     fun `카드_소유자_입력_필드가_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // then
         composeTestRule
             .onNodeWithText("카드 소유자 이름(선택)")
@@ -65,15 +50,6 @@ class NewCardScreenTest {
 
     @Test
     fun `비밀번호_입력_필드가_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         composeTestRule
             .onNodeWithText("비밀번호")
             .assertIsDisplayed()
@@ -81,15 +57,6 @@ class NewCardScreenTest {
 
     @Test
     fun `카드_번호를_입력하면_입력값이_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // when
         composeTestRule
             .onNodeWithText("카드 번호")
@@ -103,15 +70,6 @@ class NewCardScreenTest {
 
     @Test
     fun `만료일를_입력하면_입력값이_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // when
         composeTestRule
             .onNodeWithText("만료일")
@@ -125,15 +83,6 @@ class NewCardScreenTest {
 
     @Test
     fun `카드_소유자를_입력하면_입력값이_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // when
         composeTestRule
             .onNodeWithText("카드 소유자 이름(선택)")
@@ -147,15 +96,6 @@ class NewCardScreenTest {
 
     @Test
     fun `비밀번호를_입력하면_입력값이_마스킹되서_노출되어야_한다`() {
-        // given
-        composeTestRule.setContent {
-            NewCardScreen(
-                onBackButtonClick = { },
-                navigateToCardList = { },
-                viewModel = NewCardViewModel()
-            )
-        }
-
         // when
         composeTestRule
             .onNodeWithText("비밀번호")
