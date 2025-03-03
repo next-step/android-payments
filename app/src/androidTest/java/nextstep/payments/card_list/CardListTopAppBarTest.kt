@@ -62,7 +62,7 @@ class CardListTopAppBarTest {
     }
 
     @Test
-    fun 추가버튼이_노출되어_있을_때_버튼_클릭_테스트() {
+    fun 추가버튼이_노출되어_있을_때_버튼이클릭_될_수_있다() {
         // given
         var isClicked = false
 

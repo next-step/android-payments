@@ -13,7 +13,7 @@ class NewCardTopAppBarTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun title이_노출되어야_한다() {
+    fun 타이틀에_카드_추가_텍스트가_노출되어야_한다() {
         // given
         composeTestRule.setContent {
             NewCardTopAppBar(
