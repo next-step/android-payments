@@ -59,9 +59,10 @@ fun CardCompanyBottomSheetDialog(
         properties = ModalBottomSheetProperties(
             shouldDismissOnBackPress = false
         ),
+        dragHandle = null,
         modifier = modifier,
     ) {
-        Spacer(Modifier.height(36.dp))
+        Spacer(Modifier.height(80.dp))
         CardCompanySelectRow(
             onCardCompanyClick = { selectedCardCompany = it },
             modifier = Modifier.padding(horizontal = 16.dp),
