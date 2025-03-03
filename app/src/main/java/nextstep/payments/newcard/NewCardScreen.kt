@@ -141,7 +141,7 @@ private fun NewCardScreen(
 
         if (isShowBottomSheet) {
             BankSelectBottomSheet(
-                sendEvent = sendEvent,
+                onClickBankSelectButton = { sendEvent(NewCardEvent.OnClickBankSelectButton(it)) },
                 sheetState = bankSelectBottomSheetState,
                 modifier = Modifier.testTag("카드사 선택 바텀 시트"),
             )

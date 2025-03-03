@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
-import nextstep.payments.newcard.NewCardEvent
 import nextstep.payments.newcard.model.BankTypeUiModel
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.TypoTokens.Medium16
@@ -27,17 +26,13 @@ import nextstep.payments.ui.theme.TypoTokens.Medium16
 @Composable
 fun BankSelectButton(
     bankTypeButtonUiModel: BankTypeUiModel,
-    sendEvent: (NewCardEvent) -> Unit,
+    onClickBankSelectButton: (BankType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.clickable {
-            sendEvent(
-                NewCardEvent.OnClickBankSelectButton(
-                    bankTypeButtonUiModel.bankType
-                )
-            )
+            onClickBankSelectButton(bankTypeButtonUiModel.bankType)
         },
     ) {
         bankTypeButtonUiModel.iconResId?.let {
@@ -70,7 +65,7 @@ private fun BankItemPreview() {
     PaymentsTheme {
         BankSelectButton(
             bankTypeButtonUiModel = BankTypeUiModel.from(BankType.KB),
-            sendEvent = {},
+            onClickBankSelectButton = {},
         )
     }
 }
