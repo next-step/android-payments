@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.tooling.preview.Preview
@@ -113,13 +114,14 @@ private fun PaymentsOneScreen(
         Column(
             Modifier
                 .padding(innerPadding)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .testTag("PaymentsOneScreen"),
             horizontalAlignment = CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             PaymentCard(uiState.card)
             Spacer(modifier = Modifier.height(32.dp))
-            PaymentCardAddition(onClick = onAddCardClick)
+            PaymentCardAddition(onClick = onAddCardClick, modifier = Modifier.testTag("카드 추가 버튼"))
         }
     }
 }
