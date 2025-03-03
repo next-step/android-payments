@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.data.Card
+import nextstep.payments.data.dummyDataList
 
 @Composable
 fun PaymentCard(
@@ -81,7 +82,7 @@ fun PaymentListCard(
             )
             Spacer(modifier = Modifier.size(8.dp))
             Text(
-                text = card.cardNumber,
+                text = card.formatCardNumber(),
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.White,
                 fontSize = 12.sp,
@@ -104,7 +105,7 @@ fun PaymentListCard(
                     lineHeight = 14.06.sp,
                 )
                 Text(
-                    text = card.expiredDate,
+                    text = card.formatExpiredDate(),
                     color = Color.White,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W500,
@@ -152,13 +153,7 @@ private fun PaymentCardTypePreview() {
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardListTypePreview() {
-    val card = Card(
-        cardNumber = "1111 - 2222 - **** - ****",
-        ownerName = "홍길동",
-        expiredDate = "12/24",
-        password = "0000",
-    )
-
+    val card = dummyDataList.first()
     PaymentListCard(card = card)
 }
 
