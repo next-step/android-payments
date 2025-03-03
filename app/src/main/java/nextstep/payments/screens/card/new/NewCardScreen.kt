@@ -41,25 +41,14 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val selectedCardCompany: CardCompanyState? by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(uiState.cardAdded) {
+        if (uiState.cardAdded) navigateToCardList()
     }
 
     NewCardScreen(
-        selectedCardCompany = selectedCardCompany,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        uiState = uiState,
         onCardCompanyClick = viewModel::setSelectedCardCompany,
         onCardNumberChange = viewModel::setCardNumber,
         onExpiredDateChange = viewModel::setExpiredDate,
@@ -73,11 +62,7 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
-    selectedCardCompany: CardCompanyState?,
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+    uiState: NewCardUiState,
     onCardCompanyClick: (CardCompanyState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
@@ -109,19 +94,19 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            if (selectedCardCompany == null) {
+            if (uiState.selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
-                NewPaymentCard(selectedCardCompany)
+                NewPaymentCard(uiState.selectedCardCompany)
             }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             CardInformationInputFields(
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
+                cardNumber = uiState.cardNumber,
+                expiredDate = uiState.expiredDate,
+                ownerName = uiState.ownerName,
+                password = uiState.password,
                 onCardNumberChange = onCardNumberChange,
                 onExpiredDateChange = onExpiredDateChange,
                 onOwnerNameChange = onOwnerNameChange,
@@ -190,11 +175,7 @@ private fun CardInformationInputFields(
 @Composable
 private fun NewCardScreenPreview() {
     NewCardScreen(
-        selectedCardCompany = null,
-        cardNumber = "0000 - 0000 - 0000 - 0000",
-        expiredDate = "00 / 00",
-        ownerName = "홍길동",
-        password = "0000",
+        uiState = NewCardUiState(),
         onCardCompanyClick = {},
         onCardNumberChange = {},
         onExpiredDateChange = {},
