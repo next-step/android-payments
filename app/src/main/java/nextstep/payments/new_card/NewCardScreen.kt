@@ -72,7 +72,7 @@ fun NewCardScreen(
 ) {
     Scaffold(
         topBar = {
-            NewCardTopBar(
+            NewCardTopAppBar(
                 onBackClick = onBackClick,
                 onSaveClick = addCard
             )
