@@ -125,22 +125,21 @@ fun CardListManyScreen(cardList: List<Card>, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun CardListEmptyScreenPreview() {
-    CardListEmptyScreen(
-        onAddClick = { },
+private fun CardListScreenPreview() {
+    CardListScreen(
+        cardListUiState = CardListUiState.Empty,
+        onAddClick = { }
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun CardListOneScreenPreview() {
-    val card = dummyDataList.first()
-
-    CardListOneScreen(
-        card = card,
-        onAddClick = { },
+    CardListScreen(
+        cardListUiState = CardListUiState.One(dummyDataList.first()),
+        onAddClick = { }
     )
 }
 
@@ -148,5 +147,9 @@ private fun CardListOneScreenPreview() {
 @Composable
 private fun CardListManyScreenPreview() {
     val cardList = dummyDataList
-    CardListManyScreen(cardList = cardList)
+
+    CardListScreen(
+        cardListUiState = CardListUiState.Many(cardList),
+        onAddClick = { }
+    )
 }
