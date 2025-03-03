@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.designsystem.theme.PaymentsTheme
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
@@ -13,7 +16,34 @@ import nextstep.payments.ui.cardlist.component.CardListTopBar
 import nextstep.payments.ui.cardlist.component.EmptyCardContainer
 import nextstep.payments.ui.cardlist.component.ManyCardContainer
 import nextstep.payments.ui.cardlist.component.OneCardContainer
+import nextstep.payments.util.InjectUtil
 import java.time.YearMonth
+
+
+@Composable
+fun CardListScreen(
+    onRouteToNewCard: () -> Unit,
+    onRouteToUpdateCard: (Card) -> Unit,
+    cardListViewModel: CardListViewModel = InjectUtil.createCardListViewModel()
+) {
+
+    val uiState by cardListViewModel.cardListUiState.collectAsStateWithLifecycle()
+
+    val isFetchCards by cardListViewModel.isFetchCards.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        if (isFetchCards) {
+            cardListViewModel.fetchCards()
+        }
+    }
+
+    CardListScreen(
+        uiState = uiState,
+        onRouteToNewCard = onRouteToNewCard,
+        onRouteToUpdateCard = onRouteToUpdateCard
+    )
+}
+
 
 @Composable
 fun CardListScreen(
