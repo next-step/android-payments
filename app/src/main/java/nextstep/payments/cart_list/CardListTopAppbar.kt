@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListTopAppbar(
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
     showAddTextButton: Boolean = false,
-    onAddClick: () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = "Payments") },
@@ -48,13 +48,16 @@ fun CardListTopAppbar(
 @Composable
 private fun CardListTopAppbarShowAddTextButtonPreview() {
     CardListTopAppbar(
-        showAddTextButton = true,
         onAddClick = {},
+        showAddTextButton = true,
     )
 }
 
 @Preview
 @Composable
 private fun CardListTopAppbarPreview() {
-    CardListTopAppbar()
+    CardListTopAppbar(
+        onAddClick = {},
+        showAddTextButton = false,
+    )
 }
