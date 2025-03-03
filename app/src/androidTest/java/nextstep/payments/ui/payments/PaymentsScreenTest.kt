@@ -15,6 +15,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onSibling
 import androidx.compose.ui.test.onSiblings
 import nextstep.payments.model.CreditCard
+import nextstep.payments.model.IssuingBank
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,7 +48,8 @@ class PaymentsScreenTest {
             cardNumber = "1234567812345678",
             expiredDate = "1223",
             ownerName = "홍길동",
-            password = "1234"
+            password = "1234",
+            IssuingBank.SHINHAN_CARD,
         )
 
         composeTestRule.setContent {
@@ -81,13 +83,15 @@ class PaymentsScreenTest {
                 cardNumber = "1234567812345678",
                 expiredDate = "1223",
                 ownerName = "홍길동",
-                password = "1234"
+                password = "1234",
+                IssuingBank.KB_CARD,
             ),
             CreditCard(
                 cardNumber = "1111222233334444",
                 expiredDate = "1223",
                 ownerName = "최성훈",
-                password = "1234"
+                password = "1234",
+                IssuingBank.KAKAO_BANK,
             )
         )
 
