@@ -10,7 +10,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.CreditCard
+import nextstep.payments.model.IssuingBank
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -35,17 +35,20 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val issuingBank by viewModel.issuingBank.collectAsStateWithLifecycle()
 
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        issuingBank = issuingBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
+        onIssuingBankSelected = viewModel::setIssuingBank,
         onSaveClick = viewModel::onSaveClick,
         modifier = modifier,
     )
@@ -57,10 +60,12 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    issuingBank: IssuingBank,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onIssuingBankSelected: (IssuingBank) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -84,6 +89,7 @@ fun NewCardScreen(
                     expiredDate = expiredDate,
                     ownerName = ownerName,
                     password = password,
+                    issuingBank = issuingBank
                 ),
             )
 
@@ -138,11 +144,13 @@ private fun NewCardScreenPreview() {
             expiredDate = "12 / 34",
             ownerName = "홍길동",
             password = "1234",
+            issuingBank = IssuingBank.SHINHAN_CARD,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
+            onIssuingBankSelected = {},
             onSaveClick = {}
         )
     }

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.CreditCard
+import nextstep.payments.model.IssuingBank
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
@@ -35,13 +36,20 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = creditCard.issuingBank.color,
                 shape = RoundedCornerShape(5.dp),
             )
+            .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
+        Text(
+            text = creditCard.issuingBank.bankName,
+            color = Color.White,
+            style = Typography.titleSmall,
+            modifier = Modifier.align(Alignment.TopStart)
+        )
         Box(
             modifier = Modifier
-                .padding(start = 14.dp, bottom = 10.dp)
+                .padding(bottom = 10.dp)
                 .size(width = 40.dp, height = 26.dp)
                 .background(
                     color = Color(0xFFCBBA64),
@@ -53,7 +61,6 @@ fun PaymentCard(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 16.dp),
         )
     }
 }
@@ -107,13 +114,15 @@ class PaymentsTopBarPreviewParameterProvider : PreviewParameterProvider<CreditCa
             cardNumber = "1234567890123456",
             expiredDate = "1231",
             ownerName = "홍길동",
-            password = "123"
+            password = "123",
+            issuingBank = IssuingBank.KAKAO_BANK
         ),
         CreditCard(
             cardNumber = "",
             expiredDate = "",
             ownerName = "",
-            password = ""
+            password = "",
+            issuingBank = IssuingBank.KB_CARD
         )
     )
 }

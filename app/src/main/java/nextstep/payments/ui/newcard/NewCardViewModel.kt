@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.model.CreditCard
+import nextstep.payments.model.IssuingBank
 import nextstep.payments.repository.PaymentCardsRepository
 
 class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
@@ -25,6 +26,9 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+
+    private val _issuingBank = MutableStateFlow<IssuingBank>(IssuingBank.NOT_SELECTED)
+    val issuingBank: StateFlow<IssuingBank> = _issuingBank.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
         if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return
@@ -46,13 +50,18 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         _password.value = password.filter { it.isDigit() }
     }
 
+    fun setIssuingBank(issuingBank: IssuingBank) {
+        _issuingBank.value = issuingBank
+    }
+
     fun onSaveClick() {
         repository.addCard(
             CreditCard(
                 cardNumber = _cardNumber.value,
                 expiredDate = _expiredDate.value,
                 ownerName = _ownerName.value,
-                password = _password.value
+                password = _password.value,
+                issuingBank = _issuingBank.value
             )
         )
         _cardAdded.update { true }
