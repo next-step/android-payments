@@ -1,5 +1,7 @@
 package nextstep.payments.screens.card
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
 import nextstep.payments.ui.theme.Black100
@@ -14,8 +16,8 @@ import nextstep.payments.ui.theme.YelloKakao
 
 enum class CardCompanyState(
     val id: Int,
-    val nameRes: Int,
-    val imageRes: Int,
+    @StringRes val nameRes: Int,
+    @DrawableRes val imageRes: Int,
     val backgroundColor: Color,
 ) {
     NOT_SELECTED(
