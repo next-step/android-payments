@@ -26,35 +26,35 @@ class CardListScreenTest {
             expiredDate = "0522",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = CardCompany(id = 1, name = "KAKAO"),
+            cardCompany = CardCompany.KAKAO,
         ),
         Card(
             numbers = "4444333322221111",
             expiredDate = "0421",
             ownerName = "BANDAL",
             password = "0000",
-            cardCompany = CardCompany(id = 2, name = "HYUNDAI"),
+            cardCompany = CardCompany.HYUNDAI,
         ),
         Card(
             numbers = "1111222233444433",
             expiredDate = "0522",
             ownerName = "LACO",
             password = "0000",
-            cardCompany = CardCompany(id = 3, name = "WOORI"),
+            cardCompany = CardCompany.WOORI,
         ),
         Card(
             numbers = "2211334411224455",
             expiredDate = "0421",
             ownerName = "LEAH",
             password = "0000",
-            cardCompany = CardCompany(id = 4, name = "KB"),
+            cardCompany = CardCompany.KB,
         ),
         Card(
             numbers = "2211334411224454",
             expiredDate = "0421",
             ownerName = "BEOKBEOK",
             password = "0000",
-            cardCompany = CardCompany(id = 5, name = "SHINHAN"),
+            cardCompany = CardCompany.SHINHAN,
         )
     )
 

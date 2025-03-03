@@ -1,6 +1,12 @@
 package nextstep.payments.domain
 
-data class CardCompany(
-    val id: Int,
-    val name: String,
-)
+enum class CardCompany {
+    BC,
+    SHINHAN,
+    KAKAO,
+    HYUNDAI,
+    WOORI,
+    LOTTE,
+    HANA,
+    KB,
+}

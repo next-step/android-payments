@@ -171,7 +171,7 @@ private fun Preview2() {
             expiredDate = "0000",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = CardCompany(1, "BC"),
+            cardCompany = CardCompany.BC,
         )
         CardListWithOneCardScreen(
             card = card,
@@ -190,14 +190,14 @@ private fun Preview3() {
                 expiredDate = "0522",
                 ownerName = "CREW",
                 password = "0000",
-                cardCompany = CardCompany(id = 1, name = "KB"),
+                cardCompany = CardCompany.KB,
             ),
             Card(
                 numbers = "0000000000000000",
                 expiredDate = "0421",
                 ownerName = "BANDAL",
                 password = "0000",
-                cardCompany = CardCompany(id = 2, name = "HYUNDAI"),
+                cardCompany = CardCompany.HYUNDAI,
             ),
         )
         CardListWithManyCardScreen(

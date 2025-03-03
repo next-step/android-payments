@@ -21,6 +21,8 @@ import nextstep.payments.components.card.elements.OwnerName
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.toDomain
+import nextstep.payments.screens.card.toState
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -28,8 +30,7 @@ fun RegisteredPaymentCard(
     card: Card,
     modifier: Modifier = Modifier,
 ) {
-    val cardCompanyState =
-        remember(card) { CardCompanyState.findCardCompanyById(card.cardCompany.id) }
+    val cardCompanyState = remember(card) { card.cardCompany.toState() }
 
     BaseCard(
         modifier = modifier,
@@ -52,14 +53,14 @@ fun RegisteredPaymentCard(
     }
 }
 
-class RegisteredPaymentCardPreviewParameterProvider : CollectionPreviewParameterProvider<Int>(
-    collection = CardCompanyState.entries.map(CardCompanyState::id)
+class RegisteredPaymentCardPreviewParameterProvider : CollectionPreviewParameterProvider<CardCompany>(
+    collection = CardCompanyState.entries.map(CardCompanyState::toDomain)
 )
 
 @Preview
 @Composable
 private fun RegisteredPaymentCardPreview(
-    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompanyId: Int,
+    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompany,
 ) {
     PaymentsTheme {
         val card = Card(
@@ -67,7 +68,7 @@ private fun RegisteredPaymentCardPreview(
             expiredDate = "0421",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = CardCompany(cardCompanyId, "BC"),
+            cardCompany = cardCompany,
         )
         RegisteredPaymentCard(
             card = card,
