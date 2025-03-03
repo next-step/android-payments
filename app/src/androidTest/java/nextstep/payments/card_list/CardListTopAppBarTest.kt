@@ -15,7 +15,7 @@ class CardListTopAppBarTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun Payments_타이틀이_노출되어야_한다() {
+    fun 앱바_타이틀에_Payments_텍스트가_노출되어야_한다() {
         // given
         composeTestRule.setContent {
             CardListTopAppbar(
