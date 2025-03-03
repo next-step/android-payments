@@ -144,7 +144,7 @@ private fun PaymentsManyScreen(
                 .fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
         ) {
-            items(uiState.cards) { card ->
+            items(uiState.cards, key = { it.cardNumber }) { card ->
                 PaymentCard(card)
             }
         }
