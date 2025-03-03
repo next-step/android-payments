@@ -14,11 +14,12 @@ class NewCardActivity : ComponentActivity() {
                 val viewModel: NewCardViewModel = viewModel()
 
                 NewCardScreen(
-                    viewModel = viewModel,
+                    onBackButtonClick = { finish() },
                     navigateToCardList = {
                         setResult(RESULT_OK)
                         finish()
                     },
+                    viewModel = viewModel,
                 )
             }
         }

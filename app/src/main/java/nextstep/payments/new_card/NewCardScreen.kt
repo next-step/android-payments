@@ -1,5 +1,6 @@
 package nextstep.payments.new_card
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,27 +24,30 @@ import nextstep.payments.PaymentCard
 
 @Composable
 fun NewCardScreen(
+    onBackButtonClick: () -> Unit,
+    navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
-    navigateToCardList: () -> Unit,
 ) {
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
-    }
-
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        Log.e("Test", "LaunchedEffect > $cardAdded")
+        if (cardAdded) navigateToCardList()
+    }
 
     NewCardScreen(
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        setCardNumber = viewModel::setCardNumber, // viewModel.setCardNumber()랑 뭐가 다를까?
+        onBackClick = onBackButtonClick,
+        addCard = viewModel::addCard,
+        setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
@@ -58,6 +62,8 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    onBackClick: () -> Unit,
+    addCard: () -> Unit,
     setCardNumber: (String) -> Unit = {},
     setExpiredDate: (String) -> Unit = {},
     setOwnerName: (String) -> Unit = {},
@@ -65,7 +71,12 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = addCard
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -76,11 +87,11 @@ fun NewCardScreen(
                 .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(14.dp))
-            
+
             PaymentCard()
-            
+
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             OutlinedTextField(
                 value = cardNumber,
                 onValueChange = setCardNumber,
@@ -88,7 +99,7 @@ fun NewCardScreen(
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = expiredDate,
                 onValueChange = setExpiredDate,
@@ -96,7 +107,7 @@ fun NewCardScreen(
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = ownerName,
                 onValueChange = setOwnerName,
@@ -104,7 +115,7 @@ fun NewCardScreen(
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
             )
-            
+
             OutlinedTextField(
                 value = password,
                 onValueChange = setPassword,
@@ -121,13 +132,14 @@ fun NewCardScreen(
 @Composable
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
+        onBackButtonClick = {},
+        navigateToCardList = {},
         viewModel = NewCardViewModel().apply {
             setCardNumber("0000 - 0000 - 0000 - 0000")
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
             setPassword("0000")
         },
-        navigateToCardList = {},
     )
 }
 
@@ -139,6 +151,8 @@ private fun StatelessNewCardScreenPreview() {
         expiredDate = "00 / 00",
         ownerName = "홍길동",
         password = "0000",
+        addCard = {},
+        onBackClick = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},

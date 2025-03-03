@@ -10,7 +10,7 @@ import nextstep.payments.repository.PaymentCardsRepository
 class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
-    private val _cardAdded = MutableStateFlow<Boolean>(false)
+    private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     private val _cardNumber = MutableStateFlow("")
@@ -41,7 +41,18 @@ class NewCardViewModel(
         _password.value = password
     }
 
-    fun addCard(card: Card) {
+    fun addCard() {
+        if (cardNumber.value.isEmpty() || expiredDate.value.isEmpty() || ownerName.value.isEmpty() || password.value.isEmpty()) {
+            return
+        }
+
+        val card = Card(
+            cardNumber = cardNumber.value,
+            expiredDate = expiredDate.value,
+            ownerName = ownerName.value,
+            password = password.value
+        )
+
         repository.addCard(card)
         _cardAdded.value = true
     }
