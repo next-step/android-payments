@@ -67,26 +67,28 @@ fun PaymentCard(
 @Composable
 private fun CardNumberRow(
     cardNumber: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (cardNumber.length != 16) {
-        return CardNumber(" ")
+        CardNumber(" ")
     }
 
-    val fistNumsSector = cardNumber.substring(0, 4)
-    val secondNumsSector = cardNumber.substring(5, 9)
+    if (cardNumber.length == 16) {
+        val fistNumsSector = cardNumber.substring(0, 4)
+        val secondNumsSector = cardNumber.substring(5, 9)
 
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        CardNumber(fistNumsSector)
-        Divider()
-        CardNumber(secondNumsSector)
-        Divider()
-        CardNumber(stringResource(R.string.password_hidden_text))
-        Divider()
-        CardNumber(stringResource(R.string.password_hidden_text))
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            CardNumber(fistNumsSector)
+            Divider()
+            CardNumber(secondNumsSector)
+            Divider()
+            CardNumber(stringResource(R.string.password_hidden_text))
+            Divider()
+            CardNumber(stringResource(R.string.password_hidden_text))
+        }
     }
 }
 
@@ -94,7 +96,7 @@ private fun CardNumberRow(
 private fun OwnerNameAndExpireDateRow(
     ownerName: String,
     expiredDate: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
