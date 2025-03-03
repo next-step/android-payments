@@ -41,7 +41,7 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val selectedCardCompany by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
+    val selectedCardCompany: CardCompanyState? by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
 
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
@@ -73,7 +73,7 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
-    selectedCardCompany: CardCompanyState,
+    selectedCardCompany: CardCompanyState?,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -109,7 +109,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            if (selectedCardCompany == CardCompanyState.NOT_SELECTED) {
+            if (selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
                 NewPaymentCard(selectedCardCompany)
@@ -190,7 +190,7 @@ private fun CardInformationInputFields(
 @Composable
 private fun NewCardScreenPreview() {
     NewCardScreen(
-        selectedCardCompany = CardCompanyState.NOT_SELECTED,
+        selectedCardCompany = null,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",

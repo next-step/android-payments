@@ -23,7 +23,6 @@
     <string name="card_list_empty_please_add_your_new_card">새로운 카드를 등록해주세요</string>
 
     <!-- CardCompany -->
-    <string name="card_company_not_selected">선택안됨</string>
     <string name="card_company_bc">BC카드</string>
     <string name="card_company_shinhan">신한카드</string>
     <string name="card_company_kakao">카카오뱅크</string>

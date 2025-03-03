@@ -14,8 +14,8 @@ class NewCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
 ) : ViewModel() {
 
-    private val _selectedCardCompany = MutableStateFlow(CardCompanyState.NOT_SELECTED)
-    val selectedCardCompany: StateFlow<CardCompanyState> = _selectedCardCompany.asStateFlow()
+    private val _selectedCardCompany: MutableStateFlow<CardCompanyState?> = MutableStateFlow(null)
+    val selectedCardCompany: StateFlow<CardCompanyState?> = _selectedCardCompany.asStateFlow()
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -64,7 +64,7 @@ class NewCardViewModel(
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
                 password = password.value,
-                cardCompany = selectedCardCompany.value.toDomain(),
+                cardCompany = selectedCardCompany.value?.toDomain() ?: return,
             )
         )
         _cardAdded.value = true

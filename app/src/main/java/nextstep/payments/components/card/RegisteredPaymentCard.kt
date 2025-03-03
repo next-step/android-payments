@@ -55,7 +55,7 @@ fun RegisteredPaymentCard(
 class RegisteredPaymentCardPreviewParameterProvider : PreviewParameterProvider<Int> {
     override val values: Sequence<Int> =
         CardCompanyState
-            .getAllCardCompanies()
+            .entries
             .map(CardCompanyState::id)
             .asSequence()
 }

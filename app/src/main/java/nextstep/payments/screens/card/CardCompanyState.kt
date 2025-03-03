@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
-import nextstep.payments.ui.theme.Black100
 import nextstep.payments.ui.theme.BlackHyundai
 import nextstep.payments.ui.theme.BlueShinhan
 import nextstep.payments.ui.theme.BlueWoori
@@ -20,12 +19,6 @@ enum class CardCompanyState(
     @DrawableRes val imageRes: Int,
     val backgroundColor: Color,
 ) {
-    NOT_SELECTED(
-        id = -1,
-        nameRes = R.string.card_company_not_selected,
-        imageRes = R.drawable.ic_launcher_foreground,
-        backgroundColor = Black100,
-    ),
     BC(
         id = 1,
         nameRes = R.string.card_company_bc,
@@ -77,8 +70,6 @@ enum class CardCompanyState(
     ;
 
     companion object {
-        fun findCardCompanyById(id: Int): CardCompanyState = entries.find { it.id == id } ?: NOT_SELECTED
-
-        fun getAllCardCompanies(): List<CardCompanyState> = entries.filter { it != NOT_SELECTED }
+        fun findCardCompanyById(id: Int): CardCompanyState = entries.find { it.id == id } ?: throw IllegalArgumentException()
     }
 }

@@ -43,11 +43,11 @@ fun CardCompanyBottomSheetDialog(
         confirmValueChange = { false }
     )
 
-    var selectedCardCompany by remember { mutableStateOf(CardCompanyState.NOT_SELECTED) }
+    var selectedCardCompany: CardCompanyState? by remember { mutableStateOf(null) }
 
     LaunchedEffect(key1 = selectedCardCompany) {
-        if (selectedCardCompany != CardCompanyState.NOT_SELECTED) {
-            onCardCompanyClick(selectedCardCompany)
+        selectedCardCompany?.let {
+            onCardCompanyClick(it)
             modalBottomSheetState.hide()
             onDismissRequest()
         }
@@ -84,7 +84,7 @@ fun CardCompanySelectRow(
         verticalArrangement = Arrangement.spacedBy(24.dp),
         maxItemsInEachRow = COLUMN_COUNT
     ) {
-        CardCompanyState.getAllCardCompanies().forEach { cardCompanyState ->
+        CardCompanyState.entries.forEach { cardCompanyState ->
             CardCompaniesItem(
                 cardCompany = cardCompanyState,
                 onClick = { onCardCompanyClick(cardCompanyState) },
