@@ -12,12 +12,17 @@ class NewCardViewModel(
 
     override fun handleEvent(event: NewCardEvent) {
         when (event) {
-            is NewCardEvent.OnCardNumberChanged -> setCardNumber(event.cardNumber)
-            is NewCardEvent.OnExpiredDateChanged -> setExpiredDate(event.expiredDate)
-            is NewCardEvent.OnOwnerNameChanged -> setOwnerName(event.ownerName)
-            is NewCardEvent.OnPasswordChanged -> setPassword(event.password)
+            is NewCardEvent.OnCardNumberChange -> setCardNumber(event.cardNumber)
+            is NewCardEvent.OnExpiredDateChange -> setExpiredDate(event.expiredDate)
+            is NewCardEvent.OnOwnerNameChange -> setOwnerName(event.ownerName)
+            is NewCardEvent.OnPasswordChange -> setPassword(event.password)
             is NewCardEvent.OnClickBackButton -> sendSideEffect(NewCardSideEffect.NavigateBack)
             is NewCardEvent.OnClickCompleteButton -> createNewCard()
+            is NewCardEvent.OnClickBankSelectButton -> {
+                updateState(currentState().copy(bankType = event.bankType))
+                sendSideEffect(NewCardSideEffect.HideBottomSheet)
+            }
+            is NewCardEvent.OnDismissBottomSheet -> sendSideEffect(NewCardSideEffect.HideBottomSheet)
         }
     }
 
@@ -45,6 +50,7 @@ class NewCardViewModel(
                 expiredDate = it.expiredDate,
                 ownerName = it.ownerName,
                 password = it.password,
+                bankType = it.bankType,
             )
         }
         repository.addCard(card)

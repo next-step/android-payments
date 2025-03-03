@@ -11,7 +11,18 @@ class CardListViewModel(
     override fun handleEvent(event: CardListEvent) {
         when (event) {
             is CardListEvent.OnClickCreateCardButton -> sendSideEffect(CardListSideEffect.NavigateToNewCardScreen)
-            is CardListEvent.ReloadCardList -> updateState(currentState().copy(cards = repository.cards))
+            is CardListEvent.ReloadCardList -> loadCards()
         }
+    }
+
+    private fun loadCards() {
+        val cards = repository.cards
+        val cardState = when(cards.size) {
+            0 -> CardsState.NoCard
+            1 -> CardsState.OneCard(cards.first())
+            else -> CardsState.Cards(cards)
+        }
+
+        updateState(currentState().copy(cardsState = cardState))
     }
 }

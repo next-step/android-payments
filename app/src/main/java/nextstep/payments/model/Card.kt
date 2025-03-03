@@ -6,4 +6,5 @@ data class Card(
     val expiredDate : String,
     val ownerName : String,
     val password : String,
+    val bankType : BankType = BankType.NOT_SELECTED,
 )
