@@ -2,6 +2,7 @@ package nextstep.payments.cart_list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -72,7 +73,7 @@ fun CardListEmptyScreen(
         modifier = modifier
             .padding(top = 32.dp)
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "새로운 카드를 등록해주세요",
@@ -113,11 +114,10 @@ fun CardListOneScreen(
 @Composable
 fun CardListManyScreen(cardList: List<Card>, modifier: Modifier = Modifier) {
     LazyColumn(
-        modifier = modifier
-            .padding(top = 12.dp)
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(36.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
         items(cardList) {
             PaymentListCard(it)
