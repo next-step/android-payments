@@ -74,7 +74,7 @@ private const val COLUMN_COUNT = 4
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CardCompanySelectRow(
+private fun CardCompanySelectRow(
     onCardCompanyClick: (CardCompanyState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -95,7 +95,7 @@ fun CardCompanySelectRow(
 }
 
 @Composable
-fun CardCompaniesItem(
+private fun CardCompaniesItem(
     cardCompany: CardCompanyState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
