@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.ui.theme.Typography
 
 @Composable
 fun PaymentCard(
@@ -70,10 +70,7 @@ private fun PaymentCardContent(
         Text(
             text = maskCardNumber(paymentCard.cardNumber),
             color = Color.White,
-            fontSize = 12.sp,
-            fontWeight = W500,
-            letterSpacing = 2.sp,
-            lineHeight = 12.sp,
+            style = Typography.bodySmall.copy(letterSpacing = 2.sp),
             modifier = Modifier.fillMaxWidth(),
         )
         Row(
@@ -83,16 +80,12 @@ private fun PaymentCardContent(
             Text(
                 text = paymentCard.ownerName,
                 color = Color.White,
-                fontSize = 12.sp,
-                lineHeight = 12.sp,
-                fontWeight = W500,
+                style = Typography.bodySmall,
             )
             Text(
                 text = maskExpiredDate(paymentCard.expiredDate),
                 color = Color.White,
-                fontSize = 12.sp,
-                lineHeight = 12.sp,
-                fontWeight = W500,
+                style = Typography.bodySmall,
             )
         }
     }
