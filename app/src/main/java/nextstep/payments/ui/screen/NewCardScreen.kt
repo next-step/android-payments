@@ -45,7 +45,6 @@ fun NewCardScreen(
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
 
     NewCardScreen(
         cardNumber = cardNumber,
@@ -57,7 +56,6 @@ fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         snackbarHostState = snackbarHostState,
-        coroutineScope = coroutineScope,
         onBackCLick = navigateToCardList,
         onSaveClick = {
             viewModel.addCard(cardNumber, expiredDate, ownerName, password)
@@ -74,7 +72,6 @@ private fun NewCardScreen(
     ownerName: String,
     password: String,
     snackbarHostState: SnackbarHostState,
-    coroutineScope: CoroutineScope,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -85,6 +82,7 @@ private fun NewCardScreen(
 ) {
     val context = LocalContext.current
     val snackbarMessage = remember { context.getString(R.string.validate_snack_bar_message) }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -276,7 +274,6 @@ private fun StatelessNewCardScreenPreView() {
         ownerName = "홍길동",
         password = "1234",
         snackbarHostState = SnackbarHostState(),
-        coroutineScope = rememberCoroutineScope(),
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
