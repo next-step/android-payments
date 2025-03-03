@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
-
 @Composable
 fun PaymentCard(
     creditCard: CreditCard,
@@ -60,7 +59,7 @@ fun PaymentCard(
 }
 
 @Composable
-fun PaymentCardContent(
+private fun PaymentCardContent(
     paymentCard: CreditCard,
     modifier: Modifier = Modifier
 ) {
