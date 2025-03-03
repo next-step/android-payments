@@ -151,17 +151,17 @@ private fun PaymentsManyScreen(
     }
 }
 
-@Preview
+@Preview(name = "카드가 없는 경우")
 @Composable
-private fun PaymentsEmptyScreenPreview() {
+private fun Preview1() {
     PaymentsTheme {
         PaymentsEmptyScreen(onAddCardClick = {})
     }
 }
 
-@Preview
+@Preview(name = "카드가 한 개인 경우")
 @Composable
-private fun PaymentsOneScreenPreview() {
+private fun Preview2() {
     PaymentsTheme {
         PaymentsOneScreen(
             uiState = PaymentsUiState.One(
@@ -177,9 +177,9 @@ private fun PaymentsOneScreenPreview() {
     }
 }
 
-@Preview
+@Preview(name = "카드가 여러 개인 경우")
 @Composable
-private fun PaymentsManyScreenPreview() {
+private fun Preview3() {
     PaymentsTheme {
         PaymentsManyScreen(
             uiState = PaymentsUiState.Many(
