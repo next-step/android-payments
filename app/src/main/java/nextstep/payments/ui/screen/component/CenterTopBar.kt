@@ -14,8 +14,8 @@ import nextstep.payments.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CenterTopBar(
-    modifier: Modifier = Modifier,
     composeActionButton: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     CenterAlignedTopAppBar(
         title = {
