@@ -7,13 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.designsystem.component.CardInfoScreen
 import nextstep.payments.ui.updatecard.component.UpdateCardTopBar
+import nextstep.payments.util.InjectUtil
 
 @Composable
 fun UpdateCardScreen(
     onBackClick: () -> Unit,
     onUpdate: () -> Unit,
-    viewModel: UpdateCardViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: UpdateCardViewModel = InjectUtil.createUpdateCardViewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
