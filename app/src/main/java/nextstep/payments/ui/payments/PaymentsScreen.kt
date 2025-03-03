@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.model.CreditCard
+import nextstep.payments.model.IssuingBank
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.components.PaymentCardAddition
 import nextstep.payments.ui.newcard.NewCardActivity
@@ -169,7 +170,8 @@ private fun Preview2() {
                     cardNumber = "1234567812345678",
                     expiredDate = "0101",
                     ownerName = "홍길동",
-                    password = "123"
+                    password = "123",
+                    issuingBank = IssuingBank.HANA_CARD,
                 )
             ),
             onAddCardClick = {}
@@ -188,13 +190,15 @@ private fun Preview3() {
                         cardNumber = "1234567812345678",
                         expiredDate = "1231",
                         ownerName = "홍길동",
-                        password = "123"
+                        password = "123",
+                        issuingBank = IssuingBank.KB_CARD
                     ),
                     CreditCard(
-                        cardNumber = "1234567812345678",
+                        cardNumber = "1234567812345648",
                         expiredDate = "1231",
                         ownerName = "홍길동",
-                        password = "123"
+                        password = "123",
+                        issuingBank = IssuingBank.BC_CARD
                     ),
                 )
             ),

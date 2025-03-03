@@ -133,6 +133,12 @@ fun NewCardScreen(
             )
         }
     }
+
+    if (issuingBank == IssuingBank.NOT_SELECTED) {
+        IssuingBankBottomSheet(
+            onIssuingBankSelected = onIssuingBankSelected
+        )
+    }
 }
 
 @Preview
