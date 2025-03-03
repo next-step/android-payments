@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.new_card
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,10 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.component.PaymentCard
+import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
+    navigateToList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
@@ -31,6 +34,7 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     NewCardScreen(
+        modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -38,7 +42,12 @@ fun NewCardScreen(
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword
+        setPassword = viewModel::setPassword,
+        onBackClick = navigateToList,
+        onSaveClick = {
+            viewModel.addCard()
+            navigateToList()
+        }
     )
 }
 
@@ -52,11 +61,13 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { TODO() }, onSaveClick = { TODO() }) },
+        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -68,7 +79,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
             
-            PaymentCard()
+            PaymentCard(card = CreditCard.emptyCard)
             
             Spacer(modifier = Modifier.height(10.dp))
             
@@ -119,7 +130,8 @@ private fun StatefulNewCardScreenPreview() {
                 setExpiredDate("12 / 24")
                 setOwnerName("홍길동")
                 setPassword("1234")
-            }
+            },
+            navigateToList = {}
         )
     }
 }
@@ -136,7 +148,9 @@ private fun StatelessNewCardScreenPreview() {
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
-            setPassword = {}
+            setPassword = {},
+            onBackClick = {},
+            onSaveClick = {}
         )
     }
 }
