@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.EnrollmentPaymentCard
-import nextstep.payments.PaymentListCard
+import nextstep.payments.component.EnrollmentPaymentCard
+import nextstep.payments.component.PaymentListCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.dummyDataList
 
