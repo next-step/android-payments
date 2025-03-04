@@ -33,16 +33,19 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
-import nextstep.payments.utils.toCardModify
 
 @Composable
-fun Card(model: Card, enabled: Boolean) {
+fun Card(
+    model: Card,
+    enabled: Boolean,
+    onClick: () -> Unit = {},
+) {
     val cardColor = model.company?.color ?: Color(0xFF333333)
     val textColor = cardColor.getTextColorForBackground()
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier.clickable(enabled = enabled) { context.toCardModify(cardId = model.id) },
+        modifier = Modifier.clickable(enabled = enabled) { onClick.invoke() },
         backgroundColor = cardColor,
     ) {
         Column(
@@ -113,7 +116,6 @@ fun Card(
     backgroundColor: Color = Color(0xFFE5E5E5),
     content: @Composable BoxScope.() -> Unit,
 ) {
-    val context = LocalContext.current
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier

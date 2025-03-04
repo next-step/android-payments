@@ -18,37 +18,26 @@ import nextstep.payments.utils.toCardList
 import nextstep.payments.viewmodel.CardAddViewModel
 
 class CardAddModifyActivity : ComponentActivity() {
-    private val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+    private lateinit var toast: Toast
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val initialCardId = intent.getStringExtra(PARAM_CARD_ID).orEmpty()
+        toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         setContent {
             PaymentsTheme {
                 val viewModel: CardAddViewModel = viewModel<CardAddViewModel>()
 
                 val initialCard by remember { mutableStateOf(viewModel.initializeCard(cardId = initialCardId)) }
-
-                val card by viewModel.card.collectAsStateWithLifecycle()
-                val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
                 val navigateToCardList by viewModel.navigateToCardList.collectAsStateWithLifecycle()
                 val showToast by viewModel.showToast.collectAsStateWithLifecycle()
 
                 CardAddModifyScreen(
                     isModify = initialCard != Card.Empty,
-                    card = card,
-                    onCardNumberChange = viewModel::setCardNumber,
-                    onExpiredDateChange = viewModel::setExpiredDate,
-                    onOwnerNameChange = viewModel::setOwnerName,
-                    onPasswordChange = viewModel::setPassword,
                     onBackPressed = { onBackPressedDispatcher.onBackPressed() },
-                    onAddClicked = viewModel::addCard,
-                    onModifyClicked = viewModel::modifyCard,
-                    bottomSheetState = cardCompanyBottomSheet,
-                    onCardCompanyChange = viewModel::setCardCompany,
-                    onCardCompanyBottomSheetState = viewModel::setCardCompanyBottomSheetState,
+                    viewModel = viewModel,
                 )
 
                 if (navigateToCardList) toCardList()

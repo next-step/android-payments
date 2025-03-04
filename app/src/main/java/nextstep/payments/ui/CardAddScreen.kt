@@ -76,7 +76,10 @@ fun CardAddModifyScreen(
                     .padding(horizontal = 24.dp, vertical = 14.dp)
             ) {
 
-                Card(model = card, enabled = false)
+                Card(
+                    model = card,
+                    enabled = false,
+                )
                 CardInputFields(
                     card = card,
                     onCardNumberChange = onCardNumberChange,
@@ -107,7 +110,6 @@ fun CardAddModifyScreen(
     onBackPressed: () -> Unit,
     viewModel: CardAddViewModel = viewModel(),
 ) {
-
     val card by viewModel.card.collectAsStateWithLifecycle()
     val cardCompanyBottomSheet by viewModel.cardCompanyBottomSheet.collectAsStateWithLifecycle()
 

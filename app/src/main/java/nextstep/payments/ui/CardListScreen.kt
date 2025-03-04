@@ -30,6 +30,7 @@ import nextstep.payments.ui.component.CardAddAffordance
 import nextstep.payments.ui.component.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.toCardAdd
+import nextstep.payments.utils.toCardModify
 import nextstep.payments.viewmodel.CardListViewModel
 import nextstep.payments.viewmodel.CardsUiState
 
@@ -62,7 +63,6 @@ fun CardListScreen(cardsUiState: CardsUiState) {
 @Composable
 private fun CardListTopBar(cardsUiState: CardsUiState) {
     val context = LocalContext.current
-
     if (cardsUiState is CardsUiState.Many) {
         CardListTopBar(onAddClick = { context.toCardAdd() })
     } else {
@@ -109,8 +109,13 @@ private fun EmptyCardList(modifier: Modifier = Modifier) {
 private fun OneCardList(
     card: Card, modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     ParentCardList(modifier) {
-        Card(model = card, enabled = true)
+        Card(
+            model = card,
+            onClick = { context.toCardModify(card.id) },
+            enabled = true,
+        )
         CardAdd()
     }
 }
@@ -119,15 +124,19 @@ private fun OneCardList(
 private fun ManyCardList(
     cards: List<Card>, modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(verticalPadding),
         contentPadding = PaddingValues(top = verticalPadding)
     ) {
-
         items(items = cards, key = { it -> it.id }) { card ->
-            Card(model = card, enabled = true)
+            Card(
+                model = card,
+                onClick = { context.toCardModify(card.id) },
+                enabled = true,
+            )
         }
     }
 }
