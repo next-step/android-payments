@@ -30,6 +30,7 @@ private const val COLUMN_COUNT = 4
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun IssuingBankBottomSheet(
+    onDismissRequest: () -> Unit,
     onIssuingBankSelected: (IssuingBank) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,14 +39,14 @@ fun IssuingBankBottomSheet(
 
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
-        onDismissRequest = {
-            rememberCoroutineScope.launch { modalBottomSheetState.hide() }
-        },
+        onDismissRequest = onDismissRequest,
+        dragHandle = {},
         content = {
             NewCardIssuingBankSelection(
                 onIssuingBankSelected = { issuingBank ->
-                    rememberCoroutineScope.launch { modalBottomSheetState.hide() }
                     onIssuingBankSelected(issuingBank)
+                    rememberCoroutineScope.launch { modalBottomSheetState.hide() }
+                        .invokeOnCompletion { onDismissRequest() }
                 },
                 modifier = Modifier
                     .align(CenterHorizontally)

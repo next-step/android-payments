@@ -8,15 +8,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.model.CreditCard
 import nextstep.payments.model.IssuingBank
 import nextstep.payments.ui.components.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -44,6 +44,8 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val issuingBank by viewModel.issuingBank.collectAsStateWithLifecycle()
+    var showBottomSheet by remember { mutableStateOf(true) }
+
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -69,10 +71,16 @@ fun NewCardScreen(
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBackClick = onBackClick,
-        onIssuingBankSelected = viewModel::setIssuingBank,
         onSaveClick = viewModel::onSaveClick,
         modifier = modifier,
     )
+
+    if (showBottomSheet) {
+        IssuingBankBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            onIssuingBankSelected = viewModel::setIssuingBank,
+        )
+    }
 }
 
 @Composable
@@ -87,7 +95,6 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
-    onIssuingBankSelected: (IssuingBank) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -153,12 +160,6 @@ fun NewCardScreen(
             )
         }
     }
-
-    if (issuingBank == null) {
-        IssuingBankBottomSheet(
-            onIssuingBankSelected = onIssuingBankSelected
-        )
-    }
 }
 
 @Preview
@@ -177,7 +178,6 @@ private fun NewCardScreenPreview() {
             setOwnerName = {},
             setPassword = {},
             onBackClick = {},
-            onIssuingBankSelected = {},
             onSaveClick = {}
         )
     }
