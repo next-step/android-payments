@@ -7,13 +7,17 @@ import androidx.compose.runtime.Composable
 import nextstep.payments.base.BaseActivity
 
 class EditActivity : BaseActivity() {
-    private val viewModel by viewModels<EditViewModel>()
+    private val viewModel by viewModels<EditViewModel> {
+        val cardId = intent.getIntExtra(CARD_ID, -1)
+        EditViewModel.getFactory(cardId)
+    }
 
     @Composable
     override fun Screen() {
         EditScreen(
             popBackStack = {},
             popBackStackWithResult = {},
+            viewModel = viewModel,
         )
     }
 
