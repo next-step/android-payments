@@ -44,7 +44,6 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val scope = rememberCoroutineScope()
 
     var showBottomSheet by remember { mutableStateOf(true) }
     val bankSelectBottomSheetState = rememberModalBottomSheetState(
