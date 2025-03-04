@@ -23,12 +23,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.data.model.Card
+import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.component.Card
 import nextstep.payments.ui.component.CardAdd
 import nextstep.payments.ui.component.CardAddAffordance
 import nextstep.payments.ui.component.CardListTopBar
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.utils.toCardAdd
+import nextstep.payments.utils.toCardModify
 import nextstep.payments.viewmodel.CardListViewModel
 import nextstep.payments.viewmodel.CardsUiState
 
@@ -46,21 +48,12 @@ fun CardListScreen(viewModel: CardListViewModel = viewModel()) {
 }
 
 @Composable
-fun CardListScreen(
-    cardsUiState: CardsUiState,
-) {
-    val context = LocalContext.current
-
-    Scaffold(
-        topBar = {
-            CardListTopBar(
-                onAddClick = { context.toCardAdd() }.takeIf { cardsUiState is CardsUiState.Many }
-            )
-        }
-    ) { innerPadding ->
+fun CardListScreen(cardsUiState: CardsUiState) {
+    Scaffold(topBar = {
+        CardListTopBar(cardsUiState)
+    }) { innerPadding ->
         CardList(
-            cardsUiState = cardsUiState,
-            modifier = Modifier
+            cardsUiState = cardsUiState, modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         )
@@ -68,9 +61,18 @@ fun CardListScreen(
 }
 
 @Composable
+private fun CardListTopBar(cardsUiState: CardsUiState) {
+    val context = LocalContext.current
+    if (cardsUiState is CardsUiState.Many) {
+        CardListTopBar(onAddClick = { context.toCardAdd() })
+    } else {
+        CardListTopBar()
+    }
+}
+
+@Composable
 private fun CardList(
-    cardsUiState: CardsUiState,
-    modifier: Modifier = Modifier
+    cardsUiState: CardsUiState, modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier,
@@ -105,32 +107,36 @@ private fun EmptyCardList(modifier: Modifier = Modifier) {
 
 @Composable
 private fun OneCardList(
-    card: Card,
-    modifier: Modifier = Modifier
+    card: Card, modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     ParentCardList(modifier) {
-        Card(card)
+        Card(
+            model = card,
+            onClick = { context.toCardModify(card.id) },
+            enabled = true,
+        )
         CardAdd()
     }
 }
 
 @Composable
 private fun ManyCardList(
-    cards: List<Card>,
-    modifier: Modifier = Modifier
+    cards: List<Card>, modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     LazyColumn(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(verticalPadding),
         contentPadding = PaddingValues(top = verticalPadding)
     ) {
-
-        items(
-            items = cards,
-            key = { it -> it.number + it.updated }
-        ) { card ->
-            Card(card)
+        items(items = cards, key = { it -> it.id }) { card ->
+            Card(
+                model = card,
+                onClick = { context.toCardModify(card.id) },
+                enabled = true,
+            )
         }
     }
 }
@@ -138,11 +144,12 @@ private fun ManyCardList(
 private val verticalPadding = 32.dp
 
 private val defaultCard = Card(
-    number = "1111 - 1111 - **** - ****",
+    id = "0",
+    number = "1111222233334444",
     ownerName = "홍길동",
     expiredDate = "10/04",
     password = "1111",
-    company = null,
+    company = CardCompany.KAKAO,
 )
 
 @Preview(name = "카드 0 개일 경우 목록")
@@ -167,13 +174,13 @@ private fun CardListScreenPreview1() {
 private fun CardListScreenPreview2() {
     val cards = listOf(
         defaultCard,
-        defaultCard.copy(ownerName = "홍길동1"),
-        defaultCard.copy(ownerName = "홍길동2"),
-        defaultCard.copy(ownerName = "홍길동3"),
-        defaultCard.copy(ownerName = "홍길동4"),
-        defaultCard.copy(ownerName = "홍길동5"),
-        defaultCard.copy(ownerName = "홍길동6"),
-        defaultCard.copy(ownerName = "홍길동7"),
+        defaultCard.copy(id = "1", ownerName = "홍길동1"),
+        defaultCard.copy(id = "2", ownerName = "홍길동2"),
+        defaultCard.copy(id = "3", ownerName = "홍길동3"),
+        defaultCard.copy(id = "4", ownerName = "홍길동4"),
+        defaultCard.copy(id = "5", ownerName = "홍길동5"),
+        defaultCard.copy(id = "6", ownerName = "홍길동6"),
+        defaultCard.copy(id = "7", ownerName = "홍길동7"),
     ).toList()
 
     PaymentsTheme {

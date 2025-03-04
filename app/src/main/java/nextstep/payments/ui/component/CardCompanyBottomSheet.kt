@@ -13,13 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.data.model.CardCompany
-import nextstep.payments.data.model.cardCompanyList
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CardSelectSheet(
     selectedCompany: CardCompany?,
-    cardCompanyList: List<CardCompany>,
     onCardCompanyChange: (CardCompany) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -31,7 +29,7 @@ fun CardSelectSheet(
         verticalArrangement = Arrangement.spacedBy(24.dp),
         maxItemsInEachRow = COLUMN_COUNT
     ) {
-        cardCompanyList.forEach {
+        CardCompany.entries.forEach {
             CardCompany(
                 company = it,
                 selected = selectedCompany == it,
@@ -53,7 +51,6 @@ private fun PreviewCardSelectSheet() {
     ) {
         CardSelectSheet(
             selectedCompany = null,
-            cardCompanyList = cardCompanyList,
             onCardCompanyChange = {},
         )
     }
