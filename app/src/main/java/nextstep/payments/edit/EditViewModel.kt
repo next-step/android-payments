@@ -35,7 +35,7 @@ class EditViewModel(
             is EditEvent.OnOwnerNameChange -> setOwnerName(event.ownerName)
             is EditEvent.OnPasswordChange -> setPassword(event.password)
             EditEvent.OnClickBackButton -> sendSideEffect(EditSideEffect.NavigateBack)
-            EditEvent.OnClickCompleteButton -> sendSideEffect(EditSideEffect.NavigateBackWithNeedReload)
+            EditEvent.OnClickCompleteButton -> updateCard()
         }
     }
 
@@ -55,6 +55,11 @@ class EditViewModel(
 
     private fun setPassword(password: String) {
         updateState(currentState().copy(password = password))
+    }
+
+    private fun updateCard() {
+        repository.setCard(currentState().card)
+        sendSideEffect(EditSideEffect.NavigateBackWithNeedReload)
     }
 
     companion object {
