@@ -171,5 +171,4 @@ class CardListScreenTest {
 
         assert(clicked == true)
     }
-
 }

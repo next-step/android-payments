@@ -15,12 +15,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.util.toCardExpiredDateTransformedText
@@ -28,9 +34,11 @@ import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @Composable
 internal fun EmptyPaymentCard(
+    bankType: BankType,
     modifier: Modifier = Modifier,
 ) {
     PaymentCardFrame(
+        bankType = bankType,
         modifier = modifier.semantics {
             contentDescription = "미완성 카드"
         })
@@ -42,6 +50,7 @@ internal fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
     PaymentCardFrame(
+        bankType = card.bankType,
         modifier = modifier.semantics {
             contentDescription = "완성 카드"
         }
@@ -80,6 +89,7 @@ internal fun PaymentCard(
 
 @Composable
 private fun PaymentCardFrame(
+    bankType: BankType,
     modifier: Modifier,
     content: @Composable BoxScope.() -> Unit = {},
 ) {
@@ -88,11 +98,19 @@ private fun PaymentCardFrame(
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
-            )
+            .clip(shape = RoundedCornerShape(5.dp))
+            .background(color = colorResource(bankType.colorResId))
     ) {
+        if (bankType != BankType.NOT_SELECTED) {
+            Text(
+                text = stringResource(bankType.nameResId),
+                style = MaterialTheme.typography.labelMedium,
+                color = Color.White,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(14.dp)
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(start = 14.dp, bottom = 10.dp)
@@ -110,21 +128,29 @@ private fun PaymentCardFrame(
 @Composable
 private fun EmptyPaymentCardPreview() {
     PaymentsTheme {
-        EmptyPaymentCard()
+        EmptyPaymentCard(BankType.NOT_SELECTED)
     }
 }
 
 @Preview
 @Composable
-private fun PaymentCardPreview_card() {
+private fun PaymentCardPreview_card(
+    @PreviewParameter(CardPreviewParameter::class) card: Card
+) {
     PaymentsTheme {
-        PaymentCard(
-            card = Card(
-                number = "0000000000000000",
-                expiredDate = "0000",
-                ownerName = "홍길동",
-                password = "0000"
-            )
-        )
+        PaymentCard(card = card)
     }
 }
+
+private class CardPreviewParameter : CollectionPreviewParameterProvider<Card>(
+    BankType.getSelectableTypes().mapIndexed { i, bank ->
+        Card(
+            id = i,
+            number = "0000000000000000",
+            expiredDate = "0000",
+            ownerName = "홍길동",
+            password = "0000",
+            bankType = bank
+        )
+    }
+)

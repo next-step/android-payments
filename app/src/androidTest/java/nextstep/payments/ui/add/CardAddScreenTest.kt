@@ -1,11 +1,15 @@
 package nextstep.payments.ui.add
 
+import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import nextstep.payments.data.model.BankType
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,10 +26,14 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setSheetOpened = {},
+                setBank = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
@@ -45,10 +53,14 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
+                bankType = BankType.NOT_SELECTED,
+                sheetOpened = false,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
@@ -68,10 +80,14 @@ class CardAddScreenTest {
                 expiredDate = expiredDate,
                 ownerName = "",
                 password = "",
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
@@ -91,10 +107,14 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = password,
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
@@ -118,10 +138,14 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
                 onBackClick = { clicked = true },
                 onSaveClick = {},
             )
@@ -143,10 +167,14 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
                 onBackClick = { },
                 onSaveClick = { clicked = true },
             )
@@ -159,4 +187,81 @@ class CardAddScreenTest {
         assert(clicked == true)
     }
 
+    @Test
+    fun `카드사를_선택하지_않으면_카드_선택_목록이_보인다`() {
+        composeTestRule.setContent {
+            CardAddScreen(
+                cardNumber = "",
+                expiredDate = "",
+                ownerName = "",
+                password = "",
+                sheetOpened = false,
+                bankType = BankType.NOT_SELECTED,
+                setCardNumber = {},
+                setExpiredDate = {},
+                setOwnerName = {},
+                setPassword = {},
+                setBank = {},
+                setSheetOpened = {},
+                onBackClick = { },
+                onSaveClick = { },
+            )
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription("카드사 선택 목록 보기")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun `카드사를_선택하면_카드_선택_목록이_보아지_않는다`() {
+        composeTestRule.setContent {
+            CardAddScreen(
+                cardNumber = "",
+                expiredDate = "",
+                ownerName = "",
+                password = "",
+                sheetOpened = false,
+                bankType = BankType.SINHAN,
+                setCardNumber = {},
+                setExpiredDate = {},
+                setOwnerName = {},
+                setPassword = {},
+                setBank = { },
+                setSheetOpened = {},
+                onBackClick = { },
+                onSaveClick = { },
+            )
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription("카드사 선택 목록 보기")
+            .assertIsNotDisplayed()
+    }
+
+    @Test
+    fun `선택한_카드사_이름이_카드_미리보기에_보인다`() {
+        composeTestRule.setContent {
+            CardAddScreen(
+                cardNumber = "",
+                expiredDate = "",
+                ownerName = "",
+                password = "",
+                sheetOpened = false,
+                bankType = BankType.KAKAO,
+                setCardNumber = {},
+                setExpiredDate = {},
+                setOwnerName = {},
+                setPassword = {},
+                setBank = { },
+                setSheetOpened = {},
+                onBackClick = { },
+                onSaveClick = { },
+            )
+        }
+        composeTestRule
+            .onNodeWithContentDescription("미완성 카드")
+            .onChildren()
+            .assertAny(hasText("카카오뱅크"))
+    }
 }
