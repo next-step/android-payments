@@ -1,5 +1,9 @@
 package nextstep.payments.list
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,20 +33,30 @@ import nextstep.payments.R
 import nextstep.payments.component.EmptyPaymentCard
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.model.CreditCard
+import nextstep.payments.new_card.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
-    navigateToAdd: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel()
 ) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                viewModel.fetchCards()
+            }
+        }
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     CardListScreen(
         modifier = modifier,
         state = state,
-        onAddClick = navigateToAdd
+        onAddClick = {
+            val intent = Intent(context, NewCardActivity::class.java)
+            launcher.launch(intent)
+        }
     )
 }
 
@@ -65,11 +80,13 @@ fun CardListScreen(
                 modifier = Modifier.padding(innerPadding),
                 onAddClick = onAddClick
             )
+
             is CardListState.Single -> SingleCardContent(
                 modifier = Modifier.padding(innerPadding),
                 card = state.card,
                 onAddClick = onAddClick
             )
+
             is CardListState.Multiple -> MultipleCardContent(
                 modifier = Modifier.padding(innerPadding),
                 cards = state.cards
