@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.component.PaymentCardDefaults.CHUNKED_DUE_DATE_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.CHUNKED_NUMBER_LENGTH
-import nextstep.payments.component.PaymentCardDefaults.CardSize
 import nextstep.payments.component.PaymentCardDefaults.DUE_DATE_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.UNMASKED_NUMBER_LENGTH
 import nextstep.payments.model.CardCompany
@@ -48,7 +47,7 @@ fun PaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(CardSize)
+            .size(PaymentCardDefaults.CardSize)
             .background(
                 color = cardCompanyResource?.backgroundColor ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
@@ -132,7 +131,7 @@ fun EmptyPaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(CardSize)
+            .size(PaymentCardDefaults.CardSize)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
