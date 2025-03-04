@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.CardRepository
+import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 
 class NewCardViewModel(
@@ -23,6 +24,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _company = MutableStateFlow(CardCompany.NONE)
+    val company: StateFlow<CardCompany> = _company.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -39,13 +43,18 @@ class NewCardViewModel(
         _password.value = password
     }
 
+    fun setCompany(company: CardCompany) {
+        _company.value = company
+    }
+
     fun addCard() {
         cardRepository.addCard(
             CreditCard(
                 number = cardNumber.value,
                 dueDate = expiredDate.value,
                 name = ownerName.value,
-                password = password.value
+                password = password.value,
+                company = company.value
             )
         )
     }
