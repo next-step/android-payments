@@ -23,10 +23,10 @@ fun PaymentCardAddition(onClick: () -> Unit, modifier: Modifier = Modifier) {
         color = Color(0xFFE5E5E5),
         shadowElevation = 8.dp,
         onClick = onClick,
-        modifier = modifier.size(width = 208.dp, height = 124.dp)
+        modifier = modifier,
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.size(width = 208.dp, height = 124.dp),
             contentAlignment = Alignment.Center
         ) {
             Icon(
