@@ -15,6 +15,7 @@ import nextstep.payments.edit.EditEvent
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTopBar(
+    isDataChanged: Boolean,
     sendEvent: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -29,7 +30,10 @@ fun EditTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { sendEvent(EditEvent.OnClickCompleteButton) }) {
+            IconButton(
+                onClick = { sendEvent(EditEvent.OnClickCompleteButton) },
+                enabled = isDataChanged,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",

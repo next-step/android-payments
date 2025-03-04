@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,6 +49,7 @@ fun EditScreen(
         ownerName = state.ownerName,
         password = state.password,
         bankType = state.bankType,
+        isDataChanged = state.card != viewModel.getSavedCard(),
         sendEvent = viewModel::sendEvent,
         modifier = modifier,
     )
@@ -60,11 +62,17 @@ fun EditScreen(
     ownerName: String,
     password: String,
     bankType: BankType,
+    isDataChanged: Boolean,
     sendEvent: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar = { EditTopBar(sendEvent = sendEvent) },
+        topBar = {
+            EditTopBar(
+                isDataChanged = isDataChanged,
+                sendEvent = sendEvent,
+            )
+        },
         modifier = modifier,
     ) { innerPadding ->
         Column(
@@ -90,7 +98,9 @@ fun EditScreen(
                 onValueChange = { sendEvent(EditEvent.OnCardNumberChange(it)) },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("cardNumberTextField"),
             )
 
             OutlinedTextField(

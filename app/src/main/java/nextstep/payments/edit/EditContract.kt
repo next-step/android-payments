@@ -4,6 +4,7 @@ import nextstep.payments.base.ScreenEvent
 import nextstep.payments.base.ScreenSideEffect
 import nextstep.payments.base.ScreenState
 import nextstep.payments.model.BankType
+import nextstep.payments.model.Card
 
 data class EditState(
     val id: Int,
@@ -12,7 +13,17 @@ data class EditState(
     val ownerName: String = "",
     val password: String = "",
     val bankType: BankType = BankType.NOT_SELECTED,
-): ScreenState
+): ScreenState {
+    val card: Card
+        get() = Card(
+            id = id,
+            cardNumber = cardNumber,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password,
+            bankType = bankType
+        )
+}
 
 sealed class EditEvent: ScreenEvent {
     data class OnCardNumberChange(val cardNumber: String): EditEvent()

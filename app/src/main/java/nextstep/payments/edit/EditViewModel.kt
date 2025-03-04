@@ -39,6 +39,8 @@ class EditViewModel(
         }
     }
 
+    fun getSavedCard() = repository.getCard(cardId)
+
     private fun setCardNumber(cardNumber: String) {
         updateState(currentState().copy(cardNumber = cardNumber))
     }
