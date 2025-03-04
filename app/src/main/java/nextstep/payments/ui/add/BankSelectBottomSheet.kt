@@ -40,11 +40,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun BankSelectBottomSheet(
     onBankSelect: (BankType) -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BankSelectBottomSheet(
         onBankSelect = onBankSelect,
         sheetState = rememberModalBottomSheetState(confirmValueChange = { false }),
+        onDismissRequest = onDismissRequest,
         modifier = modifier
     )
 }
@@ -52,18 +54,19 @@ internal fun BankSelectBottomSheet(
 @Composable
 private fun BankSelectBottomSheet(
     onBankSelect: (BankType) -> Unit,
-    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
     sheetState: SheetState,
+    modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = {},
+        onDismissRequest = onDismissRequest,
         modifier = modifier.semantics {
             contentDescription = "카드사 선택 목록 보기"
         },
-        properties = ModalBottomSheetProperties(shouldDismissOnBackPress = false)
+        properties = ModalBottomSheetProperties()
     ) {
         BanksContainer(
             bankTypes = BankType.getSelectableTypes(),
@@ -72,6 +75,7 @@ private fun BankSelectBottomSheet(
                     sheetState.hide()
                 }.invokeOnCompletion {
                     onBankSelect(bank)
+                    onDismissRequest()
                 }
             }
         )
@@ -150,6 +154,7 @@ private fun BankSelectBottomSheetPreview() {
         BankSelectBottomSheet(
             sheetState = rememberStandardBottomSheetState(),
             onBankSelect = {},
+            onDismissRequest = {},
         )
     }
 }

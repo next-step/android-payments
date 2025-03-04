@@ -1,5 +1,7 @@
 package nextstep.payments.ui.add
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -40,9 +43,20 @@ internal fun CardAddScreen(
 ) {
     val card by cardAddViewModel.card.collectAsStateWithLifecycle()
     val cardAdded by cardAddViewModel.cardAdded.collectAsStateWithLifecycle()
+    val cardAddFailed by cardAddViewModel.cardAddFailed.collectAsStateWithLifecycle()
+    val bankSelectSheetOpened by cardAddViewModel.bankSelectSheetOpened.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) onSaveCard()
+    }
+
+    LaunchedEffect(cardAddFailed) {
+        if (cardAddFailed) {
+            Toast.makeText(context, R.string.bank_type_select_request, Toast.LENGTH_SHORT)
+                .show()
+            cardAddViewModel.resetCardAddFailed()
+        }
     }
 
     CardAddScreen(
@@ -51,11 +65,13 @@ internal fun CardAddScreen(
         ownerName = card.ownerName,
         password = card.password,
         bankType = card.bankType,
+        sheetOpened = bankSelectSheetOpened,
         setCardNumber = cardAddViewModel::setCardNumber,
         setExpiredDate = cardAddViewModel::setExpiredDate,
         setOwnerName = cardAddViewModel::setOwnerName,
         setPassword = cardAddViewModel::setPassword,
         setBank = cardAddViewModel::setBankType,
+        setSheetOpened = cardAddViewModel::setBankSelectSheetOpened,
         onBackClick = onBackClick,
         onSaveClick = cardAddViewModel::addCard,
         modifier = modifier
@@ -70,11 +86,13 @@ internal fun CardAddScreen(
     ownerName: String,
     password: String,
     bankType: BankType,
+    sheetOpened: Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     setBank: (BankType) -> Unit,
+    setSheetOpened: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -98,7 +116,7 @@ internal fun CardAddScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            EmptyPaymentCard(bankType)
+            EmptyPaymentCard(bankType, Modifier.clickable(onClick = { setSheetOpened(true) }))
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -157,9 +175,10 @@ internal fun CardAddScreen(
                     },
             )
         }
-        if (bankType == BankType.NOT_SELECTED) {
+        if (sheetOpened) {
             BankSelectBottomSheet(
                 onBankSelect = setBank,
+                onDismissRequest = { setSheetOpened(false) }
             )
         }
     }
@@ -190,12 +209,14 @@ private fun StatelessCardAddScreenPreview() {
         ownerName = "홍길동",
         password = "0000",
         bankType = BankType.BC,
+        sheetOpened = false,
         setCardNumber = { },
         setExpiredDate = { },
         setOwnerName = { },
         setPassword = { },
         setBank = {},
+        setSheetOpened = {},
         onBackClick = {},
-        onSaveClick = {}
+        onSaveClick = {},
     )
 }

@@ -20,6 +20,12 @@ class CardAddViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
+    private val _cardAddFailed = MutableStateFlow(false)
+    val cardAddFailed: StateFlow<Boolean> = _cardAddFailed.asStateFlow()
+
+    private val _bankSelectSheetOpened = MutableStateFlow(true)
+    val bankSelectSheetOpened: StateFlow<Boolean> = _bankSelectSheetOpened.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _card.update {
             it.copy(number = cardNumber.take(16))
@@ -51,8 +57,21 @@ class CardAddViewModel(
     }
 
     fun addCard() {
+        if (_card.value.bankType == BankType.NOT_SELECTED) {
+            _cardAddFailed.update { true }
+            return
+        }
+
         repository.addCard(_card.value)
-        _cardAdded.value = true
+        _cardAdded.update { true }
+    }
+
+    fun resetCardAddFailed() {
+        _cardAddFailed.update { false }
+    }
+
+    fun setBankSelectSheetOpened(isOpened: Boolean) {
+        _bankSelectSheetOpened.update { isOpened }
     }
 
     companion object {

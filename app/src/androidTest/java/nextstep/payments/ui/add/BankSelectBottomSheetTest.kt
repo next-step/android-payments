@@ -4,15 +4,10 @@ package nextstep.payments.ui.add
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.filterToOne
-import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToLog
 import nextstep.payments.data.model.BankType
 import org.junit.Rule
 import org.junit.Test
@@ -27,6 +22,7 @@ class BankSelectBottomSheetTest {
         composeTestRule.setContent {
             BankSelectBottomSheet(
                 onBankSelect = {},
+                onDismissRequest = {},
             )
         }
 
@@ -43,6 +39,7 @@ class BankSelectBottomSheetTest {
         composeTestRule.setContent {
             BankSelectBottomSheet(
                 onBankSelect = { selectedBank = it },
+                onDismissRequest = {},
             )
         }
 

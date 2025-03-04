@@ -23,4 +23,6 @@
     <string name="lotte_card">롯데카드</string>
     <string name="hana_card">하나카드</string>
     <string name="kookmin_card">국민카드</string>
+
+    <string name="bank_type_select_request">카드를 눌러 카드사를 선택해주세요</string>
 </resources>
