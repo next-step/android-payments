@@ -21,7 +21,7 @@ class NewCardScreenTest: BaseComposableTest() {
         }
         // when
 
-        // thena
+        // then
         composeTestRule
             .onNodeWithTag("카드사 선택 바텀 시트")
             .assertIsDisplayed()

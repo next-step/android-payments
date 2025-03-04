@@ -35,22 +35,24 @@ fun BankSelectButton(
             onClickBankSelectButton(bankTypeButtonUiModel.bankType)
         },
     ) {
-        bankTypeButtonUiModel.iconResId?.let {
+        if (bankTypeButtonUiModel.iconResId != null) {
             Image(
-                painter = painterResource(it),
+                painter = painterResource(bankTypeButtonUiModel.iconResId),
                 contentDescription = bankTypeButtonUiModel.title,
                 modifier = Modifier
                     .size(37.dp)
                     .clip(CircleShape)
                     .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
             )
-        } ?: Box(
-            modifier = Modifier
-                .size(37.dp)
-                .clip(CircleShape)
-                .background(bankTypeButtonUiModel.color)
-                .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
-        )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(37.dp)
+                    .clip(CircleShape)
+                    .background(bankTypeButtonUiModel.color)
+                    .testTag("카드사 선택 버튼: ${bankTypeButtonUiModel.title}"),
+            )
+        }
         Spacer(modifier = Modifier.height(11.dp))
         Text(
             text = bankTypeButtonUiModel.title,

@@ -12,6 +12,7 @@ class CardListViewModel(
         when (event) {
             is CardListEvent.OnClickCreateCardButton -> sendSideEffect(CardListSideEffect.NavigateToNewCardScreen)
             is CardListEvent.ReloadCardList -> loadCards()
+            is CardListEvent.OnClickCardItem -> sendSideEffect(CardListSideEffect.NavigateToEditScreen(event.cardId))
         }
     }
 
