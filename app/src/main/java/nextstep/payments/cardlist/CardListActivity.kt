@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import nextstep.payments.base.BaseActivity
+import nextstep.payments.edit.EditActivity
 import nextstep.payments.newcard.NewCardActivity
 
 class CardListActivity : BaseActivity() {
@@ -23,11 +24,16 @@ class CardListActivity : BaseActivity() {
 
         CardListScreen(
             viewModel = viewModel,
-            navigateToNewCardScreen = { navigateToNewCardScreen(launcher) }
+            navigateToNewCardScreen = { navigateToNewCardScreen(launcher) },
+            navigateToEditScreen = { navigateToEditScreen(launcher, it) }
         )
     }
 
     private fun navigateToNewCardScreen(launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
         launcher.launch(NewCardActivity.newIntent(this))
+    }
+
+    private fun navigateToEditScreen(launcher: ManagedActivityResultLauncher<Intent, ActivityResult>, cardId: Int) {
+        launcher.launch(EditActivity.newIntent(this, cardId))
     }
 }

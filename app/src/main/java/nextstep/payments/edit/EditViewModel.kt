@@ -8,10 +8,9 @@ class EditViewModel(
 ) : BaseViewModel<EditState, EditEvent, EditSideEffect>() {
 
     override fun initState(): EditState {
-        TODO("Not yet implemented")
+        return EditState(id = 1)
     }
 
     override fun handleEvent(event: EditEvent) {
-        TODO("Not yet implemented")
     }
 }
