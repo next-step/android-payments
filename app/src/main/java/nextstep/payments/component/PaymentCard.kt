@@ -42,6 +42,7 @@ fun PaymentCard(
 ) {
     val formattedNumber = remember(key1 = card.number) { card.number.formatCardNumber() }
     val formattedDueDate = remember(key1 = card.dueDate) { card.dueDate.formatCardDueDate() }
+    val cardCompanyResource = remember(key1 = card.company) { card.company.toResource() }
 
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -49,7 +50,7 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(CardSize)
             .background(
-                color = Color(0xFF333333),
+                color = cardCompanyResource?.backgroundColor ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
             .testTag("PaymentCard")
@@ -60,6 +61,12 @@ fun PaymentCard(
                 .align(Alignment.BottomStart),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            if (card.company != CardCompany.NONE) {
+                PaymentCardText(
+                    text = cardCompanyResource?.stringRes?.let { stringResource(id = it) } ?: ""
+                )
+            }
+
             Spacer(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
@@ -154,10 +161,19 @@ private fun PaymentCardPreview() {
                     dueDate = "0125",
                     password = "1234",
                     name = "YANG",
-                    company = CardCompany.BC
+                    company = CardCompany.NONE
                 )
             )
             EmptyPaymentCard()
+            PaymentCard(
+                card = CreditCard(
+                    number = "1111222233334444",
+                    dueDate = "0125",
+                    password = "1234",
+                    name = "YANG",
+                    company = CardCompany.BC
+                )
+            )
         }
     }
 }
