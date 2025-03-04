@@ -24,6 +24,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _company = MutableStateFlow(CardCompany.NONE)
+    val company: StateFlow<CardCompany> = _company.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -40,6 +43,10 @@ class NewCardViewModel(
         _password.value = password
     }
 
+    fun setCompany(company: CardCompany) {
+        _company.value = company
+    }
+
     fun addCard() {
         cardRepository.addCard(
             CreditCard(
@@ -47,7 +54,7 @@ class NewCardViewModel(
                 dueDate = expiredDate.value,
                 name = ownerName.value,
                 password = password.value,
-                company = CardCompany.NONE // TODO
+                company = company.value
             )
         )
     }
