@@ -14,6 +14,12 @@ data class EditState(
     val bankType: BankType = BankType.NOT_SELECTED,
 ): ScreenState
 
-sealed class EditEvent: ScreenEvent
+sealed class EditEvent: ScreenEvent {
+    data object OnClickBackButton: EditEvent()
+    data object OnClickCompleteButton: EditEvent()
+}
 
-sealed class EditSideEffect: ScreenSideEffect
+sealed class EditSideEffect: ScreenSideEffect {
+    data object NavigateBack: EditSideEffect()
+    data object NavigateBackWithNeedReload: EditSideEffect()
+}

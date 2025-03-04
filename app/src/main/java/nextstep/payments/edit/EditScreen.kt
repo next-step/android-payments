@@ -35,7 +35,10 @@ fun EditScreen(
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collectLatest {
-
+            when (it) {
+                is EditSideEffect.NavigateBack -> popBackStack()
+                is EditSideEffect.NavigateBackWithNeedReload -> popBackStackWithResult()
+            }
         }
     }
 

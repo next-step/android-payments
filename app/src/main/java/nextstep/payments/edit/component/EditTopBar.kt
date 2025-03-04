@@ -21,7 +21,7 @@ fun EditTopBar(
     TopAppBar(
         title = { Text("카드 수정") },
         navigationIcon = {
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { sendEvent(EditEvent.OnClickBackButton) }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "뒤로 가기",
@@ -29,7 +29,7 @@ fun EditTopBar(
             }
         },
         actions = {
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { sendEvent(EditEvent.OnClickCompleteButton) }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",

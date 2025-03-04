@@ -29,7 +29,10 @@ class EditViewModel(
     override fun initState(): EditState = EditState(id = cardId)
 
     override fun handleEvent(event: EditEvent) {
-
+        when(event) {
+            EditEvent.OnClickBackButton -> sendSideEffect(EditSideEffect.NavigateBack)
+            EditEvent.OnClickCompleteButton -> sendSideEffect(EditSideEffect.NavigateBackWithNeedReload)
+        }
     }
 
     companion object {

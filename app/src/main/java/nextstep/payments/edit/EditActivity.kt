@@ -15,11 +15,17 @@ class EditActivity : BaseActivity() {
     @Composable
     override fun Screen() {
         EditScreen(
-            popBackStack = {},
-            popBackStackWithResult = {},
+            popBackStack = { finish() },
+            popBackStackWithResult = { popBackStackWithResult() },
             viewModel = viewModel,
         )
     }
+
+    private fun popBackStackWithResult()  {
+        setResult(RESULT_OK)
+        finish()
+    }
+
 
     companion object {
         private const val CARD_ID = "cardId"
