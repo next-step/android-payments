@@ -1,11 +1,17 @@
-package nextstep.payments
+package nextstep.payments.new_card
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import nextstep.payments.data.Card
+import nextstep.payments.repository.PaymentCardsRepository
 
-class NewCardViewModel : ViewModel() {
+class NewCardViewModel(
+    private val repository: PaymentCardsRepository = PaymentCardsRepository
+) : ViewModel() {
+    private val _cardAdded = MutableStateFlow(false)
+    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     private val _cardNumber = MutableStateFlow("")
     val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
@@ -33,5 +39,21 @@ class NewCardViewModel : ViewModel() {
 
     fun setPassword(password: String) {
         _password.value = password
+    }
+
+    fun addCard() {
+        if (cardNumber.value.isEmpty() || expiredDate.value.isEmpty() || ownerName.value.isEmpty() || password.value.isEmpty()) {
+            return
+        }
+
+        val card = Card(
+            cardNumber = cardNumber.value,
+            expiredDate = expiredDate.value,
+            ownerName = ownerName.value,
+            password = password.value
+        )
+
+        repository.addCard(card)
+        _cardAdded.value = true
     }
 }
