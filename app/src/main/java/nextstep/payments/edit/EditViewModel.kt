@@ -30,9 +30,29 @@ class EditViewModel(
 
     override fun handleEvent(event: EditEvent) {
         when(event) {
+            is EditEvent.OnCardNumberChange -> setCardNumber(event.cardNumber)
+            is EditEvent.OnExpiredDateChange -> setExpiredDate(event.expiredDate)
+            is EditEvent.OnOwnerNameChange -> setOwnerName(event.ownerName)
+            is EditEvent.OnPasswordChange -> setPassword(event.password)
             EditEvent.OnClickBackButton -> sendSideEffect(EditSideEffect.NavigateBack)
             EditEvent.OnClickCompleteButton -> sendSideEffect(EditSideEffect.NavigateBackWithNeedReload)
         }
+    }
+
+    private fun setCardNumber(cardNumber: String) {
+        updateState(currentState().copy(cardNumber = cardNumber))
+    }
+
+    private fun setExpiredDate(expiredDate: String) {
+        updateState(currentState().copy(expiredDate = expiredDate))
+    }
+
+    private fun setOwnerName(ownerName: String) {
+        updateState(currentState().copy(ownerName = ownerName))
+    }
+
+    private fun setPassword(password: String) {
+        updateState(currentState().copy(password = password))
     }
 
     companion object {

@@ -87,7 +87,7 @@ fun EditScreen(
 
             OutlinedTextField(
                 value = cardNumber,
-                onValueChange = {},
+                onValueChange = { sendEvent(EditEvent.OnCardNumberChange(it)) },
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
@@ -95,7 +95,7 @@ fun EditScreen(
 
             OutlinedTextField(
                 value = expiredDate,
-                onValueChange = {},
+                onValueChange = { sendEvent(EditEvent.OnExpiredDateChange(it)) },
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
@@ -103,7 +103,7 @@ fun EditScreen(
 
             OutlinedTextField(
                 value = ownerName,
-                onValueChange = {},
+                onValueChange = { sendEvent(EditEvent.OnOwnerNameChange(it)) },
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
@@ -111,7 +111,7 @@ fun EditScreen(
 
             OutlinedTextField(
                 value = password,
-                onValueChange = {},
+                onValueChange = { sendEvent(EditEvent.OnPasswordChange(it)) },
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),

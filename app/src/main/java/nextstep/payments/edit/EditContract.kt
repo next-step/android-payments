@@ -15,6 +15,10 @@ data class EditState(
 ): ScreenState
 
 sealed class EditEvent: ScreenEvent {
+    data class OnCardNumberChange(val cardNumber: String): EditEvent()
+    data class OnExpiredDateChange(val expiredDate: String): EditEvent()
+    data class OnOwnerNameChange(val ownerName: String): EditEvent()
+    data class OnPasswordChange(val password: String): EditEvent()
     data object OnClickBackButton: EditEvent()
     data object OnClickCompleteButton: EditEvent()
 }
