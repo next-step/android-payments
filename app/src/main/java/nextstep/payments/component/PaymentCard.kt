@@ -31,6 +31,7 @@ import nextstep.payments.component.PaymentCardDefaults.CHUNKED_NUMBER_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.CardSize
 import nextstep.payments.component.PaymentCardDefaults.DUE_DATE_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.UNMASKED_NUMBER_LENGTH
+import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -152,7 +153,8 @@ private fun PaymentCardPreview() {
                     number = "1111222233334444",
                     dueDate = "0125",
                     password = "1234",
-                    name = "YANG"
+                    name = "YANG",
+                    company = CardCompany.BC
                 )
             )
             EmptyPaymentCard()

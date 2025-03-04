@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.CardRepository
+import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 
 class NewCardViewModel(
@@ -45,7 +46,8 @@ class NewCardViewModel(
                 number = cardNumber.value,
                 dueDate = expiredDate.value,
                 name = ownerName.value,
-                password = password.value
+                password = password.value,
+                company = CardCompany.NONE // TODO
             )
         )
     }

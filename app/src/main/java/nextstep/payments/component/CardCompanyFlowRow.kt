@@ -53,7 +53,7 @@ private fun CardCompanyItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val cardCompanyRes = cardCompany.toResource()
+    val cardCompanyRes = cardCompany.toResource() ?: return
 
     Column(
         modifier = modifier.width(80.dp).clickable(onClick = onClick),

@@ -20,7 +20,7 @@ data class CardCompanyResource(
     val backgroundColor: Color
 )
 
-fun CardCompany.toResource(): CardCompanyResource {
+fun CardCompany.toResource(): CardCompanyResource? {
     return when (this) {
         CardCompany.BC -> CardCompanyTokens.bc
         CardCompany.SHINHAN -> CardCompanyTokens.shinhan
@@ -30,6 +30,7 @@ fun CardCompany.toResource(): CardCompanyResource {
         CardCompany.LOTTE -> CardCompanyTokens.lotte
         CardCompany.HANA -> CardCompanyTokens.hana
         CardCompany.KOOKMIN -> CardCompanyTokens.kookmin
+        CardCompany.NONE -> null
     }
 }
 
