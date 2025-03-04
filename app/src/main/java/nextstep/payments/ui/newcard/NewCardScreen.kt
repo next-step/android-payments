@@ -81,7 +81,7 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    issuingBank: IssuingBank,
+    issuingBank: IssuingBank?,
     snackBarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -107,13 +107,10 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                creditCard = CreditCard(
-                    cardNumber = cardNumber,
-                    expiredDate = expiredDate,
-                    ownerName = ownerName,
-                    password = password,
-                    issuingBank = issuingBank
-                ),
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                issuingBank = issuingBank
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -157,7 +154,7 @@ fun NewCardScreen(
         }
     }
 
-    if (issuingBank == IssuingBank.NOT_SELECTED) {
+    if (issuingBank == null) {
         IssuingBankBottomSheet(
             onIssuingBankSelected = onIssuingBankSelected
         )

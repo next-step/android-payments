@@ -69,7 +69,7 @@ private fun NewCardIssuingBankSelection(
         maxItemsInEachRow = COLUMN_COUNT,
         modifier = modifier,
     ) {
-        IssuingBank.getAllBanks().forEach { issuingBank ->
+        IssuingBank.entries.forEach { issuingBank ->
             IssuingBankItem(
                 issuingBank = issuingBank,
                 onSelected = { onIssuingBankSelected(issuingBank) },

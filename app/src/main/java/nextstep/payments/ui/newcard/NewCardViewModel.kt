@@ -31,8 +31,8 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _issuingBank = MutableStateFlow<IssuingBank>(IssuingBank.NOT_SELECTED)
-    val issuingBank: StateFlow<IssuingBank> = _issuingBank.asStateFlow()
+    private val _issuingBank = MutableStateFlow<IssuingBank?>(null)
+    val issuingBank: StateFlow<IssuingBank?> = _issuingBank.asStateFlow()
 
     private val _effect = Channel<NewCardEffect>()
     val effect = _effect.receiveAsFlow()
@@ -66,17 +66,22 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
             _effect.send(NewCardEffect.ShowError("이미 등록된 카드 번호입니다."))
             return@launch
         }
-        saveCard()
+        val issuingBank = _issuingBank.value
+        if (issuingBank == null) {
+            _effect.send(NewCardEffect.ShowError("카드사를 선택해주세요."))
+            return@launch
+        }
+        saveCard(issuingBank)
     }
 
-    private fun saveCard() {
+    private fun saveCard(issuingBank: IssuingBank) {
         repository.addCard(
             CreditCard(
                 cardNumber = _cardNumber.value,
                 expiredDate = _expiredDate.value,
                 ownerName = _ownerName.value,
                 password = _password.value,
-                issuingBank = _issuingBank.value
+                issuingBank = issuingBank
             )
         )
         _cardAdded.update { true }
