@@ -5,6 +5,7 @@ data class Card(
     val expiredDate: String,
     val ownerName: String,
     val password: String,
+    val bankType: BankType,
 ) {
     val maskedNumber: String
         get() {
@@ -23,6 +24,7 @@ data class Card(
             expiredDate = "12/26",
             ownerName = "홍길동",
             password = "1234",
+            bankType = BankType.BC
         )
     }
 }

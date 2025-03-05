@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 import org.junit.Before
@@ -59,6 +60,7 @@ class CardListScreenTest {
             expiredDate = "12/26",
             ownerName = "홍길동",
             password = "1234",
+            bankType = BankType.NOT_SELECTED
         )
 
         cardUiState = CardUiState.One(card)

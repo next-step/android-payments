@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.repository.PaymentCardsRepository
 
@@ -33,6 +34,7 @@ class NewCardViewModel(
                 expiredDate = expiredDate.value,
                 ownerName = ownerName.value,
                 password = password.value,
+                bankType = BankType.NOT_SELECTED
             )
         )
         _cardAdded.value = true
