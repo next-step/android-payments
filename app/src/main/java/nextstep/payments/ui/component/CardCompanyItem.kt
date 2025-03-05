@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -29,7 +26,6 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import nextstep.payments.R
 import nextstep.payments.data.model.CardCompany
-import nextstep.payments.data.model.cardCompanyList
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
@@ -42,7 +38,7 @@ fun CardCompany(
     if (selected) {
         SelectedCardCompany(company = company, onSelect = onSelect)
     } else {
-        UnSelectedCardCompany(company = company, onSelect = onSelect)
+        UnselectedCardCompany(company = company, onSelect = onSelect)
     }
 }
 
@@ -63,10 +59,10 @@ private fun CardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
                 .clip(CircleShape)
                 .size(37.dp),
             placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.company_image, company.name),
+            contentDescription = stringResource(R.string.company_image, company.displayName),
         )
         Text(
-            text = company.name,
+            text = company.displayName,
             style = Typography.bodyLarge,
         )
     }
@@ -89,30 +85,30 @@ private fun SelectedCardCompany(company: CardCompany, onSelect: (CardCompany) ->
 }
 
 @Composable
-private fun UnSelectedCardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
+private fun UnselectedCardCompany(company: CardCompany, onSelect: (CardCompany) -> Unit) {
     CardCompany(company = company, onSelect = onSelect)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Preview(showBackground = true)
 @Composable
-private fun CardCompanyPreview() {
+private fun SelectCardCompanyPreview() {
     PaymentsTheme {
-        FlowRow(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-        ) {
-            SelectedCardCompany(
-                cardCompanyList.first(),
-                onSelect = {}
-            )
-            UnSelectedCardCompany(
-                cardCompanyList.first(),
-                onSelect = {}
-            )
-        }
+        SelectedCardCompany(
+            CardCompany.BC,
+            onSelect = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Preview(showBackground = true)
+@Composable
+private fun UnselectCardCompanyPreview() {
+    PaymentsTheme {
+        UnselectedCardCompany(
+            CardCompany.BC,
+            onSelect = {}
+        )
     }
 }

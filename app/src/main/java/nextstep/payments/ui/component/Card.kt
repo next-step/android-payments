@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -29,18 +30,24 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
-import nextstep.payments.data.model.CardInputType
-import nextstep.payments.data.model.cardCompanyList
+import nextstep.payments.data.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 import nextstep.payments.ui.theme.Typography
 
 @Composable
-fun Card(model: Card) {
-
+fun Card(
+    model: Card,
+    enabled: Boolean,
+    onClick: () -> Unit = {},
+) {
     val cardColor = model.company?.color ?: Color(0xFF333333)
     val textColor = cardColor.getTextColorForBackground()
+    val context = LocalContext.current
 
-    Card(backgroundColor = cardColor) {
+    Card(
+        modifier = Modifier.clickable(enabled = enabled) { onClick.invoke() },
+        backgroundColor = cardColor,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,7 +56,7 @@ fun Card(model: Card) {
         )
         {
             Text(
-                text = model.company?.name.orEmpty(),
+                text = model.company?.displayName.orEmpty(),
                 style = Typography.bodySmall,
                 color = textColor,
             )
@@ -63,7 +70,7 @@ fun Card(model: Card) {
                     ),
             )
             Text(
-                text = CardInputType.CardNumber.maskingText(model.number),
+                text = cardNumberMaskingText(model.number),
                 style = Typography.bodySmall,
                 color = textColor,
             )
@@ -74,12 +81,12 @@ fun Card(model: Card) {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = CardInputType.OwnerName.maskingText(model.ownerName),
+                    text = model.ownerName,
                     style = Typography.bodySmall,
                     color = textColor,
                 )
                 Text(
-                    text = CardInputType.ExpiredDate.maskingText(model.expiredDate),
+                    text = expiredDateMaskingText(model.expiredDate),
                     style = Typography.bodySmall,
                     color = textColor,
                 )
@@ -97,7 +104,7 @@ fun Card(model: Card) {
                     .clip(CircleShape)
                     .size(24.dp),
                 placeholder = painterResource(R.drawable.loading_img),
-                contentDescription = stringResource(R.string.company_image, company.name),
+                contentDescription = stringResource(R.string.company_image, company.displayName),
             )
         }
     }
@@ -133,32 +140,38 @@ private fun PaymentCardPreview() {
         ) {
             Card(
                 model = Card(
+                    id = "0",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(0),
-                )
+                    company = CardCompany.BC,
+                ),
+                enabled = true,
             )
 
             Card(
                 model = Card(
+                    id = "1",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(1),
-                )
+                    company = CardCompany.SHINHAN,
+                ),
+                enabled = true,
             )
 
             Card(
                 model = Card(
+                    id = "2",
                     number = "1111111111111111",
                     ownerName = "CREW",
                     password = "Rebbecca",
                     expiredDate = "0421",
-                    company = cardCompanyList.getOrNull(2),
-                )
+                    company = CardCompany.KAKAO,
+                ),
+                enabled = true,
             )
         }
     }
@@ -167,4 +180,17 @@ private fun PaymentCardPreview() {
 private fun Color.getTextColorForBackground(): Color {
     val luminance = (0.299 * this.red + 0.587 * this.green + 0.114 * this.blue)
     return if (luminance > 0.5) Color.Black else Color.White
+}
+
+private fun cardNumberMaskingText(value: String): String {
+    val maskingText = value.take(8) + "*".repeat((value.length - 8).coerceAtLeast(0))
+    var output = ""
+    maskingText.forEachIndexed { index, c ->
+        output += c + if (index % 4 == 3) "-" else ""
+    }
+    return output.dropLastWhile { it == '-' }
+}
+
+private fun expiredDateMaskingText(value: String): String {
+    return if (value.length > 2) "${value.take(2)}/${value.takeLast(2)}" else value
 }
