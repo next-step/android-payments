@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
+import nextstep.payments.model.toColor
 
 @Composable
 fun PaymentCard(
@@ -39,7 +40,7 @@ fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
     CardFrame(
-        backgroundColor = card.bankType.color,
+        backgroundColor = card.bankType.toColor(),
         modifier = modifier
     ) { boxScope ->
         boxScope.CardDetails(card)
@@ -118,7 +119,7 @@ private fun PaymentCardPreview() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         PaymentCard(
-            backgroundColor = BankType.NOT_SELECTED.color
+            backgroundColor = BankType.NOT_SELECTED.toColor()
         )
     }
 }

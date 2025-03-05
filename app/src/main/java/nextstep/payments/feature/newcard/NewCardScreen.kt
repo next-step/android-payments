@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.feature.newcard.view.BankSelectBottomSheet
 import nextstep.payments.feature.newcard.view.NewCardTopBar
 import nextstep.payments.model.BankType
+import nextstep.payments.model.toColor
 import nextstep.payments.view.PaymentCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,7 +115,7 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                backgroundColor = bankType.color
+                backgroundColor = bankType.toColor()
             )
 
             Spacer(modifier = Modifier.height(10.dp))

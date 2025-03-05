@@ -20,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.BankType
+import nextstep.payments.model.toColor
+import nextstep.payments.model.toName
 
 private const val COLUMN_COUNT = 4
 
@@ -62,10 +64,10 @@ private fun BankItem(
         Box(
             modifier = Modifier
                 .size(36.dp)
-                .background(bankType.color, CircleShape)
+                .background(bankType.toColor(), CircleShape)
         )
         Text(
-            text = bankType.title,
+            text = bankType.toName(),
             fontSize = 16.sp
         )
     }
