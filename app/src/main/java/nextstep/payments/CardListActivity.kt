@@ -34,6 +34,8 @@ class CardListActivity : ComponentActivity() {
                     cardListViewModel = cardListViewModel,
                     onAddCardClick = {
                         launcher.launch(Intent(this, CardAddActivity::class.java))
+                    },
+                    onCardClick = {
                     }
                 )
             }

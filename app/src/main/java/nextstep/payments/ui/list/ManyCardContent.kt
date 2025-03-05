@@ -19,6 +19,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 internal fun ManyCardContent(
     cards: List<Card>,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -35,7 +36,7 @@ internal fun ManyCardContent(
             items = cards,
             key = { it.id }
         ) {
-            PaymentCard(card = it)
+            PaymentCard(card = it, onClick = { onCardClick(it) })
         }
     }
 
@@ -59,7 +60,8 @@ private fun ManyCardContentPreview() {
                     ownerName = "홍길동",
                     password = "0000"
                 )
-            )
+            ),
+            onCardClick = {}
         )
     }
 }

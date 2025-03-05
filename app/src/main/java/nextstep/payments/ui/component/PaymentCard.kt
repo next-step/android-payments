@@ -1,6 +1,7 @@
 package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -47,13 +48,16 @@ internal fun EmptyPaymentCard(
 @Composable
 internal fun PaymentCard(
     card: Card,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PaymentCardFrame(
         bankType = card.bankType,
-        modifier = modifier.semantics {
-            contentDescription = "완성 카드"
-        }
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .semantics {
+                contentDescription = "완성 카드"
+            }
     ) {
         Column(
             modifier = Modifier
@@ -138,7 +142,7 @@ private fun PaymentCardPreview_card(
     @PreviewParameter(CardPreviewParameter::class) card: Card
 ) {
     PaymentsTheme {
-        PaymentCard(card = card)
+        PaymentCard(card = card, onClick = {})
     }
 }
 

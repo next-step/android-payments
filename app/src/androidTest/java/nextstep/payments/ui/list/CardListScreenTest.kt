@@ -30,7 +30,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = {}
+                    onAddCardClick = {},
+                    onCardClick = {}
                 )
             }
 
@@ -48,7 +49,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = { clicked = true }
+                    onAddCardClick = { clicked = true },
+                    onCardClick = {}
                 )
             }
 
@@ -72,7 +74,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = { }
+                    onAddCardClick = { },
+                    onCardClick = {}
                 )
             }
 
@@ -92,7 +95,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = { clicked = true }
+                    onAddCardClick = { clicked = true },
+                    onCardClick = {}
                 )
             }
 
@@ -125,7 +129,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = { }
+                    onAddCardClick = { },
+                    onCardClick = {}
                 )
             }
 
@@ -157,7 +162,8 @@ class CardListScreenTest {
             .setContent {
                 CardListScreen(
                     cardListUiState = uiState,
-                    onAddCardClick = { clicked = true }
+                    onAddCardClick = { clicked = true },
+                    onCardClick = {}
                 )
             }
 
@@ -170,5 +176,41 @@ class CardListScreenTest {
         buttonInTopBar.performClick()
 
         assert(clicked == true)
+    }
+
+    @Test
+    fun `완성된_카드는_클릭_가능하다`() {
+        val uiState = CardListUiState.Many(
+            cards = listOf(
+                Card(
+                    id = 0,
+                    number = "1234123412341234",
+                    ownerName = "김씨"
+                ), Card(
+                    id = 1,
+                    number = "4321432143214321",
+                    ownerName = "이씨"
+                )
+            )
+        )
+        var selectedCard: Card? = null
+
+        composeTestRule
+            .setContent {
+                CardListScreen(
+                    cardListUiState = uiState,
+                    onAddCardClick = { },
+                    onCardClick = { selectedCard = it }
+                )
+            }
+
+        composeTestRule
+            .onAllNodesWithContentDescription("완성 카드")
+            .filter(hasText("김씨"))
+            .onFirst()
+            .performClick()
+
+
+        assert(selectedCard?.ownerName == "김씨")
     }
 }
