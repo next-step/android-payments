@@ -2,6 +2,10 @@ package nextstep.payments.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,12 +19,38 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 
 @Composable
 fun PaymentCard(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
+) {
+    CardFrame(
+        backgroundColor = backgroundColor,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun PaymentCard(
+    card: Card,
+    modifier: Modifier = Modifier,
+) {
+    CardFrame(
+        backgroundColor = card.bankType.color,
+        modifier = modifier
+    ) { boxScope ->
+        boxScope.CardDetails(card)
+    }
+}
+
+@Composable
+private fun CardFrame(
+    backgroundColor: Color,
+    modifier: Modifier = Modifier,
+    content: @Composable (BoxScope) -> Unit = {}
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -29,33 +59,6 @@ fun PaymentCard(
             .size(width = 208.dp, height = 124.dp)
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(5.dp),
-            )
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(start = 14.dp, bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
-        )
-    }
-}
-
-@Composable
-fun PaymentCard(
-    modifier: Modifier = Modifier,
-    card: Card,
-) {
-    Box(
-        contentAlignment = Alignment.CenterStart,
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = card.bankType.color,
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp)
@@ -67,26 +70,29 @@ fun PaymentCard(
                     color = Color(0xFFCBBA64),
                     shape = RoundedCornerShape(4.dp),
                 )
-                .align(Alignment.CenterStart)
         )
-
-        PaymentCardText(
-            text = card.maskedNumber,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 64.dp)
-        )
-
-        PaymentCardText(
-            text = card.ownerName,
-            modifier = Modifier.align(Alignment.BottomStart)
-        )
-
-        PaymentCardText(
-            text = card.expiredDate,
-            modifier = Modifier.align(Alignment.BottomEnd)
-        )
+        content(this)
     }
+}
+
+@Composable
+fun BoxScope.CardDetails(card: Card) {
+    PaymentCardText(
+        text = card.maskedNumber,
+        modifier = Modifier
+            .align(Alignment.TopStart)
+            .padding(top = 64.dp)
+    )
+
+    PaymentCardText(
+        text = card.ownerName,
+        modifier = Modifier.align(Alignment.BottomStart)
+    )
+
+    PaymentCardText(
+        text = card.expiredDate,
+        modifier = Modifier.align(Alignment.BottomEnd)
+    )
 }
 
 @Composable
@@ -106,7 +112,13 @@ private fun PaymentCardText(
 @Preview
 @Composable
 private fun PaymentCardPreview() {
-    PaymentCard(
-        card = Card.mock
-    )
+    Column {
+        PaymentCard(
+            card = Card.mock
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        PaymentCard(
+            backgroundColor = BankType.NOT_SELECTED.color
+        )
+    }
 }
