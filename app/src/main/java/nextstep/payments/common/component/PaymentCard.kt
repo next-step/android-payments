@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +19,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.common.model.Card
+
+private object CardChipDefaults {
+    val padding = PaddingValues(bottom = 10.dp)
+    val width = 40.dp
+    val height = 26.dp
+    val roundedCorner = 4.dp
+    val color = Color(0xFFCBBA64)
+}
 
 @Composable
 fun PaymentCard(
@@ -35,20 +43,20 @@ fun PaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .size(width = CardDefaults.width, height = CardDefaults.height)
             .background(
                 color = Color(0xFF333333),
-                shape = RoundedCornerShape(5.dp),
+                shape = RoundedCornerShape(CardDefaults.roundedCorner),
             )
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
         Box(
             modifier = Modifier
-                .padding(bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
+                .padding(paddingValues = CardChipDefaults.padding)
+                .size(width = CardChipDefaults.width, height = CardChipDefaults.height)
                 .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
+                    color = CardChipDefaults.color,
+                    shape = RoundedCornerShape(CardChipDefaults.roundedCorner),
                 )
         )
 
@@ -113,6 +121,7 @@ class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
         )
     )
 }
+
 @Preview
 @Composable
 private fun PaymentCardPreview(
