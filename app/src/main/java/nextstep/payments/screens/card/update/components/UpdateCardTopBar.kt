@@ -1,4 +1,4 @@
-package nextstep.payments.screens.card.new.components
+package nextstep.payments.screens.card.update.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,13 +19,15 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardTopBar(
+fun UpdateCardTopBar(
+    title: String,
+    enabled: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text(stringResource(R.string.new_card_top_bar_title)) },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
@@ -35,7 +37,7 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onSaveClick) {
+            IconButton(onClick = onSaveClick, enabled = enabled) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(R.string.all_done),
@@ -47,11 +49,26 @@ fun NewCardTopBar(
     )
 }
 
-@Preview
+@Preview(name = "체크 버튼 활성화")
 @Composable
-private fun NewCardTopBarPreview() {
+private fun Preview1() {
     PaymentsTheme {
-        NewCardTopBar(
+        UpdateCardTopBar(
+            title = "카드 추가",
+            enabled = true,
+            onBackClick = {},
+            onSaveClick = {},
+        )
+    }
+}
+
+@Preview(name = "체크 버튼 비활성화")
+@Composable
+private fun Preview2() {
+    PaymentsTheme {
+        UpdateCardTopBar(
+            title = "카드 수정",
+            enabled = false,
             onBackClick = {},
             onSaveClick = {},
         )
