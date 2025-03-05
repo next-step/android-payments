@@ -23,6 +23,9 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _isSaveEnabled = MutableStateFlow(false)
+    val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -37,6 +40,10 @@ class NewCardViewModel(
 
     fun setPassword(password: String) {
         _password.value = password
+    }
+
+    fun setIsSaveEnabled(isSaveEnabled: Boolean) {
+        _isSaveEnabled.value = isSaveEnabled
     }
 
     fun addCard(

@@ -44,14 +44,13 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 저장 가능 여부 유효성 체크
-    val isSaveEnabled = remember(cardNumber, expiredDate, password) {
-        cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4
-    }
+    viewModel.setIsSaveEnabled(cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4)
 
     NewCardScreen(
         cardNumber = cardNumber,
