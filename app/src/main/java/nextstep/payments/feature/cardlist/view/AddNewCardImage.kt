@@ -30,7 +30,7 @@ fun AddNewCardImage(
                 shape = RoundedCornerShape(5.dp),
             )
             .clickable { onAddClick() }
-            .testTag("AddNewCardImage")
+            .testTag("AddNewCardImage_AddNewCardButton")
     ) {
         Text(
             text = "+",

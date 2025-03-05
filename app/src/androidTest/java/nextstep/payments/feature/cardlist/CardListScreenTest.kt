@@ -43,19 +43,19 @@ class CardListScreenTest {
     fun 카드_목록에_한_개의_카드가_있을_때_하단에_카드_추가_UI가_노출된다() {
         cardUiState = CardUiState.One(Card.mock)
 
-        composeTestRule.onNodeWithTag("AddNewCardImage").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("AddNewCardImage_AddNewCardButton").assertIsDisplayed()
     }
 
     @Test
     fun 카드_목록에_여러_개의_카드가_있을_때_상단바에_카드_추가_UI가_노출된다() {
         cardUiState = CardUiState.Many(listOf(Card.mock, Card.mock, Card.mock))
-        composeTestRule.onNodeWithTag("AddNewCardButton").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("CardListTopBar_AddNewCardButton").assertIsDisplayed()
     }
 
     @Test
     fun 카드_목록에서_카드의_번호는_마지막_8자리가_마스킹_처리되어_표시된다() {
         val card = Card(
-            number = "1234-1234-1234-1234",
+            number = "1234 - 1234 - 1234 - 1234",
             expiredDate = "12/26",
             ownerName = "홍길동",
             password = "1234",
@@ -63,7 +63,7 @@ class CardListScreenTest {
 
         cardUiState = CardUiState.One(card)
 
-        composeTestRule.onNodeWithText(card.maskedNumber).assertIsDisplayed()
+        composeTestRule.onNodeWithText("1234 - 1234 - **** - ****").assertIsDisplayed()
     }
 
 }
