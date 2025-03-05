@@ -19,8 +19,8 @@ import nextstep.payments.model.Card
 
 @Composable
 fun PaymentCard(
+    backgroundColor: Color,
     modifier: Modifier = Modifier,
-    card: Card? = null,
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -28,7 +28,34 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = backgroundColor,
+                shape = RoundedCornerShape(5.dp),
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(start = 14.dp, bottom = 10.dp)
+                .size(width = 40.dp, height = 26.dp)
+                .background(
+                    color = Color(0xFFCBBA64),
+                    shape = RoundedCornerShape(4.dp),
+                )
+        )
+    }
+}
+
+@Composable
+fun PaymentCard(
+    modifier: Modifier = Modifier,
+    card: Card,
+) {
+    Box(
+        contentAlignment = Alignment.CenterStart,
+        modifier = modifier
+            .shadow(8.dp)
+            .size(width = 208.dp, height = 124.dp)
+            .background(
+                color = card.bankType.color,
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp)
@@ -43,24 +70,22 @@ fun PaymentCard(
                 .align(Alignment.CenterStart)
         )
 
-        if (card != null) {
-            PaymentCardText(
-                text = card.maskedNumber,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(top = 64.dp)
-            )
+        PaymentCardText(
+            text = card.maskedNumber,
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(top = 64.dp)
+        )
 
-            PaymentCardText(
-                text = card.ownerName,
-                modifier = Modifier.align(Alignment.BottomStart)
-            )
+        PaymentCardText(
+            text = card.ownerName,
+            modifier = Modifier.align(Alignment.BottomStart)
+        )
 
-            PaymentCardText(
-                text = card.expiredDate,
-                modifier = Modifier.align(Alignment.BottomEnd)
-            )
-        }
+        PaymentCardText(
+            text = card.expiredDate,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
     }
 }
 
@@ -82,6 +107,6 @@ private fun PaymentCardText(
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
-        card = Card.mock,
+        card = Card.mock
     )
 }

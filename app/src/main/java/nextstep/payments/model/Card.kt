@@ -24,7 +24,7 @@ data class Card(
             expiredDate = "12/26",
             ownerName = "홍길동",
             password = "1234",
-            bankType = BankType.BC
+            bankType = BankType.NOT_SELECTED
         )
     }
 }
