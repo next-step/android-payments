@@ -13,14 +13,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 
+private const val PASSWORD_PLACEHOLDER = "0000"
+
 @Composable
 fun PasswordTextField(
     password: String,
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val placeholder = remember { "0000" }
-
     OutlinedTextField(
         modifier = modifier,
         value = password,
@@ -30,7 +30,7 @@ fun PasswordTextField(
             }
         },
         label = { Text(stringResource(R.string.password)) },
-        placeholder = { Text(placeholder) },
+        placeholder = { Text(PASSWORD_PLACEHOLDER) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),

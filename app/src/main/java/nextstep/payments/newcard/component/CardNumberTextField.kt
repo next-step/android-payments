@@ -16,13 +16,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 
+private const val CARD_NUMBER_PLACEHOLDER = "0000 - 0000 - 0000 - 0000"
+
 @Composable
 fun CardNumberTextField(
     cardNumber: String,
     setCardNumber: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val placeholder = remember { "0000 - 0000 - 0000 - 0000" }
     OutlinedTextField(
         modifier = modifier,
         value = cardNumber,
@@ -32,7 +33,7 @@ fun CardNumberTextField(
             }
         },
         label = { Text(text = stringResource(R.string.card_number)) },
-        placeholder = { Text(text = placeholder) },
+        placeholder = { Text(text = CARD_NUMBER_PLACEHOLDER) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),

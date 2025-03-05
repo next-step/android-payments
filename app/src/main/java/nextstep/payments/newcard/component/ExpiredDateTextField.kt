@@ -16,6 +16,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 
+private const val EXPIRED_DATE_PLACEHOLDER = "0000 - 0000 - 0000 - 0000"
+
 @Composable
 fun ExpiredDateTextField(
     expiredDate: String,
@@ -32,7 +34,7 @@ fun ExpiredDateTextField(
             }
         },
         label = { Text(stringResource(R.string.expired_date)) },
-        placeholder = { Text(text = placeholder) },
+        placeholder = { Text(text = EXPIRED_DATE_PLACEHOLDER) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
