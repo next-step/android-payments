@@ -13,4 +13,10 @@ object InMemoryPaymentCardsRepository: PaymentCardsRepository {
     override fun addCard(card: Card) {
         cards.add(card)
     }
+
+    override fun updateCard(oldCard: Card, newCard: Card) {
+        cards.replaceAll {
+            if (it == oldCard) newCard else it
+        }
+    }
 }
