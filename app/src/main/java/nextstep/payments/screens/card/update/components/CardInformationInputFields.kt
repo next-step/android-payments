@@ -14,8 +14,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
-import nextstep.payments.screens.card.update.CardNumberVisualTransformation
-import nextstep.payments.screens.card.update.ExpiredDateVisualTransformation
+import nextstep.payments.screens.card.update.components.util.CardNumberVisualTransformation
+import nextstep.payments.screens.card.update.components.util.ExpiredDateVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
