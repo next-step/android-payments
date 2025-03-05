@@ -29,16 +29,13 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
     onBack: () -> Unit,
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        cardNumber = uiState.cardNumber,
+        expiredDate = uiState.expiredDate,
+        ownerName = uiState.ownerName,
+        password = uiState.password,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
