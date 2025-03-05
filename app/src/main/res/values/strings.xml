@@ -26,4 +26,5 @@
     <string name="kookmin_card">국민카드</string>
 
     <string name="bank_type_select_request">카드를 눌러 카드사를 선택해주세요</string>
+    <string name="card_info_change_request">변경 사항이 없습니다</string>
 </resources>

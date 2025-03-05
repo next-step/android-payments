@@ -1,6 +1,7 @@
 package nextstep.payments
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +37,13 @@ class CardEditActivity : ComponentActivity() {
                             setResult(RESULT_OK)
                             finish()
                         },
+                        onCardUpdateFailed = {
+                            Toast.makeText(
+                                this,
+                                R.string.card_info_change_request,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     )
                 }
             }

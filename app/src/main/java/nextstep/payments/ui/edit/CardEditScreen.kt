@@ -8,6 +8,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import nextstep.payments.R
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.component.CardInputScreen
@@ -17,6 +19,7 @@ internal fun CardEditScreen(
     cardEditViewModel: CardEditViewModel,
     onBackClick: () -> Unit,
     onSaveCard: () -> Unit,
+    onCardUpdateFailed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val card by cardEditViewModel.card.collectAsStateWithLifecycle()
@@ -25,6 +28,13 @@ internal fun CardEditScreen(
     LaunchedEffect(cardUpdated) {
         if (cardUpdated) onSaveCard()
     }
+
+    LaunchedEffect(Unit) {
+        cardEditViewModel.cardUpdateFailed
+            .onEach { onCardUpdateFailed() }
+            .launchIn(this)
+    }
+
 
     CardInputScreen(
         title = stringResource(R.string.edit_card),
@@ -51,6 +61,7 @@ private fun CardEditScreenPreview() {
     CardEditScreen(
         cardEditViewModel = CardEditViewModel(SavedStateHandle(), PaymentCardsRepository),
         onBackClick = {},
-        onSaveCard = {}
+        onSaveCard = {},
+        onCardUpdateFailed = {}
     )
 }
