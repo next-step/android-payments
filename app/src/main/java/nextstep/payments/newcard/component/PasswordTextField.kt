@@ -12,12 +12,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
+import nextstep.payments.newcard.model.Validation
 
 private const val PASSWORD_PLACEHOLDER = "0000"
 
 @Composable
 fun PasswordTextField(
     password: String,
+    validation: Validation,
     setPassword: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -27,6 +29,12 @@ fun PasswordTextField(
         onValueChange = {
             if (it.length <= 4) {
                 setPassword(it)
+            }
+        },
+        isError = validation !is Validation.Success,
+        supportingText = {
+            if (validation is Validation.Error) {
+                Text(stringResource(validation.msgId))
             }
         },
         label = { Text(stringResource(R.string.password)) },
@@ -45,6 +53,7 @@ private fun PasswordTextFieldPreview() {
 
     PasswordTextField(
         password = password.value,
+        validation = Validation.Success,
         setPassword = { password.value = it }
     )
 }

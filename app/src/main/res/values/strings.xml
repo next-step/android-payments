@@ -9,5 +9,5 @@
     <string name="card_owner_name_optional">카드 소유자 이름(선택)</string>
     <string name="input_owner_name">카드에 표시된 이름을 입력하세요.</string>
     <string name="password">비밀번호</string>
-    <string name="common_error">모든 필드가 채워졌는지 확인하세요.</string>
+    <string name="password_length_error">비밀번호를 입력해주세요.</string>
 </resources>

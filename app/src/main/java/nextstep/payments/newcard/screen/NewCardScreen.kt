@@ -22,6 +22,7 @@ import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.newcard.component.OwnerNameTextField
 import nextstep.payments.newcard.component.PasswordTextField
+import nextstep.payments.newcard.model.Validation
 
 @Composable
 fun NewCardScreen(
@@ -33,17 +34,25 @@ fun NewCardScreen(
 
     NewCardScreen(
         cardNumber = uiState.cardNumber,
+        cardNumberValidation = uiState.cardNumberValidation,
         expiredDate = uiState.expiredDate,
+        expiredDateValidation = uiState.expiredDateValidation,
         ownerName = uiState.ownerName,
         password = uiState.password,
+        passwordValidation = uiState.passwordValidation,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
         onBack = onBack,
         onSave = {
-            viewModel.addCard()
-            onBack()
+            if (uiState.cardNumberValidation is Validation.Success
+                && uiState.expiredDateValidation is Validation.Success
+                && uiState.passwordValidation is Validation.Success
+            ) {
+                viewModel.addCard()
+                onBack()
+            }
         },
         modifier = modifier
     )
@@ -56,6 +65,9 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    cardNumberValidation: Validation,
+    expiredDateValidation: Validation,
+    passwordValidation: Validation,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -89,12 +101,14 @@ fun NewCardScreen(
             CardNumberTextField(
                 modifier = Modifier.fillMaxWidth(),
                 cardNumber = cardNumber,
+                validation = cardNumberValidation,
                 setCardNumber = setCardNumber
             )
 
             ExpiredDateTextField(
                 modifier = Modifier.fillMaxWidth(),
                 expiredDate = expiredDate,
+                validation = expiredDateValidation,
                 setExpiredDate = setExpiredDate
             )
 
@@ -107,6 +121,7 @@ fun NewCardScreen(
             PasswordTextField(
                 modifier = Modifier.fillMaxWidth(),
                 password = password,
+                validation = passwordValidation,
                 setPassword = setPassword
             )
         }
@@ -133,9 +148,12 @@ private fun StatefulNewCardScreenPreview() {
 private fun StatelessNewCardScreenPreview() {
     NewCardScreen(
         cardNumber = "0000 - 0000 - 0000 - 0000",
+        cardNumberValidation = Validation.Success,
         expiredDate = "00 / 00",
+        expiredDateValidation = Validation.Success,
         ownerName = "홍길동",
         password = "0000",
+        passwordValidation = Validation.Success,
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},

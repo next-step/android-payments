@@ -15,12 +15,14 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
+import nextstep.payments.newcard.model.Validation
 
 private const val CARD_NUMBER_PLACEHOLDER = "0000 - 0000 - 0000 - 0000"
 
 @Composable
 fun CardNumberTextField(
     cardNumber: String,
+    validation: Validation,
     setCardNumber: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -30,6 +32,12 @@ fun CardNumberTextField(
         onValueChange = { number ->
             if (number.length <= 16) {
                 setCardNumber(number.filter { it.isDigit() }.take(16))
+            }
+        },
+        isError = validation !is Validation.Success,
+        supportingText = {
+            if (validation is Validation.Error) {
+                Text(stringResource(validation.msgId))
             }
         },
         label = { Text(text = stringResource(R.string.card_number)) },
@@ -89,6 +97,7 @@ private fun CardNumberTextFieldPreview() {
 
     CardNumberTextField(
         cardNumber = cardNumber.value,
+        validation = Validation.Success,
         setCardNumber = {
             cardNumber.value = it
         }

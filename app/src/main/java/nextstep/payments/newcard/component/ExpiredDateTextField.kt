@@ -15,12 +15,14 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
+import nextstep.payments.newcard.model.Validation
 
 private const val EXPIRED_DATE_PLACEHOLDER = "0000 - 0000 - 0000 - 0000"
 
 @Composable
 fun ExpiredDateTextField(
     expiredDate: String,
+    validation: Validation,
     setExpiredDate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -30,6 +32,12 @@ fun ExpiredDateTextField(
         onValueChange = {
             if (it.length <= 4) {
                 setExpiredDate(it)
+            }
+        },
+        isError = validation !is Validation.Success,
+        supportingText = {
+            if (validation is Validation.Error) {
+                Text(stringResource(validation.msgId))
             }
         },
         label = { Text(stringResource(R.string.expired_date)) },
@@ -81,6 +89,7 @@ private fun ExpiredDateTextFieldPreview() {
 
     ExpiredDateTextField(
         expiredDate = expiredDate.value,
+        validation = Validation.Success,
         setExpiredDate = { expiredDate.value = it }
     )
 }
