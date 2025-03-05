@@ -22,3 +22,9 @@
 - NewCardScreen 입력 필드 유효성 체크 로직 NewCardTopBar 내부에서 외부로 상태 호이스팅
 - 컨벤션 가이드에 따른 modifier 순서 변경
 - CardNumberRow return 제거 및 UI 호출 로직 수정
+
+### Step3 - 페이먼츠(카드사)
+- 카드 추가 화면에 접속했을 때 카드사를 필수로 선택해야 한다.
+- 선택한 카드사에 따라 카드 미리보기가 바뀌어야 한다.
+- (선택사항) 카드사를 선택할 때 적절한 카드사 아이콘을 노출한다.
+- 카드사 선택 기능 구현시 FlowRow와 ModalBottomSheet를 활용한다.
