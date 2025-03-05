@@ -24,7 +24,6 @@ fun ExpiredDateTextField(
     setExpiredDate: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val placeholder = remember { "MM / YY" }
     OutlinedTextField(
         modifier = modifier,
         value = expiredDate,

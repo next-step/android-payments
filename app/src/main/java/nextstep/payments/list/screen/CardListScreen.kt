@@ -1,5 +1,7 @@
 package nextstep.payments.list.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -7,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,18 +23,25 @@ import nextstep.payments.R
 import nextstep.payments.common.model.Card
 import nextstep.payments.list.component.CardListTopBar
 import nextstep.payments.list.model.CardUiState
+import nextstep.payments.newcard.NewCardActivity
 
 @Composable
 fun CardListScreen(
     viewModel: CardListViewModel,
-    moveToAddCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            viewModel.fetchCards()
+        }
 
     CardListScreen(
         uiState = uiState.value,
-        moveToAddCard = moveToAddCard,
+        moveToAddCard = {
+            launcher.launch(NewCardActivity.intent(context = context))
+        },
         modifier = modifier,
     )
 }
