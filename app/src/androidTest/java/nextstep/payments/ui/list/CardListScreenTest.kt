@@ -60,7 +60,7 @@ class CardListScreenTest {
     }
 
     @Test
-    fun `카드가_한개만_있는_경우_한개의_완성_카드가_보여진다`() {
+    fun `카드가_한개만_있는_경우_한개의_카드가_보여진다`() {
         val uiState = CardListUiState.One(
             card = Card(
                 number = "1234123412341234",
@@ -80,7 +80,7 @@ class CardListScreenTest {
             }
 
         composeTestRule
-            .onAllNodesWithContentDescription("완성 카드")
+            .onAllNodesWithContentDescription("카드 미리보기")
             .assertCountEquals(1)
     }
 
@@ -135,11 +135,7 @@ class CardListScreenTest {
             }
 
         composeTestRule
-            .onAllNodesWithContentDescription("미완성 카드")
-            .assertCountEquals(0)
-
-        composeTestRule
-            .onAllNodesWithContentDescription("완성 카드")
+            .onAllNodesWithContentDescription("카드 미리보기")
             .assertCountEquals(2)
     }
 
@@ -179,7 +175,7 @@ class CardListScreenTest {
     }
 
     @Test
-    fun `완성된_카드는_클릭_가능하다`() {
+    fun `카드는_클릭_가능하다`() {
         val uiState = CardListUiState.Many(
             cards = listOf(
                 Card(
@@ -205,7 +201,7 @@ class CardListScreenTest {
             }
 
         composeTestRule
-            .onAllNodesWithContentDescription("완성 카드")
+            .onAllNodesWithContentDescription("카드 미리보기")
             .filter(hasText("김씨"))
             .onFirst()
             .performClick()

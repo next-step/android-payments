@@ -34,30 +34,35 @@ import nextstep.payments.ui.util.toCardExpiredDateTransformedText
 import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @Composable
-internal fun EmptyPaymentCard(
-    bankType: BankType,
-    modifier: Modifier = Modifier,
-) {
-    PaymentCardFrame(
-        bankType = bankType,
-        modifier = modifier.semantics {
-            contentDescription = "미완성 카드"
-        })
-}
-
-@Composable
 internal fun PaymentCard(
     card: Card,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    PaymentCardFrame(
+    PaymentCard(
         bankType = card.bankType,
+        number = card.number,
+        ownerName = card.ownerName,
+        expiredDate = card.expiredDate,
+        onClick = onClick,
+        modifier = modifier
+    )
+}
+
+@Composable
+internal fun PaymentCard(
+    bankType: BankType,
+    number: String,
+    ownerName: String,
+    expiredDate: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    PaymentCardFrame(
+        bankType = bankType,
         modifier = modifier
             .clickable(onClick = onClick)
-            .semantics {
-                contentDescription = "완성 카드"
-            }
+            .semantics { contentDescription = "카드 미리보기" }
     ) {
         Column(
             modifier = Modifier
@@ -69,7 +74,7 @@ internal fun PaymentCard(
         ) {
             val textStyle = MaterialTheme.typography.bodySmall.copy(color = Color.White)
             Text(
-                text = card.number.toCardNumberTransformedText().text,
+                text = number.toCardNumberTransformedText().text,
                 style = textStyle,
                 maxLines = 1,
                 modifier = Modifier.fillMaxWidth(),
@@ -79,11 +84,11 @@ internal fun PaymentCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = card.ownerName,
+                    text = ownerName,
                     style = textStyle,
                 )
                 Text(
-                    text = card.expiredDate.toCardExpiredDateTransformedText().text,
+                    text = expiredDate.toCardExpiredDateTransformedText().text,
                     style = textStyle,
                 )
             }
@@ -125,14 +130,6 @@ private fun PaymentCardFrame(
                 )
         )
         content()
-    }
-}
-
-@Preview
-@Composable
-private fun EmptyPaymentCardPreview() {
-    PaymentsTheme {
-        EmptyPaymentCard(BankType.NOT_SELECTED)
     }
 }
 

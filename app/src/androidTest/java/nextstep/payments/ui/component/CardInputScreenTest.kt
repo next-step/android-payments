@@ -1,8 +1,9 @@
-package nextstep.payments.ui.add
+package nextstep.payments.ui.component
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -12,15 +13,16 @@ import nextstep.payments.data.model.BankType
 import org.junit.Rule
 import org.junit.Test
 
-class CardAddScreenTest {
+class CardInputScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
-    fun `미완성_카드가_보여진다`() {
+    fun `카드_미리보기가_보여진다`() {
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -31,23 +33,23 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setSheetOpened = {},
-                setBank = {},
+                setBankType = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
         }
 
         composeTestRule
-            .onNodeWithContentDescription("미완성 카드")
+            .onNodeWithContentDescription("카드 미리보기")
             .assertIsDisplayed()
     }
 
     @Test
-    fun `카드_번호는_포맷에_맞춰_보여진다`() {
+    fun `카드_번호_입력시_포맷에_맞춰_보여진다`() {
         val cardNumber = "1111222233334444"
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = cardNumber,
                 expiredDate = "",
                 ownerName = "",
@@ -58,23 +60,23 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
         }
 
         composeTestRule
-            .onNodeWithText("1111 - 2222 - **** - ****")
-            .assertIsDisplayed()
+            .onNodeWithContentDescription("카드 번호 입력")
+            .assert(hasText("1111 - 2222 - **** - ****"))
     }
 
     @Test
-    fun `만료일은_포맷에_맞춰_보여진다`() {
+    fun `만료일_입력시_포맷에_맞춰_보여진다`() {
         val expiredDate = "1224"
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = expiredDate,
                 ownerName = "",
@@ -85,23 +87,23 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
         }
 
         composeTestRule
-            .onNodeWithText("12 / 24")
-            .assertIsDisplayed()
+            .onNodeWithContentDescription("만료일 입력")
+            .assert(hasText("12 / 24"))
     }
 
     @Test
     fun `비밀번호는_평문으로_보이지_않는다`() {
         val password = "12341234"
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -112,8 +114,7 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = {},
                 onSaveClick = {},
             )
@@ -132,7 +133,8 @@ class CardAddScreenTest {
     fun `뒤로가기_버튼은_클릭_가능하다`() {
         var clicked: Boolean = false
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -143,8 +145,7 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = { clicked = true },
                 onSaveClick = {},
             )
@@ -161,7 +162,8 @@ class CardAddScreenTest {
     fun `완료_버튼은_클릭_가능하다`() {
         var clicked: Boolean = false
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -172,8 +174,7 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = { },
                 onSaveClick = { clicked = true },
             )
@@ -189,7 +190,8 @@ class CardAddScreenTest {
     @Test
     fun `카드사를_선택하지_않으면_카드_선택_목록이_보인다`() {
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -200,8 +202,7 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = {},
-                setSheetOpened = {},
+                setBankType = {},
                 onBackClick = { },
                 onSaveClick = { },
             )
@@ -215,7 +216,8 @@ class CardAddScreenTest {
     @Test
     fun `카드사를_선택하면_카드_선택_목록이_보아지_않는다`() {
         composeTestRule.setContent {
-            CardAddScreen(
+            CardInputScreen(
+                title = "",
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",
@@ -226,8 +228,7 @@ class CardAddScreenTest {
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = { },
-                setSheetOpened = {},
+                setBankType = { },
                 onBackClick = { },
                 onSaveClick = { },
             )
@@ -239,28 +240,31 @@ class CardAddScreenTest {
     }
 
     @Test
-    fun `선택한_카드사_이름이_카드_미리보기에_보인다`() {
+    fun `입력한_정보가_포맷에_맞춰_카드_미리보기에_보인다`() {
         composeTestRule.setContent {
-            CardAddScreen(
-                cardNumber = "",
-                expiredDate = "",
-                ownerName = "",
-                password = "",
+            CardInputScreen(
+                title = "",
+                cardNumber = "0000111122223333",
+                expiredDate = "1023",
+                ownerName = "김씨",
+                password = "1234",
                 sheetOpened = false,
                 bankType = BankType.KAKAO,
                 setCardNumber = {},
                 setExpiredDate = {},
                 setOwnerName = {},
                 setPassword = {},
-                setBank = { },
-                setSheetOpened = {},
+                setBankType = { },
                 onBackClick = { },
                 onSaveClick = { },
             )
         }
 
-        composeTestRule
-            .onNodeWithContentDescription("미완성 카드")
-            .assert(hasText("카카오뱅크"))
+        val cardPreview = composeTestRule
+            .onNodeWithContentDescription("카드 미리보기")
+
+        cardPreview.assertTextContains("0000 - 1111 - **** - ****")
+        cardPreview.assertTextContains("10 / 23")
+        cardPreview.assertTextContains("김씨")
     }
 }
