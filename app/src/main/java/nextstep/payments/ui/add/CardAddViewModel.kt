@@ -2,9 +2,12 @@ package nextstep.payments.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.Card
@@ -20,11 +23,8 @@ class CardAddViewModel(
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
-    private val _cardAddFailed = MutableStateFlow(false)
-    val cardAddFailed: StateFlow<Boolean> = _cardAddFailed.asStateFlow()
-
-    private val _bankSelectSheetOpened = MutableStateFlow(true)
-    val bankSelectSheetOpened: StateFlow<Boolean> = _bankSelectSheetOpened.asStateFlow()
+    private val _cardAddFailed = Channel<Unit>()
+    val cardAddFailed: Flow<Unit> = _cardAddFailed.consumeAsFlow()
 
     fun setCardNumber(cardNumber: String) {
         _card.update {
@@ -58,20 +58,12 @@ class CardAddViewModel(
 
     fun addCard() {
         if (_card.value.bankType == BankType.NOT_SELECTED) {
-            _cardAddFailed.update { true }
+            _cardAddFailed.trySend(Unit)
             return
         }
 
         repository.addCard(_card.value)
         _cardAdded.update { true }
-    }
-
-    fun resetCardAddFailed() {
-        _cardAddFailed.update { false }
-    }
-
-    fun setBankSelectSheetOpened(isOpened: Boolean) {
-        _bankSelectSheetOpened.update { isOpened }
     }
 
     companion object {

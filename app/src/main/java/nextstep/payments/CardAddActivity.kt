@@ -1,6 +1,7 @@
 package nextstep.payments
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -35,6 +36,13 @@ class CardAddActivity : ComponentActivity() {
                         onSaveCard = {
                             setResult(RESULT_OK)
                             finish()
+                        },
+                        onCardAddFailed = {
+                            Toast.makeText(
+                                this,
+                                R.string.bank_type_select_request,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     )
                 }

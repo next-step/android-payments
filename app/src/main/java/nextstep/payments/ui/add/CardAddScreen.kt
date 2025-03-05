@@ -1,6 +1,5 @@
 package nextstep.payments.ui.add
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -25,6 +26,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import nextstep.payments.R
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.repository.PaymentCardsRepository
@@ -39,24 +42,22 @@ internal fun CardAddScreen(
     cardAddViewModel: CardAddViewModel,
     onBackClick: () -> Unit,
     onSaveCard: () -> Unit,
+    onCardAddFailed: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val card by cardAddViewModel.card.collectAsStateWithLifecycle()
     val cardAdded by cardAddViewModel.cardAdded.collectAsStateWithLifecycle()
-    val cardAddFailed by cardAddViewModel.cardAddFailed.collectAsStateWithLifecycle()
-    val bankSelectSheetOpened by cardAddViewModel.bankSelectSheetOpened.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+
+    var bankSelectSheetOpened by remember { mutableStateOf(true) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) onSaveCard()
     }
 
-    LaunchedEffect(cardAddFailed) {
-        if (cardAddFailed) {
-            Toast.makeText(context, R.string.bank_type_select_request, Toast.LENGTH_SHORT)
-                .show()
-            cardAddViewModel.resetCardAddFailed()
-        }
+    LaunchedEffect(Unit) {
+        cardAddViewModel.cardAddFailed
+            .onEach { onCardAddFailed() }
+            .launchIn(this)
     }
 
     CardAddScreen(
@@ -71,7 +72,7 @@ internal fun CardAddScreen(
         setOwnerName = cardAddViewModel::setOwnerName,
         setPassword = cardAddViewModel::setPassword,
         setBank = cardAddViewModel::setBankType,
-        setSheetOpened = cardAddViewModel::setBankSelectSheetOpened,
+        setSheetOpened = { bankSelectSheetOpened = it },
         onBackClick = onBackClick,
         onSaveClick = cardAddViewModel::addCard,
         modifier = modifier
@@ -196,7 +197,8 @@ private fun StatefulCardAddScreenPreview() {
             setBankType(BankType.WOORI)
         },
         onBackClick = {},
-        onSaveCard = {}
+        onSaveCard = {},
+        onCardAddFailed = {}
     )
 }
 

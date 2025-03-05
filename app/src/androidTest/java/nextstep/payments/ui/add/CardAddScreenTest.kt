@@ -1,11 +1,10 @@
 package nextstep.payments.ui.add
 
-import androidx.compose.ui.test.assertAny
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -195,7 +194,7 @@ class CardAddScreenTest {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
-                sheetOpened = false,
+                sheetOpened = true,
                 bankType = BankType.NOT_SELECTED,
                 setCardNumber = {},
                 setExpiredDate = {},
@@ -259,9 +258,9 @@ class CardAddScreenTest {
                 onSaveClick = { },
             )
         }
+
         composeTestRule
             .onNodeWithContentDescription("미완성 카드")
-            .onChildren()
-            .assertAny(hasText("카카오뱅크"))
+            .assert(hasText("카카오뱅크"))
     }
 }
