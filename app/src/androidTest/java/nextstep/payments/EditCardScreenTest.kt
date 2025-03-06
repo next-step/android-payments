@@ -62,7 +62,7 @@ class EditCardScreenTest {
     }
 
     @Test
-    fun 수정할카드의_변경사항이_있다면_완료버튼이_비활성화다() {
+    fun 수정할카드의_변경사항이_있다면_완료버튼이_활성화다() {
         // given
         composeTestRule
             .setContent {
