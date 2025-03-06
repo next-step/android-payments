@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import nextstep.payments.screens.card.list.CardListScreen
 import nextstep.payments.screens.card.list.CardListViewModel
-import nextstep.payments.screens.card.new.NewCardActivity
+import nextstep.payments.screens.card.update.UpdateCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {

@@ -1,20 +1,22 @@
-package nextstep.payments.screens.card.new
+package nextstep.payments.screens.card.update
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import nextstep.payments.domain.Card
 import nextstep.payments.ui.theme.PaymentsTheme
+import nextstep.payments.util.parcelable
 
-class NewCardActivity : ComponentActivity() {
+class UpdateCardActivity : ComponentActivity() {
     private val card: Card? by lazy { intent.parcelable<Card>(CARD_KEY) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen(
+                UpdateCardScreen(
                     card = card,
                     onBackClick = { finish() },
                     navigateToCardList = {

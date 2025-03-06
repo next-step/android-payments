@@ -35,8 +35,8 @@ fun CardInformationInputFields(
         OutlinedTextField(
             value = cardNumber,
             onValueChange = onCardNumberChange,
-            label = { Text(stringResource(R.string.new_card_card_number_label)) },
-            placeholder = { Text(stringResource(R.string.new_card_card_number_placeholder)) },
+            label = { Text(stringResource(R.string.update_card_card_number_label)) },
+            placeholder = { Text(stringResource(R.string.update_card_card_number_placeholder)) },
             visualTransformation = CardNumberVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
@@ -45,8 +45,8 @@ fun CardInformationInputFields(
         OutlinedTextField(
             value = expiredDate,
             onValueChange = onExpiredDateChange,
-            label = { Text(stringResource(R.string.new_card_expiration_day_label)) },
-            placeholder = { Text(stringResource(R.string.new_card_expiration_day_placeholder)) },
+            label = { Text(stringResource(R.string.update_card_expiration_day_label)) },
+            placeholder = { Text(stringResource(R.string.update_card_expiration_day_placeholder)) },
             visualTransformation = ExpiredDateVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
@@ -55,8 +55,8 @@ fun CardInformationInputFields(
         OutlinedTextField(
             value = ownerName,
             onValueChange = onOwnerNameChange,
-            label = { Text(stringResource(R.string.new_card_card_owner_name_label)) },
-            placeholder = { Text(stringResource(R.string.new_card_card_owner_name_placeholder)) },
+            label = { Text(stringResource(R.string.update_card_card_owner_name_label)) },
+            placeholder = { Text(stringResource(R.string.update_card_card_owner_name_placeholder)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier.fillMaxWidth(),
         )
@@ -64,8 +64,8 @@ fun CardInformationInputFields(
         OutlinedTextField(
             value = password,
             onValueChange = onPasswordChange,
-            label = { Text(stringResource(R.string.new_card_password_label)) },
-            placeholder = { Text(stringResource(R.string.new_card_password_placeholder)) },
+            label = { Text(stringResource(R.string.update_card_password_label)) },
+            placeholder = { Text(stringResource(R.string.update_card_password_placeholder)) },
             modifier = Modifier.fillMaxWidth(fraction = 0.5f),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
             visualTransformation = PasswordVisualTransformation(),

@@ -1,4 +1,4 @@
-package nextstep.payments.screens.card.new.components
+package nextstep.payments.screens.card.update.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
