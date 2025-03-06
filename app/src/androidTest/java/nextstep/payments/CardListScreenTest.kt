@@ -132,6 +132,17 @@ class CardListScreenTest {
             .assertDoesNotExist()
     }
 
+    @Test
+    fun 등록된_카드_은행명과_화면에_노출된_카드의_은행명이_일치한다() {
+        registerCards(
+            card1
+        )
+
+        // 등록된 카드의 은행명과 화면에 노출된 카드의 은행명이 일치하는지 확인
+        composeTestRule.onNodeWithText("BC카드")
+            .assertExists()
+    }
+
     companion object {
         const val REGISTER_NEW_CARD_TEXT = "새로운 카드를 등록해주세요"
         const val REGISTER_CARD_BUTTON_CONTAINER_DESCRIPTION = "registerCardContainer"
