@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.Card
 import nextstep.payments.model.toColor
+import nextstep.payments.model.toName
 
 @Composable
 fun PaymentCard(
@@ -77,6 +78,11 @@ private fun CardFrame(
 
 @Composable
 private fun BoxScope.CardDetails(card: Card) {
+    PaymentCardText(
+        text = card.bankType?.toName() ?: "",
+        modifier = Modifier.align(Alignment.TopStart)
+    )
+
     PaymentCardText(
         text = card.maskedNumber,
         modifier = Modifier

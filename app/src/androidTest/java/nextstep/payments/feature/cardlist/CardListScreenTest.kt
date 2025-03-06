@@ -54,13 +54,28 @@ class CardListScreenTest {
     }
 
     @Test
+    fun 카드_목록에_은행_이름이_노출된다() {
+        val card = Card(
+            number = "1234 - 1234 - 1234 - 1234",
+            expiredDate = "12/26",
+            ownerName = "홍길동",
+            password = "1234",
+            bankType = BankType.HYUNDAI
+        )
+
+        cardUiState = CardUiState.One(card)
+
+        composeTestRule.onNodeWithText("현대카드").assertIsDisplayed()
+    }
+
+    @Test
     fun 카드_목록에서_카드의_번호는_마지막_8자리가_마스킹_처리되어_표시된다() {
         val card = Card(
             number = "1234 - 1234 - 1234 - 1234",
             expiredDate = "12/26",
             ownerName = "홍길동",
             password = "1234",
-            bankType = BankType.NOT_SELECTED
+            bankType = BankType.HYUNDAI
         )
 
         cardUiState = CardUiState.One(card)
