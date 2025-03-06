@@ -26,7 +26,7 @@ fun CardListTopBar(
             if (showAddButton) {
                 IconButton(
                     onClick = { onAddClick() },
-                    modifier = Modifier.testTag("AddNewCardButton")
+                    modifier = Modifier.testTag("CardListTopBar_AddNewCardButton")
                 ) {
                     Text(
                         text = "추가",
