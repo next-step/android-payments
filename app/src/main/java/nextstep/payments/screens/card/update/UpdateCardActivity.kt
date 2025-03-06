@@ -35,7 +35,7 @@ class UpdateCardActivity : ComponentActivity() {
             return Intent(context, UpdateCardActivity::class.java)
         }
 
-        fun getIntent(context: Context, card: Card): Intent {
+        fun getIntentForPutExtraCard(context: Context, card: Card): Intent {
             return Intent(context, UpdateCardActivity::class.java).apply {
                 putExtra(CARD_KEY, card)
             }

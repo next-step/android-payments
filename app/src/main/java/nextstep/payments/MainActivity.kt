@@ -28,11 +28,14 @@ class MainActivity : ComponentActivity() {
 
                 CardListScreen(
                     onAddCardClick = {
-                        val intent: Intent = UpdateCardActivity.getIntent(this)
+                        val intent: Intent = UpdateCardActivity.getIntent(context = this)
                         launcher.launch(intent)
                     },
                     onCardClick = {
-                        val intent: Intent = UpdateCardActivity.getIntent(this, it)
+                        val intent: Intent = UpdateCardActivity.getIntentForPutExtraCard(
+                            context = this,
+                            card = it,
+                        )
                         launcher.launch(intent)
                     },
                     viewModel = cardListViewModel,
