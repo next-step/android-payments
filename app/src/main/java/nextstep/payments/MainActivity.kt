@@ -32,9 +32,9 @@ class MainActivity : ComponentActivity() {
                         launcher.launch(intent)
                     },
                     onCardClick = {
-                        val intent: Intent = UpdateCardActivity.getIntentForPutExtraCard(
+                        val intent: Intent = UpdateCardActivity.getIntentForPutExtraCardState(
                             context = this,
-                            card = it,
+                            cardState = it,
                         )
                         launcher.launch(intent)
                     },

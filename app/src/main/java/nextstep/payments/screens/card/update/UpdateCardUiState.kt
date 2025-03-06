@@ -1,8 +1,5 @@
 package nextstep.payments.screens.card.update
 
-import nextstep.payments.domain.Card
-import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.mapper.toState
 import nextstep.payments.screens.card.state.CardState
 
 sealed interface UpdateCardUiState {
@@ -10,23 +7,13 @@ sealed interface UpdateCardUiState {
     val cardUpdated: Boolean
 
     data class EditCardUiState(
-        val cardForEdit: Card,
-        override val cardState: CardState = CardState(
-            selectedCardCompany = cardForEdit.cardCompany.toState(),
-            cardNumber = cardForEdit.numbers,
-            expiredDate = cardForEdit.expiredDate,
-            ownerName = cardForEdit.ownerName,
-            password = cardForEdit.password,
-        ),
+        val cardForEdit: CardState,
+        override val cardState: CardState = cardForEdit.copy(),
         override val cardUpdated: Boolean = false,
     ) : UpdateCardUiState {
         fun isFormValid(): Boolean {
-            return cardState.cardNumber.isNotBlank() &&
-                    cardState.expiredDate.isNotBlank() &&
-                    cardState.ownerName.isNotBlank() &&
-                    cardState.password.isNotBlank() &&
-                    cardState.selectedCardCompany != null &&
-                    cardState.isEqualTo(cardForEdit).not()
+            return cardState.isFormValid() &&
+                    cardState != cardForEdit
         }
     }
 

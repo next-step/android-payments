@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,33 +17,33 @@ import nextstep.payments.components.card.elements.CardNumbers
 import nextstep.payments.components.card.elements.ExpiredDate
 import nextstep.payments.components.card.elements.IcChip
 import nextstep.payments.components.card.elements.OwnerName
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.mapper.toDomain
 import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.mapper.toState
+import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.ui.theme.Black100
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun RegisteredPaymentCard(
-    card: Card,
+    card: CardState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cardCompanyState = remember(card) { card.cardCompany.toState() }
-
     BaseCard(
         onClick = onClick,
         modifier = modifier,
-        color = cardCompanyState.backgroundColor,
+        color = card.selectedCardCompany?.backgroundColor ?: Black100,
     ) {
         CardCompanyName(
-            name = stringResource(cardCompanyState.nameRes)
+            name = if (card.selectedCardCompany == null) {
+                ""
+            } else {
+                stringResource(card.selectedCardCompany.nameRes)
+            }
         )
         Spacer(Modifier.height(14.dp))
         IcChip()
         Spacer(Modifier.height(8.dp))
-        CardNumbers(cardNumbers = card.numbers)
+        CardNumbers(cardNumbers = card.cardNumber)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -55,22 +54,21 @@ fun RegisteredPaymentCard(
     }
 }
 
-class RegisteredPaymentCardPreviewParameterProvider : CollectionPreviewParameterProvider<CardCompany>(
-    collection = CardCompanyState.entries.map(CardCompanyState::toDomain)
-)
+class RegisteredPaymentCardPreviewParameterProvider :
+    CollectionPreviewParameterProvider<CardCompanyState>(collection = CardCompanyState.entries)
 
 @Preview
 @Composable
 private fun RegisteredPaymentCardPreview(
-    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompany,
+    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompanyState,
 ) {
     PaymentsTheme {
-        val card = Card(
-            numbers = "1111222200000000",
+        val card = CardState(
+            cardNumber = "1111222200000000",
             expiredDate = "0421",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = cardCompany,
+            selectedCardCompany = cardCompany,
         )
         RegisteredPaymentCard(
             card = card,

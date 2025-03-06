@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.state.CardState
 import nextstep.payments.screens.card.update.components.CardCompanyBottomSheetDialog
@@ -97,12 +95,12 @@ private fun EditCardScreenPreview() {
     PaymentsTheme {
         EditCardScreen(
             uiState = UpdateCardUiState.EditCardUiState(
-                cardForEdit = Card(
-                    numbers = "",
+                cardForEdit = CardState(
+                    cardNumber = "",
                     expiredDate = "",
                     ownerName = "",
                     password = "",
-                    cardCompany = CardCompany.HANA
+                    selectedCardCompany = CardCompanyState.HANA
                 ),
                 cardState = CardState(
                     selectedCardCompany = null,

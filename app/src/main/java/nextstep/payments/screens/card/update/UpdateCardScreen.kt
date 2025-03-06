@@ -6,12 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.domain.Card
 import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.state.CardState
 
 @Composable
 fun UpdateCardScreen(
-    card: Card?,
+    cardState: CardState?,
     navigateToCardList: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -24,8 +24,8 @@ fun UpdateCardScreen(
     }
 
     LaunchedEffect(Unit) {
-        if (card != null) {
-            viewModel.setEditCardMode(card)
+        if (cardState != null) {
+            viewModel.setEditCardMode(cardState)
         }
     }
 

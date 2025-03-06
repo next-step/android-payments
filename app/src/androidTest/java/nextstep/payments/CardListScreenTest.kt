@@ -12,6 +12,7 @@ import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.list.CardListScreen
 import nextstep.payments.screens.card.list.CardListUiState
+import nextstep.payments.screens.card.mapper.toState
 import org.junit.Rule
 import org.junit.Test
 
@@ -82,7 +83,7 @@ class CardListScreenTest {
     @Test
     fun 카드_목록에_카드가_한_개_있을_때의_카드_추가_UI는_목록_하단에_노출된다() {
         // given
-        val state = CardListUiState.One(fakeCards.first())
+        val state = CardListUiState.One(fakeCards.first().toState())
 
         composeTestRule.setContent {
             CardListScreen(
@@ -108,7 +109,7 @@ class CardListScreenTest {
     @Test
     fun 카드_목록에_카드가_여러_개_있을_때의_카드_추가_UI는_상단바에_노출된다() {
         // given
-        val state = CardListUiState.Many(fakeCards)
+        val state = CardListUiState.Many(fakeCards.map(Card::toState))
 
         composeTestRule.setContent {
             CardListScreen(

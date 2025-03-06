@@ -5,7 +5,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 
-class ExpiredDateVisualTransformation: VisualTransformation {
+class ExpiredDateVisualTransformation : VisualTransformation {
     private val offsetMapping = object : OffsetMapping {
         override fun originalToTransformed(offset: Int): Int {
             return when (offset) {

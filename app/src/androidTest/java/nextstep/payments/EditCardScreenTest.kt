@@ -4,8 +4,6 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.state.CardState
 import nextstep.payments.screens.card.update.EditCardScreen
@@ -23,26 +21,17 @@ class EditCardScreenTest {
         // given
         composeTestRule
             .setContent {
-                val cardNumbers = "1234567890123456"
-                val expiredDate = "1225"
-                val ownerName = "BANDAL"
-                val password = "1234"
-
+                val card = CardState(
+                    cardNumber = "1234567890123456",
+                    expiredDate = "1225",
+                    ownerName = "BANDAL",
+                    password = "1234",
+                    selectedCardCompany = CardCompanyState.HANA
+                )
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardForEdit = Card(
-                            numbers = cardNumbers,
-                            expiredDate = expiredDate,
-                            ownerName = ownerName,
-                            password = password,
-                            cardCompany = CardCompany.HANA
-                        ), cardState = CardState(
-                            selectedCardCompany = CardCompanyState.HANA,
-                            cardNumber = cardNumbers,
-                            expiredDate = expiredDate,
-                            ownerName = ownerName,
-                            password = password
-                        ),
+                        cardForEdit = card,
+                        cardState = card,
                         cardUpdated = false
                     ),
                     onCardCompanyClick = {},
@@ -73,18 +62,18 @@ class EditCardScreenTest {
 
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardForEdit = Card(
-                            numbers = cardNumbers,
-                            expiredDate = expiredDate,
-                            ownerName = ownerName,
-                            password = password,
-                            cardCompany = CardCompany.HANA
-                        ), cardState = CardState(
-                            selectedCardCompany = CardCompanyState.KAKAO,
+                        cardForEdit = CardState(
                             cardNumber = cardNumbers,
                             expiredDate = expiredDate,
                             ownerName = ownerName,
-                            password = password
+                            password = password,
+                            selectedCardCompany = CardCompanyState.HANA
+                        ), cardState = CardState(
+                            cardNumber = cardNumbers,
+                            expiredDate = expiredDate,
+                            ownerName = ownerName,
+                            password = password,
+                            selectedCardCompany = CardCompanyState.KAKAO
                         ),
                         cardUpdated = false
                     ),

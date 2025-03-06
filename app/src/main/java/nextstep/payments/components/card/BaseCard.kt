@@ -63,7 +63,6 @@ fun BaseCard(
 }
 
 
-
 @Preview(showBackground = true, name = "onClick 없는 경우")
 @Composable
 private fun Preview1() {

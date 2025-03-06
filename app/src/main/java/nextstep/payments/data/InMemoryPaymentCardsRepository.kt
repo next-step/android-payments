@@ -3,7 +3,7 @@ package nextstep.payments.data
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.PaymentCardsRepository
 
-object InMemoryPaymentCardsRepository: PaymentCardsRepository {
+object InMemoryPaymentCardsRepository : PaymentCardsRepository {
     private val cards = mutableListOf<Card>()
 
     override fun getCards(): List<Card> {

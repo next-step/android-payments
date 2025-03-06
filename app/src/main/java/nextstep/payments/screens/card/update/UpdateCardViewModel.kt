@@ -8,8 +8,9 @@ import kotlinx.coroutines.flow.update
 import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.PaymentCardsRepository
-import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.mapper.toDomain
+import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.state.CardState
 
 class UpdateCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
@@ -19,7 +20,7 @@ class UpdateCardViewModel(
         MutableStateFlow(UpdateCardUiState.AddCardUiState())
     val uiState: StateFlow<UpdateCardUiState> = _uiState.asStateFlow()
 
-    fun setEditCardMode(card: Card) {
+    fun setEditCardMode(card: CardState) {
         _uiState.update {
             UpdateCardUiState.EditCardUiState(cardForEdit = card)
         }
@@ -101,8 +102,8 @@ class UpdateCardViewModel(
 
             is UpdateCardUiState.EditCardUiState -> {
                 editCard(
-                    oldCard = state.cardForEdit,
-                    newCard = state.cardState.toDomain() ?: return
+                    oldCard = state.cardForEdit.toDomain() ?: return,
+                    newCard = state.cardState.toDomain() ?: return,
                 )
             }
         }

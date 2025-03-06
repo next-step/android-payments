@@ -19,5 +19,6 @@ fun Card.toState(): CardState {
         cardNumber = numbers,
         expiredDate = expiredDate,
         ownerName = ownerName,
+        password = password,
     )
 }

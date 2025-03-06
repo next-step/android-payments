@@ -3,8 +3,8 @@ package nextstep.payments
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.components.card.RegisteredPaymentCard
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
+import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.state.CardState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,12 +14,12 @@ class RegisteredPaymentCardTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val card = Card(
-        numbers = "1111222233334444",
+    private val card = CardState(
+        cardNumber = "1111222233334444",
         expiredDate = "0421",
         ownerName = "CREW",
         password = "0000",
-        cardCompany = CardCompany.KAKAO,
+        selectedCardCompany = CardCompanyState.KAKAO,
     )
 
     @Before
