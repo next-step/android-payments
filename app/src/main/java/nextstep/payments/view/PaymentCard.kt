@@ -77,7 +77,7 @@ private fun CardFrame(
 }
 
 @Composable
-fun BoxScope.CardDetails(card: Card) {
+private fun BoxScope.CardDetails(card: Card) {
     PaymentCardText(
         text = card.maskedNumber,
         modifier = Modifier
