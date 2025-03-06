@@ -2,8 +2,7 @@ package nextstep.payments.screens.card.update
 
 import nextstep.payments.domain.Card
 import nextstep.payments.screens.card.CardCompanyState
-import nextstep.payments.screens.card.toDomain
-import nextstep.payments.screens.card.toState
+import nextstep.payments.screens.card.mapper.toState
 
 sealed interface UpdateCardUiState {
     val cardState: CardState

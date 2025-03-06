@@ -21,8 +21,8 @@ import nextstep.payments.components.card.elements.OwnerName
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.CardCompanyState
-import nextstep.payments.screens.card.toDomain
-import nextstep.payments.screens.card.toState
+import nextstep.payments.screens.card.mapper.toDomain
+import nextstep.payments.screens.card.mapper.toState
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
