@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Payments</string>
+    <string name="bank_BC">BC카드</string>
+    <string name="bank_SHINHAN">신한카드</string>
+    <string name="bank_KAKAO">카카오뱅크</string>
+    <string name="bank_HYUNDAI">현대카드</string>
+    <string name="bank_WOORI">우리카드</string>
+    <string name="bank_LOTTE">롯데카드</string>
+    <string name="bank_HANA">하나카드</string>
+    <string name="bank_KB">국민카드</string>
 </resources>

@@ -1,6 +1,9 @@
 package nextstep.payments.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import nextstep.payments.R
 
 enum class BankType {
     NOT_SELECTED,
@@ -14,17 +17,18 @@ enum class BankType {
     KB
 }
 
+@Composable
 fun BankType.toName(): String {
     return when (this) {
         BankType.NOT_SELECTED -> ""
-        BankType.BC -> "BC카드"
-        BankType.SHINHAN -> "신한카드"
-        BankType.KAKAO -> "카카오뱅크"
-        BankType.HYUNDAI -> "현대카드"
-        BankType.WOORI -> "우리카드"
-        BankType.LOTTE -> "롯데카드"
-        BankType.HANA -> "하나카드"
-        BankType.KB -> "국민카드"
+        BankType.BC -> stringResource(R.string.bank_BC)
+        BankType.SHINHAN -> stringResource(R.string.bank_SHINHAN)
+        BankType.KAKAO -> stringResource(R.string.bank_KAKAO)
+        BankType.HYUNDAI -> stringResource(R.string.bank_HYUNDAI)
+        BankType.WOORI -> stringResource(R.string.bank_WOORI)
+        BankType.LOTTE -> stringResource(R.string.bank_LOTTE)
+        BankType.HANA -> stringResource(R.string.bank_HANA)
+        BankType.KB -> stringResource(R.string.bank_KB)
     }
 }
 
