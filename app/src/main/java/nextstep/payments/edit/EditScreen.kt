@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,7 +25,9 @@ import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.edit.component.EditTopBar
 import nextstep.payments.model.BankType
 import nextstep.payments.newcard.model.BankTypeUiModel
+import nextstep.payments.parameters.BooleanPreviewParameter
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun EditScreen(
@@ -128,5 +132,23 @@ fun EditScreen(
                 visualTransformation = PasswordVisualTransformation(),
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun EditScreenPreview(
+    @PreviewParameter(BooleanPreviewParameter::class) isDataChanged: Boolean,
+) {
+    PaymentsTheme {
+        EditScreen(
+            cardNumber = "1234 5678 1234 5678",
+            expiredDate = "12 / 34",
+            ownerName = "홍길동",
+            password = "1234",
+            bankType = BankType.KB,
+            isDataChanged = isDataChanged,
+            sendEvent = {},
+        )
     }
 }

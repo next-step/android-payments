@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.edit.EditEvent
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,4 +44,12 @@ fun EditTopBar(
         },
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun EditTopBarPreview() {
+    PaymentsTheme {
+        EditTopBar(isDataChanged = true, sendEvent = {})
+    }
 }
