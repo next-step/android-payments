@@ -30,6 +30,7 @@ fun PaymentCard(
     expiredDate: String,
     ownerName: String,
     modifier: Modifier = Modifier,
+    cardColor: Color = Color(0xFF333333),
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -37,7 +38,7 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = Color(0xFF333333),
+                color = cardColor,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {

@@ -15,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -89,6 +90,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        selectedBank = selectedBank,
         isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -116,6 +118,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    selectedBank: BankType,
     isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
@@ -164,6 +167,7 @@ private fun NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
+                cardColor = selectedBank.bankThemeColor,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -277,7 +281,7 @@ private fun BankBottomModalSheet(
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { },
+        onDismissRequest = {},
     ) {
         Column(
             modifier = modifier,
@@ -345,7 +349,7 @@ private fun BankItem(
 
 @Preview(showBackground = true)
 @Composable
-fun BankItemPreview() {
+private fun BankItemPreview() {
     BankItem(
         bankName = "BC",
         bankImage = painterResource(R.drawable.bc),
@@ -420,6 +424,7 @@ private fun StatelessNewCardScreenPreView() {
         ownerName = "홍길동",
         password = "1234",
         isSaveEnabled = true,
+        selectedBank = BankType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},
