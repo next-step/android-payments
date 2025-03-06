@@ -19,13 +19,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 import nextstep.payments.model.toColor
 
 @Composable
 fun PaymentCard(
-    backgroundColor: Color,
+    backgroundColor: Color?,
     modifier: Modifier = Modifier,
 ) {
     CardFrame(
@@ -40,7 +39,7 @@ fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
     CardFrame(
-        backgroundColor = card.bankType.toColor(),
+        backgroundColor = card.bankType?.toColor(),
         modifier = modifier
     ) { boxScope ->
         boxScope.CardDetails(card)
@@ -49,8 +48,8 @@ fun PaymentCard(
 
 @Composable
 private fun CardFrame(
-    backgroundColor: Color,
     modifier: Modifier = Modifier,
+    backgroundColor: Color? = null,
     content: @Composable (BoxScope) -> Unit = {}
 ) {
     Box(
@@ -59,7 +58,7 @@ private fun CardFrame(
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
             .background(
-                color = backgroundColor,
+                color = backgroundColor ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
             .padding(14.dp)
@@ -119,7 +118,7 @@ private fun PaymentCardPreview() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         PaymentCard(
-            backgroundColor = BankType.NOT_SELECTED.toColor()
+            backgroundColor = Color.Red
         )
     }
 }

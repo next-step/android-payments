@@ -92,7 +92,7 @@ fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    bankType: BankType,
+    bankType: BankType?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -115,7 +115,7 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                backgroundColor = bankType.toColor()
+                backgroundColor = bankType?.toColor()
             )
 
             Spacer(modifier = Modifier.height(10.dp))

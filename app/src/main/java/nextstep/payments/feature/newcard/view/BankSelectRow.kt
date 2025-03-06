@@ -54,8 +54,6 @@ private fun BankItem(
     onClick: (BankType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    if (bankType == BankType.NOT_SELECTED) return
-
     Column(
         modifier = modifier.clickable { onClick(bankType) },
         horizontalAlignment = Alignment.CenterHorizontally,

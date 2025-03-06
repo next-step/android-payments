@@ -6,7 +6,6 @@ import androidx.compose.ui.res.stringResource
 import nextstep.payments.R
 
 enum class BankType {
-    NOT_SELECTED,
     BC,
     SHINHAN,
     KAKAO,
@@ -20,7 +19,6 @@ enum class BankType {
 @Composable
 fun BankType.toName(): String {
     return when (this) {
-        BankType.NOT_SELECTED -> ""
         BankType.BC -> stringResource(R.string.bank_BC)
         BankType.SHINHAN -> stringResource(R.string.bank_SHINHAN)
         BankType.KAKAO -> stringResource(R.string.bank_KAKAO)
@@ -34,7 +32,6 @@ fun BankType.toName(): String {
 
 fun BankType.toColor(): Color {
     return when (this) {
-        BankType.NOT_SELECTED -> Color(0xFF333333)
         BankType.BC -> Color.Red
         BankType.SHINHAN -> Color.Blue
         BankType.KAKAO -> Color.Yellow
