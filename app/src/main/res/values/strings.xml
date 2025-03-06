@@ -3,4 +3,14 @@
     <string name="add">추가</string>
     <string name="payments">Payments</string>
     <string name="add_new_card_description">새로운 카드를 등록해주세요</string>
+
+    <string name="card_company_bc">BC카드</string>
+    <string name="card_company_sh">신한카드</string>
+    <string name="card_company_ka">카카오뱅크</string>
+    <string name="card_company_hy">현대카드</string>
+    <string name="card_company_wo">우리카드</string>
+    <string name="card_company_lo">롯데카드</string>
+    <string name="card_company_ha">하나카드</string>
+    <string name="card_company_kb">국민카드</string>
+
 </resources>

@@ -28,9 +28,9 @@ import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.component.PaymentCardDefaults.CHUNKED_DUE_DATE_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.CHUNKED_NUMBER_LENGTH
-import nextstep.payments.component.PaymentCardDefaults.CardSize
 import nextstep.payments.component.PaymentCardDefaults.DUE_DATE_LENGTH
 import nextstep.payments.component.PaymentCardDefaults.UNMASKED_NUMBER_LENGTH
+import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -41,14 +41,15 @@ fun PaymentCard(
 ) {
     val formattedNumber = remember(key1 = card.number) { card.number.formatCardNumber() }
     val formattedDueDate = remember(key1 = card.dueDate) { card.dueDate.formatCardDueDate() }
+    val cardCompanyResource = remember(key1 = card.company) { card.company.toResource() }
 
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(CardSize)
+            .size(PaymentCardDefaults.CardSize)
             .background(
-                color = Color(0xFF333333),
+                color = cardCompanyResource?.backgroundColor ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
             .testTag("PaymentCard")
@@ -59,6 +60,12 @@ fun PaymentCard(
                 .align(Alignment.BottomStart),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            if (card.company != CardCompany.NONE) {
+                PaymentCardText(
+                    text = cardCompanyResource?.stringRes?.let { stringResource(id = it) } ?: ""
+                )
+            }
+
             Spacer(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
@@ -124,7 +131,7 @@ fun EmptyPaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(CardSize)
+            .size(PaymentCardDefaults.CardSize)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
@@ -152,10 +159,20 @@ private fun PaymentCardPreview() {
                     number = "1111222233334444",
                     dueDate = "0125",
                     password = "1234",
-                    name = "YANG"
+                    name = "YANG",
+                    company = CardCompany.NONE
                 )
             )
             EmptyPaymentCard()
+            PaymentCard(
+                card = CreditCard(
+                    number = "1111222233334444",
+                    dueDate = "0125",
+                    password = "1234",
+                    name = "YANG",
+                    company = CardCompany.BC
+                )
+            )
         }
     }
 }
