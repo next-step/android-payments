@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.Card
@@ -24,7 +24,7 @@ class CardAddViewModel(
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
     private val _cardAddFailed = Channel<Unit>()
-    val cardAddFailed: Flow<Unit> = _cardAddFailed.consumeAsFlow()
+    val cardAddFailed: Flow<Unit> = _cardAddFailed.receiveAsFlow()
 
     fun setCardNumber(cardNumber: String) {
         _card.update {

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.CardEditActivity
 import nextstep.payments.data.model.BankType
@@ -35,7 +35,7 @@ class CardEditViewModel(
     val cardUpdated: StateFlow<Boolean> = _cardUpdated.asStateFlow()
 
     private val _cardUpdateFailed = Channel<Unit>()
-    val cardUpdateFailed: Flow<Unit> = _cardUpdateFailed.consumeAsFlow()
+    val cardUpdateFailed: Flow<Unit> = _cardUpdateFailed.receiveAsFlow()
 
     fun setCardNumber(cardNumber: String) {
         _card.update {
@@ -72,7 +72,7 @@ class CardEditViewModel(
             _cardUpdateFailed.trySend(Unit)
             return
         }
-        
+
         repository.update(_card.value)
         _cardUpdated.update { true }
     }
