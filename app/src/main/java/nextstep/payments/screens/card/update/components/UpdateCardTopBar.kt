@@ -21,7 +21,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun UpdateCardTopBar(
     title: String,
-    enabled: Boolean,
+    doneButtonEnabled: Boolean,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -37,7 +37,7 @@ fun UpdateCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = onSaveClick, enabled = enabled) {
+            IconButton(onClick = onSaveClick, enabled = doneButtonEnabled) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(R.string.all_done),
@@ -49,26 +49,26 @@ fun UpdateCardTopBar(
     )
 }
 
-@Preview(name = "체크 버튼 활성화")
+@Preview(name = "완료 버튼 활성화")
 @Composable
 private fun Preview1() {
     PaymentsTheme {
         UpdateCardTopBar(
             title = "카드 추가",
-            enabled = true,
+            doneButtonEnabled = true,
             onBackClick = {},
             onSaveClick = {},
         )
     }
 }
 
-@Preview(name = "체크 버튼 비활성화")
+@Preview(name = "완료 버튼 비활성화")
 @Composable
 private fun Preview2() {
     PaymentsTheme {
         UpdateCardTopBar(
             title = "카드 수정",
-            enabled = false,
+            doneButtonEnabled = false,
             onBackClick = {},
             onSaveClick = {},
         )

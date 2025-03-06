@@ -43,7 +43,7 @@ fun AddCardScreen(
         topBar = {
             UpdateCardTopBar(
                 title = stringResource(R.string.add_card_top_bar_title),
-                enabled = uiState.cardState.isFormValid(),
+                doneButtonEnabled = uiState.cardState.isFormValid(),
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )
