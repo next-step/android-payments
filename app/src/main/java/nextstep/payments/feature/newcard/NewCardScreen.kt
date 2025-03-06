@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import nextstep.payments.feature.newcard.view.BankSelectBottomSheet
 import nextstep.payments.feature.newcard.view.NewCardTopBar
 import nextstep.payments.model.BankType
@@ -49,12 +51,7 @@ fun NewCardScreen(
     )
 
     var isBottomSheetVisible by remember { mutableStateOf(true) }
-
-    LaunchedEffect(key1 = isBottomSheetVisible) {
-        if (isBottomSheetVisible.not()) {
-            modalBottomSheetState.hide()
-        }
-    }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -78,9 +75,16 @@ fun NewCardScreen(
     if (isBottomSheetVisible) {
         BankSelectBottomSheet(
             modalBottomSheetState = modalBottomSheetState,
-            onBankSelected = {
+            onDismissRequest = {
                 isBottomSheetVisible = false
-                viewModel.setBankType(it)
+            },
+            onBankSelected = {
+                scope.launch {
+                    viewModel.setBankType(it)
+                    modalBottomSheetState.hide()
+                }.invokeOnCompletion {
+                    isBottomSheetVisible = false
+                }
             }
         )
     }
