@@ -15,11 +15,11 @@ import nextstep.payments.ui.theme.ShinhanColor
 import nextstep.payments.ui.theme.WooriColor
 
 enum class BankType(
-    @StringRes val bankNameResId: Int?,
+    @StringRes val bankNameResId: Int,
     @DrawableRes val bankImageRes: Int?,
     val bankThemeColor: Color
 ) {
-    NOT_SELECTED(null, null, DefaultBankColor),
+    NOT_SELECTED(R.string.bank_not_select, null, DefaultBankColor),
     BC(R.string.bank_bc, R.drawable.bc, BcColor),
     SHINHAN(R.string.bank_shinhan, R.drawable.shinhan, ShinhanColor),
     KAKAO(R.string.bank_kakao, R.drawable.kakao, KakaoColor),

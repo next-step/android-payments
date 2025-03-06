@@ -126,6 +126,7 @@ private fun OneCardContainer(
         modifier = modifier,
     ) {
         PaymentCard(
+            bankName = stringResource(card.bankType.bankNameResId),
             cardNumber = card.cardNumber,
             expiredDate = card.expiredDate,
             ownerName = card.ownerName,
@@ -149,6 +150,7 @@ private fun CardListContainer(
     ) {
         items(cardList) { card ->
             PaymentCard(
+                bankName = card.bankType.name,
                 cardNumber = card.cardNumber,
                 expiredDate = card.expiredDate,
                 ownerName = card.ownerName,

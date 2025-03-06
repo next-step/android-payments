@@ -34,10 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
@@ -174,6 +176,7 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
+                bankName = stringResource(selectedBank.bankNameResId),
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
@@ -353,7 +356,11 @@ private fun BankItem(
             modifier = Modifier.size(37.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(bankName)
+        Text(
+            text = "${bankName}카드",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W500,
+        )
     }
 }
 

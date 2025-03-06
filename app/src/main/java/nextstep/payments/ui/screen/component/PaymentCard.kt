@@ -26,6 +26,7 @@ import nextstep.payments.R
 
 @Composable
 fun PaymentCard(
+    bankName: String,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -36,7 +37,7 @@ fun PaymentCard(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .size(width = 208.dp, height = 130.dp)
             .background(
                 color = cardColor,
                 shape = RoundedCornerShape(5.dp),
@@ -45,6 +46,13 @@ fun PaymentCard(
         Column(
             modifier = Modifier.padding(horizontal = 14.dp)
         ) {
+            Text(
+                text = "${bankName}카드",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W500,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.size(12.dp))
             Box(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
@@ -55,7 +63,6 @@ fun PaymentCard(
             )
             Spacer(modifier = Modifier.size(8.dp))
             CardNumberRow(cardNumber = cardNumber)
-            Spacer(modifier = Modifier.size(2.dp))
             OwnerNameAndExpireDateRow(
                 ownerName = ownerName,
                 expiredDate = expiredDate,
@@ -171,6 +178,7 @@ private fun DividerPreview() {
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
+        bankName = "신한",
         cardNumber = "1234123412341324",
         expiredDate = "1234",
         ownerName = "홍길동",

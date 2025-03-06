@@ -25,7 +25,7 @@
 
     <string name="password_hidden_text">****</string>
 
-    <string name="bank_not_select">선택 안함</string>
+    <string name="bank_not_select">OO</string>
     <string name="bank_bc">BC</string>
     <string name="bank_shinhan">신한</string>
     <string name="bank_kakao">카카오</string>
