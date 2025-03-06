@@ -25,7 +25,7 @@ class RegisteredPaymentCardTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            RegisteredPaymentCard(card = card)
+            RegisteredPaymentCard(card = card, onClick = {})
         }
     }
 

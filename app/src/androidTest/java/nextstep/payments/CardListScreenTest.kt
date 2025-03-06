@@ -66,6 +66,7 @@ class CardListScreenTest {
             CardListScreen(
                 state = CardListUiState.Empty,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 
@@ -87,6 +88,7 @@ class CardListScreenTest {
             CardListScreen(
                 state = state,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 
@@ -112,6 +114,7 @@ class CardListScreenTest {
             CardListScreen(
                 state = state,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 

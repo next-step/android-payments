@@ -1,16 +1,15 @@
 package nextstep.payments.components.card
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,29 +22,72 @@ fun BaseCard(
     color: Color = Black100,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(
-        modifier = modifier
-            .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
-            .background(
-                color = color,
-                shape = RoundedCornerShape(5.dp),
-            )
-            .padding(14.dp)
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(5.dp),
+        shadowElevation = 8.dp,
+        color = color,
     ) {
-        content()
+        Column(
+            modifier = modifier
+                .size(width = 208.dp, height = 124.dp)
+                .padding(14.dp)
+        ) {
+            content()
+        }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-private fun BaseCardPreview() {
+fun BaseCard(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = Black100,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(5.dp),
+        shadowElevation = 8.dp,
+        color = color,
+        onClick = onClick,
+    ) {
+        Column(
+            modifier = modifier
+                .size(width = 208.dp, height = 124.dp)
+                .padding(14.dp)
+        ) {
+            content()
+        }
+    }
+}
+
+
+
+@Preview(showBackground = true, name = "onClick 없는 경우")
+@Composable
+private fun Preview1() {
     PaymentsTheme {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.padding(40.dp),
         ) {
             BaseCard {}
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "onClick 있는 경우")
+@Composable
+private fun Preview2() {
+    PaymentsTheme {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.padding(40.dp),
+        ) {
+            BaseCard(
+                onClick = {},
+            ) {}
         }
     }
 }

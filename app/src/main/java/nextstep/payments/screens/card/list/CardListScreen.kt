@@ -35,6 +35,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardListViewModel,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,6 +43,7 @@ fun CardListScreen(
     CardListScreen(
         state = state,
         onAddCardClick = onAddCardClick,
+        onCardClick = onCardClick,
         modifier = modifier,
     )
 }
@@ -50,6 +52,7 @@ fun CardListScreen(
 fun CardListScreen(
     state: CardListUiState,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (state) {
@@ -63,6 +66,7 @@ fun CardListScreen(
             CardListWithOneCardScreen(
                 card = state.card,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
                 modifier = modifier,
             )
 
@@ -70,6 +74,7 @@ fun CardListScreen(
             CardListWithManyCardScreen(
                 cards = state.cards,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
                 modifier = modifier,
             )
         }
@@ -107,6 +112,7 @@ fun CardListEmptyScreen(
 fun CardListWithOneCardScreen(
     card: Card,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -122,7 +128,7 @@ fun CardListWithOneCardScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(12.dp))
-            RegisteredPaymentCard(card = card)
+            RegisteredPaymentCard(card = card, onClick = { onCardClick(card) })
             Spacer(Modifier.height(36.dp))
             AddCard(onAddCardClick = onAddCardClick)
         }
@@ -133,6 +139,7 @@ fun CardListWithOneCardScreen(
 fun CardListWithManyCardScreen(
     cards: List<Card>,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -143,11 +150,13 @@ fun CardListWithManyCardScreen(
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(36.dp),
-            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             items(items = cards, key = { it.numbers }) { card ->
-                RegisteredPaymentCard(card)
+                RegisteredPaymentCard(card, onClick = { onCardClick(card) })
             }
         }
     }
@@ -176,6 +185,7 @@ private fun Preview2() {
         CardListWithOneCardScreen(
             card = card,
             onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }
@@ -203,6 +213,7 @@ private fun Preview3() {
         CardListWithManyCardScreen(
             cards = cards,
             onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }

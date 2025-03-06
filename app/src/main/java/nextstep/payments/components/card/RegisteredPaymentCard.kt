@@ -28,11 +28,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun RegisteredPaymentCard(
     card: Card,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val cardCompanyState = remember(card) { card.cardCompany.toState() }
 
     BaseCard(
+        onClick = onClick,
         modifier = modifier,
         color = cardCompanyState.backgroundColor,
     ) {
@@ -72,6 +74,7 @@ private fun RegisteredPaymentCardPreview(
         )
         RegisteredPaymentCard(
             card = card,
+            onClick = {},
         )
     }
 }
