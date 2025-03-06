@@ -1,8 +1,10 @@
-package nextstep.payments
+package nextstep.payments.list
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.list.screen.CardListScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -10,7 +12,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                NewCardScreen()
+                CardListScreen(
+                    viewModel = viewModel()
+                )
             }
         }
     }
