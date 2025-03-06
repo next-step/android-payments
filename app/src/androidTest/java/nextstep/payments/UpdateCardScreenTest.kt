@@ -4,7 +4,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.update.UpdateCardScreen
@@ -34,10 +33,6 @@ class UpdateCardScreenTest {
         }
 
         // then
-        composeTestRule
-            .onNodeWithText("국민카드")
-            .performClick()
-
         composeTestRule
             .onNodeWithText("카드 추가")
             .assertIsDisplayed()
@@ -72,10 +67,6 @@ class UpdateCardScreenTest {
         }
 
         // then
-        composeTestRule
-            .onNodeWithText("국민카드")
-            .performClick()
-
         composeTestRule
             .onNodeWithText("카드 수정")
             .assertIsDisplayed()
