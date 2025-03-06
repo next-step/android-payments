@@ -1,21 +1,35 @@
 package nextstep.payments.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -27,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
+import nextstep.payments.ui.BankType
+import nextstep.payments.ui.screen.component.BankLogo
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
@@ -34,6 +50,7 @@ import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
 import nextstep.payments.ui.viewmodel.NewCardViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     navigateToCardList: () -> Unit,
@@ -46,11 +63,26 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
 
+    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+    var sheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
+
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 저장 가능 여부 유효성 체크
     viewModel.setIsSaveEnabled(cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4)
+
+    LaunchedEffect(selectedBank) {
+        if (selectedBank == BankType.NOT_SELECTED) {
+            sheetState.show()
+        }
+
+        if (selectedBank != BankType.NOT_SELECTED) {
+            sheetState.hide()
+        }
+    }
 
     NewCardScreen(
         cardNumber = cardNumber,
@@ -69,6 +101,12 @@ fun NewCardScreen(
             navigateToCardList()
         },
         modifier = modifier
+    )
+
+    BankBottomModalSheet(
+        sheetState = sheetState,
+        onBankClick = viewModel::setSelectedBank,
+        modifier = Modifier.fillMaxWidth(),
     )
 }
 
@@ -227,6 +265,99 @@ private fun PasswordInputField(
         visualTransformation = PasswordVisualTransformation(),
         onValueChange = onValueChange,
         modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BankBottomModalSheet(
+    sheetState: SheetState,
+    onBankClick: (BankType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = { },
+    ) {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            // 은행 리스트
+            BankSelectRow(
+                onBankClick = { bankType ->
+                    onBankClick(bankType)
+                },
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun BankSelectRow(
+    onBankClick: (BankType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val bankList = BankType.getBankList()
+
+    FlowRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 45.dp, vertical = 35.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(23.dp),
+        maxItemsInEachRow = 4
+    ) {
+        bankList.forEach { bankType ->
+            BankItem(
+                bankName = stringResource(bankType.bankNameResId!!),
+                bankImage = painterResource(bankType.bankImageRes!!),
+                modifier = modifier
+                    .clip(CircleShape) // 원형 클릭 적용
+                    .clickable(
+                        onClick = { onBankClick(bankType) },
+                    )
+                    .padding(6.dp)
+            )
+        }
+    }
+}
+
+@Composable
+private fun BankItem(
+    bankName: String,
+    bankImage: Painter,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        BankLogo(
+            bankImage,
+            modifier = Modifier.size(37.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(bankName)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BankItemPreview() {
+    BankItem(
+        bankName = "BC",
+        bankImage = painterResource(R.drawable.bc),
+    )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun BankSelectRowPreview() {
+    BankSelectRow(
+        onBankClick = {},
     )
 }
 
