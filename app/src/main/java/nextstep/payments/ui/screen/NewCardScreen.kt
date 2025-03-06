@@ -66,7 +66,9 @@ fun NewCardScreen(
 
     val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
     var sheetState = rememberModalBottomSheetState(
-        confirmValueChange = { false }
+        confirmValueChange = { newState ->
+            newState != SheetValue.Hidden
+        }
     )
 
     // 스낵바 상태 저장
@@ -105,11 +107,13 @@ fun NewCardScreen(
         modifier = modifier
     )
 
-    BankBottomModalSheet(
-        sheetState = sheetState,
-        onBankClick = viewModel::setSelectedBank,
-        modifier = Modifier.fillMaxWidth(),
-    )
+    if (sheetState.targetValue != SheetValue.Hidden) {
+        BankBottomModalSheet(
+            sheetState = sheetState,
+            onBankClick = viewModel::setSelectedBank,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }
 
 @Composable
