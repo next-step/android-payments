@@ -331,7 +331,7 @@ private fun BankSelectRow(
     ) {
         bankList.forEach { bankType ->
             BankItem(
-                bankName = stringResource(bankType.bankNameResId!!),
+                bankName = stringResource(bankType.bankNameResId),
                 bankImage = painterResource(bankType.bankImageRes!!),
                 modifier = modifier
                     .clip(CircleShape) // 원형 클릭 적용
