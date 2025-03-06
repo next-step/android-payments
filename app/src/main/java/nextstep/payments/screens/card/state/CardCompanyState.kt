@@ -1,4 +1,4 @@
-package nextstep.payments.screens.card
+package nextstep.payments.screens.card.state
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

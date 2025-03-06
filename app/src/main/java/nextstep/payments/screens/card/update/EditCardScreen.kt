@@ -21,7 +21,8 @@ import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.state.CardState
 import nextstep.payments.screens.card.update.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.update.components.CardInformationInputFields
 import nextstep.payments.screens.card.update.components.UpdateCardTopBar

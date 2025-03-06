@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.domain.Card
-import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.state.CardCompanyState
 
 @Composable
 fun UpdateCardScreen(

@@ -1,7 +1,7 @@
 package nextstep.payments.screens.card.mapper
 
 import nextstep.payments.domain.Card
-import nextstep.payments.screens.card.update.CardState
+import nextstep.payments.screens.card.state.CardState
 
 fun CardState.toDomain(): Card? {
     return Card(

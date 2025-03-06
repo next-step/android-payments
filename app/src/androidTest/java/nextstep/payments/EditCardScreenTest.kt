@@ -6,8 +6,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.CardCompanyState
-import nextstep.payments.screens.card.update.CardState
+import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.state.CardState
 import nextstep.payments.screens.card.update.EditCardScreen
 import nextstep.payments.screens.card.update.UpdateCardUiState
 import org.junit.Rule

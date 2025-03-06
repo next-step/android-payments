@@ -1,7 +1,7 @@
 package nextstep.payments.screens.card.mapper
 
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.state.CardCompanyState
 
 fun CardCompanyState.toDomain(): CardCompany = when (this) {
     CardCompanyState.BC -> CardCompany.BC
