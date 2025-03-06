@@ -58,14 +58,4 @@ data class CardState(
                 password == other.password &&
                 selectedCardCompany == other.cardCompany.toState()
     }
-
-    fun toDomain(): Card? {
-        return Card(
-            cardCompany = selectedCardCompany?.toDomain() ?: return null,
-            numbers = cardNumber,
-            expiredDate = expiredDate,
-            ownerName = ownerName,
-            password = password,
-        )
-    }
 }

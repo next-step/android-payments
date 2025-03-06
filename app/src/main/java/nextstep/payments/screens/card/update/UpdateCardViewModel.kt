@@ -9,6 +9,7 @@ import nextstep.payments.data.InMemoryPaymentCardsRepository
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.PaymentCardsRepository
 import nextstep.payments.screens.card.CardCompanyState
+import nextstep.payments.screens.card.mapper.toDomain
 
 class UpdateCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = InMemoryPaymentCardsRepository,
