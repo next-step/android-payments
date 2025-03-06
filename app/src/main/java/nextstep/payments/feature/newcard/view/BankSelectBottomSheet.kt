@@ -10,14 +10,14 @@ import nextstep.payments.model.BankType
 @Composable
 fun BankSelectBottomSheet(
     modalBottomSheetState: SheetState,
-    setBankType: (BankType) -> Unit = {}
+    onBankSelected: (BankType) -> Unit = {}
 ) {
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
         onDismissRequest = { },
     ) {
         BankSelectRow(
-            onClick = setBankType
+            onClick = onBankSelected
         )
     }
 }

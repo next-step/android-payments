@@ -78,7 +78,7 @@ fun NewCardScreen(
     if (isBottomSheetVisible) {
         BankSelectBottomSheet(
             modalBottomSheetState = modalBottomSheetState,
-            setBankType = {
+            onBankSelected = {
                 isBottomSheetVisible = false
                 viewModel.setBankType(it)
             }
