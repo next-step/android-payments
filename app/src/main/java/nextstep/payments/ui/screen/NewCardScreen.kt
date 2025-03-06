@@ -293,6 +293,9 @@ private fun BankBottomModalSheet(
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
+        modifier = modifier.semantics {
+            contentDescription = "bankBottomSheet"
+        },
         sheetState = sheetState,
         onDismissRequest = {},
     ) {
