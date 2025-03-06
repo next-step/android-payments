@@ -40,6 +40,7 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.ui.CardUiState
 import nextstep.payments.ui.screen.component.PaymentCard
 import nextstep.payments.R
+import nextstep.payments.ui.BankType
 import nextstep.payments.ui.screen.component.CenterTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,14 +98,11 @@ fun CardListScreen(
                 }
 
                 is CardUiState.One -> {
-                    PaymentCard(
-                        cardNumber = cardsState.data.cardNumber,
-                        expiredDate = cardsState.data.expiredDate,
-                        ownerName = cardsState.data.ownerName,
-                    )
-                    Spacer(modifier = Modifier.height(36.dp))
-                    AddCardContainer(
-                        onClick = navigateToNewCard
+                    OneCardContainer(
+                        card = cardsState.data,
+                        onClick = {
+                            navigateToNewCard()
+                        }
                     )
                 }
 
@@ -115,6 +113,28 @@ fun CardListScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun OneCardContainer(
+    card: Card,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        PaymentCard(
+            cardNumber = card.cardNumber,
+            expiredDate = card.expiredDate,
+            ownerName = card.ownerName,
+            cardColor = card.bankType.bankThemeColor,
+        )
+        Spacer(modifier = Modifier.height(36.dp))
+        AddCardContainer(
+            onClick = onClick
+        )
     }
 }
 
@@ -132,6 +152,7 @@ private fun CardListContainer(
                 cardNumber = card.cardNumber,
                 expiredDate = card.expiredDate,
                 ownerName = card.ownerName,
+                cardColor = card.bankType.bankThemeColor,
             )
         }
     }
@@ -168,6 +189,21 @@ private fun AddCardContainerPreview() {
 
 @Preview(showBackground = true)
 @Composable
+private fun OneCardContainerPreview() {
+    OneCardContainer(
+        card = Card(
+            cardNumber = "1234-5678-1234-5678",
+            expiredDate = "1234",
+            ownerName = "홍길동",
+            password = "12421412",
+            bankType = BankType.BC,
+        ),
+        onClick = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
 private fun CardListConatinerPreview() {
     CardListContainer(
         cardList = listOf(
@@ -175,19 +211,22 @@ private fun CardListConatinerPreview() {
                 cardNumber = "1234-5678-1234-5678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
-                password = "12421412"
+                password = "12421412",
+                bankType = BankType.BC
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
-                password = "12421412"
+                password = "12421412",
+                bankType = BankType.BC
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
-                password = "12421412"
+                password = "12421412",
+                bankType = BankType.BC
             ),
         )
     )

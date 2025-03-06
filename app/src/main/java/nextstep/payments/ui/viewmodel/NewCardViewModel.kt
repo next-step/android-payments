@@ -58,14 +58,16 @@ class NewCardViewModel(
         cardNumber: String,
         expiredDate: String,
         ownerName: String,
-        password: String
+        password: String,
+        bankType: BankType,
     ) {
         paymentRepsoitory.addCard(
             Card(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
-                password = password
+                password = password,
+                bankType = bankType
             )
         )
     }

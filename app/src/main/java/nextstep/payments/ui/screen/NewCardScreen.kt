@@ -101,7 +101,13 @@ fun NewCardScreen(
         snackbarHostState = snackbarHostState,
         onBackCLick = navigateToCardList,
         onSaveClick = {
-            viewModel.addCard(cardNumber, expiredDate, ownerName, password)
+            viewModel.addCard(
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                password = password,
+                bankType = selectedBank
+            )
             navigateToCardList()
         },
         modifier = modifier
