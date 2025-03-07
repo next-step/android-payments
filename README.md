@@ -28,3 +28,11 @@
 - 선택한 카드사에 따라 카드 미리보기가 바뀌어야 한다.
 - (선택사항) 카드사를 선택할 때 적절한 카드사 아이콘을 노출한다.
 - 카드사 선택 기능 구현시 FlowRow와 ModalBottomSheet를 활용한다.
+
+### Step3 - 개선 사항
+- BankLogo 컴포넌트 Image 컴포넌트로 대체
+- AppContainer, PaymentCard Size 상수로 추출 및 적용
+- NewCardScreen 등록 가능 유효성 체크 로직 ViewModel로 이동
+- BankSelectRow 1, 2번째 행 열 맞춤
+- bankType.bankImageRes!! > bankType.bankImageRes 되도록 로직 수정
+- BankBottomModalSheet 뒤로 가기 방지
