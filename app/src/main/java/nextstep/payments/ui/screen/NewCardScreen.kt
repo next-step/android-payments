@@ -1,5 +1,6 @@
 package nextstep.payments.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -45,10 +46,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.ui.BankType
-import nextstep.payments.ui.screen.component.BankLogo
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
+import nextstep.payments.ui.theme.Dimensions
 import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
 import nextstep.payments.ui.viewmodel.NewCardViewModel
@@ -354,9 +355,10 @@ private fun BankItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        BankLogo(
-            bankImage,
-            modifier = Modifier.size(37.dp)
+        Image(
+            painter = bankImage,
+            contentDescription = "Bank Logo",
+            modifier = modifier.size(Dimensions.LogoDefaults),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
