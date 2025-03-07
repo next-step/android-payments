@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import nextstep.payments.R
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.ui.component.CardInputScreen
+import nextstep.payments.ui.component.CardFormScreen
 
 @Composable
 internal fun CardAddScreen(
@@ -39,7 +39,7 @@ internal fun CardAddScreen(
             .launchIn(this)
     }
 
-    CardInputScreen(
+    CardFormScreen(
         title = stringResource(R.string.add_card),
         cardNumber = card.number,
         expiredDate = card.expiredDate,

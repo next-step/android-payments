@@ -13,7 +13,7 @@ import nextstep.payments.data.model.BankType
 import org.junit.Rule
 import org.junit.Test
 
-class CardInputScreenTest {
+class CardFormScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -21,7 +21,7 @@ class CardInputScreenTest {
     @Test
     fun `카드_미리보기가_보여진다`() {
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -50,7 +50,7 @@ class CardInputScreenTest {
     fun `카드_번호_입력시_포맷에_맞춰_보여진다`() {
         val cardNumber = "1111222233334444"
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = cardNumber,
                 expiredDate = "",
@@ -78,7 +78,7 @@ class CardInputScreenTest {
     fun `만료일_입력시_포맷에_맞춰_보여진다`() {
         val expiredDate = "1224"
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = expiredDate,
@@ -106,7 +106,7 @@ class CardInputScreenTest {
     fun `비밀번호는_평문으로_보이지_않는다`() {
         val password = "12341234"
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -138,7 +138,7 @@ class CardInputScreenTest {
     fun `뒤로가기_버튼은_클릭_가능하다`() {
         var clicked: Boolean = false
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -168,7 +168,7 @@ class CardInputScreenTest {
     fun `완료_버튼은_클릭_가능하다`() {
         var clicked: Boolean = false
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -197,7 +197,7 @@ class CardInputScreenTest {
     @Test
     fun `카드사를_선택하지_않으면_카드_선택_목록이_보인다`() {
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -224,7 +224,7 @@ class CardInputScreenTest {
     @Test
     fun `카드사를_선택하면_카드_선택_목록이_보아지_않는다`() {
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "",
                 expiredDate = "",
@@ -251,7 +251,7 @@ class CardInputScreenTest {
     @Test
     fun `입력한_정보가_포맷에_맞춰_카드_미리보기에_보인다`() {
         composeTestRule.setContent {
-            CardInputScreen(
+            CardFormScreen(
                 title = "",
                 cardNumber = "0000111122223333",
                 expiredDate = "1023",

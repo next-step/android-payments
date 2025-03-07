@@ -27,7 +27,7 @@ import nextstep.payments.ui.util.toCardNumberTransformedText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun CardInputScreen(
+internal fun CardFormScreen(
     title: String,
     cardNumber: String,
     expiredDate: String,
@@ -140,8 +140,8 @@ internal fun CardInputScreen(
 
 @Preview
 @Composable
-private fun CardInputScreenPreview() {
-    CardInputScreen(
+private fun CardFormScreenPreview() {
+    CardFormScreen(
         title = "카드 추가",
         cardNumber = "0000111122223333",
         expiredDate = "1234",
