@@ -1,5 +1,7 @@
-package nextstep.payments.ui.add
+package nextstep.payments.ui.edit
 
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.channels.Channel
@@ -9,22 +11,31 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import nextstep.payments.CardEditActivity
 import nextstep.payments.data.model.BankType
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 
-class CardAddViewModel(
+class CardEditViewModel(
+    private val savedStateHandle: SavedStateHandle,
     private val repository: PaymentCardsRepository,
 ) : ViewModel() {
-
     private val _card = MutableStateFlow(Card())
     val card: StateFlow<Card> = _card.asStateFlow()
 
-    private val _cardAdded = MutableStateFlow(false)
-    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
+    private val originCard
+        get() = savedStateHandle.get<Int>(CardEditActivity.EXTRA_CARD_ID)
+            ?.let(repository::getCardById) ?: throw NullPointerException()
 
-    private val _cardAddFailed = Channel<Unit>()
-    val cardAddFailed: Flow<Unit> = _cardAddFailed.receiveAsFlow()
+    init {
+        _card.update { originCard }
+    }
+
+    private val _cardUpdated = MutableStateFlow(false)
+    val cardUpdated: StateFlow<Boolean> = _cardUpdated.asStateFlow()
+
+    private val _cardUpdateFailed = Channel<Unit>()
+    val cardUpdateFailed: Flow<Unit> = _cardUpdateFailed.receiveAsFlow()
 
     fun setCardNumber(cardNumber: String) {
         _card.update {
@@ -56,21 +67,25 @@ class CardAddViewModel(
         }
     }
 
-    fun addCard() {
-        if (_card.value.bankType == BankType.NOT_SELECTED) {
-            _cardAddFailed.trySend(Unit)
+    fun updateCard() {
+        if (originCard == _card.value) {
+            _cardUpdateFailed.trySend(Unit)
             return
         }
 
-        repository.addCard(_card.value)
-        _cardAdded.update { true }
+        repository.update(_card.value)
+        _cardUpdated.update { true }
     }
 
     companion object {
-        fun getFactory(repository: PaymentCardsRepository) =
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return CardAddViewModel(repository) as T
+        fun getFactory(repository: PaymentCardsRepository): ViewModelProvider.Factory =
+            object : AbstractSavedStateViewModelFactory() {
+                override fun <T : ViewModel> create(
+                    key: String,
+                    modelClass: Class<T>,
+                    handle: SavedStateHandle
+                ): T {
+                    return CardEditViewModel(handle, repository) as T
                 }
             }
 

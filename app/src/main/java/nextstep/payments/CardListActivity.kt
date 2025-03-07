@@ -34,6 +34,11 @@ class CardListActivity : ComponentActivity() {
                     cardListViewModel = cardListViewModel,
                     onAddCardClick = {
                         launcher.launch(Intent(this, CardAddActivity::class.java))
+                    },
+                    onCardClick = {
+                        launcher.launch(Intent(this, CardEditActivity::class.java).apply {
+                            putExtra(CardEditActivity.EXTRA_CARD_ID, it.id)
+                        })
                     }
                 )
             }

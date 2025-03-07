@@ -45,7 +45,7 @@ internal fun BankSelectBottomSheet(
 ) {
     BankSelectBottomSheet(
         onBankSelect = onBankSelect,
-        sheetState = rememberModalBottomSheetState(confirmValueChange = { false }),
+        sheetState = rememberModalBottomSheetState(confirmValueChange = { true }),
         onDismissRequest = onDismissRequest,
         modifier = modifier
     )

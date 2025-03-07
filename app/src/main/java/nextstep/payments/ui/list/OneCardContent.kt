@@ -20,6 +20,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 internal fun OneCardContent(
     card: Card,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -34,6 +35,7 @@ internal fun OneCardContent(
     ) {
         PaymentCard(
             card = card,
+            onClick = { onCardClick(card) }
         )
         NewPaymentCard(
             onClick = onAddCardClick,
@@ -52,7 +54,8 @@ private fun OneCardContentPreview() {
                 ownerName = "홍길동",
                 password = "0000"
             ),
-            onAddCardClick = {}
+            onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }

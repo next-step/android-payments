@@ -11,13 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.ui.add.CardAddScreen
-import nextstep.payments.ui.add.CardAddViewModel
+import nextstep.payments.ui.edit.CardEditScreen
+import nextstep.payments.ui.edit.CardEditViewModel
 import nextstep.payments.ui.theme.PaymentsTheme
 
-class CardAddActivity : ComponentActivity() {
-    private val cardAddViewModel: CardAddViewModel by viewModels {
-        CardAddViewModel.getFactory(PaymentCardsRepository)
+class CardEditActivity : ComponentActivity() {
+    private val cardEditViewModel: CardEditViewModel by viewModels {
+        CardEditViewModel.getFactory(PaymentCardsRepository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,17 +30,17 @@ class CardAddActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CardAddScreen(
-                        cardAddViewModel = cardAddViewModel,
+                    CardEditScreen(
+                        cardEditViewModel = cardEditViewModel,
                         onBackClick = { finish() },
                         onSaveCard = {
                             setResult(RESULT_OK)
                             finish()
                         },
-                        onCardAddFailed = {
+                        onCardUpdateFailed = {
                             Toast.makeText(
                                 this,
-                                R.string.bank_type_select_request,
+                                R.string.card_info_change_request,
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -48,5 +48,9 @@ class CardAddActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_CARD_ID = "extra_card_id"
     }
 }

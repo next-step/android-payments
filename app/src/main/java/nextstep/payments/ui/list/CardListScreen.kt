@@ -24,6 +24,7 @@ import nextstep.payments.data.model.Card
 internal fun CardListScreen(
     cardListViewModel: CardListViewModel,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val cardListUiState by cardListViewModel.uiState.collectAsStateWithLifecycle()
@@ -31,6 +32,7 @@ internal fun CardListScreen(
     CardListScreen(
         cardListUiState = cardListUiState,
         onAddCardClick = onAddCardClick,
+        onCardClick = onCardClick,
         modifier = modifier,
     )
 }
@@ -39,6 +41,7 @@ internal fun CardListScreen(
 internal fun CardListScreen(
     cardListUiState: CardListUiState,
     onAddCardClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -62,12 +65,14 @@ internal fun CardListScreen(
             is CardListUiState.One -> OneCardContent(
                 card = cardListUiState.card,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
                 modifier = Modifier.padding(innerPadding)
             )
 
             is CardListUiState.Many -> {
                 ManyCardContent(
                     cards = cardListUiState.cards,
+                    onCardClick = onCardClick,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -113,7 +118,8 @@ private fun TopBar(
 private fun CardListScreenPreview_Empty() {
     CardListScreen(
         cardListUiState = CardListUiState.Empty,
-        onAddCardClick = {}
+        onAddCardClick = {},
+        onCardClick = { },
     )
 }
 
@@ -129,7 +135,8 @@ private fun CardListScreenPreview_One() {
                 password = "0000"
             )
         ),
-        onAddCardClick = {}
+        onAddCardClick = {},
+        onCardClick = { },
     )
 }
 
@@ -155,6 +162,7 @@ private fun CardListScreenPreview_Many() {
                 )
             )
         ),
-        onAddCardClick = {}
+        onAddCardClick = {},
+        onCardClick = { },
     )
 }

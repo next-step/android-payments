@@ -27,6 +27,10 @@
             android:exported="true"
             android:theme="@style/Theme.Payments">
         </activity>
+        <activity
+            android:name=".CardEditActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Payments"></activity>
     </application>
 
 </manifest>
