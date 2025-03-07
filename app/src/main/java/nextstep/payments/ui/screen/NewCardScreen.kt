@@ -331,9 +331,14 @@ private fun BankSelectRow(
         maxItemsInEachRow = 4
     ) {
         bankList.forEach { bankType ->
+
+            if (bankType.bankImageRes == null) {
+                return@forEach
+            }
+
             BankItem(
                 bankName = stringResource(bankType.bankNameResId),
-                bankImage = painterResource(bankType.bankImageRes!!),
+                bankImage = painterResource(bankType.bankImageRes),
                 modifier = modifier.width(80.dp)
                     .clickable(
                         onClick = { onBankClick(bankType) },
