@@ -1,6 +1,5 @@
 package nextstep.payments.ui.screen
 
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -27,8 +26,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -70,6 +71,7 @@ fun NewCardScreen(
     val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
 
     val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+    var isBottomSheetVisible by remember { mutableStateOf(false) }
     var sheetState = rememberModalBottomSheetState(
         confirmValueChange = { newState ->
             newState != SheetValue.Hidden
@@ -84,10 +86,12 @@ fun NewCardScreen(
 
     LaunchedEffect(selectedBank) {
         if (selectedBank == BankType.NOT_SELECTED) {
+            isBottomSheetVisible = true
             sheetState.show()
         }
 
         if (selectedBank != BankType.NOT_SELECTED) {
+            isBottomSheetVisible = false
             sheetState.hide()
         }
     }
@@ -118,7 +122,7 @@ fun NewCardScreen(
         modifier = modifier
     )
 
-    if (sheetState.targetValue != SheetValue.Hidden) {
+    if (isBottomSheetVisible) {
         BankBottomModalSheet(
             sheetState = sheetState,
             onBankClick = viewModel::setSelectedBank,
