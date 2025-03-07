@@ -1,5 +1,7 @@
 package nextstep.payments.ui.screen
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -304,6 +306,8 @@ private fun BankBottomModalSheet(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+            BackHandler(sheetState.isVisible) {}
+
             // 은행 리스트
             BankSelectRow(
                 onBankClick = { bankType ->
