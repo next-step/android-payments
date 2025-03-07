@@ -2,6 +2,7 @@ package nextstep.payments.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -28,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -325,7 +325,7 @@ private fun BankSelectRow(
     FlowRow(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 45.dp, vertical = 35.dp),
+            .padding(vertical = 35.dp, horizontal = 30.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalArrangement = Arrangement.spacedBy(23.dp),
         maxItemsInEachRow = 4
@@ -334,12 +334,12 @@ private fun BankSelectRow(
             BankItem(
                 bankName = stringResource(bankType.bankNameResId),
                 bankImage = painterResource(bankType.bankImageRes!!),
-                modifier = modifier
-                    .clip(CircleShape) // 원형 클릭 적용
+                modifier = modifier.width(80.dp)
                     .clickable(
                         onClick = { onBankClick(bankType) },
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
                     )
-                    .padding(6.dp)
             )
         }
     }
@@ -358,7 +358,7 @@ private fun BankItem(
         Image(
             painter = bankImage,
             contentDescription = "Bank Logo",
-            modifier = modifier.size(Dimensions.LogoDefaults),
+            modifier = Modifier.size(Dimensions.LogoDefaults),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
