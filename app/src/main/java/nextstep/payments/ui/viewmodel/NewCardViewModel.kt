@@ -46,8 +46,9 @@ class NewCardViewModel(
         _password.value = password
     }
 
-    fun setIsSaveEnabled(isSaveEnabled: Boolean) {
-        _isSaveEnabled.value = isSaveEnabled
+    fun setIsSaveEnabled() {
+        _isSaveEnabled.value =
+            cardNumber.value.length == 16 && expiredDate.value.length == 4 && password.value.length == 4
     }
 
     fun setSelectedBank(bankType: BankType) {

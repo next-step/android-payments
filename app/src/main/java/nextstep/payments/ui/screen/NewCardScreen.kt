@@ -78,7 +78,7 @@ fun NewCardScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 저장 가능 여부 유효성 체크
-    viewModel.setIsSaveEnabled(cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4)
+    viewModel.setIsSaveEnabled()
 
     LaunchedEffect(selectedBank) {
         if (selectedBank == BankType.NOT_SELECTED) {
