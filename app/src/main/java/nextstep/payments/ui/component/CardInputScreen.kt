@@ -10,10 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,18 +34,17 @@ internal fun CardInputScreen(
     ownerName: String,
     password: String,
     bankType: BankType,
-    sheetOpened: Boolean,
+    bankSelectOpened: Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
     setBankType: (BankType) -> Unit,
+    setBankSelectOpened: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var bankSelectSheetOpened by remember { mutableStateOf(sheetOpened) }
-
     Scaffold(
         topBar = {
             CardDetailTopBar(
@@ -74,7 +69,7 @@ internal fun CardInputScreen(
                 number = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
-                onClick = { bankSelectSheetOpened = true }
+                onClick = { setBankSelectOpened(true) }
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -134,10 +129,10 @@ internal fun CardInputScreen(
                     },
             )
         }
-        if (bankSelectSheetOpened) {
+        if (bankSelectOpened) {
             BankSelectBottomSheet(
                 onBankSelect = setBankType,
-                onDismissRequest = { bankSelectSheetOpened = false }
+                onDismissRequest = { setBankSelectOpened(false) }
             )
         }
     }
@@ -153,7 +148,8 @@ private fun CardInputScreenPreview() {
         ownerName = "Miriam Steele",
         password = "12345",
         bankType = BankType.BC,
-        sheetOpened = false,
+        bankSelectOpened = false,
+        setBankSelectOpened = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},

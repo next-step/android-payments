@@ -3,6 +3,9 @@ package nextstep.payments.ui.add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +27,7 @@ internal fun CardAddScreen(
 ) {
     val card by cardAddViewModel.card.collectAsStateWithLifecycle()
     val cardAdded by cardAddViewModel.cardAdded.collectAsStateWithLifecycle()
+    var bankSelectSheetOpened by remember { mutableStateOf(true) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) onSaveCard()
@@ -42,7 +46,8 @@ internal fun CardAddScreen(
         ownerName = card.ownerName,
         password = card.password,
         bankType = card.bankType,
-        sheetOpened = true,
+        bankSelectOpened = bankSelectSheetOpened,
+        setBankSelectOpened = { bankSelectSheetOpened = it },
         setCardNumber = cardAddViewModel::setCardNumber,
         setExpiredDate = cardAddViewModel::setExpiredDate,
         setOwnerName = cardAddViewModel::setOwnerName,
