@@ -64,6 +64,7 @@ private fun RegisteredPaymentCardPreview(
 ) {
     PaymentsTheme {
         val card = CardState(
+            id = 0,
             cardNumber = "1111222200000000",
             expiredDate = "0421",
             ownerName = "CREW",

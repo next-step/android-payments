@@ -176,6 +176,7 @@ private fun Preview1() {
 private fun Preview2() {
     PaymentsTheme {
         val card = CardState(
+            id = 0,
             cardNumber = "0000000000000000",
             expiredDate = "0000",
             ownerName = "CREW",
@@ -196,6 +197,7 @@ private fun Preview3() {
     PaymentsTheme {
         val cards = listOf(
             CardState(
+                id = 0,
                 cardNumber = "1111222200000000",
                 expiredDate = "0522",
                 ownerName = "CREW",
@@ -203,6 +205,7 @@ private fun Preview3() {
                 selectedCardCompany = CardCompanyState.KB,
             ),
             CardState(
+                id = 1,
                 cardNumber = "0000000000000000",
                 expiredDate = "0421",
                 ownerName = "BANDAL",

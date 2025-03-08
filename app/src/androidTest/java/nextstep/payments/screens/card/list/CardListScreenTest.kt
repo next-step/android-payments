@@ -21,6 +21,7 @@ class CardListScreenTest {
 
     private val fakeCards = listOf(
         Card(
+            id = 0,
             numbers = "1111222233334444",
             expiredDate = "0522",
             ownerName = "CREW",
@@ -28,6 +29,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.KAKAO,
         ),
         Card(
+            id = 1,
             numbers = "4444333322221111",
             expiredDate = "0421",
             ownerName = "BANDAL",
@@ -35,6 +37,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.HYUNDAI,
         ),
         Card(
+            id = 2,
             numbers = "1111222233444433",
             expiredDate = "0522",
             ownerName = "LACO",
@@ -42,6 +45,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.WOORI,
         ),
         Card(
+            id = 3,
             numbers = "2211334411224455",
             expiredDate = "0421",
             ownerName = "LEAH",
@@ -49,6 +53,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.KB,
         ),
         Card(
+            id = 4,
             numbers = "2211334411224454",
             expiredDate = "0421",
             ownerName = "BEOKBEOK",

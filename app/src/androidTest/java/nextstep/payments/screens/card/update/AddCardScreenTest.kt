@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,13 +20,11 @@ class AddCardScreenTest {
             .setContent {
                 AddCardScreen(
                     uiState = UpdateCardUiState.AddCardUiState(
-                        cardState = CardState(
-                            selectedCardCompany = CardCompanyState.KB,
-                            cardNumber = "1234567890123456",
-                            expiredDate = "1225",
-                            ownerName = "BANDAL",
-                            password = "1234"
-                        ),
+                        selectedCardCompany = CardCompanyState.KB,
+                        cardNumber = "1234567890123456",
+                        expiredDate = "1225",
+                        ownerName = "BANDAL",
+                        password = "1234",
                         cardUpdated = false
                     ),
                     onCardCompanyClick = {},
@@ -53,13 +50,11 @@ class AddCardScreenTest {
             .setContent {
                 AddCardScreen(
                     uiState = UpdateCardUiState.AddCardUiState(
-                        cardState = CardState(
-                            selectedCardCompany = CardCompanyState.KB,
-                            cardNumber = "1234567890123456",
-                            expiredDate = "1225",
-                            ownerName = "BANDAL",
-                            password = ""
-                        ),
+                        selectedCardCompany = CardCompanyState.KB,
+                        cardNumber = "1234567890123456",
+                        expiredDate = "1225",
+                        ownerName = "BANDAL",
+                        password = "",
                         cardUpdated = false
                     ),
                     onCardCompanyClick = {},

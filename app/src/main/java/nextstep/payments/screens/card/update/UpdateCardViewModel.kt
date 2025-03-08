@@ -20,9 +20,18 @@ class UpdateCardViewModel(
         MutableStateFlow(UpdateCardUiState.AddCardUiState())
     val uiState: StateFlow<UpdateCardUiState> = _uiState.asStateFlow()
 
-    fun setEditCardMode(card: CardState) {
-        _uiState.update {
-            UpdateCardUiState.EditCardUiState(cardForEdit = card)
+    private val cardForEdit = MutableStateFlow<CardState?>(null)
+
+    fun setEditCardMode(cardId: Int) {
+        cardForEdit.update { paymentCardsRepository.findCardById(cardId)?.toState() }
+
+        cardForEdit.value?.let { card->
+            _uiState.update {
+                UpdateCardUiState.EditCardUiState(
+                    cardState = card ,
+                    isFormValid = false,
+                )
+            }
         }
     }
 
@@ -97,29 +106,46 @@ class UpdateCardViewModel(
     fun updateCard() {
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> {
-                addCard(card = state.cardState.toDomain() ?: return)
+                addCard(
+                    numbers = state.cardNumber,
+                    expiredDate = state.expiredDate,
+                    ownerName = state.ownerName,
+                    password = state.password,
+                    cardCompany = state.selectedCardCompany?.toDomain() ?: return
+                )
             }
 
             is UpdateCardUiState.EditCardUiState -> {
                 editCard(
-                    oldCard = state.cardForEdit.toDomain() ?: return,
-                    newCard = state.cardState.toDomain() ?: return,
+                    newCard = state.cardState
                 )
             }
         }
     }
 
-    private fun editCard(oldCard: Card, newCard: Card) {
-        paymentCardsRepository.updateCard(oldCard = oldCard, newCard = newCard)
+    private fun addCard(
+        numbers: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        cardCompany: CardCompany,
+    ) {
+        paymentCardsRepository.addCard(
+            numbers = numbers,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password,
+            cardCompany = cardCompany,
+        )
         _uiState.update { state ->
-            (state as UpdateCardUiState.EditCardUiState).copy(cardUpdated = true)
+            (state as UpdateCardUiState.AddCardUiState).copy(cardUpdated = true)
         }
     }
 
-    private fun addCard(card: Card) {
-        paymentCardsRepository.addCard(card = card)
+    private fun editCard(newCard: CardState) {
+        paymentCardsRepository.updateCard(newCard.toDomain() ?: return)
         _uiState.update { state ->
-            (state as UpdateCardUiState.AddCardUiState).copy(cardUpdated = true)
+            (state as UpdateCardUiState.EditCardUiState).copy(cardUpdated = true)
         }
     }
 

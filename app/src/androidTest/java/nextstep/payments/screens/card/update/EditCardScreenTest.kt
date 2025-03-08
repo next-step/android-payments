@@ -20,6 +20,7 @@ class EditCardScreenTest {
         composeTestRule
             .setContent {
                 val card = CardState(
+                    id = 0,
                     cardNumber = "1234567890123456",
                     expiredDate = "1225",
                     ownerName = "BANDAL",
@@ -28,9 +29,9 @@ class EditCardScreenTest {
                 )
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardForEdit = card,
                         cardState = card,
-                        cardUpdated = false
+                        isFormValid = false,
+                        cardUpdated = false,
                     ),
                     onCardCompanyClick = {},
                     onCardNumberChange = {},
@@ -60,20 +61,16 @@ class EditCardScreenTest {
 
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardForEdit = CardState(
-                            cardNumber = cardNumbers,
-                            expiredDate = expiredDate,
-                            ownerName = ownerName,
-                            password = password,
-                            selectedCardCompany = CardCompanyState.HANA
-                        ), cardState = CardState(
+                        cardState = CardState(
+                            id = 0,
                             cardNumber = cardNumbers,
                             expiredDate = expiredDate,
                             ownerName = ownerName,
                             password = password,
                             selectedCardCompany = CardCompanyState.KAKAO
                         ),
-                        cardUpdated = false
+                        cardUpdated = false,
+                        isFormValid = true,
                     ),
                     onCardCompanyClick = {},
                     onCardNumberChange = {},

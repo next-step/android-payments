@@ -14,6 +14,7 @@ class RegisteredPaymentCardTest {
     val composeTestRule = createComposeRule()
 
     private val card = CardState(
+        id = 0,
         cardNumber = "1111222233334444",
         expiredDate = "0421",
         ownerName = "CREW",

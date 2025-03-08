@@ -46,13 +46,16 @@ class UpdateCardScreenTest {
         composeTestRule.setContent {
             UpdateCardScreen(
                 uiState = UpdateCardUiState.EditCardUiState(
-                    cardForEdit = CardState(
+                    cardState = CardState(
+                        id = 0,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",
                         ownerName = "BANDAL",
                         password = "1234",
                         selectedCardCompany = CardCompanyState.HANA,
-                    )
+                    ),
+                    cardUpdated = false,
+                    isFormValid = false,
                 ),
                 onCardCompanyClick = {},
                 onCardNumberChange = {},

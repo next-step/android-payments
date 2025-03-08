@@ -3,7 +3,15 @@ package nextstep.payments.domain
 interface PaymentCardsRepository {
     fun getCards(): List<Card>
 
-    fun addCard(card: Card)
+    fun addCard(
+        numbers: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        cardCompany: CardCompany,
+    )
 
-    fun updateCard(oldCard: Card, newCard: Card)
+    fun updateCard(card: Card)
+
+    fun findCardById(cardId: Int): Card?
 }

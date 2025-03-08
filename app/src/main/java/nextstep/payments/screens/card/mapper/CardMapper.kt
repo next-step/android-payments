@@ -5,6 +5,7 @@ import nextstep.payments.screens.card.state.CardState
 
 fun CardState.toDomain(): Card? {
     return Card(
+        id = id,
         cardCompany = selectedCardCompany?.toDomain() ?: return null,
         numbers = cardNumber,
         expiredDate = expiredDate,
@@ -15,6 +16,7 @@ fun CardState.toDomain(): Card? {
 
 fun Card.toState(): CardState {
     return CardState(
+        id = id,
         selectedCardCompany = cardCompany.toState(),
         cardNumber = numbers,
         expiredDate = expiredDate,
