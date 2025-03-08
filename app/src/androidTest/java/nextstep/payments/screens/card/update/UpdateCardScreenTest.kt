@@ -19,7 +19,7 @@ class UpdateCardScreenTest {
         // given
         composeTestRule.setContent {
             UpdateCardScreen(
-                uiState = UpdateCardUiState.AddCardUiState(),
+                uiState = UpdateCardUiState.Add(),
                 onCardCompanyClick = {},
                 onCardNumberChange = {},
                 onExpiredDateChange = {},
@@ -45,7 +45,7 @@ class UpdateCardScreenTest {
         // given
         composeTestRule.setContent {
             UpdateCardScreen(
-                uiState = UpdateCardUiState.EditCardUiState(
+                uiState = UpdateCardUiState.Edit(
                     cardUiState = CardUiState(
                         id = 0,
                         cardNumber = "1234567890123456",

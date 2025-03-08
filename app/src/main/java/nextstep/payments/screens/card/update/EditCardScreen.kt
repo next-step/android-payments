@@ -28,7 +28,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun EditCardScreen(
-    uiState: UpdateCardUiState.EditCardUiState,
+    uiState: UpdateCardUiState.Edit,
     onCardCompanyClick: (CardCompanyUiState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
@@ -94,7 +94,7 @@ fun EditCardScreen(
 private fun EditCardScreenPreview() {
     PaymentsTheme {
         EditCardScreen(
-            uiState = UpdateCardUiState.EditCardUiState(
+            uiState = UpdateCardUiState.Edit(
                 cardUiState = CardUiState(
                     id = 0,
                     selectedCardCompany = null,

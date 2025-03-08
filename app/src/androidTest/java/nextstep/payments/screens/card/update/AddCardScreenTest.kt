@@ -19,7 +19,7 @@ class AddCardScreenTest {
         composeTestRule
             .setContent {
                 AddCardScreen(
-                    uiState = UpdateCardUiState.AddCardUiState(
+                    uiState = UpdateCardUiState.Add(
                         selectedCardCompany = CardCompanyUiState.KB,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",
@@ -48,7 +48,7 @@ class AddCardScreenTest {
         composeTestRule
             .setContent {
                 AddCardScreen(
-                    uiState = UpdateCardUiState.AddCardUiState(
+                    uiState = UpdateCardUiState.Add(
                         selectedCardCompany = CardCompanyUiState.KB,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",

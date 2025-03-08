@@ -27,7 +27,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun AddCardScreen(
-    uiState: UpdateCardUiState.AddCardUiState,
+    uiState: UpdateCardUiState.Add,
     onCardCompanyClick: (CardCompanyUiState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
@@ -93,7 +93,7 @@ fun AddCardScreen(
 private fun AddCardScreenPreview() {
     PaymentsTheme {
         AddCardScreen(
-            uiState = UpdateCardUiState.AddCardUiState(
+            uiState = UpdateCardUiState.Add(
                 selectedCardCompany = CardCompanyUiState.HANA,
                 cardNumber = "",
                 expiredDate = "",

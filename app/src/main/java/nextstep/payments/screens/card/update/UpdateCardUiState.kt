@@ -6,12 +6,12 @@ import nextstep.payments.screens.card.uistate.CardUiState
 sealed interface UpdateCardUiState {
     val isFormValid: Boolean
 
-    data class EditCardUiState(
+    data class Edit(
         val cardUiState: CardUiState,
         override val isFormValid: Boolean,
     ) : UpdateCardUiState
 
-    data class AddCardUiState(
+    data class Add(
         val selectedCardCompany: CardCompanyUiState? = null,
         val cardNumber: String = "",
         val expiredDate: String = "",

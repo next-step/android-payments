@@ -17,7 +17,7 @@ class UpdateCardViewModel(
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UpdateCardUiState> =
-        MutableStateFlow(UpdateCardUiState.AddCardUiState())
+        MutableStateFlow(UpdateCardUiState.Add())
     val uiState: StateFlow<UpdateCardUiState> = _uiState.asStateFlow()
 
     private val cardForEdit = MutableStateFlow<CardUiState?>(null)
@@ -30,7 +30,7 @@ class UpdateCardViewModel(
 
         cardForEdit.value?.let { card->
             _uiState.update {
-                UpdateCardUiState.EditCardUiState(
+                UpdateCardUiState.Edit(
                     cardUiState = card ,
                     isFormValid = false,
                 )
@@ -40,13 +40,13 @@ class UpdateCardViewModel(
 
     fun setSelectedCardCompany(newSelectedCardCompany: CardCompanyUiState) {
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> _uiState.update {
+            is UpdateCardUiState.Add -> _uiState.update {
                 state.copy(
                     selectedCardCompany = newSelectedCardCompany,
                 )
             }
 
-            is UpdateCardUiState.EditCardUiState -> _uiState.update {
+            is UpdateCardUiState.Edit -> _uiState.update {
                 val newCardState = state.cardUiState.copy(selectedCardCompany = newSelectedCardCompany)
                 state.copy(
                     cardUiState = newCardState,
@@ -60,11 +60,11 @@ class UpdateCardViewModel(
         if (newCardNumber.length > MAX_CARD_NUMBER_LENGTH) return
 
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> _uiState.update {
+            is UpdateCardUiState.Add -> _uiState.update {
                 state.copy(cardNumber = newCardNumber)
             }
 
-            is UpdateCardUiState.EditCardUiState -> _uiState.update {
+            is UpdateCardUiState.Edit -> _uiState.update {
                 val newCardUiState = state.cardUiState.copy(cardNumber = newCardNumber)
                 state.copy(
                     cardUiState = newCardUiState,
@@ -78,11 +78,11 @@ class UpdateCardViewModel(
         if (newExpiredDate.length > MAX_EXPIRED_DATE_LENGTH) return
 
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> _uiState.update {
+            is UpdateCardUiState.Add -> _uiState.update {
                 state.copy(expiredDate = newExpiredDate)
             }
 
-            is UpdateCardUiState.EditCardUiState -> _uiState.update {
+            is UpdateCardUiState.Edit -> _uiState.update {
                 val newCardUiState = state.cardUiState.copy(expiredDate = newExpiredDate)
                 state.copy(
                     cardUiState = newCardUiState,
@@ -96,11 +96,11 @@ class UpdateCardViewModel(
         if (newOwnerName.length > MAX_OWNER_NAME_LENGTH) return
 
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> _uiState.update {
+            is UpdateCardUiState.Add -> _uiState.update {
                 state.copy(ownerName = newOwnerName)
             }
 
-            is UpdateCardUiState.EditCardUiState -> _uiState.update {
+            is UpdateCardUiState.Edit -> _uiState.update {
                 val newCardUiState = state.cardUiState.copy(ownerName = newOwnerName)
                 state.copy(
                     cardUiState = newCardUiState,
@@ -114,11 +114,11 @@ class UpdateCardViewModel(
         if (newPassword.length > MAX_PASSWORD_LENGTH) return
 
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> _uiState.update {
+            is UpdateCardUiState.Add -> _uiState.update {
                 state.copy(password = newPassword)
             }
 
-            is UpdateCardUiState.EditCardUiState -> _uiState.update {
+            is UpdateCardUiState.Edit -> _uiState.update {
                 val newCardUiState = state.cardUiState.copy(password = newPassword)
                 state.copy(
                     cardUiState = newCardUiState,
@@ -134,7 +134,7 @@ class UpdateCardViewModel(
 
     fun updateCard() {
         when (val state: UpdateCardUiState = _uiState.value) {
-            is UpdateCardUiState.AddCardUiState -> {
+            is UpdateCardUiState.Add -> {
                 paymentCardsRepository.addCard(
                     numbers = state.cardNumber,
                     expiredDate = state.expiredDate,
@@ -144,7 +144,7 @@ class UpdateCardViewModel(
                 )
             }
 
-            is UpdateCardUiState.EditCardUiState -> {
+            is UpdateCardUiState.Edit -> {
                 paymentCardsRepository.updateCard(
                     card = state.cardUiState.toDomain() ?: return,
                 )

@@ -40,7 +40,7 @@ fun UpdateCardScreen(
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
-        is UpdateCardUiState.AddCardUiState -> AddCardScreen(
+        is UpdateCardUiState.Add -> AddCardScreen(
             uiState = uiState,
             onCardCompanyClick = onCardCompanyClick,
             onCardNumberChange = onCardNumberChange,
@@ -52,7 +52,7 @@ fun UpdateCardScreen(
             modifier = modifier
         )
 
-        is UpdateCardUiState.EditCardUiState -> EditCardScreen(
+        is UpdateCardUiState.Edit -> EditCardScreen(
             uiState = uiState,
             onCardCompanyClick = onCardCompanyClick,
             onCardNumberChange = onCardNumberChange,

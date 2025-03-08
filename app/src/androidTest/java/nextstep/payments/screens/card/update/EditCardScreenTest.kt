@@ -28,7 +28,7 @@ class EditCardScreenTest {
                     selectedCardCompany = CardCompanyUiState.HANA
                 )
                 EditCardScreen(
-                    uiState = UpdateCardUiState.EditCardUiState(
+                    uiState = UpdateCardUiState.Edit(
                         cardUiState = cardUiState,
                         isFormValid = false,
                     ),
@@ -59,7 +59,7 @@ class EditCardScreenTest {
                 val password = "1234"
 
                 EditCardScreen(
-                    uiState = UpdateCardUiState.EditCardUiState(
+                    uiState = UpdateCardUiState.Edit(
                         cardUiState = CardUiState(
                             id = 0,
                             cardNumber = cardNumbers,
