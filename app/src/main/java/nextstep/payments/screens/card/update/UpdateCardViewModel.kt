@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.data.InMemoryPaymentCardsRepository
-import nextstep.payments.domain.CardCompany
 import nextstep.payments.domain.PaymentCardsRepository
 import nextstep.payments.screens.card.mapper.toDomain
 import nextstep.payments.screens.card.mapper.toState
@@ -22,6 +21,9 @@ class UpdateCardViewModel(
     val uiState: StateFlow<UpdateCardUiState> = _uiState.asStateFlow()
 
     private val cardForEdit = MutableStateFlow<CardUiState?>(null)
+
+    private val _cardUpdated = MutableStateFlow(false)
+    val cardUpdated: StateFlow<Boolean> = _cardUpdated.asStateFlow()
 
     fun setEditCardMode(cardId: Int) {
         cardForEdit.update { paymentCardsRepository.findCardById(cardId)?.toState() }
@@ -133,47 +135,23 @@ class UpdateCardViewModel(
     fun updateCard() {
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> {
-                addCard(
+                paymentCardsRepository.addCard(
                     numbers = state.cardNumber,
                     expiredDate = state.expiredDate,
                     ownerName = state.ownerName,
                     password = state.password,
-                    cardCompany = state.selectedCardCompany?.toDomain() ?: return
+                    cardCompany = state.selectedCardCompany?.toDomain() ?: return,
                 )
             }
 
             is UpdateCardUiState.EditCardUiState -> {
-                editCard(
-                    newCardUiState = state.cardUiState
+                paymentCardsRepository.updateCard(
+                    card = state.cardUiState.toDomain() ?: return,
                 )
             }
         }
-    }
 
-    private fun addCard(
-        numbers: String,
-        expiredDate: String,
-        ownerName: String,
-        password: String,
-        cardCompany: CardCompany,
-    ) {
-        paymentCardsRepository.addCard(
-            numbers = numbers,
-            expiredDate = expiredDate,
-            ownerName = ownerName,
-            password = password,
-            cardCompany = cardCompany,
-        )
-        _uiState.update { state ->
-            (state as UpdateCardUiState.AddCardUiState).copy(cardUpdated = true)
-        }
-    }
-
-    private fun editCard(newCardUiState: CardUiState) {
-        paymentCardsRepository.updateCard(newCardUiState.toDomain() ?: return)
-        _uiState.update { state ->
-            (state as UpdateCardUiState.EditCardUiState).copy(cardUpdated = true)
-        }
+        _cardUpdated.update { true }
     }
 
     companion object {

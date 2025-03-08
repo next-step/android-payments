@@ -103,7 +103,6 @@ private fun EditCardScreenPreview() {
                     ownerName = "",
                     password = ""
                 ),
-                cardUpdated = false,
                 isFormValid = false,
             ),
             onCardCompanyClick = {},

@@ -1,7 +1,6 @@
 package nextstep.payments.screens.card.update
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -9,16 +8,11 @@ import nextstep.payments.screens.card.uistate.CardCompanyUiState
 
 @Composable
 fun UpdateCardScreen(
-    navigateToCardList: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: UpdateCardViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState: UpdateCardUiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(uiState.cardUpdated) {
-        if (uiState.cardUpdated) navigateToCardList()
-    }
 
     UpdateCardScreen(
         uiState = uiState,

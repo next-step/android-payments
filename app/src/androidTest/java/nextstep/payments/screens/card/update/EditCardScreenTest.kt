@@ -31,7 +31,6 @@ class EditCardScreenTest {
                     uiState = UpdateCardUiState.EditCardUiState(
                         cardUiState = cardUiState,
                         isFormValid = false,
-                        cardUpdated = false,
                     ),
                     onCardCompanyClick = {},
                     onCardNumberChange = {},
@@ -69,7 +68,6 @@ class EditCardScreenTest {
                             password = password,
                             selectedCardCompany = CardCompanyUiState.KAKAO
                         ),
-                        cardUpdated = false,
                         isFormValid = true,
                     ),
                     onCardCompanyClick = {},

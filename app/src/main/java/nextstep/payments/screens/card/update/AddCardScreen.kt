@@ -99,7 +99,6 @@ private fun AddCardScreenPreview() {
                 expiredDate = "",
                 ownerName = "",
                 password = "",
-                cardUpdated = false,
             ),
             onCardCompanyClick = {},
             onCardNumberChange = {},

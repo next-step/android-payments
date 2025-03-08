@@ -25,7 +25,6 @@ class AddCardScreenTest {
                         expiredDate = "1225",
                         ownerName = "BANDAL",
                         password = "1234",
-                        cardUpdated = false
                     ),
                     onCardCompanyClick = {},
                     onCardNumberChange = {},
@@ -55,7 +54,6 @@ class AddCardScreenTest {
                         expiredDate = "1225",
                         ownerName = "BANDAL",
                         password = "",
-                        cardUpdated = false
                     ),
                     onCardCompanyClick = {},
                     onCardNumberChange = {},

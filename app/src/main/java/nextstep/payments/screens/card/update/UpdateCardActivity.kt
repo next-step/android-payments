@@ -6,6 +6,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class UpdateCardActivity : ComponentActivity() {
@@ -19,19 +24,30 @@ class UpdateCardActivity : ComponentActivity() {
             updateCardViewModel.setEditCardMode(cardId)
         }
 
+        collectCardUpdated()
+
         setContent {
             PaymentsTheme {
                 UpdateCardScreen(
                     viewModel = updateCardViewModel,
                     onBackClick = { finish() },
-                    navigateToCardList = {
-                        setResult(RESULT_OK)
-                        finish()
-                    }
                 )
             }
         }
     }
+
+    private fun collectCardUpdated() =
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                updateCardViewModel.cardUpdated.collectLatest { cardUpdated ->
+                    if (cardUpdated) {
+                        setResult(RESULT_OK)
+                        finish()
+                    }
+                }
+            }
+        }
+
 
     companion object {
         private const val CARD_KEY = "card"

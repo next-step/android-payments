@@ -54,7 +54,6 @@ class UpdateCardScreenTest {
                         password = "1234",
                         selectedCardCompany = CardCompanyUiState.HANA,
                     ),
-                    cardUpdated = false,
                     isFormValid = false,
                 ),
                 onCardCompanyClick = {},
