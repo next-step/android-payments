@@ -14,7 +14,7 @@ import nextstep.payments.ui.theme.LotteColor
 import nextstep.payments.ui.theme.ShinhanColor
 import nextstep.payments.ui.theme.WooriColor
 
-enum class BankType(
+enum class CardCompanyType(
     @StringRes val bankNameResId: Int,
     @DrawableRes val bankImageRes: Int?,
     val bankThemeColor: Color
@@ -30,6 +30,6 @@ enum class BankType(
     KB(R.string.bank_kb, R.drawable.kb, KBColor);
 
     companion object {
-        fun getBankList(): List<BankType> = entries.filter { it != NOT_SELECTED }
+        fun getBankList(): List<CardCompanyType> = entries.filter { it != NOT_SELECTED }
     }
 }

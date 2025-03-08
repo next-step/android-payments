@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.CardListScreen
 import org.junit.Rule
 import org.junit.Test
@@ -24,7 +24,7 @@ class CardListScreenTest {
         expiredDate = "1223",
         ownerName = "홍길동",
         password = "1234",
-        bankType = BankType.BC,
+        cardCompanyType = CardCompanyType.BC,
     )
 
     val card2 = Card(
@@ -32,7 +32,7 @@ class CardListScreenTest {
         expiredDate = "1223",
         ownerName = "홀리물리",
         password = "1234",
-        bankType = BankType.BC,
+        cardCompanyType = CardCompanyType.BC,
     )
 
     fun registerCards(vararg cards: Card) {

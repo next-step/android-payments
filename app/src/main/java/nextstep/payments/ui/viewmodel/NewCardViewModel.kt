@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 
 class NewCardViewModel(
     private val paymentRepsoitory: PaymentCardsRepository = PaymentCardsRepository,
@@ -27,8 +27,8 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _selectedBank = MutableStateFlow(BankType.NOT_SELECTED)
-    val selectedBank: StateFlow<BankType> = _selectedBank.asStateFlow()
+    private val _selectedBank = MutableStateFlow(CardCompanyType.NOT_SELECTED)
+    val selectedBank: StateFlow<CardCompanyType> = _selectedBank.asStateFlow()
 
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
@@ -59,8 +59,8 @@ class NewCardViewModel(
         _password.value = password
     }
 
-    fun setSelectedBank(bankType: BankType) {
-        _selectedBank.value = bankType
+    fun setSelectedBank(cardCompanyType: CardCompanyType) {
+        _selectedBank.value = cardCompanyType
     }
 
     fun addCard(
@@ -68,7 +68,7 @@ class NewCardViewModel(
         expiredDate: String,
         ownerName: String,
         password: String,
-        bankType: BankType,
+        cardCompanyType: CardCompanyType,
     ) {
         paymentRepsoitory.addCard(
             Card(
@@ -76,7 +76,7 @@ class NewCardViewModel(
                 expiredDate = expiredDate,
                 ownerName = ownerName,
                 password = password,
-                bankType = bankType
+                cardCompanyType = cardCompanyType
             )
         )
     }

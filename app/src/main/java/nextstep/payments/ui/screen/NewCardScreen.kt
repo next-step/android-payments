@@ -48,7 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
@@ -82,12 +82,12 @@ fun NewCardScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(selectedBank) {
-        if (selectedBank == BankType.NOT_SELECTED) {
+        if (selectedBank == CardCompanyType.NOT_SELECTED) {
             isBottomSheetVisible = true
             sheetState.show()
         }
 
-        if (selectedBank != BankType.NOT_SELECTED) {
+        if (selectedBank != CardCompanyType.NOT_SELECTED) {
             isBottomSheetVisible = false
             sheetState.hide()
         }
@@ -112,7 +112,7 @@ fun NewCardScreen(
                 expiredDate = expiredDate,
                 ownerName = ownerName,
                 password = password,
-                bankType = selectedBank
+                cardCompanyType = selectedBank
             )
             navigateToCardList()
         },
@@ -134,7 +134,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    selectedBank: BankType,
+    selectedBank: CardCompanyType,
     isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
@@ -293,7 +293,7 @@ private fun PasswordInputField(
 @Composable
 private fun BankBottomModalSheet(
     sheetState: SheetState,
-    onBankClick: (BankType) -> Unit,
+    onBankClick: (CardCompanyType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
@@ -322,10 +322,10 @@ private fun BankBottomModalSheet(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BankSelectRow(
-    onBankClick: (BankType) -> Unit,
+    onBankClick: (CardCompanyType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bankList = BankType.getBankList()
+    val bankList = CardCompanyType.getBankList()
 
     FlowRow(
         modifier = modifier
@@ -456,7 +456,7 @@ private fun StatelessNewCardScreenPreView() {
         ownerName = "홍길동",
         password = "1234",
         isSaveEnabled = true,
-        selectedBank = BankType.BC,
+        selectedBank = CardCompanyType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},
