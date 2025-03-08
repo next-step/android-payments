@@ -44,7 +44,7 @@ fun EditCardScreen(
         topBar = {
             UpdateCardTopBar(
                 title = stringResource(R.string.edit_card_top_bar_title),
-                doneButtonEnabled = uiState.isFormValid(),
+                saveEnabled = uiState.isFormValid(),
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )
