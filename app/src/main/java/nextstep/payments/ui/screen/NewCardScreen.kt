@@ -81,9 +81,6 @@ fun NewCardScreen(
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // 저장 가능 여부 유효성 체크
-    viewModel.setIsSaveEnabled()
-
     LaunchedEffect(selectedBank) {
         if (selectedBank == BankType.NOT_SELECTED) {
             isBottomSheetVisible = true

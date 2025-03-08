@@ -1,9 +1,12 @@
 package nextstep.payments.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.BankType
@@ -24,11 +27,21 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _selectedBank = MutableStateFlow(BankType.NOT_SELECTED)
+    val selectedBank: StateFlow<BankType> = _selectedBank.asStateFlow()
+
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
 
-    private val _selectedBank = MutableStateFlow(BankType.NOT_SELECTED)
-    val selectedBank: StateFlow<BankType> = _selectedBank.asStateFlow()
+    init {
+        viewModelScope.launch {
+            combine(cardNumber, expiredDate, password) { card, date, pass ->
+                card.length == 16 && date.length == 4 && pass.length == 4
+            }.collect { valid ->
+                _isSaveEnabled.value = valid
+            }
+        }
+    }
 
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
@@ -44,11 +57,6 @@ class NewCardViewModel(
 
     fun setPassword(password: String) {
         _password.value = password
-    }
-
-    fun setIsSaveEnabled() {
-        _isSaveEnabled.value =
-            cardNumber.value.length == 16 && expiredDate.value.length == 4 && password.value.length == 4
     }
 
     fun setSelectedBank(bankType: BankType) {
