@@ -1,39 +1,63 @@
 package nextstep.payments.ui.screen
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
+import nextstep.payments.ui.BankType
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
+import nextstep.payments.ui.theme.Dimensions
 import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
 import nextstep.payments.ui.viewmodel.NewCardViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     navigateToCardList: () -> Unit,
@@ -44,13 +68,32 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
+
+    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
+    var isBottomSheetVisible by remember { mutableStateOf(false) }
+    var sheetState = rememberModalBottomSheetState(
+        confirmValueChange = { newState ->
+            newState != SheetValue.Hidden
+        }
+    )
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 저장 가능 여부 유효성 체크
-    val isSaveEnabled = remember(cardNumber, expiredDate, password) {
-        cardNumber.length == 16 && expiredDate.length == 4 && password.length == 4
+    viewModel.setIsSaveEnabled()
+
+    LaunchedEffect(selectedBank) {
+        if (selectedBank == BankType.NOT_SELECTED) {
+            isBottomSheetVisible = true
+            sheetState.show()
+        }
+
+        if (selectedBank != BankType.NOT_SELECTED) {
+            isBottomSheetVisible = false
+            sheetState.hide()
+        }
     }
 
     NewCardScreen(
@@ -58,6 +101,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        selectedBank = selectedBank,
         isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -66,11 +110,25 @@ fun NewCardScreen(
         snackbarHostState = snackbarHostState,
         onBackCLick = navigateToCardList,
         onSaveClick = {
-            viewModel.addCard(cardNumber, expiredDate, ownerName, password)
+            viewModel.addCard(
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                password = password,
+                bankType = selectedBank
+            )
             navigateToCardList()
         },
         modifier = modifier
     )
+
+    if (isBottomSheetVisible) {
+        BankBottomModalSheet(
+            sheetState = sheetState,
+            onBankClick = viewModel::setSelectedBank,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }
 
 @Composable
@@ -79,6 +137,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    selectedBank: BankType,
     isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
@@ -124,9 +183,11 @@ private fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
+                bankName = stringResource(selectedBank.bankNameResId),
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
+                cardColor = selectedBank.bankThemeColor,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -231,6 +292,114 @@ private fun PasswordInputField(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BankBottomModalSheet(
+    sheetState: SheetState,
+    onBankClick: (BankType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ModalBottomSheet(
+        modifier = modifier.semantics {
+            contentDescription = "bankBottomSheet"
+        },
+        sheetState = sheetState,
+        onDismissRequest = {},
+    ) {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            BackHandler(sheetState.isVisible) {}
+
+            // 은행 리스트
+            BankSelectRow(
+                onBankClick = { bankType ->
+                    onBankClick(bankType)
+                },
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun BankSelectRow(
+    onBankClick: (BankType) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val bankList = BankType.getBankList()
+
+    FlowRow(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 35.dp, horizontal = 30.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(23.dp),
+        maxItemsInEachRow = 4
+    ) {
+        bankList.forEach { bankType ->
+
+            if (bankType.bankImageRes == null) {
+                return@forEach
+            }
+
+            BankItem(
+                bankName = stringResource(bankType.bankNameResId),
+                bankImage = painterResource(bankType.bankImageRes),
+                modifier = modifier.width(80.dp)
+                    .clickable(
+                        onClick = { onBankClick(bankType) },
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    )
+            )
+        }
+    }
+}
+
+@Composable
+private fun BankItem(
+    bankName: String,
+    bankImage: Painter,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Image(
+            painter = bankImage,
+            contentDescription = "Bank Logo",
+            modifier = Modifier.size(Dimensions.LogoDefaults),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "${bankName}카드",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W500,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BankItemPreview() {
+    BankItem(
+        bankName = "BC",
+        bankImage = painterResource(R.drawable.bc),
+    )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun BankSelectRowPreview() {
+    BankSelectRow(
+        onBankClick = {},
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun CardNumberInputFieldPreview() {
@@ -290,6 +459,7 @@ private fun StatelessNewCardScreenPreView() {
         ownerName = "홍길동",
         password = "1234",
         isSaveEnabled = true,
+        selectedBank = BankType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},

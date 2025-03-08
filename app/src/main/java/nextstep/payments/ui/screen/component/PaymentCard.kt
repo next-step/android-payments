@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,27 +25,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.ui.utils.TextFormatUtil
 import nextstep.payments.R
+import nextstep.payments.ui.theme.Dimensions
 
 @Composable
 fun PaymentCard(
+    bankName: String,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     modifier: Modifier = Modifier,
+    cardColor: Color = Color(0xFF333333),
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .width(Dimensions.CardWidthDefaults)
+            .aspectRatio(52 / 31f)
             .background(
-                color = Color(0xFF333333),
+                color = cardColor,
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 14.dp)
         ) {
+            Text(
+                text = "${bankName}카드",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W500,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.size(12.dp))
             Box(
                 modifier = Modifier
                     .size(width = 40.dp, height = 26.dp)
@@ -54,7 +67,6 @@ fun PaymentCard(
             )
             Spacer(modifier = Modifier.size(8.dp))
             CardNumberRow(cardNumber = cardNumber)
-            Spacer(modifier = Modifier.size(2.dp))
             OwnerNameAndExpireDateRow(
                 ownerName = ownerName,
                 expiredDate = expiredDate,
@@ -170,6 +182,7 @@ private fun DividerPreview() {
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
+        bankName = "신한",
         cardNumber = "1234123412341324",
         expiredDate = "1234",
         ownerName = "홍길동",

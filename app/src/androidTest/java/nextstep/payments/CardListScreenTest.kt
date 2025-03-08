@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
+import nextstep.payments.ui.BankType
 import nextstep.payments.ui.screen.CardListScreen
 import org.junit.Rule
 import org.junit.Test
@@ -17,6 +18,22 @@ import org.junit.Test
 class CardListScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    val card1 = Card(
+        cardNumber = "1234567812345678",
+        expiredDate = "1223",
+        ownerName = "홍길동",
+        password = "1234",
+        bankType = BankType.BC,
+    )
+
+    val card2 = Card(
+        cardNumber = "1234567812345678",
+        expiredDate = "1223",
+        ownerName = "홀리물리",
+        password = "1234",
+        bankType = BankType.BC,
+    )
 
     fun registerCards(vararg cards: Card) {
         PaymentCardsRepository.clearCards()
@@ -51,12 +68,7 @@ class CardListScreenTest {
     @Test
     fun 등록된_카드가_하나_있을시_카드가_화면에_노출된다() {
         registerCards(
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홍길동",
-                password = "1234",
-            )
+            card1
         )
 
         // 등록된 카드가 있을 때 카드가 화면에 노출되는지 확인
@@ -70,12 +82,7 @@ class CardListScreenTest {
     @Test
     fun 등록된_카드가_하나일시_카드_등록_버튼이_화면에_노출된다() {
         registerCards(
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홍길동",
-                password = "1234",
-            )
+            card1
         )
 
         // 등록된 카드가 하나일 때 카드 등록 버튼이 화면에 노출되는지 확인
@@ -86,18 +93,7 @@ class CardListScreenTest {
     @Test
     fun 등록된_카드가_2개_이상일시_카드_리스트가_화면에_노출된다() {
         registerCards(
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홍길동",
-                password = "1234",
-            ),
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홀리물리",
-                password = "1234",
-            )
+            card1, card2
         )
 
         // 등록된 카드가 있을 때 카드가 화면에 노출되는지 확인
@@ -117,18 +113,7 @@ class CardListScreenTest {
     @Test
     fun 등록된_카드가_2개_이상일시_앱바에_추가_버튼이_노출된다() {
         registerCards(
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홍길동",
-                password = "1234",
-            ),
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홀리물리",
-                password = "1234",
-            )
+            card1, card2
         )
 
         // 등록된 카드가 2개 이상일 때 앱바에 추가 버튼이 노출되는지 확인
@@ -139,23 +124,23 @@ class CardListScreenTest {
     @Test
     fun 등록된_카드가_2개_이상일시_카드_등록_버튼이_노출되지_않는다() {
         registerCards(
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홍길동",
-                password = "1234",
-            ),
-            Card(
-                cardNumber = "1234567812345678",
-                expiredDate = "1223",
-                ownerName = "홀리물리",
-                password = "1234",
-            )
+            card1, card2
         )
 
         // 등록된 카드가 2개 이상일 때 카드 등록 버튼이 노출되지 않는지 확인
         composeTestRule.onNodeWithContentDescription(REGISTER_CARD_BUTTON_CONTAINER_DESCRIPTION)
             .assertDoesNotExist()
+    }
+
+    @Test
+    fun 등록된_카드_은행명과_화면에_노출된_카드의_은행명이_일치한다() {
+        registerCards(
+            card1
+        )
+
+        // 등록된 카드의 은행명과 화면에 노출된 카드의 은행명이 일치하는지 확인
+        composeTestRule.onNodeWithText("BC카드")
+            .assertExists()
     }
 
     companion object {

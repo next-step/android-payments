@@ -8,13 +8,13 @@ import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.CardUiState
 
 class CardListViewModel(
-    private val paymentRepsoitory: PaymentCardsRepository = PaymentCardsRepository,
+    private val paymentRepository: PaymentCardsRepository = PaymentCardsRepository,
 ): ViewModel() {
     private var _cards = MutableStateFlow<CardUiState<List<Card>>>(CardUiState.Empty)
     val cards = _cards.asStateFlow()
 
     fun getCards() {
-        val result = paymentRepsoitory.cards
+        val result = paymentRepository.cards
         _cards.value = when {
             result.isEmpty() -> CardUiState.Empty
             result.size == 1 -> CardUiState.One(result.first()) // ✅ UiState<Card>

@@ -148,4 +148,32 @@ class NewCardScreenTest {
         composeTestRule.onNodeWithContentDescription("validateSnackbar")
             .assertIsDisplayed()
     }
+
+    @Test
+    fun 화면_진입시_은행_선택_바텀_시트가_호출된다() {
+        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun 은행_선택시_바텀시트가_사라진다() {
+        // when
+        composeTestRule.onNodeWithText("BC카드")
+            .performClick()
+
+        // then
+        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun 은행_선택시_선택한_은행이_카드에_노출된다() {
+        // when
+        composeTestRule.onNodeWithText("BC카드")
+            .performClick()
+
+        // then
+        composeTestRule.onNodeWithText("BC카드")
+            .assertExists()
+    }
 }
