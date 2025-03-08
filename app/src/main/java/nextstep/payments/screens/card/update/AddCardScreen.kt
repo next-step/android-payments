@@ -20,7 +20,6 @@ import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
 import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
 import nextstep.payments.screens.card.update.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.update.components.CardInformationInputFields
 import nextstep.payments.screens.card.update.components.UpdateCardTopBar
@@ -44,7 +43,7 @@ fun AddCardScreen(
         topBar = {
             UpdateCardTopBar(
                 title = stringResource(R.string.add_card_top_bar_title),
-                saveEnabled = uiState.cardState.isFormValid(),
+                saveEnabled = uiState.isFormValid,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )
@@ -67,19 +66,19 @@ fun AddCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            if (uiState.cardState.selectedCardCompany == null) {
+            if (uiState.selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
-                NewPaymentCard(uiState.cardState.selectedCardCompany)
+                NewPaymentCard(uiState.selectedCardCompany)
             }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             CardInformationInputFields(
-                cardNumber = uiState.cardState.cardNumber,
-                expiredDate = uiState.cardState.expiredDate,
-                ownerName = uiState.cardState.ownerName,
-                password = uiState.cardState.password,
+                cardNumber = uiState.cardNumber,
+                expiredDate = uiState.expiredDate,
+                ownerName = uiState.ownerName,
+                password = uiState.password,
                 onCardNumberChange = onCardNumberChange,
                 onExpiredDateChange = onExpiredDateChange,
                 onOwnerNameChange = onOwnerNameChange,
@@ -95,13 +94,11 @@ private fun AddCardScreenPreview() {
     PaymentsTheme {
         AddCardScreen(
             uiState = UpdateCardUiState.AddCardUiState(
-                cardState = CardState(
-                    selectedCardCompany = CardCompanyState.HANA,
-                    cardNumber = "",
-                    expiredDate = "",
-                    ownerName = "",
-                    password = "",
-                ),
+                selectedCardCompany = CardCompanyState.HANA,
+                cardNumber = "",
+                expiredDate = "",
+                ownerName = "",
+                password = "",
                 cardUpdated = false,
             ),
             onCardCompanyClick = {},

@@ -6,9 +6,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.data.InMemoryPaymentCardsRepository
-import nextstep.payments.domain.Card
+import nextstep.payments.domain.CardCompany
 import nextstep.payments.domain.PaymentCardsRepository
 import nextstep.payments.screens.card.mapper.toDomain
+import nextstep.payments.screens.card.mapper.toState
 import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.state.CardState
 
@@ -38,11 +39,17 @@ class UpdateCardViewModel(
     fun setSelectedCardCompany(newSelectedCardCompany: CardCompanyState) {
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(selectedCardCompany = newSelectedCardCompany))
+                state.copy(
+                    selectedCardCompany = newSelectedCardCompany,
+                )
             }
 
             is UpdateCardUiState.EditCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(selectedCardCompany = newSelectedCardCompany))
+                val newCardState = state.cardState.copy(selectedCardCompany = newSelectedCardCompany)
+                state.copy(
+                    cardState = newCardState,
+                    isFormValid = canEdit(newCardState),
+                )
             }
         }
     }
@@ -52,11 +59,15 @@ class UpdateCardViewModel(
 
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(cardNumber = newCardNumber))
+                state.copy(cardNumber = newCardNumber)
             }
 
             is UpdateCardUiState.EditCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(cardNumber = newCardNumber))
+                val newCardUiState = state.cardState.copy(cardNumber = newCardNumber)
+                state.copy(
+                    cardState = newCardUiState,
+                    isFormValid = canEdit(newCardUiState),
+                )
             }
         }
     }
@@ -66,11 +77,15 @@ class UpdateCardViewModel(
 
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(expiredDate = newExpiredDate))
+                state.copy(expiredDate = newExpiredDate)
             }
 
             is UpdateCardUiState.EditCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(expiredDate = newExpiredDate))
+                val newCardUiState = state.cardState.copy(expiredDate = newExpiredDate)
+                state.copy(
+                    cardState = newCardUiState,
+                    isFormValid = canEdit(newCardUiState),
+                )
             }
         }
     }
@@ -80,11 +95,15 @@ class UpdateCardViewModel(
 
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(ownerName = newOwnerName))
+                state.copy(ownerName = newOwnerName)
             }
 
             is UpdateCardUiState.EditCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(ownerName = newOwnerName))
+                val newCardUiState = state.cardState.copy(ownerName = newOwnerName)
+                state.copy(
+                    cardState = newCardUiState,
+                    isFormValid = canEdit(newCardUiState),
+                )
             }
         }
     }
@@ -94,13 +113,21 @@ class UpdateCardViewModel(
 
         when (val state: UpdateCardUiState = _uiState.value) {
             is UpdateCardUiState.AddCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(password = newPassword))
+                state.copy(password = newPassword)
             }
 
             is UpdateCardUiState.EditCardUiState -> _uiState.update {
-                state.copy(cardState = state.cardState.copy(password = newPassword))
+                val newCardUiState = state.cardState.copy(password = newPassword)
+                state.copy(
+                    cardState = newCardUiState,
+                    isFormValid = canEdit(newCardUiState),
+                )
             }
         }
+    }
+
+    private fun canEdit(cardUiState: CardState):Boolean {
+        return cardUiState.isFormValid() && cardUiState != cardForEdit.value
     }
 
     fun updateCard() {

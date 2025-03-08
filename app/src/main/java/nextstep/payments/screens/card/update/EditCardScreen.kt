@@ -44,7 +44,7 @@ fun EditCardScreen(
         topBar = {
             UpdateCardTopBar(
                 title = stringResource(R.string.edit_card_top_bar_title),
-                saveEnabled = uiState.isFormValid(),
+                saveEnabled = uiState.isFormValid,
                 onBackClick = onBackClick,
                 onSaveClick = onSaveClick,
             )
@@ -95,14 +95,8 @@ private fun EditCardScreenPreview() {
     PaymentsTheme {
         EditCardScreen(
             uiState = UpdateCardUiState.EditCardUiState(
-                cardForEdit = CardState(
-                    cardNumber = "",
-                    expiredDate = "",
-                    ownerName = "",
-                    password = "",
-                    selectedCardCompany = CardCompanyState.HANA
-                ),
                 cardState = CardState(
+                    id = 0,
                     selectedCardCompany = null,
                     cardNumber = "",
                     expiredDate = "",
@@ -110,6 +104,7 @@ private fun EditCardScreenPreview() {
                     password = ""
                 ),
                 cardUpdated = false,
+                isFormValid = false,
             ),
             onCardCompanyClick = {},
             onCardNumberChange = {},
