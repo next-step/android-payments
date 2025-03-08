@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
 
 @Composable
 fun UpdateCardScreen(
@@ -36,7 +36,7 @@ fun UpdateCardScreen(
 @Composable
 fun UpdateCardScreen(
     uiState: UpdateCardUiState,
-    onCardCompanyClick: (CardCompanyState) -> Unit,
+    onCardCompanyClick: (CardCompanyUiState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,

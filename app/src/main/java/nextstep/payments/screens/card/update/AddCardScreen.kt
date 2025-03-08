@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
-import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
 import nextstep.payments.screens.card.update.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.update.components.CardInformationInputFields
 import nextstep.payments.screens.card.update.components.UpdateCardTopBar
@@ -28,7 +28,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun AddCardScreen(
     uiState: UpdateCardUiState.AddCardUiState,
-    onCardCompanyClick: (CardCompanyState) -> Unit,
+    onCardCompanyClick: (CardCompanyUiState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -94,7 +94,7 @@ private fun AddCardScreenPreview() {
     PaymentsTheme {
         AddCardScreen(
             uiState = UpdateCardUiState.AddCardUiState(
-                selectedCardCompany = CardCompanyState.HANA,
+                selectedCardCompany = CardCompanyUiState.HANA,
                 cardNumber = "",
                 expiredDate = "",
                 ownerName = "",

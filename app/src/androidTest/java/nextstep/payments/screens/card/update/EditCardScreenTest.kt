@@ -4,8 +4,8 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,17 +19,17 @@ class EditCardScreenTest {
         // given
         composeTestRule
             .setContent {
-                val card = CardState(
+                val cardUiState = CardUiState(
                     id = 0,
                     cardNumber = "1234567890123456",
                     expiredDate = "1225",
                     ownerName = "BANDAL",
                     password = "1234",
-                    selectedCardCompany = CardCompanyState.HANA
+                    selectedCardCompany = CardCompanyUiState.HANA
                 )
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardState = card,
+                        cardUiState = cardUiState,
                         isFormValid = false,
                         cardUpdated = false,
                     ),
@@ -61,13 +61,13 @@ class EditCardScreenTest {
 
                 EditCardScreen(
                     uiState = UpdateCardUiState.EditCardUiState(
-                        cardState = CardState(
+                        cardUiState = CardUiState(
                             id = 0,
                             cardNumber = cardNumbers,
                             expiredDate = expiredDate,
                             ownerName = ownerName,
                             password = password,
-                            selectedCardCompany = CardCompanyState.KAKAO
+                            selectedCardCompany = CardCompanyUiState.KAKAO
                         ),
                         cardUpdated = false,
                         isFormValid = true,

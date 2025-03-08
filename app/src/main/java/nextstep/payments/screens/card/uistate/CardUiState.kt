@@ -1,8 +1,8 @@
-package nextstep.payments.screens.card.state
+package nextstep.payments.screens.card.uistate
 
-data class CardState(
+data class CardUiState(
     val id: Int,
-    val selectedCardCompany: CardCompanyState? = null,
+    val selectedCardCompany: CardCompanyUiState? = null,
     val cardNumber: String = "",
     val expiredDate: String = "",
     val ownerName: String = "",

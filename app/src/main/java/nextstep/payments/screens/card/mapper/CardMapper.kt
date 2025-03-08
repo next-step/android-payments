@@ -1,9 +1,9 @@
 package nextstep.payments.screens.card.mapper
 
 import nextstep.payments.domain.Card
-import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.screens.card.uistate.CardUiState
 
-fun CardState.toDomain(): Card? {
+fun CardUiState.toDomain(): Card? {
     return Card(
         id = id,
         cardCompany = selectedCardCompany?.toDomain() ?: return null,
@@ -14,8 +14,8 @@ fun CardState.toDomain(): Card? {
     )
 }
 
-fun Card.toState(): CardState {
-    return CardState(
+fun Card.toState(): CardUiState {
+    return CardUiState(
         id = id,
         selectedCardCompany = cardCompany.toState(),
         cardNumber = numbers,

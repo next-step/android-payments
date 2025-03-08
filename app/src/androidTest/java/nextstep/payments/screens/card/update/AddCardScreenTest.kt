@@ -4,7 +4,7 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +20,7 @@ class AddCardScreenTest {
             .setContent {
                 AddCardScreen(
                     uiState = UpdateCardUiState.AddCardUiState(
-                        selectedCardCompany = CardCompanyState.KB,
+                        selectedCardCompany = CardCompanyUiState.KB,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",
                         ownerName = "BANDAL",
@@ -50,7 +50,7 @@ class AddCardScreenTest {
             .setContent {
                 AddCardScreen(
                     uiState = UpdateCardUiState.AddCardUiState(
-                        selectedCardCompany = CardCompanyState.KB,
+                        selectedCardCompany = CardCompanyUiState.KB,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",
                         ownerName = "BANDAL",

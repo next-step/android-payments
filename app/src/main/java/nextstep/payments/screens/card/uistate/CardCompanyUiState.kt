@@ -1,4 +1,4 @@
-package nextstep.payments.screens.card.state
+package nextstep.payments.screens.card.uistate
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -13,7 +13,7 @@ import nextstep.payments.ui.theme.RedLotte
 import nextstep.payments.ui.theme.TealHana
 import nextstep.payments.ui.theme.YelloKakao
 
-enum class CardCompanyState(
+enum class CardCompanyUiState(
     @StringRes val nameRes: Int,
     @DrawableRes val imageRes: Int,
     val backgroundColor: Color,

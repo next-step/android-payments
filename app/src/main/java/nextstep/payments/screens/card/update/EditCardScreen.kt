@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.R
 import nextstep.payments.components.card.EmptyPaymentCard
 import nextstep.payments.components.card.NewPaymentCard
-import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import nextstep.payments.screens.card.update.components.CardCompanyBottomSheetDialog
 import nextstep.payments.screens.card.update.components.CardInformationInputFields
 import nextstep.payments.screens.card.update.components.UpdateCardTopBar
@@ -29,7 +29,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun EditCardScreen(
     uiState: UpdateCardUiState.EditCardUiState,
-    onCardCompanyClick: (CardCompanyState) -> Unit,
+    onCardCompanyClick: (CardCompanyUiState) -> Unit,
     onCardNumberChange: (String) -> Unit,
     onExpiredDateChange: (String) -> Unit,
     onOwnerNameChange: (String) -> Unit,
@@ -67,19 +67,19 @@ fun EditCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            if (uiState.cardState.selectedCardCompany == null) {
+            if (uiState.cardUiState.selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
-                NewPaymentCard(uiState.cardState.selectedCardCompany)
+                NewPaymentCard(uiState.cardUiState.selectedCardCompany)
             }
 
             Spacer(modifier = Modifier.height(40.dp))
 
             CardInformationInputFields(
-                cardNumber = uiState.cardState.cardNumber,
-                expiredDate = uiState.cardState.expiredDate,
-                ownerName = uiState.cardState.ownerName,
-                password = uiState.cardState.password,
+                cardNumber = uiState.cardUiState.cardNumber,
+                expiredDate = uiState.cardUiState.expiredDate,
+                ownerName = uiState.cardUiState.ownerName,
+                password = uiState.cardUiState.password,
                 onCardNumberChange = onCardNumberChange,
                 onExpiredDateChange = onExpiredDateChange,
                 onOwnerNameChange = onOwnerNameChange,
@@ -95,7 +95,7 @@ private fun EditCardScreenPreview() {
     PaymentsTheme {
         EditCardScreen(
             uiState = UpdateCardUiState.EditCardUiState(
-                cardState = CardState(
+                cardUiState = CardUiState(
                     id = 0,
                     selectedCardCompany = null,
                     cardNumber = "",

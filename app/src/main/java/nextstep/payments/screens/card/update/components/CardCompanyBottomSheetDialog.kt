@@ -26,14 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardCompanyBottomSheetDialog(
     onDismissRequest: () -> Unit,
-    onCardCompanyClick: (CardCompanyState) -> Unit,
+    onCardCompanyClick: (CardCompanyUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -71,7 +71,7 @@ private const val COLUMN_COUNT = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CardCompanySelectRow(
-    onCardCompanyClick: (CardCompanyState) -> Unit,
+    onCardCompanyClick: (CardCompanyUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -80,7 +80,7 @@ private fun CardCompanySelectRow(
         verticalArrangement = Arrangement.spacedBy(24.dp),
         maxItemsInEachRow = COLUMN_COUNT
     ) {
-        CardCompanyState.entries.forEach { cardCompanyState ->
+        CardCompanyUiState.entries.forEach { cardCompanyState ->
             CardCompaniesItem(
                 cardCompany = cardCompanyState,
                 onClick = { onCardCompanyClick(cardCompanyState) },
@@ -92,7 +92,7 @@ private fun CardCompanySelectRow(
 
 @Composable
 private fun CardCompaniesItem(
-    cardCompany: CardCompanyState,
+    cardCompany: CardCompanyUiState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -135,7 +135,7 @@ private fun CardCompanySelectRowPreview() {
 private fun CardCompanyItemPreview() {
     PaymentsTheme {
         CardCompaniesItem(
-            cardCompany = CardCompanyState.KB,
+            cardCompany = CardCompanyUiState.KB,
             onClick = {},
         )
     }

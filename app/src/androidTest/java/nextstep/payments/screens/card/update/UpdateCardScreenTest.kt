@@ -4,8 +4,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import org.junit.Rule
 import org.junit.Test
 
@@ -46,13 +46,13 @@ class UpdateCardScreenTest {
         composeTestRule.setContent {
             UpdateCardScreen(
                 uiState = UpdateCardUiState.EditCardUiState(
-                    cardState = CardState(
+                    cardUiState = CardUiState(
                         id = 0,
                         cardNumber = "1234567890123456",
                         expiredDate = "1225",
                         ownerName = "BANDAL",
                         password = "1234",
-                        selectedCardCompany = CardCompanyState.HANA,
+                        selectedCardCompany = CardCompanyUiState.HANA,
                     ),
                     cardUpdated = false,
                     isFormValid = false,

@@ -17,53 +17,53 @@ import nextstep.payments.components.card.elements.CardNumbers
 import nextstep.payments.components.card.elements.ExpiredDate
 import nextstep.payments.components.card.elements.IcChip
 import nextstep.payments.components.card.elements.OwnerName
-import nextstep.payments.screens.card.state.CardCompanyState
-import nextstep.payments.screens.card.state.CardState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import nextstep.payments.ui.theme.Black100
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun RegisteredPaymentCard(
-    card: CardState,
+    cardUiState: CardUiState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BaseCard(
         onClick = onClick,
         modifier = modifier,
-        color = card.selectedCardCompany?.backgroundColor ?: Black100,
+        color = cardUiState.selectedCardCompany?.backgroundColor ?: Black100,
     ) {
         CardCompanyName(
-            name = if (card.selectedCardCompany == null) {
+            name = if (cardUiState.selectedCardCompany == null) {
                 ""
             } else {
-                stringResource(card.selectedCardCompany.nameRes)
+                stringResource(cardUiState.selectedCardCompany.nameRes)
             }
         )
         Spacer(Modifier.height(14.dp))
         IcChip()
         Spacer(Modifier.height(8.dp))
-        CardNumbers(cardNumbers = card.cardNumber)
+        CardNumbers(cardNumbers = cardUiState.cardNumber)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            OwnerName(name = card.ownerName)
-            ExpiredDate(date = card.expiredDate)
+            OwnerName(name = cardUiState.ownerName)
+            ExpiredDate(date = cardUiState.expiredDate)
         }
     }
 }
 
 class RegisteredPaymentCardPreviewParameterProvider :
-    CollectionPreviewParameterProvider<CardCompanyState>(collection = CardCompanyState.entries)
+    CollectionPreviewParameterProvider<CardCompanyUiState>(collection = CardCompanyUiState.entries)
 
 @Preview
 @Composable
 private fun RegisteredPaymentCardPreview(
-    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompanyState,
+    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompanyUiState,
 ) {
     PaymentsTheme {
-        val card = CardState(
+        val cardUiState = CardUiState(
             id = 0,
             cardNumber = "1111222200000000",
             expiredDate = "0421",
@@ -72,7 +72,7 @@ private fun RegisteredPaymentCardPreview(
             selectedCardCompany = cardCompany,
         )
         RegisteredPaymentCard(
-            card = card,
+            cardUiState = cardUiState,
             onClick = {},
         )
     }

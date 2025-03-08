@@ -1,26 +1,26 @@
 package nextstep.payments.screens.card.mapper
 
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.state.CardCompanyState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
 
-fun CardCompanyState.toDomain(): CardCompany = when (this) {
-    CardCompanyState.BC -> CardCompany.BC
-    CardCompanyState.SHINHAN -> CardCompany.SHINHAN
-    CardCompanyState.KAKAO -> CardCompany.KAKAO
-    CardCompanyState.HYUNDAI -> CardCompany.HYUNDAI
-    CardCompanyState.WOORI -> CardCompany.WOORI
-    CardCompanyState.LOTTE -> CardCompany.LOTTE
-    CardCompanyState.HANA -> CardCompany.HANA
-    CardCompanyState.KB -> CardCompany.KB
+fun CardCompanyUiState.toDomain(): CardCompany = when (this) {
+    CardCompanyUiState.BC -> CardCompany.BC
+    CardCompanyUiState.SHINHAN -> CardCompany.SHINHAN
+    CardCompanyUiState.KAKAO -> CardCompany.KAKAO
+    CardCompanyUiState.HYUNDAI -> CardCompany.HYUNDAI
+    CardCompanyUiState.WOORI -> CardCompany.WOORI
+    CardCompanyUiState.LOTTE -> CardCompany.LOTTE
+    CardCompanyUiState.HANA -> CardCompany.HANA
+    CardCompanyUiState.KB -> CardCompany.KB
 }
 
-fun CardCompany.toState(): CardCompanyState = when (this) {
-    CardCompany.BC -> CardCompanyState.BC
-    CardCompany.SHINHAN -> CardCompanyState.SHINHAN
-    CardCompany.KAKAO -> CardCompanyState.KAKAO
-    CardCompany.HYUNDAI -> CardCompanyState.HYUNDAI
-    CardCompany.WOORI -> CardCompanyState.WOORI
-    CardCompany.LOTTE -> CardCompanyState.LOTTE
-    CardCompany.HANA -> CardCompanyState.HANA
-    CardCompany.KB -> CardCompanyState.KB
+fun CardCompany.toState(): CardCompanyUiState = when (this) {
+    CardCompany.BC -> CardCompanyUiState.BC
+    CardCompany.SHINHAN -> CardCompanyUiState.SHINHAN
+    CardCompany.KAKAO -> CardCompanyUiState.KAKAO
+    CardCompany.HYUNDAI -> CardCompanyUiState.HYUNDAI
+    CardCompany.WOORI -> CardCompanyUiState.WOORI
+    CardCompany.LOTTE -> CardCompanyUiState.LOTTE
+    CardCompany.HANA -> CardCompanyUiState.HANA
+    CardCompany.KB -> CardCompanyUiState.KB
 }
