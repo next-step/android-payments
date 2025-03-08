@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.screens.card.update
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -6,8 +6,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.state.CardState
-import nextstep.payments.screens.card.update.UpdateCardScreen
-import nextstep.payments.screens.card.update.UpdateCardUiState
 import org.junit.Rule
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.screens.card.list
 
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -10,8 +10,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.list.CardListScreen
-import nextstep.payments.screens.card.list.CardListUiState
 import nextstep.payments.screens.card.mapper.toState
 import org.junit.Rule
 import org.junit.Test

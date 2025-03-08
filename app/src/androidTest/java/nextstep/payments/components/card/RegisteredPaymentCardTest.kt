@@ -1,8 +1,7 @@
-package nextstep.payments
+package nextstep.payments.components.card
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.components.card.RegisteredPaymentCard
 import nextstep.payments.screens.card.state.CardCompanyState
 import nextstep.payments.screens.card.state.CardState
 import org.junit.Before
