@@ -42,6 +42,7 @@ import nextstep.payments.ui.CardUiState
 import nextstep.payments.ui.screen.component.CenterTopBar
 import nextstep.payments.ui.screen.component.PaymentCard
 import nextstep.payments.ui.theme.Dimensions
+import nextstep.payments.ui.theme.Dimensions.CardRatioDefaults
 import nextstep.payments.ui.viewmodel.CardListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,7 +170,7 @@ private fun AddCardContainer(
     Box(
         modifier = modifier
             .width(Dimensions.CardWidthDefaults)
-            .aspectRatio(52 / 31f)
+            .aspectRatio(CardRatioDefaults)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),

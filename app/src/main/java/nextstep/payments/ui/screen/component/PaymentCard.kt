@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import nextstep.payments.ui.utils.TextFormatUtil
 import nextstep.payments.R
 import nextstep.payments.ui.theme.Dimensions
+import nextstep.payments.ui.theme.Dimensions.CardRatioDefaults
 
 @Composable
 fun PaymentCard(
@@ -41,7 +42,7 @@ fun PaymentCard(
         modifier = modifier
             .shadow(8.dp)
             .width(Dimensions.CardWidthDefaults)
-            .aspectRatio(52 / 31f)
+            .aspectRatio(CardRatioDefaults)
             .background(
                 color = cardColor,
                 shape = RoundedCornerShape(5.dp),
