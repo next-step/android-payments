@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,15 +30,15 @@ import nextstep.payments.ui.theme.TypoTokens.Medium12
 @Composable
 fun ClickablePaymentCard(
     card: Card,
+    onClickCardItem: (Card) -> Unit,
     modifier: Modifier = Modifier,
-    onClickCardItem: (Card) -> Unit = {},
 ) {
     PaymentCard(
         cardNumber = card.cardNumber,
         expiredDate = card.expiredDate,
         ownerName = card.ownerName,
         bankType = BankTypeUiModel.from(card.bankType),
-        modifier = modifier.clickable { onClickCardItem(card) },
+        modifier = modifier.clickable { onClickCardItem(card) }
     )
 }
 
@@ -50,41 +50,43 @@ fun PaymentCard(
     bankType: BankTypeUiModel,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Surface(
+        color = bankType.color,
+        shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
-            .background(color = bankType.color)
-            .clip(shape = RoundedCornerShape(5.dp))
     ) {
-        Text(
-            text = bankType.title,
-            style = Medium12,
-            color = Color.White,
-            modifier = Modifier
-                .padding(start = 14.dp, top = 10.dp)
-                .align(Alignment.TopStart)
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 14.dp, bottom = 10.dp)
-                .size(width = 40.dp, height = 26.dp)
-                .background(
-                    color = Color(0xFFCBBA64),
-                    shape = RoundedCornerShape(4.dp),
-                )
-        )
-        PaymentCardInfo(
-            cardNumber = cardNumber,
-            expiredDate = expiredDate,
-            ownerName = ownerName,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 14.dp)
-                .padding(bottom = 16.dp)
-                .align(Alignment.BottomStart)
-        )
+        Box{
+            Text(
+                text = bankType.title,
+                style = Medium12,
+                color = Color.White,
+                modifier = Modifier
+                    .padding(start = 14.dp, top = 10.dp)
+                    .align(Alignment.TopStart)
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 14.dp, bottom = 10.dp)
+                    .size(width = 40.dp, height = 26.dp)
+                    .background(
+                        color = Color(0xFFCBBA64),
+                        shape = RoundedCornerShape(4.dp),
+                    )
+            )
+            PaymentCardInfo(
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.BottomStart)
+            )
+        }
     }
 }
 
