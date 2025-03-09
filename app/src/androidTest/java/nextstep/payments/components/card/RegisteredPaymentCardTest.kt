@@ -1,10 +1,9 @@
-package nextstep.payments
+package nextstep.payments.components.card
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.components.card.RegisteredPaymentCard
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,18 +13,19 @@ class RegisteredPaymentCardTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val card = Card(
-        numbers = "1111222233334444",
+    private val cardUiState = CardUiState(
+        id = 0,
+        cardNumber = "1111222233334444",
         expiredDate = "0421",
         ownerName = "CREW",
         password = "0000",
-        cardCompany = CardCompany.KAKAO,
+        selectedCardCompany = CardCompanyUiState.KAKAO,
     )
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            RegisteredPaymentCard(card = card)
+            RegisteredPaymentCard(cardUiState = cardUiState, onClick = {})
         }
     }
 

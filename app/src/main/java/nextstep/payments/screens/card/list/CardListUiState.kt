@@ -1,9 +1,9 @@
 package nextstep.payments.screens.card.list
 
-import nextstep.payments.domain.Card
+import nextstep.payments.screens.card.uistate.CardUiState
 
 sealed interface CardListUiState {
     data object Empty : CardListUiState
-    data class One(val card: Card) : CardListUiState
-    data class Many(val cards: List<Card>): CardListUiState
+    data class One(val cardUiState: CardUiState) : CardListUiState
+    data class Many(val cardUiStates: List<CardUiState>) : CardListUiState
 }

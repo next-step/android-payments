@@ -1,4 +1,4 @@
-package nextstep.payments
+package nextstep.payments.screens.card.list
 
 import androidx.compose.ui.test.assertContentDescriptionEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -10,8 +10,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.domain.Card
 import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.list.CardListScreen
-import nextstep.payments.screens.card.list.CardListUiState
+import nextstep.payments.screens.card.mapper.toState
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,6 +21,7 @@ class CardListScreenTest {
 
     private val fakeCards = listOf(
         Card(
+            id = 0,
             numbers = "1111222233334444",
             expiredDate = "0522",
             ownerName = "CREW",
@@ -29,6 +29,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.KAKAO,
         ),
         Card(
+            id = 1,
             numbers = "4444333322221111",
             expiredDate = "0421",
             ownerName = "BANDAL",
@@ -36,6 +37,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.HYUNDAI,
         ),
         Card(
+            id = 2,
             numbers = "1111222233444433",
             expiredDate = "0522",
             ownerName = "LACO",
@@ -43,6 +45,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.WOORI,
         ),
         Card(
+            id = 3,
             numbers = "2211334411224455",
             expiredDate = "0421",
             ownerName = "LEAH",
@@ -50,6 +53,7 @@ class CardListScreenTest {
             cardCompany = CardCompany.KB,
         ),
         Card(
+            id = 4,
             numbers = "2211334411224454",
             expiredDate = "0421",
             ownerName = "BEOKBEOK",
@@ -66,6 +70,7 @@ class CardListScreenTest {
             CardListScreen(
                 state = CardListUiState.Empty,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 
@@ -81,12 +86,13 @@ class CardListScreenTest {
     @Test
     fun 카드_목록에_카드가_한_개_있을_때의_카드_추가_UI는_목록_하단에_노출된다() {
         // given
-        val state = CardListUiState.One(fakeCards.first())
+        val state = CardListUiState.One(fakeCards.first().toState())
 
         composeTestRule.setContent {
             CardListScreen(
                 state = state,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 
@@ -106,12 +112,13 @@ class CardListScreenTest {
     @Test
     fun 카드_목록에_카드가_여러_개_있을_때의_카드_추가_UI는_상단바에_노출된다() {
         // given
-        val state = CardListUiState.Many(fakeCards)
+        val state = CardListUiState.Many(fakeCards.map(Card::toState))
 
         composeTestRule.setContent {
             CardListScreen(
                 state = state,
                 onAddCardClick = {},
+                onCardClick = {},
             )
         }
 

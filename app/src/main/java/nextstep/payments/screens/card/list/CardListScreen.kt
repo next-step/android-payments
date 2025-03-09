@@ -25,16 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.R
 import nextstep.payments.components.card.RegisteredPaymentCard
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
 import nextstep.payments.screens.card.list.components.AddCard
 import nextstep.payments.screens.card.list.components.CardListTopBar
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardListScreen(
     viewModel: CardListViewModel,
     onAddCardClick: () -> Unit,
+    onCardClick: (CardUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,6 +43,7 @@ fun CardListScreen(
     CardListScreen(
         state = state,
         onAddCardClick = onAddCardClick,
+        onCardClick = onCardClick,
         modifier = modifier,
     )
 }
@@ -50,6 +52,7 @@ fun CardListScreen(
 fun CardListScreen(
     state: CardListUiState,
     onAddCardClick: () -> Unit,
+    onCardClick: (CardUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (state) {
@@ -61,15 +64,17 @@ fun CardListScreen(
 
         is CardListUiState.One ->
             CardListWithOneCardScreen(
-                card = state.card,
+                cardUiState = state.cardUiState,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
                 modifier = modifier,
             )
 
         is CardListUiState.Many -> {
             CardListWithManyCardScreen(
-                cards = state.cards,
+                cardUiStates = state.cardUiStates,
                 onAddCardClick = onAddCardClick,
+                onCardClick = onCardClick,
                 modifier = modifier,
             )
         }
@@ -105,8 +110,9 @@ fun CardListEmptyScreen(
 
 @Composable
 fun CardListWithOneCardScreen(
-    card: Card,
+    cardUiState: CardUiState,
     onAddCardClick: () -> Unit,
+    onCardClick: (CardUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -122,7 +128,7 @@ fun CardListWithOneCardScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(Modifier.height(12.dp))
-            RegisteredPaymentCard(card = card)
+            RegisteredPaymentCard(cardUiState = cardUiState, onClick = { onCardClick(cardUiState) })
             Spacer(Modifier.height(36.dp))
             AddCard(onAddCardClick = onAddCardClick)
         }
@@ -131,8 +137,9 @@ fun CardListWithOneCardScreen(
 
 @Composable
 fun CardListWithManyCardScreen(
-    cards: List<Card>,
+    cardUiStates: List<CardUiState>,
     onAddCardClick: () -> Unit,
+    onCardClick: (CardUiState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -143,11 +150,13 @@ fun CardListWithManyCardScreen(
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(36.dp),
-            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-            items(items = cards, key = { it.numbers }) { card ->
-                RegisteredPaymentCard(card)
+            items(items = cardUiStates, key = { it.cardNumber }) { cardUiState ->
+                RegisteredPaymentCard(cardUiState, onClick = { onCardClick(cardUiState) })
             }
         }
     }
@@ -166,16 +175,18 @@ private fun Preview1() {
 @Composable
 private fun Preview2() {
     PaymentsTheme {
-        val card = Card(
-            numbers = "0000000000000000",
+        val card = CardUiState(
+            id = 0,
+            cardNumber = "0000000000000000",
             expiredDate = "0000",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = CardCompany.BC,
+            selectedCardCompany = CardCompanyUiState.BC,
         )
         CardListWithOneCardScreen(
-            card = card,
+            cardUiState = card,
             onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }
@@ -185,24 +196,27 @@ private fun Preview2() {
 private fun Preview3() {
     PaymentsTheme {
         val cards = listOf(
-            Card(
-                numbers = "1111222200000000",
+            CardUiState(
+                id = 0,
+                cardNumber = "1111222200000000",
                 expiredDate = "0522",
                 ownerName = "CREW",
                 password = "0000",
-                cardCompany = CardCompany.KB,
+                selectedCardCompany = CardCompanyUiState.KB,
             ),
-            Card(
-                numbers = "0000000000000000",
+            CardUiState(
+                id = 1,
+                cardNumber = "0000000000000000",
                 expiredDate = "0421",
                 ownerName = "BANDAL",
                 password = "0000",
-                cardCompany = CardCompany.HYUNDAI,
+                selectedCardCompany = CardCompanyUiState.HYUNDAI,
             ),
         )
         CardListWithManyCardScreen(
-            cards = cards,
+            cardUiStates = cards,
             onAddCardClick = {},
+            onCardClick = {},
         )
     }
 }

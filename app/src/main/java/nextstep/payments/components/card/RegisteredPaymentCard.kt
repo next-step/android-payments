@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,60 +17,63 @@ import nextstep.payments.components.card.elements.CardNumbers
 import nextstep.payments.components.card.elements.ExpiredDate
 import nextstep.payments.components.card.elements.IcChip
 import nextstep.payments.components.card.elements.OwnerName
-import nextstep.payments.domain.Card
-import nextstep.payments.domain.CardCompany
-import nextstep.payments.screens.card.CardCompanyState
-import nextstep.payments.screens.card.toDomain
-import nextstep.payments.screens.card.toState
+import nextstep.payments.screens.card.uistate.CardCompanyUiState
+import nextstep.payments.screens.card.uistate.CardUiState
+import nextstep.payments.ui.theme.Black100
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun RegisteredPaymentCard(
-    card: Card,
+    cardUiState: CardUiState,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val cardCompanyState = remember(card) { card.cardCompany.toState() }
-
     BaseCard(
+        onClick = onClick,
         modifier = modifier,
-        color = cardCompanyState.backgroundColor,
+        color = cardUiState.selectedCardCompany?.backgroundColor ?: Black100,
     ) {
         CardCompanyName(
-            name = stringResource(cardCompanyState.nameRes)
+            name = if (cardUiState.selectedCardCompany == null) {
+                ""
+            } else {
+                stringResource(cardUiState.selectedCardCompany.nameRes)
+            }
         )
         Spacer(Modifier.height(14.dp))
         IcChip()
         Spacer(Modifier.height(8.dp))
-        CardNumbers(cardNumbers = card.numbers)
+        CardNumbers(cardNumbers = cardUiState.cardNumber)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            OwnerName(name = card.ownerName)
-            ExpiredDate(date = card.expiredDate)
+            OwnerName(name = cardUiState.ownerName)
+            ExpiredDate(date = cardUiState.expiredDate)
         }
     }
 }
 
-class RegisteredPaymentCardPreviewParameterProvider : CollectionPreviewParameterProvider<CardCompany>(
-    collection = CardCompanyState.entries.map(CardCompanyState::toDomain)
-)
+class RegisteredPaymentCardPreviewParameterProvider :
+    CollectionPreviewParameterProvider<CardCompanyUiState>(collection = CardCompanyUiState.entries)
 
 @Preview
 @Composable
 private fun RegisteredPaymentCardPreview(
-    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompany,
+    @PreviewParameter(RegisteredPaymentCardPreviewParameterProvider::class) cardCompany: CardCompanyUiState,
 ) {
     PaymentsTheme {
-        val card = Card(
-            numbers = "1111222200000000",
+        val cardUiState = CardUiState(
+            id = 0,
+            cardNumber = "1111222200000000",
             expiredDate = "0421",
             ownerName = "CREW",
             password = "0000",
-            cardCompany = cardCompany,
+            selectedCardCompany = cardCompany,
         )
         RegisteredPaymentCard(
-            card = card,
+            cardUiState = cardUiState,
+            onClick = {},
         )
     }
 }

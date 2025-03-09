@@ -16,7 +16,7 @@ val Yellow100 = Color(0xFFCBBA64)
 
 val RedBC = Color(0xFFF04651)
 val BlueShinhan = Color(0xFF0046FF)
-val YelloKakao = Color (0xFFFFE600)
+val YelloKakao = Color(0xFFFFE600)
 val BlackHyundai = Color(0xFF262626)
 val BlueWoori = Color(0xFF027BC8)
 val RedLotte = Color(0xFFED1C24)

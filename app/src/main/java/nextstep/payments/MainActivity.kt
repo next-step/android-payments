@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import nextstep.payments.screens.card.list.CardListScreen
 import nextstep.payments.screens.card.list.CardListViewModel
-import nextstep.payments.screens.card.new.NewCardActivity
+import nextstep.payments.screens.card.update.UpdateCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +28,14 @@ class MainActivity : ComponentActivity() {
 
                 CardListScreen(
                     onAddCardClick = {
-                        val intent: Intent = NewCardActivity.getIntent(this)
+                        val intent: Intent = UpdateCardActivity.getIntent(context = this)
+                        launcher.launch(intent)
+                    },
+                    onCardClick = {
+                        val intent: Intent = UpdateCardActivity.getIntentForPutExtraCardId(
+                            context = this,
+                            cardId = it.id,
+                        )
                         launcher.launch(intent)
                     },
                     viewModel = cardListViewModel,
