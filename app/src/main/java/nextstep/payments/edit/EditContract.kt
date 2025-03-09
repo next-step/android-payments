@@ -3,27 +3,12 @@ package nextstep.payments.edit
 import nextstep.payments.base.ScreenEvent
 import nextstep.payments.base.ScreenSideEffect
 import nextstep.payments.base.ScreenState
-import nextstep.payments.model.BankType
 import nextstep.payments.model.Card
 
 data class EditState(
-    val id: Int,
-    val cardNumber: String = "",
-    val expiredDate: String = "",
-    val ownerName: String = "",
-    val password: String = "",
-    val bankType: BankType = BankType.NOT_SELECTED,
-): ScreenState {
-    val card: Card
-        get() = Card(
-            id = id,
-            cardNumber = cardNumber,
-            expiredDate = expiredDate,
-            ownerName = ownerName,
-            password = password,
-            bankType = bankType
-        )
-}
+    val card: Card,
+    val isEditEnabled: Boolean = false,
+): ScreenState
 
 sealed class EditEvent: ScreenEvent {
     data class OnCardNumberChange(val cardNumber: String): EditEvent()

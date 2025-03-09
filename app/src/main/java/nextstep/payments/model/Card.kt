@@ -7,4 +7,14 @@ data class Card(
     val ownerName : String,
     val password : String,
     val bankType : BankType = BankType.NOT_SELECTED,
-)
+) {
+    companion object {
+        fun empty() = Card(
+            id = 0,
+            cardNumber = "",
+            expiredDate = "",
+            ownerName = "",
+            password = "",
+        )
+    }
+}

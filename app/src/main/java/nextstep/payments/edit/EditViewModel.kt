@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import nextstep.payments.base.BaseViewModel
 import nextstep.payments.data.PaymentCardsRepository
+import nextstep.payments.model.Card
 
 class EditViewModel(
     private val cardId: Int,
@@ -13,20 +14,11 @@ class EditViewModel(
 
     init {
         repository.getCard(cardId)?.let {
-            updateState {
-                copy(
-                    id = it.id,
-                    cardNumber = it.cardNumber,
-                    expiredDate = it.expiredDate,
-                    ownerName = it.ownerName,
-                    password = it.password,
-                    bankType = it.bankType
-                )
-            }
+            updateState { copy(card = it) }
         }
     }
 
-    override fun initState(): EditState = EditState(id = cardId)
+    override fun initState(): EditState = EditState(card = Card.empty())
 
     override fun handleEvent(event: EditEvent) {
         when(event) {
@@ -39,22 +31,33 @@ class EditViewModel(
         }
     }
 
-    fun getSavedCard() = repository.getCard(cardId)
+    private fun checkCardDataChanged(card: Card): Boolean {
+        val originCard = repository.getCard(cardId)
+        return originCard != card
+    }
 
     private fun setCardNumber(cardNumber: String) {
-        updateState(currentState().copy(cardNumber = cardNumber))
+        val newCardState = currentState().card.copy(cardNumber = cardNumber)
+        val isCardChanged = checkCardDataChanged(newCardState)
+        updateState(currentState().copy(card = newCardState, isEditEnabled = isCardChanged))
     }
 
     private fun setExpiredDate(expiredDate: String) {
-        updateState(currentState().copy(expiredDate = expiredDate))
+        val newCardState = currentState().card.copy(expiredDate = expiredDate)
+        val isCardChanged = checkCardDataChanged(newCardState)
+        updateState(currentState().copy(card = newCardState, isEditEnabled = isCardChanged))
     }
 
     private fun setOwnerName(ownerName: String) {
-        updateState(currentState().copy(ownerName = ownerName))
+        val newCardState = currentState().card.copy(ownerName = ownerName)
+        val isCardChanged = checkCardDataChanged(newCardState)
+        updateState(currentState().copy(card = newCardState, isEditEnabled = isCardChanged))
     }
 
     private fun setPassword(password: String) {
-        updateState(currentState().copy(password = password))
+        val newCardState = currentState().card.copy(password = password)
+        val isCardChanged = checkCardDataChanged(newCardState)
+        updateState(currentState().copy(card = newCardState, isEditEnabled = isCardChanged))
     }
 
     private fun updateCard() {

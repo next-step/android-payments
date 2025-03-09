@@ -17,7 +17,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditTopBar(
-    isDataChanged: Boolean,
+    isEditEnabled: Boolean,
     sendEvent: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -34,7 +34,7 @@ fun EditTopBar(
         actions = {
             IconButton(
                 onClick = { sendEvent(EditEvent.OnClickCompleteButton) },
-                enabled = isDataChanged,
+                enabled = isEditEnabled,
             ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -50,6 +50,6 @@ fun EditTopBar(
 @Composable
 private fun EditTopBarPreview() {
     PaymentsTheme {
-        EditTopBar(isDataChanged = true, sendEvent = {})
+        EditTopBar(isEditEnabled = true, sendEvent = {})
     }
 }

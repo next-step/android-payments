@@ -48,12 +48,12 @@ fun EditScreen(
     }
 
     EditScreen(
-        cardNumber = state.cardNumber,
-        expiredDate = state.expiredDate,
-        ownerName = state.ownerName,
-        password = state.password,
-        bankType = state.bankType,
-        isDataChanged = state.card != viewModel.getSavedCard(),
+        cardNumber = state.card.cardNumber,
+        expiredDate = state.card.expiredDate,
+        ownerName = state.card.ownerName,
+        password = state.card.password,
+        bankType = state.card.bankType,
+        isEditEnabled = state.isEditEnabled,
         sendEvent = viewModel::sendEvent,
         modifier = modifier,
     )
@@ -66,14 +66,14 @@ fun EditScreen(
     ownerName: String,
     password: String,
     bankType: BankType,
-    isDataChanged: Boolean,
+    isEditEnabled: Boolean,
     sendEvent: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             EditTopBar(
-                isDataChanged = isDataChanged,
+                isEditEnabled = isEditEnabled,
                 sendEvent = sendEvent,
             )
         },
@@ -147,7 +147,7 @@ private fun EditScreenPreview(
             ownerName = "홍길동",
             password = "1234",
             bankType = BankType.KB,
-            isDataChanged = isDataChanged,
+            isEditEnabled = isDataChanged,
             sendEvent = {},
         )
     }
