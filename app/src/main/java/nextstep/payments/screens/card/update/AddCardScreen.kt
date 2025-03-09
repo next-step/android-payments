@@ -69,7 +69,10 @@ fun AddCardScreen(
             if (uiState.selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
-                NewPaymentCard(uiState.selectedCardCompany)
+                NewPaymentCard(
+                    cardCompanyUiState = uiState.selectedCardCompany,
+                    onClick = { showCardCompanyBottomSheet = true }
+                )
             }
 
             Spacer(modifier = Modifier.height(40.dp))

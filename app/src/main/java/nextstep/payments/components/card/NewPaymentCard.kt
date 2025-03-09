@@ -15,10 +15,12 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun NewPaymentCard(
     cardCompanyUiState: CardCompanyUiState,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BaseCard(
         color = cardCompanyUiState.backgroundColor,
+        onClick = onClick,
         modifier = modifier,
     ) {
         CardCompanyName(stringResource(cardCompanyUiState.nameRes))
@@ -35,6 +37,7 @@ private fun NewPaymentCardPreview() {
     PaymentsTheme {
         NewPaymentCard(
             cardCompanyUiState = CardCompanyUiState.BC,
+            onClick = {},
         )
     }
 }

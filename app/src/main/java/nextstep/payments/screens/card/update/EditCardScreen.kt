@@ -70,7 +70,10 @@ fun EditCardScreen(
             if (uiState.cardUiState.selectedCardCompany == null) {
                 EmptyPaymentCard()
             } else {
-                NewPaymentCard(uiState.cardUiState.selectedCardCompany)
+                NewPaymentCard(
+                    cardCompanyUiState = uiState.cardUiState.selectedCardCompany,
+                    onClick = { showCardCompanyBottomSheet = true },
+                )
             }
 
             Spacer(modifier = Modifier.height(40.dp))
