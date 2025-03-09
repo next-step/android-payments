@@ -10,14 +10,40 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
+
+@Composable
+fun CardEditScreen(
+    navigateToList: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CardEditViewModel = viewModel(),
+) {
+    val state by viewModel.cardEditState.collectAsStateWithLifecycle()
+
+    CardEditScreen(
+        modifier = modifier,
+        card = state.editCard,
+        saveEnabled = state.saveEnabled,
+        setNumber = viewModel::setNumber,
+        setDueDate = viewModel::setDueDate,
+        setName = viewModel::setName,
+        setPassword = viewModel::setPassword,
+        onBackClick = navigateToList,
+        onSaveClick = {
+            navigateToList()
+        }
+    )
+}
 
 @Composable
 fun CardEditScreen(

@@ -1,7 +1,10 @@
 package nextstep.payments.model
 
+import java.util.UUID
+
 
 data class CreditCard(
+    val id: String = UUID.randomUUID().toString(),
     val number: String,
     val dueDate: String,
     val name: String = "",
