@@ -39,6 +39,13 @@ fun AddCardScreen(
 ) {
     var showCardCompanyBottomSheet by remember { mutableStateOf(true) }
 
+    if (showCardCompanyBottomSheet) {
+        CardCompanyBottomSheetDialog(
+            onDismissRequest = { showCardCompanyBottomSheet = false },
+            onCardCompanyClick = onCardCompanyClick,
+        )
+    }
+
     Scaffold(
         topBar = {
             UpdateCardTopBar(
@@ -51,13 +58,6 @@ fun AddCardScreen(
         modifier = modifier,
         containerColor = Color.White,
     ) { innerPadding ->
-        if (showCardCompanyBottomSheet) {
-            CardCompanyBottomSheetDialog(
-                onDismissRequest = { showCardCompanyBottomSheet = false },
-                onCardCompanyClick = onCardCompanyClick,
-            )
-        }
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
