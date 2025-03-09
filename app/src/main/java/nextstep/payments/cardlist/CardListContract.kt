@@ -11,11 +11,13 @@ data class CardListState(
 
 sealed class CardListEvent: ScreenEvent {
     data object OnClickCreateCardButton: CardListEvent()
+    data class OnClickCardItem(val cardId: Int): CardListEvent()
     data object ReloadCardList: CardListEvent()
 }
 
 sealed class CardListSideEffect: ScreenSideEffect {
     data object NavigateToNewCardScreen: CardListSideEffect()
+    data class NavigateToEditScreen(val cardId: Int): CardListSideEffect()
 }
 
 sealed class CardsState {

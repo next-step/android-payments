@@ -22,6 +22,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun CardListScreen(
     viewModel: CardListViewModel,
     navigateToNewCardScreen: () -> Unit,
+    navigateToEditScreen: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -30,6 +31,7 @@ fun CardListScreen(
         viewModel.sideEffect.collectLatest {
             when (it) {
                 is CardListSideEffect.NavigateToNewCardScreen -> navigateToNewCardScreen()
+                is CardListSideEffect.NavigateToEditScreen -> navigateToEditScreen(it.cardId)
             }
         }
     }
@@ -82,6 +84,7 @@ fun CardListScreen(
             is CardsState.Cards -> {
                 CardListCardsContent(
                     cardsStateState = cardsState,
+                    sendEvent = sendEvent,
                     modifier = Modifier
                         .padding(paddingValue)
                         .fillMaxSize(),

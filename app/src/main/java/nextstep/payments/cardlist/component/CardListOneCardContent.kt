@@ -13,7 +13,7 @@ import nextstep.payments.cardlist.CardListEvent
 import nextstep.payments.cardlist.CardsState
 import nextstep.payments.model.Card
 import nextstep.payments.ui.component.CreateCardButton
-import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.component.ClickablePaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -27,7 +27,10 @@ fun CardListOneCardContent(
         modifier = modifier,
     ) {
         item {
-            PaymentCard(cardsStateState.card)
+            ClickablePaymentCard(
+                card = cardsStateState.card,
+                onClickCardItem = { sendEvent(CardListEvent.OnClickCardItem(cardsStateState.card.id)) }
+            )
             Spacer(modifier = Modifier.height(32.dp))
         }
 
