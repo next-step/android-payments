@@ -1,11 +1,15 @@
 package nextstep.payments.edit
 
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -70,6 +74,8 @@ fun EditScreen(
     sendEvent: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scrollState = rememberScrollState()
+
     Scaffold(
         topBar = {
             EditTopBar(
@@ -83,6 +89,7 @@ fun EditScreen(
             verticalArrangement = Arrangement.spacedBy(18.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
+                .scrollable(state = scrollState, orientation = Orientation.Vertical)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
         ) {
