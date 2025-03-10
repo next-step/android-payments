@@ -48,6 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
@@ -60,6 +61,7 @@ import nextstep.payments.ui.viewmodel.NewCardViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
+    card: Card?,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
@@ -450,6 +452,7 @@ private fun PasswordInputFieldPreview() {
 @Composable
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
+        card = null,
         viewModel = NewCardViewModel().apply {
             setCardNumber("1234567812345678")
             setExpiredDate("12 / 34")

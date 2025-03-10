@@ -49,6 +49,7 @@ import nextstep.payments.ui.viewmodel.CardListViewModel
 @Composable
 fun CardListScreen(
     navigateToNewCard: () -> Unit,
+    navigateToModifyCard: (card: Card) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
 ) {
@@ -102,6 +103,9 @@ fun CardListScreen(
                 is CardUiState.One -> {
                     OneCardContainer(
                         card = cardsState.data,
+                        onCardClick = {
+                            navigateToModifyCard(cardsState.data)
+                        },
                         onClick = {
                             navigateToNewCard()
                         }
@@ -122,6 +126,7 @@ fun CardListScreen(
 private fun OneCardContainer(
     card: Card,
     onClick: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -133,6 +138,9 @@ private fun OneCardContainer(
             expiredDate = card.expiredDate,
             ownerName = card.ownerName,
             cardColor = card.cardCompanyType.bankThemeColor,
+            modifier = Modifier.clickable(
+                onClick = onCardClick
+            )
         )
         Spacer(modifier = Modifier.height(36.dp))
         AddCardContainer(
@@ -203,6 +211,7 @@ private fun OneCardContainerPreview() {
             password = "12421412",
             cardCompanyType = CardCompanyType.BC,
         ),
+        onCardClick = {},
         onClick = {},
     )
 }
@@ -241,6 +250,7 @@ private fun CardListConatinerPreview() {
 @Composable
 private fun CardListScreenPreview() {
     CardListScreen(
-        navigateToNewCard = {}
+        navigateToModifyCard = {},
+        navigateToNewCard = {},
     )
 }

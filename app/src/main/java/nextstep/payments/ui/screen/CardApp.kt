@@ -10,6 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import kotlinx.serialization.json.Json
+import nextstep.payments.data.model.Card
 import nextstep.payments.ui.screen.navigation.CardRoute
 
 
@@ -25,25 +28,37 @@ fun CardApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = CardRoute.CardList,
+            startDestination = CardRoute.CardList.route,
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            composable<CardRoute.CardList> {
+            composable(CardRoute.CardList.route) {
                 CardListScreen(
                     navigateToNewCard = {
-                        navController.navigate(CardRoute.NewCard)
+                        navController.navigate(CardRoute.NewCard.route)
+                    },
+                    navigateToModifyCard = {
+                        navController.navigate(CardRoute.NewCard.withArgs(it))
                     }
                 )
             }
-            composable<CardRoute.NewCard> {
+
+            composable(
+                route = "${CardRoute.NewCard.route}?card={card}",
+                arguments = listOf(navArgument("card") { nullable = true })
+            ) { backStackEntry ->
+                val cardJson = backStackEntry.arguments?.getString("card")
+                val card = cardJson?.let {
+                    runCatching { Json.decodeFromString<Card>(it) }.getOrNull()
+                }
+
                 NewCardScreen(
-                    navigateToCardList = {
-                        navController.navigateUp()
-                    }
+                    navigateToCardList = { navController.navigateUp() },
+                    card = card
                 )
             }
+
         }
     }
 }

@@ -22,7 +22,8 @@ class NewCardScreenTest {
     fun setUp() {
         composeTestRule.setContent {
             NewCardScreen(
-                navigateToCardList = {}
+                navigateToCardList = {},
+                card = null,
             )
         }
     }
