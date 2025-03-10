@@ -46,7 +46,10 @@ fun CardEditScreen(
         setName = viewModel::setName,
         setPassword = viewModel::setPassword,
         onBackClick = navigateToList,
-        onSaveClick = navigateToListWithEdit
+        onSaveClick = {
+            viewModel.editCard()
+            navigateToListWithEdit()
+        }
     )
 }
 
