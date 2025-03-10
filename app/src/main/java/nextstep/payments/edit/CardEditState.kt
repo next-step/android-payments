@@ -7,5 +7,5 @@ data class CardEditState(
     val editCard: CreditCard = CreditCard.emptyCard
 ) {
     val saveEnabled: Boolean
-        get() = originalCard == editCard
+        get() = originalCard != editCard
 }
