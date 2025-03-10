@@ -14,7 +14,8 @@ class CardEditViewModel(
     private val _cardEditState = MutableStateFlow(CardEditState())
     val cardEditState: StateFlow<CardEditState> = _cardEditState.asStateFlow()
 
-    fun initializeCard(card: CreditCard) {
+    fun initializeCard(cardId: String) {
+        val card = cardRepository.getCard(cardId)
         _cardEditState.value = CardEditState(
             originalCard = card,
             editCard = card,
@@ -23,7 +24,7 @@ class CardEditViewModel(
 
     fun setNumber(cardNumber: String) {
         _cardEditState.value = _cardEditState.value.copy(
-            editCard = CreditCard.emptyCard.copy(
+            editCard = _cardEditState.value.editCard.copy(
                 number = cardNumber
             )
         )
@@ -31,7 +32,7 @@ class CardEditViewModel(
 
     fun setDueDate(dueDate: String) {
         _cardEditState.value = _cardEditState.value.copy(
-            editCard = CreditCard.emptyCard.copy(
+            editCard = _cardEditState.value.editCard.copy(
                 dueDate = dueDate
             )
         )
@@ -39,7 +40,7 @@ class CardEditViewModel(
 
     fun setName(name: String) {
         _cardEditState.value = _cardEditState.value.copy(
-            editCard = CreditCard.emptyCard.copy(
+            editCard = _cardEditState.value.editCard.copy(
                 name = name
             )
         )
@@ -47,7 +48,7 @@ class CardEditViewModel(
 
     fun setPassword(password: String) {
         _cardEditState.value = _cardEditState.value.copy(
-            editCard = CreditCard.emptyCard.copy(
+            editCard = _cardEditState.value.editCard.copy(
                 password = password
             )
         )

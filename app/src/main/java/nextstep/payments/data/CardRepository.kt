@@ -16,4 +16,9 @@ object CardRepository {
         val index = _cards.indexOf(targetCard)
         _cards[index] = card
     }
+
+    fun getCard(cardId: String): CreditCard {
+        return _cards.find { it.id == cardId } ?: CreditCard.emptyCard
+    }
+
 }

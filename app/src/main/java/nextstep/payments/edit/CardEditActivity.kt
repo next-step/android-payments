@@ -8,9 +8,13 @@ import nextstep.payments.ui.theme.PaymentsTheme
 class CardEditActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val id = intent.getStringExtra(KEY_CARD_ID) ?: ""
+
         setContent {
             PaymentsTheme {
                 CardEditScreen(
+                    cardId = id,
                     navigateToList = {
                         finish()
                     },

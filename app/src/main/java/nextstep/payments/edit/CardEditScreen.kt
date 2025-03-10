@@ -10,6 +10,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,12 +25,17 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardEditScreen(
+    cardId: String,
     navigateToList: () -> Unit,
     navigateToListWithEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardEditViewModel = viewModel(),
 ) {
     val state by viewModel.cardEditState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = cardId) {
+        viewModel.initializeCard(cardId)
+    }
 
     CardEditScreen(
         modifier = modifier,
