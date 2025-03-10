@@ -84,4 +84,40 @@ class NewCardViewModel(
             )
         )
     }
+
+    fun getCardById(cardId: String) {
+        val modifyCard = paymentRepsoitory.getCardById(cardId)
+
+        if(modifyCard != null) {
+            _cardNumber.value = modifyCard.cardNumber
+            _expiredDate.value = modifyCard.expiredDate
+            _ownerName.value = modifyCard.ownerName
+            _password.value = modifyCard.password
+            _selectedCardCompany.value = modifyCard.cardCompanyType
+        }
+    }
+
+    fun updateCard(
+        cardId: String,
+        cardNumber: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        cardCompanyType: CardCompanyType?,
+    ) {
+        if(cardCompanyType == null) {
+            return
+        }
+
+        paymentRepsoitory.updateCard(
+            Card(
+                cardId = cardId,
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                password = password,
+                cardCompanyType = cardCompanyType
+            )
+        )
+    }
 }
