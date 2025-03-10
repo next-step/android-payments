@@ -11,8 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import kotlinx.serialization.json.Json
-import nextstep.payments.data.model.Card
 import nextstep.payments.ui.screen.navigation.CardRoute
 
 
@@ -38,7 +36,7 @@ fun CardApp(
                     navigateToNewCard = {
                         navController.navigate(CardRoute.NewCard.route)
                     },
-                    navigateToModifyCard = { cardId ->
+                    navigateToUpdateCard = { cardId ->
                         navController.navigate(CardRoute.NewCard.withId(cardId))
                     }
                 )

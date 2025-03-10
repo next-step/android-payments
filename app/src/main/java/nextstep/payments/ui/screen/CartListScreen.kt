@@ -49,7 +49,7 @@ import nextstep.payments.ui.viewmodel.CardListViewModel
 @Composable
 fun CardListScreen(
     navigateToNewCard: () -> Unit,
-    navigateToModifyCard: (String) -> Unit,
+    navigateToUpdateCard: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
 ) {
@@ -104,7 +104,7 @@ fun CardListScreen(
                     OneCardContainer(
                         card = cardsState.data,
                         onCardClick = {
-                            navigateToModifyCard(cardsState.data.cardId)
+                            navigateToUpdateCard(cardsState.data.cardId)
                         },
                         onClick = {
                             navigateToNewCard()
@@ -114,7 +114,10 @@ fun CardListScreen(
 
                 is CardUiState.Many -> {
                     CardListContainer(
-                        cardList = cardsState.data
+                        cardList = cardsState.data,
+                        onCardClick = { cardId ->
+                            navigateToUpdateCard(cardId)
+                        }
                     )
                 }
             }
@@ -152,9 +155,11 @@ private fun OneCardContainer(
 @Composable
 private fun CardListContainer(
     cardList: List<Card>,
+    onCardClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp),
         contentPadding = PaddingValues(12.dp),
     ) {
@@ -165,6 +170,9 @@ private fun CardListContainer(
                 expiredDate = card.expiredDate,
                 ownerName = card.ownerName,
                 cardColor = card.cardCompanyType.bankThemeColor,
+                modifier = Modifier.clickable(
+                    onClick = { onCardClick(card.cardId) }
+                )
             )
         }
     }
@@ -242,7 +250,8 @@ private fun CardListConatinerPreview() {
                 password = "12421412",
                 cardCompanyType = CardCompanyType.BC
             ),
-        )
+        ),
+        onCardClick = {},
     )
 }
 
@@ -250,7 +259,7 @@ private fun CardListConatinerPreview() {
 @Composable
 private fun CardListScreenPreview() {
     CardListScreen(
-        navigateToModifyCard = {},
+        navigateToUpdateCard = {},
         navigateToNewCard = {},
     )
 }
