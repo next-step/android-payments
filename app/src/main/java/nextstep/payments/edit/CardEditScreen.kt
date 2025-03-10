@@ -25,6 +25,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun CardEditScreen(
     navigateToList: () -> Unit,
+    navigateToListWithEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardEditViewModel = viewModel(),
 ) {
@@ -39,9 +40,7 @@ fun CardEditScreen(
         setName = viewModel::setName,
         setPassword = viewModel::setPassword,
         onBackClick = navigateToList,
-        onSaveClick = {
-            navigateToList()
-        }
+        onSaveClick = navigateToListWithEdit
     )
 }
 

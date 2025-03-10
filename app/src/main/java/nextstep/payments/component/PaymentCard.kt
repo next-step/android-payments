@@ -1,6 +1,7 @@
 package nextstep.payments.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun PaymentCard(
     card: CreditCard,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val formattedNumber = remember(key1 = card.number) { card.number.formatCardNumber() }
     val formattedDueDate = remember(key1 = card.dueDate) { card.dueDate.formatCardDueDate() }
@@ -52,6 +54,7 @@ fun PaymentCard(
                 color = cardCompanyResource?.backgroundColor ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
+            .clickable(onClick = onClick)
             .testTag("PaymentCard")
     ) {
         Column(
