@@ -61,7 +61,7 @@ import nextstep.payments.ui.viewmodel.NewCardViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
-    card: Card?,
+    cardId: String?,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
@@ -452,7 +452,7 @@ private fun PasswordInputFieldPreview() {
 @Composable
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
-        card = null,
+        cardId = null,
         viewModel = NewCardViewModel().apply {
             setCardNumber("1234567812345678")
             setExpiredDate("12 / 34")

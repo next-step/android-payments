@@ -38,27 +38,23 @@ fun CardApp(
                     navigateToNewCard = {
                         navController.navigate(CardRoute.NewCard.route)
                     },
-                    navigateToModifyCard = {
-                        navController.navigate(CardRoute.NewCard.withArgs(it))
+                    navigateToModifyCard = { cardId ->
+                        navController.navigate(CardRoute.NewCard.withId(cardId))
                     }
                 )
             }
 
             composable(
-                route = "${CardRoute.NewCard.route}?card={card}",
-                arguments = listOf(navArgument("card") { nullable = true })
+                route = "${CardRoute.NewCard.route}?cardId={cardId}",
+                arguments = listOf(navArgument("cardId") { nullable = true })
             ) { backStackEntry ->
-                val cardJson = backStackEntry.arguments?.getString("card")
-                val card = cardJson?.let {
-                    runCatching { Json.decodeFromString<Card>(it) }.getOrNull()
-                }
+                val cardId = backStackEntry.arguments?.getString("cardId")
 
                 NewCardScreen(
-                    navigateToCardList = { navController.navigateUp() },
-                    card = card
+                    cardId = cardId,
+                    navigateToCardList = { navController.navigateUp() }
                 )
             }
-
         }
     }
 }

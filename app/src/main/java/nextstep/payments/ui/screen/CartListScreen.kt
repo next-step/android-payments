@@ -49,7 +49,7 @@ import nextstep.payments.ui.viewmodel.CardListViewModel
 @Composable
 fun CardListScreen(
     navigateToNewCard: () -> Unit,
-    navigateToModifyCard: (card: Card) -> Unit,
+    navigateToModifyCard: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
 ) {
@@ -104,7 +104,7 @@ fun CardListScreen(
                     OneCardContainer(
                         card = cardsState.data,
                         onCardClick = {
-                            navigateToModifyCard(cardsState.data)
+                            navigateToModifyCard(cardsState.data.cardId)
                         },
                         onClick = {
                             navigateToNewCard()
