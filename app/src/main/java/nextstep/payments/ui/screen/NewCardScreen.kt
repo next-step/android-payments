@@ -70,8 +70,8 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
 
-    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
-    var isBottomSheetVisible by remember { mutableStateOf(false) }
+    val selectedCardCompany by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
+    var isBottomSheetVisible by remember { mutableStateOf(true) }
     var sheetState = rememberModalBottomSheetState(
         confirmValueChange = { newState ->
             newState != SheetValue.Hidden
@@ -81,15 +81,11 @@ fun NewCardScreen(
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(selectedBank) {
-        if (selectedBank == CardCompanyType.NOT_SELECTED) {
-            isBottomSheetVisible = true
-            sheetState.show()
-        }
+    val coroutineScope = rememberCoroutineScope()
 
-        if (selectedBank != CardCompanyType.NOT_SELECTED) {
-            isBottomSheetVisible = false
-            sheetState.hide()
+    LaunchedEffect(isBottomSheetVisible) {
+        if (isBottomSheetVisible) {
+            sheetState.show()
         }
     }
 
@@ -98,7 +94,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        selectedBank = selectedBank,
+        selectedBank = selectedCardCompany,
         isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -112,8 +108,9 @@ fun NewCardScreen(
                 expiredDate = expiredDate,
                 ownerName = ownerName,
                 password = password,
-                cardCompanyType = selectedBank
+                cardCompanyType = selectedCardCompany
             )
+
             navigateToCardList()
         },
         modifier = modifier
@@ -122,7 +119,13 @@ fun NewCardScreen(
     if (isBottomSheetVisible) {
         BankBottomModalSheet(
             sheetState = sheetState,
-            onBankClick = viewModel::setSelectedBank,
+            onBankClick = { selectedCardCompanyType ->
+                viewModel.setSelectedBank(selectedCardCompanyType)
+                coroutineScope.launch {
+                    sheetState.hide()
+                    isBottomSheetVisible = false
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -134,7 +137,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    selectedBank: CardCompanyType,
+    selectedBank: CardCompanyType?,
     isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
@@ -179,13 +182,22 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
-                bankName = stringResource(selectedBank.bankNameResId),
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                cardColor = selectedBank.bankThemeColor,
-            )
+            if (selectedBank != null) {
+                PaymentCard(
+                    bankName = stringResource(selectedBank.bankNameResId),
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                    cardColor = selectedBank.bankThemeColor,
+                )
+            } else {
+                PaymentCard(
+                    bankName = "00",
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                )
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -344,7 +356,8 @@ private fun BankSelectRow(
             BankItem(
                 bankName = stringResource(bankType.bankNameResId),
                 bankImage = painterResource(bankType.bankImageRes),
-                modifier = modifier.width(80.dp)
+                modifier = modifier
+                    .width(80.dp)
                     .clickable(
                         onClick = { onBankClick(bankType) },
                         indication = null,

@@ -5,7 +5,6 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
 import nextstep.payments.ui.theme.BcColor
-import nextstep.payments.ui.theme.DefaultBankColor
 import nextstep.payments.ui.theme.HanaColor
 import nextstep.payments.ui.theme.HyundaiColor
 import nextstep.payments.ui.theme.KBColor
@@ -19,7 +18,6 @@ enum class CardCompanyType(
     @DrawableRes val bankImageRes: Int?,
     val bankThemeColor: Color
 ) {
-    NOT_SELECTED(R.string.bank_not_select, null, DefaultBankColor),
     BC(R.string.bank_bc, R.drawable.bc, BcColor),
     SHINHAN(R.string.bank_shinhan, R.drawable.shinhan, ShinhanColor),
     KAKAO(R.string.bank_kakao, R.drawable.kakao, KakaoColor),
@@ -30,6 +28,6 @@ enum class CardCompanyType(
     KB(R.string.bank_kb, R.drawable.kb, KBColor);
 
     companion object {
-        fun getBankList(): List<CardCompanyType> = entries.filter { it != NOT_SELECTED }
+        fun getBankList(): List<CardCompanyType> = entries
     }
 }

@@ -27,8 +27,8 @@ class NewCardViewModel(
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
-    private val _selectedBank = MutableStateFlow(CardCompanyType.NOT_SELECTED)
-    val selectedBank: StateFlow<CardCompanyType> = _selectedBank.asStateFlow()
+    private val _selectedCardCompany = MutableStateFlow<CardCompanyType?>(null)
+    val selectedCardCompany: StateFlow<CardCompanyType?> = _selectedCardCompany.asStateFlow()
 
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
@@ -60,7 +60,7 @@ class NewCardViewModel(
     }
 
     fun setSelectedBank(cardCompanyType: CardCompanyType) {
-        _selectedBank.value = cardCompanyType
+        _selectedCardCompany.value = cardCompanyType
     }
 
     fun addCard(
@@ -68,8 +68,12 @@ class NewCardViewModel(
         expiredDate: String,
         ownerName: String,
         password: String,
-        cardCompanyType: CardCompanyType,
+        cardCompanyType: CardCompanyType?,
     ) {
+        if(cardCompanyType == null) {
+            return
+        }
+
         paymentRepsoitory.addCard(
             Card(
                 cardNumber = cardNumber,
