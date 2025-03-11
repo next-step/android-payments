@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import nextstep.payments.repository.PaymentCardsRepository
 
 class CardEditActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,6 +17,7 @@ class CardEditActivity : ComponentActivity() {
         setContent {
             CardEditScreen(
                 cardId = cardId,
+                repository = PaymentCardsRepository,
                 onBackClick = ::finish,
                 navigateToPayments = ::navigateToPayments
             )

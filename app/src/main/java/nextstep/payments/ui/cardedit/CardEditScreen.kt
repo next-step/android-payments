@@ -13,19 +13,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
+import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.components.IssuingBankBottomSheet
 import nextstep.payments.ui.components.PaymentCardFormScreen
 
 @Composable
 fun CardEditScreen(
     cardId: Long,
+    repository: PaymentCardsRepository,
     onBackClick: () -> Unit,
     navigateToPayments: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CardEditViewModel = viewModel()
 ) {
+    val extras = MutableCreationExtras().apply {
+        set(CardEditViewModel.CARD_ID_KEY, cardId)
+        set(CardEditViewModel.PAYMENTS_CARD_REPOSITORY_KEY, repository)
+    }
+    val viewModel: CardEditViewModel = viewModel(
+        factory = CardEditViewModel.Factory,
+        extras = extras,
+    )
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -38,10 +49,6 @@ fun CardEditScreen(
                 is CardEditEffect.OnCardEditSaved -> navigateToPayments()
             }
         }
-    }
-
-    LaunchedEffect(Unit) {
-        viewModel.onIntent(CardEditIntent.FetchCreditCard(cardId))
     }
 
     when (val state = uiState) {

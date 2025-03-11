@@ -1,7 +1,11 @@
 package nextstep.payments.ui.cardedit
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +17,8 @@ import nextstep.payments.model.IssuingBank
 import nextstep.payments.repository.PaymentCardsRepository
 
 class CardEditViewModel(
-    private val repository: PaymentCardsRepository = PaymentCardsRepository
+    private val cardId: Long,
+    private val paymentCardsRepository: PaymentCardsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<CardEditUiState>(CardEditUiState.Loading)
@@ -22,9 +27,12 @@ class CardEditViewModel(
     private val _effect = Channel<CardEditEffect>()
     val effect: Flow<CardEditEffect> get() = _effect.receiveAsFlow()
 
+    init {
+        fetchCreditCard()
+    }
+
     fun onIntent(intent: CardEditIntent) {
         when (intent) {
-            is CardEditIntent.FetchCreditCard -> fetchCreditCard(intent.cardId)
             is CardEditIntent.OnCardNumberChanged -> changeCardNumber(intent.cardNumber)
             is CardEditIntent.OnExpiredDateChanged -> changeExpireDate(intent.expiredDate)
             is CardEditIntent.OnOwnerNameChanged -> changeOwnerName(intent.ownerName)
@@ -34,9 +42,9 @@ class CardEditViewModel(
         }
     }
 
-    private fun fetchCreditCard(cardId: Long) {
+    private fun fetchCreditCard() {
         viewModelScope.launch {
-            val card = repository.findCard(cardId)
+            val card = paymentCardsRepository.findCard(cardId = cardId)
             if (card == null) {
                 _effect.send(CardEditEffect.ShowError("카드 정보를 찾을 수 없습니다."))
                 return@launch
@@ -75,7 +83,7 @@ class CardEditViewModel(
     private fun saveCardEdit() {
         viewModelScope.launch {
             val success = _uiState.value as? CardEditUiState.Success ?: return@launch
-            val lastCard = repository.findCard(success.creditCard.id)
+            val lastCard = paymentCardsRepository.findCard(success.creditCard.id)
             if (lastCard == null) {
                 _effect.send(CardEditEffect.ShowError("수정하려는 카드 정보를 찾을 수 없습니다."))
                 return@launch
@@ -84,8 +92,29 @@ class CardEditViewModel(
                 _effect.send(CardEditEffect.ShowError("변경된 내용이 없습니다."))
                 return@launch
             }
-            repository.updateCard(success.creditCard)
+            paymentCardsRepository.updateCard(success.creditCard)
             _effect.send(CardEditEffect.OnCardEditSaved)
+        }
+    }
+
+    companion object {
+
+        val PAYMENTS_CARD_REPOSITORY_KEY =
+            object : CreationExtras.Key<PaymentCardsRepository> {}
+        val CARD_ID_KEY = object : CreationExtras.Key<Long> {}
+
+
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val paymentCardsRepository =
+                    this[PAYMENTS_CARD_REPOSITORY_KEY] as PaymentCardsRepository
+                val cardId = this[CARD_ID_KEY] as Long
+
+                CardEditViewModel(
+                    cardId = cardId,
+                    paymentCardsRepository = paymentCardsRepository,
+                )
+            }
         }
     }
 }
