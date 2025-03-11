@@ -102,115 +102,101 @@ fun PaymentsScreen(
     onEditCardClick: (id: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (uiState) {
-        is PaymentsUiState.Empty -> PaymentsEmptyScreen(
-            onAddCardClick = onAddCardClick,
-            snackbarHostState = snackbarHostState,
-            modifier = modifier
-        )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            PaymentsTopBar(
+                isAddable = uiState.isTopBarAddEnabled,
+                onAddClick = onAddCardClick
+            )
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { innerPadding ->
+        when (uiState) {
+            is PaymentsUiState.Empty -> PaymentsEmptyScreen(
+                onAddCardClick = onAddCardClick,
+                innerPadding = innerPadding
+            )
 
-        is PaymentsUiState.One -> PaymentsOneScreen(
-            uiState = uiState,
-            snackbarHostState = snackbarHostState,
-            onAddCardClick = onAddCardClick,
-            onCardClick = onEditCardClick,
-            modifier = modifier
-        )
+            is PaymentsUiState.One -> PaymentsOneScreen(
+                uiState = uiState,
+                onAddCardClick = onAddCardClick,
+                onCardClick = onEditCardClick,
+                innerPadding = innerPadding
+            )
 
-        is PaymentsUiState.Many -> PaymentsManyScreen(
-            uiState = uiState,
-            snackbarHostState = snackbarHostState,
-            onAddCardClick = onAddCardClick,
-            onCardClick = onEditCardClick,
-            modifier = modifier
-        )
+            is PaymentsUiState.Many -> PaymentsManyScreen(
+                uiState = uiState,
+                onCardClick = onEditCardClick,
+                innerPadding = innerPadding
+            )
+        }
     }
 }
 
 @Composable
 private fun PaymentsEmptyScreen(
-    snackbarHostState: SnackbarHostState,
     onAddCardClick: () -> Unit,
-    modifier: Modifier = Modifier
+    innerPadding: PaddingValues = PaddingValues(),
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = { PaymentsTopBar(isAddable = false) },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        Column(
-            Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            horizontalAlignment = CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(32.dp))
-            Text(
-                stringResource(R.string.payments_empty_headline),
-                fontWeight = W700,
-                fontSize = 18.sp
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            PaymentCardAddition(onClick = onAddCardClick)
-        }
+
+    Column(
+        Modifier
+            .padding(innerPadding)
+            .fillMaxSize(),
+        horizontalAlignment = CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            stringResource(R.string.payments_empty_headline),
+            fontWeight = W700,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        PaymentCardAddition(onClick = onAddCardClick)
     }
 }
 
 @Composable
 private fun PaymentsOneScreen(
     uiState: PaymentsUiState.One,
-    snackbarHostState: SnackbarHostState,
     onAddCardClick: () -> Unit,
     onCardClick: (id: Long) -> Unit,
-    modifier: Modifier = Modifier
+    innerPadding: PaddingValues = PaddingValues(),
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = { PaymentsTopBar(isAddable = false) },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        Column(
-            Modifier
-                .padding(innerPadding)
-                .fillMaxWidth()
-                .testTag("PaymentsOneScreen"),
-            horizontalAlignment = CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(12.dp))
-            PaymentCard(
-                creditCard = uiState.card,
-                onClick = { onCardClick(uiState.card.id) }
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            PaymentCardAddition(onClick = onAddCardClick, modifier = Modifier.testTag("카드 추가 버튼"))
-        }
+    Column(
+        Modifier
+            .padding(innerPadding)
+            .fillMaxWidth()
+            .testTag("PaymentsOneScreen"),
+        horizontalAlignment = CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(12.dp))
+        PaymentCard(
+            creditCard = uiState.card,
+            onClick = { onCardClick(uiState.card.id) }
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        PaymentCardAddition(onClick = onAddCardClick, modifier = Modifier.testTag("카드 추가 버튼"))
     }
 }
 
 @Composable
 private fun PaymentsManyScreen(
     uiState: PaymentsUiState.Many,
-    snackbarHostState: SnackbarHostState,
-    onAddCardClick: () -> Unit,
     onCardClick: (id: Long) -> Unit,
-    modifier: Modifier = Modifier
+    innerPadding: PaddingValues = PaddingValues(),
 ) {
-    Scaffold(
-        modifier = modifier,
-        topBar = { PaymentsTopBar(isAddable = true, onAddClick = onAddCardClick) },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        LazyColumn(
-            horizontalAlignment = CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(36.dp),
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 16.dp),
-        ) {
-            items(uiState.cards, key = { it.id }) { card ->
-                PaymentCard(card, modifier = Modifier.clickable(onClick = { onCardClick(card.id) }))
-            }
+    LazyColumn(
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(36.dp),
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 16.dp),
+    ) {
+        items(uiState.cards, key = { it.id }) { card ->
+            PaymentCard(card, modifier = Modifier.clickable(onClick = { onCardClick(card.id) }))
         }
     }
 }
@@ -219,7 +205,7 @@ private fun PaymentsManyScreen(
 @Composable
 private fun Preview1() {
     PaymentsTheme {
-        PaymentsEmptyScreen(onAddCardClick = {}, snackbarHostState = SnackbarHostState())
+        PaymentsEmptyScreen(onAddCardClick = {})
     }
 }
 
@@ -238,7 +224,6 @@ private fun Preview2() {
                     issuingBank = IssuingBank.HANA_CARD,
                 )
             ),
-            snackbarHostState = SnackbarHostState(),
             onAddCardClick = {},
             onCardClick = {}
         )
@@ -270,8 +255,6 @@ private fun Preview3() {
                     ),
                 )
             ),
-            snackbarHostState = SnackbarHostState(),
-            onAddCardClick = {},
             onCardClick = {}
         )
     }
