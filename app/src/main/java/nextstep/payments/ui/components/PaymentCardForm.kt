@@ -35,6 +35,7 @@ fun PaymentCardFormScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onPaymentCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     topBar: @Composable () -> Unit,
 ) {
@@ -58,7 +59,8 @@ fun PaymentCardFormScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
-                issuingBank = issuingBank
+                issuingBank = issuingBank,
+                onClick = onPaymentCardClick,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -118,7 +120,8 @@ private fun NewCardScreenPreview() {
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
-            topBar = {}
+            topBar = {},
+            onPaymentCardClick = {}
         )
     }
 }

@@ -53,13 +53,14 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
-        modifier = modifier,
+        onPaymentCardClick = { showBottomSheet = true },
         topBar = {
             NewCardTopBar(
                 onBackClick = onBackClick,
                 onSaveClick = viewModel::onSaveClick,
             )
-        }
+        },
+        modifier = modifier
     )
 
     if (showBottomSheet) {

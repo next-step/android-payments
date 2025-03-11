@@ -29,7 +29,7 @@ fun CardEditScreen(
     viewModel: CardEditViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var showBottomSheet by remember { mutableStateOf(true) }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -73,6 +73,7 @@ fun CardEditScreen(
                 setExpiredDate = { viewModel.onIntent(CardEditIntent.OnExpiredDateChanged(it)) },
                 setOwnerName = { viewModel.onIntent(CardEditIntent.OnOwnerNameChanged(it)) },
                 setPassword = { viewModel.onIntent(CardEditIntent.OnPasswordChanged(it)) },
+                onPaymentCardClick = { showBottomSheet = true }
             )
         }
     }
