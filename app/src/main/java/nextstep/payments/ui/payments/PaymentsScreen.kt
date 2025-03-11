@@ -179,7 +179,7 @@ private fun PaymentsOneScreen(
             Spacer(modifier = Modifier.height(12.dp))
             PaymentCard(
                 creditCard = uiState.card,
-                modifier = Modifier.clickable(onClick = { onCardClick(uiState.card.id) })
+                onClick = { onCardClick(uiState.card.id) }
             )
             Spacer(modifier = Modifier.height(32.dp))
             PaymentCardAddition(onClick = onAddCardClick, modifier = Modifier.testTag("카드 추가 버튼"))
