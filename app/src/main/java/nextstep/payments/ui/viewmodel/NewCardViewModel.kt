@@ -1,5 +1,6 @@
 package nextstep.payments.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,8 @@ class NewCardViewModel(
 
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
+
+    private var modifyCard: Card? = null
 
     init {
         viewModelScope.launch {
@@ -70,7 +73,7 @@ class NewCardViewModel(
         password: String,
         cardCompanyType: CardCompanyType?,
     ) {
-        if(cardCompanyType == null) {
+        if (cardCompanyType == null) {
             return
         }
 
@@ -86,14 +89,14 @@ class NewCardViewModel(
     }
 
     fun getCardById(cardId: String) {
-        val modifyCard = paymentRepsoitory.getCardById(cardId)
+        modifyCard = paymentRepsoitory.getCardById(cardId)
 
-        if(modifyCard != null) {
-            _cardNumber.value = modifyCard.cardNumber
-            _expiredDate.value = modifyCard.expiredDate
-            _ownerName.value = modifyCard.ownerName
-            _password.value = modifyCard.password
-            _selectedCardCompany.value = modifyCard.cardCompanyType
+        modifyCard?.let { card ->
+            _cardNumber.value = card.cardNumber
+            _expiredDate.value = card.expiredDate
+            _ownerName.value = card.ownerName
+            _password.value = card.password
+            _selectedCardCompany.value = card.cardCompanyType
         }
     }
 
@@ -104,20 +107,29 @@ class NewCardViewModel(
         ownerName: String,
         password: String,
         cardCompanyType: CardCompanyType?,
-    ) {
-        if(cardCompanyType == null) {
-            return
+    ): Boolean {
+        if (cardCompanyType == null) {
+            return false
+        }
+
+        val updatedCard = Card(
+            cardId = cardId,
+            cardNumber = cardNumber,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password,
+            cardCompanyType = cardCompanyType
+        )
+
+        if (modifyCard == updatedCard) {
+            Log.d("앙데욧!", "같은 카드입니다.")
+            return false
         }
 
         paymentRepsoitory.updateCard(
-            Card(
-                cardId = cardId,
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
-                cardCompanyType = cardCompanyType
-            )
+            updatedCard = updatedCard
         )
+
+        return true
     }
 }

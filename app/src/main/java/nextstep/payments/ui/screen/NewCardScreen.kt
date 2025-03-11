@@ -48,7 +48,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.data.model.Card
 import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
@@ -66,6 +65,8 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
+    val context = LocalContext.current
+
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -82,7 +83,7 @@ fun NewCardScreen(
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
-
+    val snackbarMessage = remember { context.getString(R.string.validate_modify_snack_bar_message) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -128,7 +129,7 @@ fun NewCardScreen(
                 return@NewCardScreen
             }
 
-            viewModel.updateCard(
+            val updateSuccess = viewModel.updateCard(
                 cardId = cardId,
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
@@ -136,6 +137,14 @@ fun NewCardScreen(
                 password = password,
                 cardCompanyType = selectedCardCompany
             )
+
+            if(!updateSuccess) {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(snackbarMessage)
+                }
+
+                return@NewCardScreen
+            }
 
             navigateToCardList()
         },
@@ -178,6 +187,7 @@ private fun NewCardScreen(
 ) {
     val context = LocalContext.current
     val snackbarMessage = remember { context.getString(R.string.validate_snack_bar_message) }
+
     val coroutineScope = rememberCoroutineScope()
 
     val appBarTitle = if (cardId == null) {
