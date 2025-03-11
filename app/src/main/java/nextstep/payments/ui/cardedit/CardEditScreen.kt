@@ -12,11 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
-import nextstep.payments.R
 import nextstep.payments.ui.components.IssuingBankBottomSheet
 import nextstep.payments.ui.components.PaymentCardFormScreen
 
@@ -48,7 +46,7 @@ fun CardEditScreen(
 
     when (val state = uiState) {
         is CardEditUiState.Loading -> {
-            Box(Modifier.fillMaxSize()) {
+            Box(modifier.fillMaxSize()) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         }
@@ -73,7 +71,8 @@ fun CardEditScreen(
                 setExpiredDate = { viewModel.onIntent(CardEditIntent.OnExpiredDateChanged(it)) },
                 setOwnerName = { viewModel.onIntent(CardEditIntent.OnOwnerNameChanged(it)) },
                 setPassword = { viewModel.onIntent(CardEditIntent.OnPasswordChanged(it)) },
-                onPaymentCardClick = { showBottomSheet = true }
+                onPaymentCardClick = { showBottomSheet = true },
+                modifier = modifier
             )
         }
     }
