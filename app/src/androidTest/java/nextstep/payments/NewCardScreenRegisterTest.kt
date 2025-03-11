@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class NewCardScreenTest {
+class NewCardScreenRegisterTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -23,7 +23,7 @@ class NewCardScreenTest {
         composeTestRule.setContent {
             NewCardScreen(
                 navigateToCardList = {},
-                card = null,
+                cardId = null,
             )
         }
     }

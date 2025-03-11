@@ -43,6 +43,7 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 navigateToNewCard = {},
+                navigateToUpdateCard = {}
             )
         }
     }
