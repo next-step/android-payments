@@ -31,7 +31,7 @@ fun CardEditScreen(
 
     val snackBarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
         viewModel.effect.collectLatest {
             when (it) {
                 is CardEditEffect.ShowError -> snackBarHostState.showSnackbar(it.message)
@@ -60,7 +60,6 @@ fun CardEditScreen(
                 password = creditCard.password,
                 issuingBank = creditCard.issuingBank,
                 snackBarHostState = snackBarHostState,
-                modifier = modifier,
                 topBar = {
                     EditCardTopBar(
                         onSaveClick = { viewModel.onIntent(CardEditIntent.OnSaveCardEdit) },
