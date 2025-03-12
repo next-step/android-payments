@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.components.IssuingBankBottomSheet
 import nextstep.payments.ui.form.PaymentCardFormScreen
+import nextstep.payments.ui.form.PaymentCardFormState
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CardEditScreen(
@@ -58,15 +61,10 @@ fun CardEditScreen(
         }
 
         is CardEditUiState.Success -> {
-            PaymentCardFormScreen(
+            CardEditScreen(
                 formState = state.formState,
-                snackBarHostState = snackBarHostState,
-                topBar = {
-                    EditCardTopBar(
-                        onSaveClick = { viewModel.onIntent(CardEditIntent.OnSaveCardEdit) },
-                        onBackClick = onBackClick
-                    )
-                },
+                onBackClick = onBackClick,
+                onTopBarSaveClick = { viewModel.onIntent(CardEditIntent.OnSaveCardEdit) },
                 onPaymentCardClick = { showBottomSheet = true },
                 modifier = modifier
             )
@@ -81,4 +79,50 @@ fun CardEditScreen(
             },
         )
     }
+}
+
+@Composable
+fun CardEditScreen(
+    formState: PaymentCardFormState,
+    onBackClick: () -> Unit,
+    onTopBarSaveClick: () -> Unit,
+    onPaymentCardClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    PaymentCardFormScreen(
+        formState = formState,
+        snackBarHostState = SnackbarHostState(),
+        topBar = {
+            EditCardTopBar(
+                onSaveClick = onTopBarSaveClick,
+                onBackClick = onBackClick
+            )
+        },
+        onPaymentCardClick = onPaymentCardClick,
+        modifier = modifier
+    )
+}
+
+@Preview
+@Composable
+private fun CardEditScreenPreview() {
+    PaymentsTheme {
+        CardEditScreen(
+            formState = PaymentCardFormState(
+                cardNumber = "1234 - 5678 - 1234 - 5678",
+                expiredDate = "12 / 34",
+                ownerName = "홍길동",
+                password = "1234",
+                issuingBank = null,
+                onCardNumberChanged = {},
+                onExpiredDateChanged = {},
+                onOwnerNameChanged = {},
+                onPasswordChanged = {},
+            ),
+            onBackClick = {},
+            onTopBarSaveClick = {},
+            onPaymentCardClick = {}
+        )
+    }
+
 }
