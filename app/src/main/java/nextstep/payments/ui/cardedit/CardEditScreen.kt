@@ -2,7 +2,6 @@ package nextstep.payments.ui.cardedit
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -40,7 +39,6 @@ fun CardEditScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
-
     val snackBarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewModel) {

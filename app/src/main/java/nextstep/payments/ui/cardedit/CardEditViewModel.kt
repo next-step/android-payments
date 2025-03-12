@@ -69,19 +69,23 @@ class CardEditViewModel(
     }
 
     private fun changeCardNumber(cardNumber: String) = setStateOnSuccess {
-        copy(formState = formState.copy(cardNumber = cardNumber))
+        if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return@setStateOnSuccess this
+        copy(formState = formState.copy(cardNumber = cardNumber.filter { it.isDigit() }))
     }
 
     private fun changeExpireDate(expiredDate: String) = setStateOnSuccess {
-        copy(formState = formState.copy(expiredDate = expiredDate))
+        if (expiredDate.length > MAX_EXPIRED_DATE_LENGTH) return@setStateOnSuccess this
+        copy(formState = formState.copy(expiredDate = expiredDate.filter { it.isDigit() }))
     }
 
     private fun changeOwnerName(ownerName: String) = setStateOnSuccess {
-        copy(formState = formState.copy(ownerName = ownerName))
+        if (ownerName.length > MAX_OWNER_NAME_LENGTH) return@setStateOnSuccess this
+        copy(formState = formState.copy(ownerName = ownerName.filter { it.isLetter() }))
     }
 
     private fun changePassword(password: String) = setStateOnSuccess {
-        copy(formState = formState.copy(password = password))
+        if (password.length > MAX_PASSWORD_LENGTH) return@setStateOnSuccess this
+        copy(formState = formState.copy(password = password.filter { it.isDigit() }))
     }
 
     private fun changeIssuingBank(issuingBank: IssuingBank) = setStateOnSuccess {
@@ -137,6 +141,11 @@ class CardEditViewModel(
         val PAYMENTS_CARD_REPOSITORY_KEY =
             object : CreationExtras.Key<PaymentCardsRepository> {}
         val CARD_ID_KEY = object : CreationExtras.Key<Long> {}
+
+        const val MAX_CARD_NUMBER_LENGTH = 16
+        const val MAX_EXPIRED_DATE_LENGTH = 4
+        const val MAX_OWNER_NAME_LENGTH = 10
+        const val MAX_PASSWORD_LENGTH = 4
 
 
         val Factory: ViewModelProvider.Factory = viewModelFactory {

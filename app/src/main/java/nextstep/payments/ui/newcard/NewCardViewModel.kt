@@ -88,8 +88,3 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         const val MAX_PASSWORD_LENGTH = 4
     }
 }
-
-sealed interface NewCardEffect {
-    data class ShowError(val message: String) : NewCardEffect
-    data object CardAdded : NewCardEffect
-}
