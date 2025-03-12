@@ -1,7 +1,10 @@
 package nextstep.payments.component
 
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import org.junit.Rule
 import org.junit.Test
@@ -49,6 +52,27 @@ class PaymentCardTest {
         // then
         composeTestRule
             .onNodeWithText("12 / 01")
+            .assertExists()
+    }
+
+    @Test
+    fun KB카드사가_있으면_카드에_국민카드_텍스트가_보여야한다() {
+        // given
+        composeTestRule.setContent {
+            PaymentListCard(
+                card = Card(
+                    cardNumber = "1234567890123456",
+                    expiredDate = "1201",
+                    ownerName = "홍길동",
+                    password = "0000",
+                    bankType = BankType.KB
+                )
+            )
+        }
+
+        // then
+        composeTestRule
+            .onNodeWithText("국민카드")
             .assertExists()
     }
 }
