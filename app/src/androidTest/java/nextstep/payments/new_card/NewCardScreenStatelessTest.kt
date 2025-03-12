@@ -9,6 +9,7 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
+import nextstep.payments.data.BankType
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -22,6 +23,8 @@ class NewCardScreenStatelessTest {
     private var expiredDate = ""
     private var ownerName = ""
     private var password = ""
+    private var bankType: BankType? = null
+    private var isBottomSheetOpen = false
 
     @Before
     fun setUp() {
@@ -31,17 +34,23 @@ class NewCardScreenStatelessTest {
             var expiredDate by remember { mutableStateOf("") }
             var ownerName by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
+            var bankType by remember { mutableStateOf<BankType?>(null) }
+            var isBottomSheetOpen by remember { mutableStateOf(false) }
 
             this.cardNumber = ""
             this.expiredDate = ""
             this.ownerName = ""
             this.password = ""
+            this.bankType = null
+            this.isBottomSheetOpen = false
 
             NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
                 password = password,
+                bankType = bankType,
+                isBottomSheetOpen = isBottomSheetOpen,
                 onBackClick = { },
                 addCard = { },
                 setCardNumber = {
@@ -59,6 +68,14 @@ class NewCardScreenStatelessTest {
                 setPassword = {
                     password = it
                     this.password = it
+                },
+                setBankType = {
+                    bankType = it
+                    this.bankType = it
+                },
+                setBottomSheetOpen = {
+                    isBottomSheetOpen = it
+                    this.isBottomSheetOpen = it
                 },
             )
         }

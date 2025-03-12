@@ -19,7 +19,8 @@ class PaymentCardTest {
                     cardNumber = "1234567890123456",
                     expiredDate = "1201",
                     ownerName = "홍길동",
-                    password = "0000"
+                    password = "0000",
+                    bankType = null
                 )
             )
         }
@@ -39,7 +40,8 @@ class PaymentCardTest {
                     cardNumber = "1234567890123456",
                     expiredDate = "1201",
                     ownerName = "홍길동",
-                    password = "0000"
+                    password = "0000",
+                    bankType = null
                 )
             )
         }
