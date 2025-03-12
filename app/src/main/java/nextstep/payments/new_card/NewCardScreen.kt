@@ -1,14 +1,17 @@
 package nextstep.payments.new_card
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.component.BankSelectBottomSheet
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.data.BankType
 
 @Composable
 fun NewCardScreen(
@@ -33,6 +38,8 @@ fun NewCardScreen(
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
+    val isBottomSheetOpen by viewModel.isBottomSheetOpen.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -43,31 +50,52 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        bankType = bankType,
+        isBottomSheetOpen = isBottomSheetOpen,
         onBackClick = onBackButtonClick,
         addCard = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        setBankType = viewModel::setBankType,
+        setBottomSheetOpen = viewModel::setBottomSheetOpen,
         modifier = modifier,
     )
 }
 
 // 가능한 Stateless 컴포넌트로 리팩터링
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
+    bankType: BankType?,
+    isBottomSheetOpen: Boolean = false,
     onBackClick: () -> Unit,
     addCard: () -> Unit,
     setCardNumber: (String) -> Unit = {},
     setExpiredDate: (String) -> Unit = {},
     setOwnerName: (String) -> Unit = {},
     setPassword: (String) -> Unit = {},
+    setBankType: (BankType) -> Unit = {},
+    setBottomSheetOpen: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        confirmValueChange = { false }
+    )
+
+    LaunchedEffect(key1 = isBottomSheetOpen) {
+        if (isBottomSheetOpen) {
+            modalBottomSheetState.show()
+        } else {
+            modalBottomSheetState.hide()
+        }
+    }
+
     Scaffold(
         topBar = {
             NewCardTopAppBar(
@@ -86,7 +114,12 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                modifier = Modifier.clickable {
+                    setBottomSheetOpen(true)
+                },
+                bankType = bankType,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -124,6 +157,17 @@ fun NewCardScreen(
             )
         }
     }
+
+    if (isBottomSheetOpen) {
+        BankSelectBottomSheet(
+            stateSheet = modalBottomSheetState,
+            selectBank = {
+                setBankType(it)
+                setBottomSheetOpen(false)
+            },
+            onDismissRequest = { setBottomSheetOpen(false) },
+        )
+    }
 }
 
 @Preview
@@ -137,6 +181,7 @@ private fun StatefulNewCardScreenPreview() {
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
             setPassword("0000")
+            setBottomSheetOpen(false)
         },
     )
 }
@@ -149,11 +194,15 @@ private fun StatelessNewCardScreenPreview() {
         expiredDate = "00 / 00",
         ownerName = "홍길동",
         password = "0000",
+        bankType = null,
+        isBottomSheetOpen = false,
         addCard = {},
         onBackClick = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
         setPassword = {},
+        setBottomSheetOpen = {},
+        setBankType = {},
     )
 }
