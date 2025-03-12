@@ -2,6 +2,7 @@ package nextstep.payments.ui.cardedit
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.components.IssuingBankBottomSheet
-import nextstep.payments.ui.components.PaymentCardFormScreen
+import nextstep.payments.ui.form.PaymentCardFormScreen
 
 @Composable
 fun CardEditScreen(
@@ -59,13 +60,8 @@ fun CardEditScreen(
         }
 
         is CardEditUiState.Success -> {
-            val creditCard = state.creditCard
             PaymentCardFormScreen(
-                cardNumber = creditCard.cardNumber,
-                expiredDate = creditCard.expiredDate,
-                ownerName = creditCard.ownerName,
-                password = creditCard.password,
-                issuingBank = creditCard.issuingBank,
+                formState = state.formState,
                 snackBarHostState = snackBarHostState,
                 topBar = {
                     EditCardTopBar(
@@ -73,10 +69,6 @@ fun CardEditScreen(
                         onBackClick = onBackClick
                     )
                 },
-                setCardNumber = { viewModel.onIntent(CardEditIntent.OnCardNumberChanged(it)) },
-                setExpiredDate = { viewModel.onIntent(CardEditIntent.OnExpiredDateChanged(it)) },
-                setOwnerName = { viewModel.onIntent(CardEditIntent.OnOwnerNameChanged(it)) },
-                setPassword = { viewModel.onIntent(CardEditIntent.OnPasswordChanged(it)) },
                 onPaymentCardClick = { showBottomSheet = true },
                 modifier = modifier
             )

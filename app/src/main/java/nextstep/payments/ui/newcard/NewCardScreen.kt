@@ -14,45 +14,37 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nextstep.payments.ui.components.IssuingBankBottomSheet
-import nextstep.payments.ui.components.PaymentCardFormScreen
+import nextstep.payments.ui.form.PaymentCardFormScreen
 
 @Composable
 fun NewCardScreen(
     onBackClick: () -> Unit,
+    navigateToPayments: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val issuingBank by viewModel.issuingBank.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     var showBottomSheet by remember { mutableStateOf(true) }
 
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
         viewModel.effect.collectLatest {
             when (it) {
                 is NewCardEffect.ShowError -> {
                     coroutineScope.launch { snackBarHostState.showSnackbar(it.message) }
                 }
+
+                is NewCardEffect.CardAdded -> navigateToPayments()
             }
         }
     }
 
     PaymentCardFormScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        issuingBank = issuingBank,
+        formState = uiState,
         snackBarHostState = snackBarHostState,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
         onPaymentCardClick = { showBottomSheet = true },
         topBar = {
             NewCardTopBar(
@@ -60,13 +52,13 @@ fun NewCardScreen(
                 onSaveClick = viewModel::onSaveClick,
             )
         },
-        modifier = modifier
+        modifier = modifier,
     )
 
     if (showBottomSheet) {
         IssuingBankBottomSheet(
             onDismissRequest = { showBottomSheet = false },
-            onIssuingBankSelected = viewModel::setIssuingBank,
+            onIssuingBankSelected = { viewModel.setIssuingBank(it) },
         )
     }
 }
