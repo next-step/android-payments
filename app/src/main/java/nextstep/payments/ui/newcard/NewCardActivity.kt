@@ -14,22 +14,14 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 class NewCardActivity : ComponentActivity() {
 
-    private val viewModel: NewCardViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             PaymentsTheme {
-                val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-
-                LaunchedEffect(cardAdded) {
-                    if (cardAdded) {
-                        navigateToPayments()
-                    }
-                }
                 NewCardScreen(
-                    onBackClick = ::finish
+                    onBackClick = ::finish,
+                    navigateToPayments = ::navigateToPayments
                 )
             }
         }

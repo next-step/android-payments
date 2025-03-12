@@ -1,6 +1,7 @@
 package nextstep.payments.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.model.CreditCard
@@ -31,13 +30,15 @@ import nextstep.payments.ui.theme.Typography
 fun PaymentCard(
     creditCard: CreditCard,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
     PaymentCard(
         cardNumber = creditCard.cardNumber,
         expiredDate = creditCard.expiredDate,
         ownerName = creditCard.ownerName,
         issuingBank = creditCard.issuingBank,
-        modifier = modifier
+        modifier = modifier,
+        onClick = onClick
     )
 }
 
@@ -48,6 +49,7 @@ fun PaymentCard(
     ownerName: String,
     issuingBank: IssuingBank?,
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -58,6 +60,7 @@ fun PaymentCard(
                 color = issuingBank?.color ?: Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
         Text(
@@ -138,6 +141,7 @@ private fun PaymentCardPreview() {
         Column {
             PaymentCard(
                 CreditCard(
+                    id = -1L,
                     cardNumber = "1234567890123456",
                     expiredDate = "1231",
                     ownerName = "홍길동",
