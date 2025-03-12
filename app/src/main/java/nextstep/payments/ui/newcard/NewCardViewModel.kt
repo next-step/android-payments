@@ -8,13 +8,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import nextstep.payments.model.CardFormFormatter
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.IssuingBank
 import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.form.PaymentCardFormState
 
-class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
-    ViewModel() {
+class NewCardViewModel(
+    private val repository: PaymentCardsRepository = PaymentCardsRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
         PaymentCardFormState(
@@ -30,23 +32,23 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     val effect = _effect.receiveAsFlow()
 
     private fun setCardNumber(cardNumber: String) {
-        if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return
-        _uiState.value = _uiState.value.copy(cardNumber = cardNumber.filter { it.isDigit() })
+        val formattedCardNumber = CardFormFormatter.formatCardNumber(cardNumber)
+        _uiState.value = _uiState.value.copy(cardNumber = formattedCardNumber)
     }
 
     private fun setExpiredDate(expiredDate: String) {
-        if (expiredDate.length > MAX_EXPIRED_DATE_LENGTH) return
-        _uiState.value = _uiState.value.copy(expiredDate = expiredDate.filter { it.isDigit() })
+        val formattedExpiredDate = CardFormFormatter.formatExpiredDate(expiredDate)
+        _uiState.value = _uiState.value.copy(expiredDate = formattedExpiredDate)
     }
 
     private fun setOwnerName(ownerName: String) {
-        if (ownerName.length > MAX_OWNER_NAME_LENGTH) return
-        _uiState.value = _uiState.value.copy(ownerName = ownerName.filter { it.isLetter() })
+        val formattedOwnerName = CardFormFormatter.formatOwnerName(ownerName)
+        _uiState.value = _uiState.value.copy(ownerName = formattedOwnerName)
     }
 
     private fun setPassword(password: String) {
-        if (password.length > MAX_PASSWORD_LENGTH) return
-        _uiState.value = _uiState.value.copy(password = password.filter { it.isDigit() })
+        val formattedPassword = CardFormFormatter.formatPassword(password)
+        _uiState.value = _uiState.value.copy(password = formattedPassword)
     }
 
     fun setIssuingBank(issuingBank: IssuingBank) {
@@ -79,12 +81,5 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
             )
         )
         _effect.send(NewCardEffect.CardAdded)
-    }
-
-    companion object {
-        const val MAX_CARD_NUMBER_LENGTH = 16
-        const val MAX_EXPIRED_DATE_LENGTH = 4
-        const val MAX_OWNER_NAME_LENGTH = 10
-        const val MAX_PASSWORD_LENGTH = 4
     }
 }

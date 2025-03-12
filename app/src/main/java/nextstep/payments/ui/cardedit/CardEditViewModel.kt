@@ -13,10 +13,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import nextstep.payments.model.CardFormFormatter
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.IssuingBank
 import nextstep.payments.repository.PaymentCardsRepository
 import nextstep.payments.ui.form.PaymentCardFormState
+import kotlin.math.max
 
 class CardEditViewModel(
     private val cardId: Long,
@@ -69,23 +71,23 @@ class CardEditViewModel(
     }
 
     private fun changeCardNumber(cardNumber: String) = setStateOnSuccess {
-        if (cardNumber.length > MAX_CARD_NUMBER_LENGTH) return@setStateOnSuccess this
-        copy(formState = formState.copy(cardNumber = cardNumber.filter { it.isDigit() }))
+        val formattedCardNumber = CardFormFormatter.formatCardNumber(cardNumber)
+        copy(formState = formState.copy(cardNumber = formattedCardNumber))
     }
 
     private fun changeExpireDate(expiredDate: String) = setStateOnSuccess {
-        if (expiredDate.length > MAX_EXPIRED_DATE_LENGTH) return@setStateOnSuccess this
-        copy(formState = formState.copy(expiredDate = expiredDate.filter { it.isDigit() }))
+        val formattedExpiredDate = CardFormFormatter.formatExpiredDate(expiredDate)
+        copy(formState = formState.copy(expiredDate = formattedExpiredDate))
     }
 
     private fun changeOwnerName(ownerName: String) = setStateOnSuccess {
-        if (ownerName.length > MAX_OWNER_NAME_LENGTH) return@setStateOnSuccess this
-        copy(formState = formState.copy(ownerName = ownerName.filter { it.isLetter() }))
+        val formattedOwnerName = CardFormFormatter.formatOwnerName(ownerName)
+        copy(formState = formState.copy(ownerName = formattedOwnerName))
     }
 
     private fun changePassword(password: String) = setStateOnSuccess {
-        if (password.length > MAX_PASSWORD_LENGTH) return@setStateOnSuccess this
-        copy(formState = formState.copy(password = password.filter { it.isDigit() }))
+        val formattedPassword = CardFormFormatter.formatPassword(password)
+        copy(formState = formState.copy(password = formattedPassword))
     }
 
     private fun changeIssuingBank(issuingBank: IssuingBank) = setStateOnSuccess {
@@ -142,12 +144,6 @@ class CardEditViewModel(
             object : CreationExtras.Key<PaymentCardsRepository> {}
         val CARD_ID_KEY = object : CreationExtras.Key<Long> {}
 
-        const val MAX_CARD_NUMBER_LENGTH = 16
-        const val MAX_EXPIRED_DATE_LENGTH = 4
-        const val MAX_OWNER_NAME_LENGTH = 10
-        const val MAX_PASSWORD_LENGTH = 4
-
-
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val paymentCardsRepository =
@@ -162,3 +158,4 @@ class CardEditViewModel(
         }
     }
 }
+
