@@ -1,0 +1,102 @@
+package nextstep.payments.component
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import nextstep.payments.data.BankType
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BankSelectBottomSheet(
+    stateSheet: SheetState,
+    selectBank: (BankType) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+
+    ModalBottomSheet(
+        sheetState = stateSheet,
+        onDismissRequest = onDismissRequest,
+    ) {
+        BankSelectRow(
+            onClick = {
+                selectBank(it)
+            },
+        )
+    }
+}
+
+private const val COLUMN_COUNT = 4
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun BankSelectRow(
+    onClick: (bankType: BankType) -> Unit,
+) {
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(280.dp)
+            .padding(horizontal = 32.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        maxItemsInEachRow = COLUMN_COUNT,
+    ) {
+        BankType.entries.forEach { bankType ->
+            BankItem(
+                bank = bankType,
+                onClick = {
+                    onClick(bankType)
+                },
+                modifier = Modifier
+                    .width(80.dp)
+                    .height(70.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun BankItem(
+    bank: BankType,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .clickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(bank.icon),
+            contentDescription = bank.description,
+        )
+        Spacer(modifier = Modifier.height(9.dp))
+        Text(
+            text = bank.krName,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W500,
+        )
+    }
+}
