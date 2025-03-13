@@ -31,11 +31,13 @@ fun BankSelectBottomSheet(
     stateSheet: SheetState,
     selectBank: (BankType) -> Unit,
     onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     ModalBottomSheet(
-        sheetState = stateSheet,
         onDismissRequest = onDismissRequest,
+        sheetState = stateSheet,
+        modifier = modifier,
     ) {
         BankSelectRow(
             onClick = {
@@ -51,9 +53,10 @@ private const val COLUMN_COUNT = 4
 @Composable
 private fun BankSelectRow(
     onClick: (bankType: BankType) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     FlowRow(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(280.dp)
             .padding(horizontal = 32.dp),
