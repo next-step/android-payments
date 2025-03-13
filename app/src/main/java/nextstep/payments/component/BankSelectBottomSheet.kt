@@ -14,12 +14,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.data.BankType
@@ -37,7 +41,7 @@ fun BankSelectBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = stateSheet,
-        modifier = modifier,
+        modifier = modifier.testTag("bank_select_bottom_sheet"),
     ) {
         BankSelectRow(
             onClick = {
@@ -102,4 +106,21 @@ private fun BankItem(
             lineHeight = 18.75.sp,
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun BankSelectBottomSheetPreview() {
+    val sheetState = SheetState(
+        initialValue = SheetValue.Expanded,
+        skipPartiallyExpanded = true,
+        density = Density(1f),
+    )
+
+    BankSelectBottomSheet(
+        stateSheet = sheetState,
+        selectBank = {},
+        onDismissRequest = {},
+    )
 }

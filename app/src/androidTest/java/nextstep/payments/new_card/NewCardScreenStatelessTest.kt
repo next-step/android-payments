@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import nextstep.payments.data.BankType
@@ -27,7 +28,7 @@ class NewCardScreenStatelessTest {
             var ownerName by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
             var bankType by remember { mutableStateOf<BankType?>(null) }
-            var isBottomSheetOpen by remember { mutableStateOf(false) }
+            var isBottomSheetOpen by remember { mutableStateOf(true) }
 
             NewCardScreen(
                 cardNumber = cardNumber,
@@ -141,5 +142,15 @@ class NewCardScreenStatelessTest {
         composeTestRule
             .onNodeWithText("비밀번호")
             .assertTextContains("••••")
+    }
+
+    @Test
+    fun `카드추가_페이지에_진입_시_카드사_선택_바텀시트가_보여야한다`() {
+        // then
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithTag("bank_select_bottom_sheet")
+            .assertIsDisplayed()
     }
 }
