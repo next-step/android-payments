@@ -7,9 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
-import org.junit.Assert.assertEquals
+import nextstep.payments.data.BankType
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -17,11 +18,6 @@ import org.junit.Test
 class NewCardScreenStatelessTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    private var cardNumber = ""
-    private var expiredDate = ""
-    private var ownerName = ""
-    private var password = ""
 
     @Before
     fun setUp() {
@@ -31,34 +27,35 @@ class NewCardScreenStatelessTest {
             var expiredDate by remember { mutableStateOf("") }
             var ownerName by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
-
-            this.cardNumber = ""
-            this.expiredDate = ""
-            this.ownerName = ""
-            this.password = ""
+            var bankType by remember { mutableStateOf<BankType?>(null) }
+            var isBottomSheetOpen by remember { mutableStateOf(true) }
 
             NewCardScreen(
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
                 ownerName = ownerName,
                 password = password,
+                bankType = bankType,
+                isBottomSheetOpen = isBottomSheetOpen,
                 onBackClick = { },
                 addCard = { },
                 setCardNumber = {
                     cardNumber = it
-                    this.cardNumber = it
                 },
                 setExpiredDate = {
                     expiredDate = it
-                    this.expiredDate = it
                 },
                 setOwnerName = {
                     ownerName = it
-                    this.ownerName = it
                 },
                 setPassword = {
                     password = it
-                    this.password = it
+                },
+                setBankType = {
+                    bankType = it
+                },
+                setBottomSheetOpen = {
+                    isBottomSheetOpen = it
                 },
             )
         }
@@ -103,7 +100,9 @@ class NewCardScreenStatelessTest {
             .performTextInput("0000")
 
         // then
-        assertEquals("0000", cardNumber)
+        composeTestRule
+            .onNodeWithText("카드 번호")
+            .assertTextContains("0000")
     }
 
     @Test
@@ -114,7 +113,9 @@ class NewCardScreenStatelessTest {
             .performTextInput("00")
 
         // then
-        assertEquals("00", expiredDate)
+        composeTestRule
+            .onNodeWithText("만료일")
+            .assertTextContains("00")
     }
 
     @Test
@@ -125,18 +126,9 @@ class NewCardScreenStatelessTest {
             .performTextInput("홍길동")
 
         // then
-        assertEquals("홍길동", ownerName)
-    }
-
-    @Test
-    fun `비밀번호_입력_필드에_입력한_값과_password가_같아야_한다`() {
-        // when
         composeTestRule
-            .onNodeWithText("비밀번호")
-            .performTextInput("1111")
-
-        // then
-        assertEquals("1111", password)
+            .onNodeWithText("카드 소유자 이름(선택)")
+            .assertTextContains("홍길동")
     }
 
     @Test
@@ -150,5 +142,15 @@ class NewCardScreenStatelessTest {
         composeTestRule
             .onNodeWithText("비밀번호")
             .assertTextContains("••••")
+    }
+
+    @Test
+    fun `카드추가_페이지에_진입_시_카드사_선택_바텀시트가_보여야한다`() {
+        // then
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithTag("bank_select_bottom_sheet")
+            .assertIsDisplayed()
     }
 }

@@ -5,6 +5,7 @@ data class Card(
     val expiredDate: String,
     val ownerName: String,
     val password: String,
+    val bankType: BankType?,
 ) {
     fun formatCardNumber(): String {
         return cardNumber.take(4) + " - " + cardNumber.drop(4).take(4) + " - **** - ****"
@@ -20,24 +21,28 @@ val dummyDataList = arrayListOf(
         cardNumber = "1234567890123456",
         expiredDate = "1201",
         ownerName = "홍길동",
-        password = "0000"
+        password = "0000",
+        bankType = BankType.KB
     ),
     Card(
         cardNumber = "5678901234567890",
         expiredDate = "0101",
         ownerName = "김철수",
-        password = "0000"
+        password = "0000",
+        bankType = BankType.SHINHAN
     ),
     Card(
         cardNumber = "9012345678901234",
         expiredDate = "0201",
         ownerName = "김민수",
-        password = "0000"
+        password = "0000",
+        bankType = BankType.WOORI
     ),
     Card(
         cardNumber = "1111222233334444",
         expiredDate = "1212",
         ownerName = "김영식",
-        password = "0000"
+        password = "0000",
+        bankType = BankType.HANA
     )
 )
