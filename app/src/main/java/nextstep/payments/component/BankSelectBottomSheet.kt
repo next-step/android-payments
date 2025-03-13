@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -70,9 +70,7 @@ private fun BankSelectRow(
                 onClick = {
                     onClick(bankType)
                 },
-                modifier = Modifier
-                    .width(80.dp)
-                    .height(70.dp),
+                modifier = Modifier.size(width = 70.dp, height = 68.dp)
             )
         }
     }
@@ -100,6 +98,8 @@ private fun BankItem(
             text = bank.krName,
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
+            letterSpacing = (16.sp * -0.08),
+            lineHeight = 18.75.sp,
         )
     }
 }
