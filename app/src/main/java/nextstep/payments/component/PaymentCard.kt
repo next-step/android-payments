@@ -5,9 +5,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,24 +40,18 @@ fun PaymentCard(
         backgroundColor = bankType?.cardColor ?: Color(0xFF333333),
         modifier = modifier,
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 14.dp),
         ) {
-            if (bankType != null) {
-                CardBankName(
-                    bankName = bankType.krName,
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 15.dp),
-                )
-            }
-            CardIcChipImage(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(bottom = 10.dp),
-            )
+            Spacer(modifier = Modifier.height(15.dp))
+
+            CardBankName(bankName = bankType?.krName ?: "")
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            CardIcChipImage()
         }
     }
 }
@@ -68,28 +65,22 @@ fun PaymentListCard(
         backgroundColor = card.bankType?.cardColor ?: Color(0xFF333333),
         modifier = modifier,
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 14.dp),
         ) {
-            CardBankName(
-                bankName = card.bankType?.krName ?: "",
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(top = 15.dp),
-            )
-            CardIcChipImage(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(bottom = 10.dp),
-            )
-            CardInfo(
-                card = card,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(bottom = 16.dp),
-            )
+            Spacer(modifier = Modifier.height(15.dp))
+
+            CardBankName(bankName = card.bankType?.krName ?: "")
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            CardIcChipImage()
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CardInfo(card = card)
         }
     }
 }
@@ -105,15 +96,16 @@ fun EnrollmentPaymentCard(
             onClick()
         },
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "+",
                 color = Color(0xFF575757),
                 fontSize = 34.sp,
                 fontWeight = FontWeight.W400,
-                modifier = Modifier.align(Alignment.Center),
             )
         }
     }
@@ -123,7 +115,7 @@ fun EnrollmentPaymentCard(
 private fun CardBackground(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         modifier = modifier
