@@ -1,5 +1,6 @@
 package nextstep.payments
 
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasText
@@ -31,7 +32,7 @@ class CardListScreenTest {
         cardNumber = "1234567812345678",
         expiredDate = "1223",
         ownerName = "홀리물리",
-        password = "1234",
+        password = "1111",
         cardCompanyType = CardCompanyType.BC,
     )
 
@@ -73,11 +74,8 @@ class CardListScreenTest {
         )
 
         // 등록된 카드가 있을 때 카드가 화면에 노출되는지 확인
-        composeTestRule.onAllNodesWithText("홍길동")
-            .filter(hasAnySibling(hasText("1234")))
-            .filter(hasAnySibling(hasText("12 / 23")))
-            .onFirst()
-            .assertExists()
+        composeTestRule.onNodeWithText("홍길동")
+            .assert(hasText("1234") and hasText("12 / 23"))
     }
 
     @Test
