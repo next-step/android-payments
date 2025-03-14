@@ -13,6 +13,12 @@ import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.CardCompanyType
 
+sealed class SaveState {
+    data object UpdateCard : SaveState()
+    data object SaveNewCard : SaveState()
+    data object ShowSnackbar : SaveState()
+}
+
 class NewCardViewModel(
     private val paymentRepsoitory: PaymentCardsRepository = PaymentCardsRepository,
 ) : ViewModel() {
@@ -38,6 +44,8 @@ class NewCardViewModel(
     private val _updateCardState = MutableSharedFlow<Boolean>(replay = 1)
     val updateCardState: SharedFlow<Boolean> = _updateCardState
 
+    private val _saveState = MutableSharedFlow<SaveState>(replay = 1)
+    val saveState: SharedFlow<SaveState> = _saveState
 
     private var modifyCard: Card? = null
 
@@ -137,5 +145,19 @@ class NewCardViewModel(
 
         // 업데이트 성공
         _updateCardState.tryEmit(true)
+    }
+
+    fun onSaveClick(cardId: String?, isSaveEnabled: Boolean) {
+        if (!isSaveEnabled) {
+            _saveState.tryEmit(SaveState.ShowSnackbar)
+            return
+        }
+
+        if (cardId != null) {
+            _saveState.tryEmit(SaveState.UpdateCard)
+            return
+        }
+
+        _saveState.tryEmit(SaveState.SaveNewCard)
     }
 }

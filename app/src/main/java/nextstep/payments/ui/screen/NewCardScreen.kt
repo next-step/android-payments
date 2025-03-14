@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -46,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nextstep.payments.R
 import nextstep.payments.ui.CardCompanyType
@@ -56,6 +56,7 @@ import nextstep.payments.ui.theme.Dimensions
 import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
 import nextstep.payments.ui.viewmodel.NewCardViewModel
+import nextstep.payments.ui.viewmodel.SaveState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,8 +66,6 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val context = LocalContext.current
-
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
@@ -83,8 +82,19 @@ fun NewCardScreen(
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
-    val snackbarMessage = remember { context.getString(R.string.validate_modify_snack_bar_message) }
     val coroutineScope = rememberCoroutineScope()
+
+    val snackbarMessage = if (cardId == null) {
+        stringResource(R.string.validate_snack_bar_message)
+    } else {
+        stringResource(R.string.validate_modify_snack_bar_message)
+    }
+
+    val appBarTitle = if (cardId == null) {
+        stringResource(R.string.card_add_app_bar_title)
+    } else {
+        stringResource(R.string.card_update_app_bar_title)
+    }
 
     LaunchedEffect(Unit) {
         if (cardId != null) {
@@ -100,27 +110,63 @@ fun NewCardScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.updateCardState.collect { isUpdatable ->
+        viewModel.updateCardState.collectLatest { isUpdatable ->
             if (!isUpdatable) {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(snackbarMessage)
                 }
 
-                return@collect
+                return@collectLatest
             }
 
             navigateToCardList()
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.saveState.collectLatest { state ->
+            when (state) {
+                is SaveState.UpdateCard -> {
+                    cardId?.let {
+                        viewModel.updateCard(
+                            cardId = it,
+                            cardNumber = cardNumber,
+                            expiredDate = expiredDate,
+                            ownerName = ownerName,
+                            password = password,
+                            cardCompanyType = selectedCardCompany
+                        )
+                    }
+                }
+
+                is SaveState.SaveNewCard -> {
+                    viewModel.addCard(
+                        cardNumber = cardNumber,
+                        expiredDate = expiredDate,
+                        ownerName = ownerName,
+                        password = password,
+                        cardCompanyType = selectedCardCompany
+                    )
+
+                    navigateToCardList()
+                }
+
+                is SaveState.ShowSnackbar -> {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(snackbarMessage)
+                    }
+                }
+            }
+        }
+    }
+
     NewCardScreen(
-        cardId = cardId,
+        appBarTitle = appBarTitle,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
         selectedCardCompany = selectedCardCompany,
-        isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -128,29 +174,7 @@ fun NewCardScreen(
         snackbarHostState = snackbarHostState,
         onBackCLick = navigateToCardList,
         onSaveClick = {
-            viewModel.addCard(
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
-                cardCompanyType = selectedCardCompany
-            )
-
-            navigateToCardList()
-        },
-        onUpdateClick = {
-            if (cardId == null) {
-                return@NewCardScreen
-            }
-
-            viewModel.updateCard(
-                cardId = cardId,
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
-                cardCompanyType = selectedCardCompany
-            )
+            viewModel.onSaveClick(cardId, isSaveEnabled)
         },
         modifier = modifier
     )
@@ -172,13 +196,12 @@ fun NewCardScreen(
 
 @Composable
 private fun NewCardScreen(
-    cardId: String?,
+    appBarTitle: String,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
     selectedCardCompany: CardCompanyType?,
-    isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -186,40 +209,16 @@ private fun NewCardScreen(
     setPassword: (String) -> Unit,
     onBackCLick: () -> Unit,
     onSaveClick: () -> Unit,
-    onUpdateClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val snackbarMessage = remember { context.getString(R.string.validate_snack_bar_message) }
-
-    val coroutineScope = rememberCoroutineScope()
-
-    val appBarTitle = if (cardId == null) {
-        stringResource(R.string.card_add_app_bar_title)
-    } else {
-        stringResource(R.string.card_update_app_bar_title)
-    }
 
     Scaffold(
         topBar = {
             NewCardTopBar(
                 appbarTitle = appBarTitle,
                 onBackClick = onBackCLick,
-                onSaveClick = {
-                    if (cardId != null && isSaveEnabled) {
-                        onUpdateClick()
-                        return@NewCardTopBar
-                    }
-
-                    if (isSaveEnabled) {
-                        onSaveClick()
-                        return@NewCardTopBar
-                    }
-
-                    coroutineScope.launch {
-                        snackbarHostState.showSnackbar(snackbarMessage)
-                    }
-                })
+                onSaveClick = onSaveClick,
+            )
         },
         snackbarHost = {
             SnackbarHost(
@@ -521,12 +520,11 @@ private fun StatefulNewCardScreenPreview() {
 @Composable
 private fun StatelessNewCardScreenPreView() {
     NewCardScreen(
-        cardId = null,
+        appBarTitle = "카드 추가",
         cardNumber = "1234567812345678",
         expiredDate = "12 / 34",
         ownerName = "홍길동",
         password = "1234",
-        isSaveEnabled = true,
         selectedCardCompany = CardCompanyType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
@@ -535,6 +533,5 @@ private fun StatelessNewCardScreenPreView() {
         setPassword = {},
         onBackCLick = {},
         onSaveClick = {},
-        onUpdateClick = {},
     )
 }
