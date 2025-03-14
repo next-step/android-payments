@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.BankType
-import nextstep.payments.data.Card
 import nextstep.payments.repository.PaymentCardsRepository
 
 class NewCardViewModel(
@@ -57,19 +56,18 @@ class NewCardViewModel(
     }
 
     fun addCard() {
-        if (cardNumber.value.isEmpty() || expiredDate.value.isEmpty() || ownerName.value.isEmpty() || password.value.isEmpty()) {
+        if (cardNumber.value.isEmpty() || expiredDate.value.isEmpty() || ownerName.value.isEmpty() || password.value.isEmpty() || bankType.value == null) {
             return
         }
 
-        val card = Card(
+        repository.addCard(
             cardNumber = cardNumber.value,
             expiredDate = expiredDate.value,
             ownerName = ownerName.value,
             password = password.value,
-            bankType = bankType.value
+            bankType = bankType.value!!
         )
 
-        repository.addCard(card)
         _cardAdded.value = true
     }
 }

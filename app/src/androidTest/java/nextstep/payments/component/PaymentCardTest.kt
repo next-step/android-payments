@@ -19,6 +19,7 @@ class PaymentCardTest {
         composeTestRule.setContent {
             PaymentListCard(
                 card = Card(
+                    id = 0,
                     cardNumber = "1234567890123456",
                     expiredDate = "1201",
                     ownerName = "홍길동",
@@ -40,6 +41,7 @@ class PaymentCardTest {
         composeTestRule.setContent {
             PaymentListCard(
                 card = Card(
+                    id = 0,
                     cardNumber = "1234567890123456",
                     expiredDate = "1201",
                     ownerName = "홍길동",
@@ -61,6 +63,7 @@ class PaymentCardTest {
         composeTestRule.setContent {
             PaymentListCard(
                 card = Card(
+                    id = 0,
                     cardNumber = "1234567890123456",
                     expiredDate = "1201",
                     ownerName = "홍길동",
