@@ -40,19 +40,16 @@ fun PaymentCard(
         backgroundColor = bankType?.cardColor ?: Color(0xFF333333),
         modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp),
-        ) {
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardBankName(bankName = bankType?.krName ?: "")
+        CardBankName(
+            bankName = bankType?.krName ?: "",
+            modifier = Modifier.padding(horizontal = 14.dp),
+        )
 
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardIcChipImage()
-        }
+        CardIcChipImage(modifier = Modifier.padding(horizontal = 14.dp))
     }
 }
 
@@ -65,23 +62,23 @@ fun PaymentListCard(
         backgroundColor = card.bankType?.cardColor ?: Color(0xFF333333),
         modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp),
-        ) {
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardBankName(bankName = card.bankType?.krName ?: "")
+        CardBankName(
+            bankName = card.bankType?.krName ?: "",
+            modifier = Modifier.padding(horizontal = 14.dp)
+        )
 
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardIcChipImage()
+        CardIcChipImage(modifier = Modifier.padding(horizontal = 14.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-            CardInfo(card = card)
-        }
+        CardInfo(
+            card = card,
+            modifier = Modifier.padding(horizontal = 14.dp),
+        )
     }
 }
 
@@ -96,16 +93,15 @@ fun EnrollmentPaymentCard(
             onClick()
         },
     ) {
-        Column(
+        Box(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "+",
                 color = Color(0xFF575757),
                 fontSize = 34.sp,
                 fontWeight = FontWeight.W400,
+                modifier = Modifier.align(Alignment.Center),
             )
         }
     }
@@ -120,8 +116,7 @@ private fun CardBackground(
     Card(
         modifier = modifier
             .shadow(8.dp)
-            .size(208.dp, 124.dp)
-            .fillMaxWidth(),
+            .size(208.dp, 124.dp),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
