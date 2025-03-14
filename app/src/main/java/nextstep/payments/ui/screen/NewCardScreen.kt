@@ -105,7 +105,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        selectedBank = selectedCardCompany,
+        selectedCardCompany = selectedCardCompany,
         isSaveEnabled = isSaveEnabled,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
@@ -173,7 +173,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    selectedBank: CardCompanyType?,
+    selectedCardCompany: CardCompanyType?,
     isSaveEnabled: Boolean,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
@@ -234,13 +234,13 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            if (selectedBank != null) {
+            if (selectedCardCompany != null) {
                 PaymentCard(
-                    bankName = stringResource(selectedBank.bankNameResId),
+                    bankName = stringResource(selectedCardCompany.bankNameResId),
                     cardNumber = cardNumber,
                     expiredDate = expiredDate,
                     ownerName = ownerName,
-                    cardColor = selectedBank.bankThemeColor,
+                    cardColor = selectedCardCompany.bankThemeColor,
                 )
             } else {
                 PaymentCard(
@@ -523,7 +523,7 @@ private fun StatelessNewCardScreenPreView() {
         ownerName = "홍길동",
         password = "1234",
         isSaveEnabled = true,
-        selectedBank = CardCompanyType.BC,
+        selectedCardCompany = CardCompanyType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},
