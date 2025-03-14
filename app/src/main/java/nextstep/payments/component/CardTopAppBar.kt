@@ -1,4 +1,4 @@
-package nextstep.payments.new_card
+package nextstep.payments.component
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,13 +14,14 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardTopAppBar(
+fun CardTopAppBar(
+    title: String,
     onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
+    onCompleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -30,7 +31,7 @@ fun NewCardTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(onClick = { onCompleteClick() }) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",
@@ -43,9 +44,20 @@ fun NewCardTopAppBar(
 
 @Preview
 @Composable
-private fun NewCardTopAppBarPreview() {
-    NewCardTopAppBar(
+private fun EditCardTopAppBarPreview() {
+    CardTopAppBar(
+        title = "카드 수정",
         onBackClick = {},
-        onSaveClick = {},
+        onCompleteClick = {},
+    )
+}
+
+@Preview
+@Composable
+private fun NewCardTopAppBarPreview() {
+    CardTopAppBar(
+        title = "카드 추가",
+        onBackClick = {},
+        onCompleteClick = {},
     )
 }
