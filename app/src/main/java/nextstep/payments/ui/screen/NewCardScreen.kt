@@ -99,6 +99,20 @@ fun NewCardScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.updateCardState.collect { isUpdatable ->
+            if (!isUpdatable) {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(snackbarMessage)
+                }
+
+                return@collect
+            }
+
+            navigateToCardList()
+        }
+    }
+
     NewCardScreen(
         cardId = cardId,
         cardNumber = cardNumber,
@@ -129,7 +143,7 @@ fun NewCardScreen(
                 return@NewCardScreen
             }
 
-            val updateSuccess = viewModel.updateCard(
+            viewModel.updateCard(
                 cardId = cardId,
                 cardNumber = cardNumber,
                 expiredDate = expiredDate,
@@ -137,16 +151,6 @@ fun NewCardScreen(
                 password = password,
                 cardCompanyType = selectedCardCompany
             )
-
-            if(!updateSuccess) {
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(snackbarMessage)
-                }
-
-                return@NewCardScreen
-            }
-
-            navigateToCardList()
         },
         modifier = modifier
     )

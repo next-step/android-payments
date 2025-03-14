@@ -1,9 +1,10 @@
 package nextstep.payments.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -33,6 +34,10 @@ class NewCardViewModel(
 
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
+
+    private val _updateCardState = MutableSharedFlow<Boolean>(replay = 1)
+    val updateCardState: SharedFlow<Boolean> = _updateCardState
+
 
     private var modifyCard: Card? = null
 
@@ -107,9 +112,9 @@ class NewCardViewModel(
         ownerName: String,
         password: String,
         cardCompanyType: CardCompanyType?,
-    ): Boolean {
+    ) {
         if (cardCompanyType == null) {
-            return false
+            return
         }
 
         val updatedCard = Card(
@@ -122,14 +127,15 @@ class NewCardViewModel(
         )
 
         if (modifyCard == updatedCard) {
-            Log.d("앙데욧!", "같은 카드입니다.")
-            return false
+            _updateCardState.tryEmit(false)
+            return
         }
 
         paymentRepsoitory.updateCard(
             updatedCard = updatedCard
         )
 
-        return true
+        // 업데이트 성공
+        _updateCardState.tryEmit(true)
     }
 }
