@@ -37,6 +37,7 @@ class NewCardScreenStatelessTest {
                 password = password,
                 bankType = bankType,
                 isBottomSheetOpen = isBottomSheetOpen,
+                isCompleteButtonEnabled = false,
                 onBackClick = { },
                 addCard = { },
                 setCardNumber = {

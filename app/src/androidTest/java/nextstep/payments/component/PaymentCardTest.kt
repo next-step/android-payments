@@ -1,9 +1,7 @@
 package nextstep.payments.component
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import org.junit.Rule

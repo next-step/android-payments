@@ -19,6 +19,7 @@ class NewCardTopAppBarTest {
         composeTestRule.setContent {
             CardTopAppBar(
                 title = "카드 추가",
+                isCompleteButtonEnabled = false,
                 onBackClick = {},
                 onCompleteClick = {},
             )
@@ -38,6 +39,7 @@ class NewCardTopAppBarTest {
         composeTestRule.setContent {
             CardTopAppBar(
                 title = "",
+                isCompleteButtonEnabled = false,
                 onBackClick = {
                     isClicked = true
                 },
@@ -62,6 +64,7 @@ class NewCardTopAppBarTest {
         composeTestRule.setContent {
             CardTopAppBar(
                 title = "",
+                isCompleteButtonEnabled = true,
                 onBackClick = {},
                 onCompleteClick = {
                     isClicked = true
