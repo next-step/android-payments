@@ -41,7 +41,7 @@ fun BankSelectBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = stateSheet,
-        modifier = modifier.testTag("bank_select_bottom_sheet"),
+        modifier = modifier.testTag("Card_BankSelectBottomSheet"),
     ) {
         BankSelectRow(
             onClick = {

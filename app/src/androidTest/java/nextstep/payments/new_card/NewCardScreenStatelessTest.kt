@@ -150,7 +150,7 @@ class NewCardScreenStatelessTest {
         composeTestRule.waitForIdle()
 
         composeTestRule
-            .onNodeWithTag("bank_select_bottom_sheet")
+            .onNodeWithTag("Card_BankSelectBottomSheet")
             .assertIsDisplayed()
     }
 }
