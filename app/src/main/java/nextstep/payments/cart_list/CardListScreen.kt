@@ -1,5 +1,6 @@
 package nextstep.payments.cart_list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +29,7 @@ import nextstep.payments.data.dummyDataList
 fun CardListScreen(
     cardListUiState: CardListUiState,
     onAddClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -52,6 +54,7 @@ fun CardListScreen(
                 CardListOneScreen(
                     card = cardListUiState.card,
                     onAddClick = onAddClick,
+                    onCardClick = onCardClick,
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -59,6 +62,7 @@ fun CardListScreen(
             is CardListUiState.Many -> {
                 CardListManyScreen(
                     cardList = cardListUiState.cards,
+                    onCardClick = onCardClick,
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -95,6 +99,7 @@ private fun CardListEmptyScreen(
 private fun CardListOneScreen(
     card: Card,
     onAddClick: () -> Unit,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -106,6 +111,9 @@ private fun CardListOneScreen(
     ) {
         PaymentListCard(
             card = card,
+            modifier = Modifier.clickable {
+                onCardClick(card)
+            }
         )
         EnrollmentPaymentCard(
             onClick = { onAddClick() },
@@ -116,6 +124,7 @@ private fun CardListOneScreen(
 @Composable
 private fun CardListManyScreen(
     cardList: List<Card>,
+    onCardClick: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -125,7 +134,12 @@ private fun CardListManyScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(cardList) {
-            PaymentListCard(it)
+            PaymentListCard(
+                card = it,
+                modifier = Modifier.clickable {
+                    onCardClick(it)
+                }
+            )
         }
     }
 }
@@ -146,5 +160,6 @@ fun CardListScreenPreview(
     CardListScreen(
         cardListUiState = uiState,
         onAddClick = { },
+        onCardClick = { },
     )
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import nextstep.payments.edit_card.EditCardActivity
 import nextstep.payments.new_card.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -32,6 +33,12 @@ class CardListActivity : ComponentActivity() {
                     cardListUiState = cardListUiState,
                     onAddClick = {
                         val intent = Intent(this, NewCardActivity::class.java)
+                        launcher.launch(intent)
+                    },
+                    onCardClick = {
+                        val intent = Intent(this, EditCardActivity::class.java).apply {
+                            putExtra("card_id", it.id)
+                        }
                         launcher.launch(intent)
                     },
                     modifier = Modifier,
