@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import nextstep.payments.component.CardTopAppBar
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -13,12 +14,13 @@ class NewCardTopAppBarTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun 앱바_타이틀에_카드_추가_텍스트가_노출되어야_한다() {
+    fun title_인자가_카드_추가_이면_카트_추가_텍스트가_노출되어야_한다() {
         // given
         composeTestRule.setContent {
-            NewCardTopAppBar(
+            CardTopAppBar(
+                title = "카드 추가",
                 onBackClick = {},
-                onSaveClick = {},
+                onCompleteClick = {},
             )
         }
 
@@ -34,11 +36,12 @@ class NewCardTopAppBarTest {
         var isClicked = false
 
         composeTestRule.setContent {
-            NewCardTopAppBar(
+            CardTopAppBar(
+                title = "",
                 onBackClick = {
                     isClicked = true
                 },
-                onSaveClick = {},
+                onCompleteClick = {},
             )
         }
 
@@ -52,14 +55,15 @@ class NewCardTopAppBarTest {
     }
 
     @Test
-    fun 액션버튼인_카드_추가_완료_버튼_클릭이_되어야_한다() {
+    fun 앱바의_액션버튼이_클릭이_되어야_한다() {
         // given
         var isClicked = false
 
         composeTestRule.setContent {
-            NewCardTopAppBar(
+            CardTopAppBar(
+                title = "",
                 onBackClick = {},
-                onSaveClick = {
+                onCompleteClick = {
                     isClicked = true
                 },
             )
