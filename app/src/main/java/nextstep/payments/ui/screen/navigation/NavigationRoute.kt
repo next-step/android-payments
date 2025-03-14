@@ -3,15 +3,12 @@ package nextstep.payments.ui.screen.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class CardRoute(val route: String) {
-    @Serializable
-    data object CardList : CardRoute("cardList")
+sealed class CardRoute {
 
     @Serializable
-    data object NewCard : CardRoute("newCard") {
-        fun withId(cardId: String?): String {
-            return "newCard?cardId=${cardId}"
-        }
-    }
+    data object CardList : CardRoute()
+
+    @Serializable
+    data class NewCard(val cardId: String?) : CardRoute()
 }
 

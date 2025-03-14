@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import nextstep.payments.ui.screen.navigation.CardRoute
 
 
@@ -26,27 +26,25 @@ fun CardApp(
     ) {
         NavHost(
             navController = navController,
-            startDestination = CardRoute.CardList.route,
+            startDestination = CardRoute.CardList,
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            composable(CardRoute.CardList.route) {
+            composable<CardRoute.CardList> {
                 CardListScreen(
                     navigateToNewCard = {
-                        navController.navigate(CardRoute.NewCard.route)
+                        navController.navigate(CardRoute.NewCard(null))
                     },
                     navigateToUpdateCard = { cardId ->
-                        navController.navigate(CardRoute.NewCard.withId(cardId))
+                        navController.navigate(CardRoute.NewCard(cardId))
                     }
                 )
             }
 
-            composable(
-                route = "${CardRoute.NewCard.route}?cardId={cardId}",
-                arguments = listOf(navArgument("cardId") { nullable = true })
-            ) { backStackEntry ->
-                val cardId = backStackEntry.arguments?.getString("cardId")
+            composable<CardRoute.NewCard> { backStackEntry ->
+                val newCard: CardRoute.NewCard = backStackEntry.toRoute()
+                val cardId = newCard.cardId
 
                 NewCardScreen(
                     cardId = cardId,
