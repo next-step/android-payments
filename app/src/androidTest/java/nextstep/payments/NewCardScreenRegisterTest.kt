@@ -152,7 +152,7 @@ class NewCardScreenRegisterTest {
 
     @Test
     fun 화면_진입시_은행_선택_바텀_시트가_호출된다() {
-        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+        composeTestRule.onNodeWithContentDescription("cardCompanyBottomSheet")
             .assertIsDisplayed()
     }
 
@@ -163,7 +163,7 @@ class NewCardScreenRegisterTest {
             .performClick()
 
         // then
-        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+        composeTestRule.onNodeWithContentDescription("cardCompanyBottomSheet")
             .assertDoesNotExist()
     }
 

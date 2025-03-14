@@ -239,15 +239,15 @@ private fun NewCardScreen(
 
             if (selectedCardCompany != null) {
                 PaymentCard(
-                    bankName = stringResource(selectedCardCompany.bankNameResId),
+                    cardCompanyName = stringResource(selectedCardCompany.cardCompanyNameResId),
                     cardNumber = cardNumber,
                     expiredDate = expiredDate,
                     ownerName = ownerName,
-                    cardColor = selectedCardCompany.bankThemeColor,
+                    cardColor = selectedCardCompany.cardCompanyThemeColor,
                 )
             } else {
                 PaymentCard(
-                    bankName = "00",
+                    cardCompanyName = "00",
                     cardNumber = cardNumber,
                     expiredDate = expiredDate,
                     ownerName = ownerName,
@@ -365,7 +365,7 @@ private fun BankBottomModalSheet(
 ) {
     ModalBottomSheet(
         modifier = modifier.semantics {
-            contentDescription = "bankBottomSheet"
+            contentDescription = "cardCompanyBottomSheet"
         },
         sheetState = sheetState,
         onDismissRequest = {},
@@ -378,8 +378,8 @@ private fun BankBottomModalSheet(
 
             // 은행 리스트
             BankSelectRow(
-                onBankClick = { bankType ->
-                    onBankClick(bankType)
+                onBankClick = { cardCompanyType ->
+                    onBankClick(cardCompanyType)
                 },
             )
         }
@@ -392,7 +392,7 @@ private fun BankSelectRow(
     onBankClick: (CardCompanyType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bankList = CardCompanyType.getBankList()
+    val cardCompanyList = CardCompanyType.getBankList()
 
     FlowRow(
         modifier = modifier
@@ -402,19 +402,19 @@ private fun BankSelectRow(
         verticalArrangement = Arrangement.spacedBy(23.dp),
         maxItemsInEachRow = 4
     ) {
-        bankList.forEach { bankType ->
+        cardCompanyList.forEach { cardCompanyType ->
 
-            if (bankType.bankImageRes == null) {
+            if (cardCompanyType.cardCompanyImageRes == null) {
                 return@forEach
             }
 
             BankItem(
-                bankName = stringResource(bankType.bankNameResId),
-                bankImage = painterResource(bankType.bankImageRes),
+                cardCompanyName = stringResource(cardCompanyType.cardCompanyNameResId),
+                cardCompanyImage = painterResource(cardCompanyType.cardCompanyImageRes),
                 modifier = modifier
                     .width(80.dp)
                     .clickable(
-                        onClick = { onBankClick(bankType) },
+                        onClick = { onBankClick(cardCompanyType) },
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     )
@@ -425,8 +425,8 @@ private fun BankSelectRow(
 
 @Composable
 private fun BankItem(
-    bankName: String,
-    bankImage: Painter,
+    cardCompanyName: String,
+    cardCompanyImage: Painter,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -434,13 +434,13 @@ private fun BankItem(
         modifier = modifier
     ) {
         Image(
-            painter = bankImage,
+            painter = cardCompanyImage,
             contentDescription = "Bank Logo",
             modifier = Modifier.size(Dimensions.LogoDefaults),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "${bankName}카드",
+            text = "${cardCompanyName}카드",
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
         )
@@ -451,8 +451,8 @@ private fun BankItem(
 @Composable
 private fun BankItemPreview() {
     BankItem(
-        bankName = "BC",
-        bankImage = painterResource(R.drawable.bc),
+        cardCompanyName = "BC",
+        cardCompanyImage = painterResource(R.drawable.bc),
     )
 }
 

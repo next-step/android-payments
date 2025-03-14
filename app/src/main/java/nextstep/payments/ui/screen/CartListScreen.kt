@@ -136,11 +136,11 @@ private fun OneCardContainer(
         modifier = modifier,
     ) {
         PaymentCard(
-            bankName = stringResource(card.cardCompanyType.bankNameResId),
+            cardCompanyName = stringResource(card.cardCompanyType.cardCompanyNameResId),
             cardNumber = card.cardNumber,
             expiredDate = card.expiredDate,
             ownerName = card.ownerName,
-            cardColor = card.cardCompanyType.bankThemeColor,
+            cardColor = card.cardCompanyType.cardCompanyThemeColor,
             modifier = Modifier.clickable(
                 onClick = onCardClick
             )
@@ -165,11 +165,11 @@ private fun CardListContainer(
     ) {
         items(cardList) { card ->
             PaymentCard(
-                bankName = card.cardCompanyType.name,
+                cardCompanyName = card.cardCompanyType.name,
                 cardNumber = card.cardNumber,
                 expiredDate = card.expiredDate,
                 ownerName = card.ownerName,
-                cardColor = card.cardCompanyType.bankThemeColor,
+                cardColor = card.cardCompanyType.cardCompanyThemeColor,
                 modifier = Modifier.clickable(
                     onClick = { onCardClick(card.cardId) }
                 )

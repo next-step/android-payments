@@ -30,7 +30,7 @@ import nextstep.payments.ui.theme.Dimensions.CardRatioDefaults
 
 @Composable
 fun PaymentCard(
-    bankName: String,
+    cardCompanyName: String,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
@@ -52,7 +52,7 @@ fun PaymentCard(
             modifier = Modifier.padding(horizontal = 14.dp)
         ) {
             Text(
-                text = "${bankName}카드",
+                text = "${cardCompanyName}카드",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W500,
                 color = Color.White
@@ -183,7 +183,7 @@ private fun DividerPreview() {
 @Composable
 private fun PaymentCardPreview() {
     PaymentCard(
-        bankName = "신한",
+        cardCompanyName = "신한",
         cardNumber = "1234123412341324",
         expiredDate = "1234",
         ownerName = "홍길동",
