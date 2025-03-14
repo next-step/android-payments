@@ -43,6 +43,7 @@ fun NewCardScreen(
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val bankType by viewModel.bankType.collectAsStateWithLifecycle()
     val isBottomSheetOpen by viewModel.isBottomSheetOpen.collectAsStateWithLifecycle()
+    val isCompleteButtonEnabled by viewModel.isCompleteButtonEnabled.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
@@ -55,6 +56,7 @@ fun NewCardScreen(
         password = password,
         bankType = bankType,
         isBottomSheetOpen = isBottomSheetOpen,
+        isCompleteButtonEnabled = isCompleteButtonEnabled,
         onBackClick = onBackButtonClick,
         addCard = viewModel::addCard,
         setCardNumber = viewModel::setCardNumber,
@@ -76,7 +78,8 @@ fun NewCardScreen(
     ownerName: String,
     password: String,
     bankType: BankType?,
-    isBottomSheetOpen: Boolean = false,
+    isBottomSheetOpen: Boolean,
+    isCompleteButtonEnabled: Boolean,
     onBackClick: () -> Unit,
     addCard: () -> Unit,
     setCardNumber: (String) -> Unit = {},
@@ -98,6 +101,7 @@ fun NewCardScreen(
             CardTopAppBar(
                 title = "카드 추가",
                 onBackClick = onBackClick,
+                isCompleteButtonEnabled = isCompleteButtonEnabled,
                 onCompleteClick = addCard
             )
         },
@@ -199,6 +203,7 @@ private fun StatelessNewCardScreenPreview() {
         password = "0000",
         bankType = null,
         isBottomSheetOpen = false,
+        isCompleteButtonEnabled = false,
         addCard = {},
         onBackClick = {},
         setCardNumber = {},

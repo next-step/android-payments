@@ -40,6 +40,7 @@ fun EditCardScreen(
     val cardUpdated by viewModel.cardUpdated.collectAsStateWithLifecycle()
     val card by viewModel.card.collectAsStateWithLifecycle()
     val isBottomSheetOpen by viewModel.isBottomSheetOpen.collectAsStateWithLifecycle()
+    val isCompleteButtonEnabled by viewModel.isCompleteButtonEnabled.collectAsStateWithLifecycle()
 
     LaunchedEffect(cardUpdated) {
         if (cardUpdated) navigateToCardList()
@@ -48,6 +49,7 @@ fun EditCardScreen(
     EditCardScreen(
         card = card,
         isBottomSheetOpen = isBottomSheetOpen,
+        isCompleteButtonEnabled = isCompleteButtonEnabled,
         onBackClick = onBackButtonClick,
         updateCard = viewModel::updateCard,
         setCardNumber = viewModel::setCardNumber,
@@ -65,7 +67,8 @@ fun EditCardScreen(
 @Composable
 fun EditCardScreen(
     card: Card,
-    isBottomSheetOpen: Boolean = false,
+    isBottomSheetOpen: Boolean,
+    isCompleteButtonEnabled: Boolean,
     onBackClick: () -> Unit,
     updateCard: () -> Unit,
     setCardNumber: (String) -> Unit = {},
@@ -87,6 +90,7 @@ fun EditCardScreen(
             CardTopAppBar(
                 title = "카드 수정",
                 onBackClick = onBackClick,
+                isCompleteButtonEnabled = isCompleteButtonEnabled,
                 onCompleteClick = updateCard
             )
         },
@@ -177,13 +181,7 @@ private fun StatefulEditCardScreenPreview() {
     EditCardScreen(
         onBackButtonClick = {},
         navigateToCardList = {},
-        viewModel = EditCardViewModel(card).apply {
-            setCardNumber("0000 - 0000 - 0000 - 0000")
-            setExpiredDate("00 / 00")
-            setOwnerName("홍길동")
-            setPassword("0000")
-            setBottomSheetOpen(false)
-        },
+        viewModel = EditCardViewModel(card),
     )
 }
 
@@ -202,6 +200,7 @@ private fun StatelessEditCardScreenPreview() {
     EditCardScreen(
         card = card,
         isBottomSheetOpen = false,
+        isCompleteButtonEnabled = false,
         updateCard = {},
         onBackClick = {},
         setCardNumber = {},

@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun CardTopAppBar(
     title: String,
+    isCompleteButtonEnabled: Boolean,
     onBackClick: () -> Unit,
     onCompleteClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -31,7 +32,10 @@ fun CardTopAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { onCompleteClick() }) {
+            IconButton(
+                onClick = { onCompleteClick() },
+                enabled = isCompleteButtonEnabled,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",
@@ -47,6 +51,7 @@ fun CardTopAppBar(
 private fun EditCardTopAppBarPreview() {
     CardTopAppBar(
         title = "카드 수정",
+        isCompleteButtonEnabled = true,
         onBackClick = {},
         onCompleteClick = {},
     )
@@ -57,6 +62,7 @@ private fun EditCardTopAppBarPreview() {
 private fun NewCardTopAppBarPreview() {
     CardTopAppBar(
         title = "카드 추가",
+        isCompleteButtonEnabled = false,
         onBackClick = {},
         onCompleteClick = {},
     )

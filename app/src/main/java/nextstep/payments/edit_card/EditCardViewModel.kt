@@ -29,33 +29,52 @@ class EditCardViewModel(
     private val _isBottomSheetOpen = MutableStateFlow(false)
     val isBottomSheetOpen: StateFlow<Boolean> = _isBottomSheetOpen.asStateFlow()
 
+    private val _isCompleteButtonEnabled = MutableStateFlow(false)
+    val isCompleteButtonEnabled: StateFlow<Boolean> = _isCompleteButtonEnabled.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _card.update {
             it.copy(cardNumber = cardNumber)
         }
+
+        updatedIsCompleteButtonEnabled()
     }
 
     fun setExpiredDate(expiredDate: String) {
         _card.update {
             it.copy(expiredDate = expiredDate)
         }
+
+        updatedIsCompleteButtonEnabled()
     }
 
     fun setOwnerName(ownerName: String) {
         _card.update {
             it.copy(ownerName = ownerName)
         }
+
+        updatedIsCompleteButtonEnabled()
     }
 
     fun setPassword(password: String) {
         _card.update {
             it.copy(password = password)
         }
+
+        updatedIsCompleteButtonEnabled()
     }
 
     fun setBankType(bankType: BankType) {
         _card.update {
             it.copy(bankType = bankType)
+        }
+
+        updatedIsCompleteButtonEnabled()
+    }
+
+    private fun updatedIsCompleteButtonEnabled() {
+        _isCompleteButtonEnabled.update {
+            card.value != initializedCard
         }
     }
 
@@ -64,10 +83,6 @@ class EditCardViewModel(
     }
 
     fun updateCard() {
-        if (card.value == initializedCard) {
-            return
-        }
-
         repository.updateCard(card = card.value)
 
         _cardUpdated.value = true
