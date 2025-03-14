@@ -25,4 +25,13 @@ object PaymentCardsRepository {
 
         _cards.add(card)
     }
+
+    fun updateCard(card: Card) {
+        val index = _cards.indexOfFirst { it.id == card.id }
+        _cards[index] = card
+    }
+
+    fun getCard(id: Int): Card {
+        return _cards.first { it.id == id }
+    }
 }

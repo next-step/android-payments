@@ -1,4 +1,4 @@
-package nextstep.payments.new_card
+package nextstep.payments.edit_card
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,37 +26,30 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.component.BankSelectBottomSheet
 import nextstep.payments.component.CardTopAppBar
-import nextstep.payments.component.PaymentCard
+import nextstep.payments.component.PaymentListCard
 import nextstep.payments.data.BankType
+import nextstep.payments.data.Card
 
 @Composable
-fun NewCardScreen(
+fun EditCardScreen(
     onBackButtonClick: () -> Unit,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: EditCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val bankType by viewModel.bankType.collectAsStateWithLifecycle()
+    val cardUpdated by viewModel.cardUpdated.collectAsStateWithLifecycle()
+    val card by viewModel.card.collectAsStateWithLifecycle()
     val isBottomSheetOpen by viewModel.isBottomSheetOpen.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(cardUpdated) {
+        if (cardUpdated) navigateToCardList()
     }
 
-    NewCardScreen(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        bankType = bankType,
+    EditCardScreen(
+        card = card,
         isBottomSheetOpen = isBottomSheetOpen,
         onBackClick = onBackButtonClick,
-        addCard = viewModel::addCard,
+        updateCard = viewModel::updateCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -70,15 +63,11 @@ fun NewCardScreen(
 // 가능한 Stateless 컴포넌트로 리팩터링
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
-    bankType: BankType?,
+fun EditCardScreen(
+    card: Card,
     isBottomSheetOpen: Boolean = false,
     onBackClick: () -> Unit,
-    addCard: () -> Unit,
+    updateCard: () -> Unit,
     setCardNumber: (String) -> Unit = {},
     setExpiredDate: (String) -> Unit = {},
     setOwnerName: (String) -> Unit = {},
@@ -96,9 +85,9 @@ fun NewCardScreen(
     Scaffold(
         topBar = {
             CardTopAppBar(
-                title = "카드 추가",
+                title = "카드 수정",
                 onBackClick = onBackClick,
-                onCompleteClick = addCard
+                onCompleteClick = updateCard
             )
         },
         modifier = modifier,
@@ -112,17 +101,17 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
+            PaymentListCard(
                 modifier = Modifier.clickable {
                     setBottomSheetOpen(true)
                 },
-                bankType = bankType,
+                card = card,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = cardNumber,
+                value = card.cardNumber,
                 onValueChange = setCardNumber,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
@@ -130,7 +119,7 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = expiredDate,
+                value = card.expiredDate,
                 onValueChange = setExpiredDate,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
@@ -138,7 +127,7 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = ownerName,
+                value = card.ownerName,
                 onValueChange = setOwnerName,
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
@@ -146,7 +135,7 @@ fun NewCardScreen(
             )
 
             OutlinedTextField(
-                value = password,
+                value = card.password,
                 onValueChange = setPassword,
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
@@ -175,11 +164,20 @@ fun NewCardScreen(
 
 @Preview
 @Composable
-private fun StatefulNewCardScreenPreview() {
-    NewCardScreen(
+private fun StatefulEditCardScreenPreview() {
+    val card = Card(
+        id = 0,
+        cardNumber = "0000 - 0000 - 0000 - 0000",
+        expiredDate = "00 / 00",
+        ownerName = "홍길동",
+        password = "0000",
+        bankType = BankType.BC
+    )
+
+    EditCardScreen(
         onBackButtonClick = {},
         navigateToCardList = {},
-        viewModel = NewCardViewModel().apply {
+        viewModel = EditCardViewModel(card).apply {
             setCardNumber("0000 - 0000 - 0000 - 0000")
             setExpiredDate("00 / 00")
             setOwnerName("홍길동")
@@ -191,15 +189,20 @@ private fun StatefulNewCardScreenPreview() {
 
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
-    NewCardScreen(
+private fun StatelessEditCardScreenPreview() {
+    val card = Card(
+        id = 0,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",
         password = "0000",
-        bankType = null,
+        bankType = BankType.BC
+    )
+
+    EditCardScreen(
+        card = card,
         isBottomSheetOpen = false,
-        addCard = {},
+        updateCard = {},
         onBackClick = {},
         setCardNumber = {},
         setExpiredDate = {},
