@@ -93,7 +93,7 @@ class NewCardViewModel(
         )
     }
 
-    fun getCardById(cardId: String) {
+    fun fetchCardById(cardId: String) {
         modifyCard = paymentRepsoitory.getCardById(cardId)
 
         modifyCard?.let { card ->

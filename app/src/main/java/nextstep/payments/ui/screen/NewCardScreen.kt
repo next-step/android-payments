@@ -88,7 +88,7 @@ fun NewCardScreen(
 
     LaunchedEffect(Unit) {
         if (cardId != null) {
-            viewModel.getCardById(cardId)
+            viewModel.fetchCardById(cardId)
             isBottomSheetVisible = false
         }
     }
