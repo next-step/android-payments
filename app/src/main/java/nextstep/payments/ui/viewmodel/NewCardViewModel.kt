@@ -148,15 +148,36 @@ class NewCardViewModel(
     }
 
     fun onSaveClick(cardId: String?, isSaveEnabled: Boolean) {
+
+        // 저장이 불가능한 상태
         if (!isSaveEnabled) {
             _saveState.tryEmit(SaveState.ShowSnackbar)
             return
         }
 
+        // 카드 수정
         if (cardId != null) {
+            updateCard(
+                cardId = cardId,
+                cardNumber = _cardNumber.value,
+                expiredDate = _expiredDate.value,
+                ownerName = _ownerName.value,
+                password = _password.value,
+                cardCompanyType = _selectedCardCompany.value
+            )
+
             _saveState.tryEmit(SaveState.UpdateCard)
             return
         }
+
+        // 새로운 카드 추가
+        addCard(
+            cardNumber = _cardNumber.value,
+            expiredDate = _expiredDate.value,
+            ownerName = _ownerName.value,
+            password = _password.value,
+            cardCompanyType = _selectedCardCompany.value
+        )
 
         _saveState.tryEmit(SaveState.SaveNewCard)
     }

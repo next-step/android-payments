@@ -84,12 +84,14 @@ fun NewCardScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    // 스낵바 메시지
     val snackbarMessage = if (cardId == null) {
         stringResource(R.string.validate_snack_bar_message)
     } else {
         stringResource(R.string.validate_modify_snack_bar_message)
     }
 
+    // 앱바 타이틀
     val appBarTitle = if (cardId == null) {
         stringResource(R.string.card_add_app_bar_title)
     } else {
@@ -127,27 +129,10 @@ fun NewCardScreen(
         viewModel.saveState.collectLatest { state ->
             when (state) {
                 is SaveState.UpdateCard -> {
-                    cardId?.let {
-                        viewModel.updateCard(
-                            cardId = it,
-                            cardNumber = cardNumber,
-                            expiredDate = expiredDate,
-                            ownerName = ownerName,
-                            password = password,
-                            cardCompanyType = selectedCardCompany
-                        )
-                    }
+
                 }
 
                 is SaveState.SaveNewCard -> {
-                    viewModel.addCard(
-                        cardNumber = cardNumber,
-                        expiredDate = expiredDate,
-                        ownerName = ownerName,
-                        password = password,
-                        cardCompanyType = selectedCardCompany
-                    )
-
                     navigateToCardList()
                 }
 
