@@ -112,24 +112,10 @@ fun NewCardScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.updateCardState.collectLatest { isUpdatable ->
-            if (!isUpdatable) {
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(snackbarMessage)
-                }
-
-                return@collectLatest
-            }
-
-            navigateToCardList()
-        }
-    }
-
-    LaunchedEffect(Unit) {
         viewModel.saveState.collectLatest { state ->
             when (state) {
                 is SaveState.UpdateCard -> {
-
+                    navigateToCardList()
                 }
 
                 is SaveState.SaveNewCard -> {

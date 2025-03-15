@@ -41,9 +41,6 @@ class NewCardViewModel(
     private val _isSaveEnabled = MutableStateFlow(false)
     val isSaveEnabled: StateFlow<Boolean> = _isSaveEnabled.asStateFlow()
 
-    private val _updateCardState = MutableSharedFlow<Boolean>(replay = 1)
-    val updateCardState: SharedFlow<Boolean> = _updateCardState
-
     private val _saveState = MutableSharedFlow<SaveState>(replay = 1)
     val saveState: SharedFlow<SaveState> = _saveState
 
@@ -79,28 +76,6 @@ class NewCardViewModel(
         _selectedCardCompany.value = cardCompanyType
     }
 
-    fun addCard(
-        cardNumber: String,
-        expiredDate: String,
-        ownerName: String,
-        password: String,
-        cardCompanyType: CardCompanyType?,
-    ) {
-        if (cardCompanyType == null) {
-            return
-        }
-
-        paymentRepsoitory.addCard(
-            Card(
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
-                cardCompanyType = cardCompanyType
-            )
-        )
-    }
-
     fun fetchCardById(cardId: String) {
         modifyCard = paymentRepsoitory.getCardById(cardId)
 
@@ -111,40 +86,6 @@ class NewCardViewModel(
             _password.value = card.password
             _selectedCardCompany.value = card.cardCompanyType
         }
-    }
-
-    fun updateCard(
-        cardId: String,
-        cardNumber: String,
-        expiredDate: String,
-        ownerName: String,
-        password: String,
-        cardCompanyType: CardCompanyType?,
-    ) {
-        if (cardCompanyType == null) {
-            return
-        }
-
-        val updatedCard = Card(
-            cardId = cardId,
-            cardNumber = cardNumber,
-            expiredDate = expiredDate,
-            ownerName = ownerName,
-            password = password,
-            cardCompanyType = cardCompanyType
-        )
-
-        if (modifyCard == updatedCard) {
-            _updateCardState.tryEmit(false)
-            return
-        }
-
-        paymentRepsoitory.updateCard(
-            updatedCard = updatedCard
-        )
-
-        // 업데이트 성공
-        _updateCardState.tryEmit(true)
     }
 
     fun onSaveClick(cardId: String?, isSaveEnabled: Boolean) {
@@ -180,5 +121,58 @@ class NewCardViewModel(
         )
 
         _saveState.tryEmit(SaveState.SaveNewCard)
+    }
+
+    private fun addCard(
+        cardNumber: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        cardCompanyType: CardCompanyType?,
+    ) {
+        if (cardCompanyType == null) {
+            return
+        }
+
+        paymentRepsoitory.addCard(
+            Card(
+                cardNumber = cardNumber,
+                expiredDate = expiredDate,
+                ownerName = ownerName,
+                password = password,
+                cardCompanyType = cardCompanyType
+            )
+        )
+    }
+
+    private fun updateCard(
+        cardId: String,
+        cardNumber: String,
+        expiredDate: String,
+        ownerName: String,
+        password: String,
+        cardCompanyType: CardCompanyType?,
+    ) {
+        if (cardCompanyType == null) {
+            return
+        }
+
+        val updatedCard = Card(
+            cardId = cardId,
+            cardNumber = cardNumber,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password,
+            cardCompanyType = cardCompanyType
+        )
+
+        if (modifyCard == updatedCard) {
+            _saveState.tryEmit(SaveState.ShowSnackbar)
+            return
+        }
+
+        paymentRepsoitory.updateCard(
+            updatedCard = updatedCard
+        )
     }
 }
