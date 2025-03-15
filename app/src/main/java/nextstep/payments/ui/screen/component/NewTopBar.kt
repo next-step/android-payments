@@ -17,14 +17,17 @@ import nextstep.payments.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardTopBar(
+    appbarTitle: String,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text(
-            stringResource(R.string.card_add_app_bar_title)
-        ) },
+        title = {
+            Text(
+                text = appbarTitle
+            )
+        },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -49,6 +52,7 @@ fun NewCardTopBar(
 @Composable
 private fun NewCardTopBarPreview() {
     NewCardTopBar(
+        appbarTitle = "카드 추가",
         onBackClick = { },
         onSaveClick = { },
     )

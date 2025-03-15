@@ -29,10 +29,16 @@
 - (선택사항) 카드사를 선택할 때 적절한 카드사 아이콘을 노출한다.
 - 카드사 선택 기능 구현시 FlowRow와 ModalBottomSheet를 활용한다.
 
-### Step3 - 개선 사항
+#### Step3 - 개선 사항
 - BankLogo 컴포넌트 Image 컴포넌트로 대체
 - AppContainer, PaymentCard Size 상수로 추출 및 적용
 - NewCardScreen 등록 가능 유효성 체크 로직 ViewModel로 이동
 - BankSelectRow 1, 2번째 행 열 맞춤
 - bankType.bankImageRes!! > bankType.bankImageRes 되도록 로직 수정
 - BankBottomModalSheet 뒤로 가기 방지
+
+### Step4 - 페이먼츠(카드 수정)
+- 카드 수정 기능을 구현한다.
+  - 카드 목록에서 카드를 선택하면 카드 수정 화면으로 이동한다.
+  - 카드 수정 화면에서 변경사항이 발생하지 않으면 수정이 불가능하다.
+  - 카드가 수정되면 카드 목록 화면에 변경사항이 반영된다.

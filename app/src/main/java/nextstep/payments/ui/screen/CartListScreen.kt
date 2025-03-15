@@ -37,17 +37,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.data.model.Card
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.CardUiState
 import nextstep.payments.ui.screen.component.CenterTopBar
 import nextstep.payments.ui.screen.component.PaymentCard
 import nextstep.payments.ui.theme.Dimensions
+import nextstep.payments.ui.theme.Dimensions.CardRatioDefaults
 import nextstep.payments.ui.viewmodel.CardListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardListScreen(
     navigateToNewCard: () -> Unit,
+    navigateToUpdateCard: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel(),
 ) {
@@ -101,6 +103,9 @@ fun CardListScreen(
                 is CardUiState.One -> {
                     OneCardContainer(
                         card = cardsState.data,
+                        onCardClick = {
+                            navigateToUpdateCard(cardsState.data.cardId)
+                        },
                         onClick = {
                             navigateToNewCard()
                         }
@@ -109,7 +114,10 @@ fun CardListScreen(
 
                 is CardUiState.Many -> {
                     CardListContainer(
-                        cardList = cardsState.data
+                        cardList = cardsState.data,
+                        onCardClick = { cardId ->
+                            navigateToUpdateCard(cardId)
+                        }
                     )
                 }
             }
@@ -121,17 +129,21 @@ fun CardListScreen(
 private fun OneCardContainer(
     card: Card,
     onClick: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
         PaymentCard(
-            bankName = stringResource(card.bankType.bankNameResId),
+            cardCompanyName = stringResource(card.cardCompanyType.cardCompanyNameResId),
             cardNumber = card.cardNumber,
             expiredDate = card.expiredDate,
             ownerName = card.ownerName,
-            cardColor = card.bankType.bankThemeColor,
+            cardColor = card.cardCompanyType.cardCompanyThemeColor,
+            modifier = Modifier.clickable(
+                onClick = onCardClick
+            )
         )
         Spacer(modifier = Modifier.height(36.dp))
         AddCardContainer(
@@ -143,19 +155,24 @@ private fun OneCardContainer(
 @Composable
 private fun CardListContainer(
     cardList: List<Card>,
+    onCardClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp),
         contentPadding = PaddingValues(12.dp),
     ) {
         items(cardList) { card ->
             PaymentCard(
-                bankName = card.bankType.name,
+                cardCompanyName = card.cardCompanyType.name,
                 cardNumber = card.cardNumber,
                 expiredDate = card.expiredDate,
                 ownerName = card.ownerName,
-                cardColor = card.bankType.bankThemeColor,
+                cardColor = card.cardCompanyType.cardCompanyThemeColor,
+                modifier = Modifier.clickable(
+                    onClick = { onCardClick(card.cardId) }
+                )
             )
         }
     }
@@ -169,7 +186,7 @@ private fun AddCardContainer(
     Box(
         modifier = modifier
             .width(Dimensions.CardWidthDefaults)
-            .aspectRatio(52 / 31f)
+            .aspectRatio(CardRatioDefaults)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
@@ -200,8 +217,9 @@ private fun OneCardContainerPreview() {
             expiredDate = "1234",
             ownerName = "홍길동",
             password = "12421412",
-            bankType = BankType.BC,
+            cardCompanyType = CardCompanyType.BC,
         ),
+        onCardClick = {},
         onClick = {},
     )
 }
@@ -216,23 +234,24 @@ private fun CardListConatinerPreview() {
                 expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412",
-                bankType = BankType.BC
+                cardCompanyType = CardCompanyType.BC
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412",
-                bankType = BankType.BC
+                cardCompanyType = CardCompanyType.BC
             ),
             Card(
                 cardNumber = "1234-5678-1234-5678",
                 expiredDate = "1234",
                 ownerName = "홍길동",
                 password = "12421412",
-                bankType = BankType.BC
+                cardCompanyType = CardCompanyType.BC
             ),
-        )
+        ),
+        onCardClick = {},
     )
 }
 
@@ -240,6 +259,7 @@ private fun CardListConatinerPreview() {
 @Composable
 private fun CardListScreenPreview() {
     CardListScreen(
-        navigateToNewCard = {}
+        navigateToUpdateCard = {},
+        navigateToNewCard = {},
     )
 }

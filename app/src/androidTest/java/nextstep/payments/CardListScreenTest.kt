@@ -1,5 +1,6 @@
 package nextstep.payments
 
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.filter
 import androidx.compose.ui.test.hasAnySibling
 import androidx.compose.ui.test.hasText
@@ -10,7 +11,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.data.model.Card
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.CardListScreen
 import org.junit.Rule
 import org.junit.Test
@@ -24,15 +25,15 @@ class CardListScreenTest {
         expiredDate = "1223",
         ownerName = "홍길동",
         password = "1234",
-        bankType = BankType.BC,
+        cardCompanyType = CardCompanyType.BC,
     )
 
     val card2 = Card(
         cardNumber = "1234567812345678",
         expiredDate = "1223",
         ownerName = "홀리물리",
-        password = "1234",
-        bankType = BankType.BC,
+        password = "1111",
+        cardCompanyType = CardCompanyType.BC,
     )
 
     fun registerCards(vararg cards: Card) {
@@ -43,6 +44,7 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 navigateToNewCard = {},
+                navigateToUpdateCard = {}
             )
         }
     }
@@ -72,11 +74,8 @@ class CardListScreenTest {
         )
 
         // 등록된 카드가 있을 때 카드가 화면에 노출되는지 확인
-        composeTestRule.onAllNodesWithText("홍길동")
-            .filter(hasAnySibling(hasText("1234")))
-            .filter(hasAnySibling(hasText("12 / 23")))
-            .onFirst()
-            .assertExists()
+        composeTestRule.onNodeWithText("홍길동")
+            .assert(hasText("1234") and hasText("12 / 23"))
     }
 
     @Test

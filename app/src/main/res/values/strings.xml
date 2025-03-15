@@ -4,8 +4,10 @@
     <string name="app_bar_add_action_button">추가</string>
     <string name="card_app_title">"Payments"</string>
     <string name="card_add_app_bar_title">카드 추가</string>
+    <string name="card_update_app_bar_title">카드 수정</string>
     <string name="new_card_register_text">새로운 카드를 등록해주세요</string>
     <string name="validate_snack_bar_message">카드 정보를 확인해주세요.</string>
+    <string name="validate_modify_snack_bar_message">수정할 카드 정보를 확인해주세요.</string>
 
     <string name="register_card_icon_content_description">registerCardContainer</string>
     <string name="back_stack_icon_content_description">backStack</string>
@@ -25,13 +27,12 @@
 
     <string name="password_hidden_text">****</string>
 
-    <string name="bank_not_select">OO</string>
-    <string name="bank_bc">BC</string>
-    <string name="bank_shinhan">신한</string>
-    <string name="bank_kakao">카카오</string>
-    <string name="bank_hyundai">현대</string>
-    <string name="bank_woori">우리</string>
-    <string name="bank_lotte">롯데</string>
-    <string name="bank_hana">하나</string>
-    <string name="bank_kb">국민</string>
+    <string name="card_company_bc">BC</string>
+    <string name="card_company_shinhan">신한</string>
+    <string name="card_company_kakao">카카오</string>
+    <string name="card_company_hyundai">현대</string>
+    <string name="card_company_woori">우리</string>
+    <string name="card_company_lotte">롯데</string>
+    <string name="card_company_hana">하나</string>
+    <string name="card_company_kb">국민</string>
 </resources>

@@ -13,7 +13,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class NewCardScreenTest {
+class NewCardScreenRegisterTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -22,7 +22,8 @@ class NewCardScreenTest {
     fun setUp() {
         composeTestRule.setContent {
             NewCardScreen(
-                navigateToCardList = {}
+                navigateToCardList = {},
+                cardId = null,
             )
         }
     }
@@ -151,7 +152,7 @@ class NewCardScreenTest {
 
     @Test
     fun 화면_진입시_은행_선택_바텀_시트가_호출된다() {
-        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+        composeTestRule.onNodeWithContentDescription("cardCompanyBottomSheet")
             .assertIsDisplayed()
     }
 
@@ -162,7 +163,7 @@ class NewCardScreenTest {
             .performClick()
 
         // then
-        composeTestRule.onNodeWithContentDescription("bankBottomSheet")
+        composeTestRule.onNodeWithContentDescription("cardCompanyBottomSheet")
             .assertDoesNotExist()
     }
 

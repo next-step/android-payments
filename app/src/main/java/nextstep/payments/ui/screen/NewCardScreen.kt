@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -46,9 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.ui.BankType
+import nextstep.payments.ui.CardCompanyType
 import nextstep.payments.ui.screen.component.NewCardTopBar
 import nextstep.payments.ui.screen.component.OutlinedInputTextField
 import nextstep.payments.ui.screen.component.PaymentCard
@@ -56,10 +56,12 @@ import nextstep.payments.ui.theme.Dimensions
 import nextstep.payments.ui.utils.CardNumberVisualTransformation
 import nextstep.payments.ui.utils.ExpiryDateVisualTransformation
 import nextstep.payments.ui.viewmodel.NewCardViewModel
+import nextstep.payments.ui.viewmodel.SaveState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
+    cardId: String?,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
@@ -70,8 +72,8 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
     val isSaveEnabled by viewModel.isSaveEnabled.collectAsStateWithLifecycle()
 
-    val selectedBank by viewModel.selectedBank.collectAsStateWithLifecycle()
-    var isBottomSheetVisible by remember { mutableStateOf(false) }
+    val selectedCardCompany by viewModel.selectedCardCompany.collectAsStateWithLifecycle()
+    var isBottomSheetVisible by remember { mutableStateOf(true) }
     var sheetState = rememberModalBottomSheetState(
         confirmValueChange = { newState ->
             newState != SheetValue.Hidden
@@ -80,29 +82,62 @@ fun NewCardScreen(
 
     // 스낵바 상태 저장
     val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
-    // 저장 가능 여부 유효성 체크
-    viewModel.setIsSaveEnabled()
+    // 스낵바 메시지
+    val snackbarMessage = if (cardId == null) {
+        stringResource(R.string.validate_snack_bar_message)
+    } else {
+        stringResource(R.string.validate_modify_snack_bar_message)
+    }
 
-    LaunchedEffect(selectedBank) {
-        if (selectedBank == BankType.NOT_SELECTED) {
-            isBottomSheetVisible = true
+    // 앱바 타이틀
+    val appBarTitle = if (cardId == null) {
+        stringResource(R.string.card_add_app_bar_title)
+    } else {
+        stringResource(R.string.card_update_app_bar_title)
+    }
+
+    LaunchedEffect(Unit) {
+        if (cardId != null) {
+            viewModel.fetchCardById(cardId)
+            isBottomSheetVisible = false
+        }
+    }
+
+    LaunchedEffect(isBottomSheetVisible) {
+        if (isBottomSheetVisible) {
             sheetState.show()
         }
+    }
 
-        if (selectedBank != BankType.NOT_SELECTED) {
-            isBottomSheetVisible = false
-            sheetState.hide()
+    LaunchedEffect(Unit) {
+        viewModel.saveState.collectLatest { state ->
+            when (state) {
+                is SaveState.UpdateCard -> {
+                    navigateToCardList()
+                }
+
+                is SaveState.SaveNewCard -> {
+                    navigateToCardList()
+                }
+
+                is SaveState.ShowSnackbar -> {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(snackbarMessage)
+                    }
+                }
+            }
         }
     }
 
     NewCardScreen(
+        appBarTitle = appBarTitle,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        selectedBank = selectedBank,
-        isSaveEnabled = isSaveEnabled,
+        selectedCardCompany = selectedCardCompany,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -110,14 +145,7 @@ fun NewCardScreen(
         snackbarHostState = snackbarHostState,
         onBackCLick = navigateToCardList,
         onSaveClick = {
-            viewModel.addCard(
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                password = password,
-                bankType = selectedBank
-            )
-            navigateToCardList()
+            viewModel.onSaveClick(cardId, isSaveEnabled)
         },
         modifier = modifier
     )
@@ -125,7 +153,13 @@ fun NewCardScreen(
     if (isBottomSheetVisible) {
         BankBottomModalSheet(
             sheetState = sheetState,
-            onBankClick = viewModel::setSelectedBank,
+            onBankClick = { selectedCardCompanyType ->
+                viewModel.setSelectedBank(selectedCardCompanyType)
+                coroutineScope.launch {
+                    sheetState.hide()
+                    isBottomSheetVisible = false
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -133,12 +167,12 @@ fun NewCardScreen(
 
 @Composable
 private fun NewCardScreen(
+    appBarTitle: String,
     cardNumber: String,
     expiredDate: String,
     ownerName: String,
     password: String,
-    selectedBank: BankType,
-    isSaveEnabled: Boolean,
+    selectedCardCompany: CardCompanyType?,
     snackbarHostState: SnackbarHostState,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
@@ -148,22 +182,14 @@ private fun NewCardScreen(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val snackbarMessage = remember { context.getString(R.string.validate_snack_bar_message) }
-    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
-            NewCardTopBar(onBackClick = onBackCLick, onSaveClick = {
-                if (isSaveEnabled) {
-                    onSaveClick()
-                    return@NewCardTopBar
-                }
-
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(snackbarMessage)
-                }
-            })
+            NewCardTopBar(
+                appbarTitle = appBarTitle,
+                onBackClick = onBackCLick,
+                onSaveClick = onSaveClick,
+            )
         },
         snackbarHost = {
             SnackbarHost(
@@ -182,13 +208,22 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
-                bankName = stringResource(selectedBank.bankNameResId),
-                cardNumber = cardNumber,
-                expiredDate = expiredDate,
-                ownerName = ownerName,
-                cardColor = selectedBank.bankThemeColor,
-            )
+            if (selectedCardCompany != null) {
+                PaymentCard(
+                    cardCompanyName = stringResource(selectedCardCompany.cardCompanyNameResId),
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                    cardColor = selectedCardCompany.cardCompanyThemeColor,
+                )
+            } else {
+                PaymentCard(
+                    cardCompanyName = "00",
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                )
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -296,12 +331,12 @@ private fun PasswordInputField(
 @Composable
 private fun BankBottomModalSheet(
     sheetState: SheetState,
-    onBankClick: (BankType) -> Unit,
+    onBankClick: (CardCompanyType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
         modifier = modifier.semantics {
-            contentDescription = "bankBottomSheet"
+            contentDescription = "cardCompanyBottomSheet"
         },
         sheetState = sheetState,
         onDismissRequest = {},
@@ -314,8 +349,8 @@ private fun BankBottomModalSheet(
 
             // 은행 리스트
             BankSelectRow(
-                onBankClick = { bankType ->
-                    onBankClick(bankType)
+                onBankClick = { cardCompanyType ->
+                    onBankClick(cardCompanyType)
                 },
             )
         }
@@ -325,10 +360,10 @@ private fun BankBottomModalSheet(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BankSelectRow(
-    onBankClick: (BankType) -> Unit,
+    onBankClick: (CardCompanyType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val bankList = BankType.getBankList()
+    val cardCompanyList = CardCompanyType.getBankList()
 
     FlowRow(
         modifier = modifier
@@ -338,18 +373,19 @@ private fun BankSelectRow(
         verticalArrangement = Arrangement.spacedBy(23.dp),
         maxItemsInEachRow = 4
     ) {
-        bankList.forEach { bankType ->
+        cardCompanyList.forEach { cardCompanyType ->
 
-            if (bankType.bankImageRes == null) {
+            if (cardCompanyType.cardCompanyImageRes == null) {
                 return@forEach
             }
 
             BankItem(
-                bankName = stringResource(bankType.bankNameResId),
-                bankImage = painterResource(bankType.bankImageRes),
-                modifier = modifier.width(80.dp)
+                cardCompanyName = stringResource(cardCompanyType.cardCompanyNameResId),
+                cardCompanyImage = painterResource(cardCompanyType.cardCompanyImageRes),
+                modifier = modifier
+                    .width(80.dp)
                     .clickable(
-                        onClick = { onBankClick(bankType) },
+                        onClick = { onBankClick(cardCompanyType) },
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     )
@@ -360,8 +396,8 @@ private fun BankSelectRow(
 
 @Composable
 private fun BankItem(
-    bankName: String,
-    bankImage: Painter,
+    cardCompanyName: String,
+    cardCompanyImage: Painter,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -369,13 +405,13 @@ private fun BankItem(
         modifier = modifier
     ) {
         Image(
-            painter = bankImage,
+            painter = cardCompanyImage,
             contentDescription = "Bank Logo",
             modifier = Modifier.size(Dimensions.LogoDefaults),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "${bankName}카드",
+            text = "${cardCompanyName}카드",
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
         )
@@ -386,8 +422,8 @@ private fun BankItem(
 @Composable
 private fun BankItemPreview() {
     BankItem(
-        bankName = "BC",
-        bankImage = painterResource(R.drawable.bc),
+        cardCompanyName = "BC",
+        cardCompanyImage = painterResource(R.drawable.bc),
     )
 }
 
@@ -440,6 +476,7 @@ private fun PasswordInputFieldPreview() {
 @Composable
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
+        cardId = null,
         viewModel = NewCardViewModel().apply {
             setCardNumber("1234567812345678")
             setExpiredDate("12 / 34")
@@ -454,12 +491,12 @@ private fun StatefulNewCardScreenPreview() {
 @Composable
 private fun StatelessNewCardScreenPreView() {
     NewCardScreen(
+        appBarTitle = "카드 추가",
         cardNumber = "1234567812345678",
         expiredDate = "12 / 34",
         ownerName = "홍길동",
         password = "1234",
-        isSaveEnabled = true,
-        selectedBank = BankType.BC,
+        selectedCardCompany = CardCompanyType.BC,
         snackbarHostState = SnackbarHostState(),
         setCardNumber = {},
         setExpiredDate = {},

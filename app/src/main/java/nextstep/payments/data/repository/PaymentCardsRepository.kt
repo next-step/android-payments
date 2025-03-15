@@ -11,6 +11,17 @@ object PaymentCardsRepository {
         _cards.add(card)
     }
 
+    fun updateCard(updatedCard: Card) {
+        val index = _cards.indexOfFirst { it.cardId == updatedCard.cardId }
+        if (index != -1) {
+            _cards[index] = updatedCard
+        }
+    }
+
+    fun getCardById(cardId: String): Card? {
+        return _cards.find { it.cardId == cardId }
+    }
+
     fun clearCards() {
         _cards.clear()
     }
