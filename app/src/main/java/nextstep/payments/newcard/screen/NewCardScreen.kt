@@ -6,18 +6,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 import nextstep.payments.newcard.NewCardViewModel
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
+import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.Card
+import nextstep.payments.newcard.component.BankSelectBottomSheetContent
 import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.newcard.component.OwnerNameTextField
@@ -33,13 +44,11 @@ fun NewCardScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     NewCardScreen(
-        cardNumber = uiState.cardNumber,
+        card = uiState.card,
         cardNumberValidation = uiState.cardNumberValidation,
-        expiredDate = uiState.expiredDate,
         expiredDateValidation = uiState.expiredDateValidation,
-        ownerName = uiState.ownerName,
-        password = uiState.password,
         passwordValidation = uiState.passwordValidation,
+        setBank = viewModel::setBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -59,15 +68,14 @@ fun NewCardScreen(
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+    card: Card,
     cardNumberValidation: Validation,
     expiredDateValidation: Validation,
     passwordValidation: Validation,
+    setBank: (Bank) -> Unit,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -76,6 +84,10 @@ fun NewCardScreen(
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(true) }
+
     Scaffold(
         topBar = {
             NewCardTopBar(
@@ -94,36 +106,56 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(bank = card.bank)
 
             Spacer(modifier = Modifier.height(10.dp))
 
             CardNumberTextField(
                 modifier = Modifier.fillMaxWidth(),
-                cardNumber = cardNumber,
+                cardNumber = card.cardNumber,
                 validation = cardNumberValidation,
                 setCardNumber = setCardNumber
             )
 
             ExpiredDateTextField(
                 modifier = Modifier.fillMaxWidth(),
-                expiredDate = expiredDate,
+                expiredDate = card.expiredDate,
                 validation = expiredDateValidation,
                 setExpiredDate = setExpiredDate
             )
 
             OwnerNameTextField(
                 modifier = Modifier.fillMaxWidth(),
-                ownerName = ownerName,
+                ownerName = card.ownerName,
                 setOwnerName = setOwnerName
             )
 
             PasswordTextField(
                 modifier = Modifier.fillMaxWidth(),
-                password = password,
+                password = card.password,
                 validation = passwordValidation,
                 setPassword = setPassword
             )
+        }
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                sheetState = sheetState
+            ) {
+                BankSelectBottomSheetContent(
+                    banks = Bank.entries,
+                    onClickBank = {
+                        setBank(it)
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) showBottomSheet = false
+                        }
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }
@@ -147,13 +179,17 @@ private fun StatefulNewCardScreenPreview() {
 @Composable
 private fun StatelessNewCardScreenPreview() {
     NewCardScreen(
-        cardNumber = "0000 - 0000 - 0000 - 0000",
+        card = Card(
+            bank = Bank.BC,
+            cardNumber = "0000 - 0000 - 0000 - 0000",
+            expiredDate = "00 / 00",
+            ownerName = "홍길동",
+            password = "0000",
+        ),
         cardNumberValidation = Validation.Success,
-        expiredDate = "00 / 00",
         expiredDateValidation = Validation.Success,
-        ownerName = "홍길동",
-        password = "0000",
         passwordValidation = Validation.Success,
+        setBank = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
