@@ -37,17 +37,13 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val company by viewModel.company.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val sheetState = rememberModalBottomSheetState(confirmValueChange = { false })
     var sheetVisible by remember { mutableStateOf(true) }
 
-    LaunchedEffect(key1 = company) {
-        if (company != CardCompany.NONE) {
+    LaunchedEffect(key1 = state.card.company) {
+        if (state.card.company != CardCompany.NONE) {
             sheetState.hide()
             sheetVisible = false
         }
@@ -62,11 +58,7 @@ fun NewCardScreen(
 
     NewCardScreen(
         modifier = modifier,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        company = company,
+        card = state.card,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -81,11 +73,7 @@ fun NewCardScreen(
 
 @Composable
 fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
-    company: CardCompany,
+    card: CreditCard,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -108,12 +96,12 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
             
-            PaymentCard(card = CreditCard.emptyCard.copy(company = company))
+            PaymentCard(card = CreditCard.emptyCard.copy(company = card.company))
             
             Spacer(modifier = Modifier.height(10.dp))
             
             OutlinedTextField(
-                value = cardNumber,
+                value = card.number,
                 onValueChange = setCardNumber,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
@@ -121,7 +109,7 @@ fun NewCardScreen(
             )
             
             OutlinedTextField(
-                value = expiredDate,
+                value = card.dueDate,
                 onValueChange = setExpiredDate,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
@@ -129,7 +117,7 @@ fun NewCardScreen(
             )
             
             OutlinedTextField(
-                value = ownerName,
+                value = card.name,
                 onValueChange = setOwnerName,
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
@@ -137,7 +125,7 @@ fun NewCardScreen(
             )
             
             OutlinedTextField(
-                value = password,
+                value = card.password,
                 onValueChange = setPassword,
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
@@ -170,11 +158,13 @@ private fun StatefulNewCardScreenPreview() {
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "1234-5678-1234-5678",
-            expiredDate = "12 / 24",
-            ownerName = "홍길동",
-            password = "1234",
-            company = CardCompany.NONE,
+            card = CreditCard(
+                number = "1234-5678-1234-5678",
+                dueDate = "12 / 24",
+                name = "홍길동",
+                password = "1234",
+                company = CardCompany.NONE
+            ),
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},

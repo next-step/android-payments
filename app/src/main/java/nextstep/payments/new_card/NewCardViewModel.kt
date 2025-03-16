@@ -4,58 +4,48 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.CardRepository
 import nextstep.payments.model.CardCompany
-import nextstep.payments.model.CreditCard
 
 class NewCardViewModel(
     private val cardRepository: CardRepository = CardRepository
 ) : ViewModel() {
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
-    private val _company = MutableStateFlow(CardCompany.NONE)
-    val company: StateFlow<CardCompany> = _company.asStateFlow()
+    private val _state = MutableStateFlow(NewCardState())
+    val state: StateFlow<NewCardState> = _state.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        _state.update {
+            it.copy(card = it.card.copy(number = cardNumber))
+        }
     }
 
-    fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+    fun setExpiredDate(dueDate: String) {
+        _state.update {
+            it.copy(card = it.card.copy(dueDate = dueDate))
+        }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _state.update {
+            it.copy(card = it.card.copy(name = ownerName))
+        }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        _state.update {
+            it.copy(card = it.card.copy(password = password))
+        }
     }
 
     fun setCompany(company: CardCompany) {
-        _company.value = company
+        _state.update {
+            it.copy(card = it.card.copy(company = company))
+        }
     }
 
     fun addCard() {
-        cardRepository.addCard(
-            CreditCard(
-                number = cardNumber.value,
-                dueDate = expiredDate.value,
-                name = ownerName.value,
-                password = password.value,
-                company = company.value
-            )
-        )
+        cardRepository.addCard(card = _state.value.card)
     }
 }
