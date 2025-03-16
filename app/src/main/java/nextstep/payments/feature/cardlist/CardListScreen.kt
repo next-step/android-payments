@@ -16,6 +16,7 @@ import nextstep.payments.model.Card
 @Composable
 fun CardListScreen(
     onAddClick: () -> Unit,
+    onClickPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CardListViewModel = viewModel()
 ) {
@@ -24,6 +25,7 @@ fun CardListScreen(
     CardListScreen(
         cardUiState = cardUiState,
         onAddClick = onAddClick,
+        onClickPaymentCard = onClickPaymentCard,
         modifier = modifier
     )
 }
@@ -32,6 +34,7 @@ fun CardListScreen(
 fun CardListScreen(
     cardUiState: CardUiState,
     onAddClick: () -> Unit,
+    onClickPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -46,6 +49,7 @@ fun CardListScreen(
         CardListContent(
             cardUiState = cardUiState,
             onAddClick = onAddClick,
+            onClickPaymentCard = onClickPaymentCard,
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
@@ -58,6 +62,7 @@ fun CardListScreen(
 private fun CardListScreenPreview() {
     CardListScreen(
         cardUiState = CardUiState.Many(listOf(Card.mock, Card.mock, Card.mock)),
-        onAddClick = {}
+        onAddClick = {},
+        onClickPaymentCard = {}
     )
 }

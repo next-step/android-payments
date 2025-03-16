@@ -23,6 +23,7 @@ import nextstep.payments.view.PaymentCard
 fun CardListContent(
     cardUiState: CardUiState,
     onAddClick: () -> Unit,
+    onClickPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (cardUiState) {
@@ -36,7 +37,8 @@ fun CardListContent(
         is CardUiState.Many -> {
             CardListWithMany(
                 cards = cardUiState.cards,
-                modifier = modifier
+                modifier = modifier,
+                onClickPaymentCard = onClickPaymentCard
             )
         }
 
@@ -44,6 +46,7 @@ fun CardListContent(
             CardListWithOne(
                 card = cardUiState.card,
                 onAddClick = onAddClick,
+                onClickPaymentCard = onClickPaymentCard,
                 modifier = modifier
             )
         }
@@ -71,6 +74,7 @@ private fun CardListNothing(
 private fun CardListWithOne(
     card: Card,
     onAddClick: () -> Unit,
+    onClickPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,6 +83,7 @@ private fun CardListWithOne(
     ) {
         PaymentCard(
             card = card,
+            onClickPaymentCard = onClickPaymentCard
         )
         Spacer(
             modifier = Modifier.height(36.dp)
@@ -92,6 +97,7 @@ private fun CardListWithOne(
 @Composable
 private fun CardListWithMany(
     cards: List<Card>,
+    onClickPaymentCard: (Card) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -101,7 +107,8 @@ private fun CardListWithMany(
     ) {
         items(cards) { card ->
             PaymentCard(
-                card = card
+                card = card,
+                onClickPaymentCard = onClickPaymentCard
             )
         }
     }
@@ -123,6 +130,7 @@ private fun CardListContentPreview(
     CardListContent(
         cardUiState = uiState,
         onAddClick = { },
+        onClickPaymentCard = { },
         modifier = Modifier.fillMaxSize()
     )
 }
