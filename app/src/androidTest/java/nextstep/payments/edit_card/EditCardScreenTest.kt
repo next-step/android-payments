@@ -3,13 +3,14 @@ package nextstep.payments.edit_card
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 import org.junit.Before
@@ -29,7 +30,7 @@ class EditCardScreenTest {
         bankType = BankType.BC
     )
 
-    private var card by mutableStateOf(initCard, neverEqualPolicy())
+    private var card by mutableStateOf(initCard)
     private var isBottomSheetOpen by mutableStateOf(false)
 
     @Before
@@ -112,5 +113,44 @@ class EditCardScreenTest {
         composeTestRule
             .onNodeWithContentDescription("완료")
             .assertIsEnabled()
+    }
+
+    @Test
+    fun `카드사를_변경하면_카드에_카드사_이름이_변경되어야한다`() {
+        card = card.copy(bankType = BankType.KB)
+
+        composeTestRule
+            .onNodeWithTag("PaymentCard_BankName", useUnmergedTree = true)
+            .assertTextEquals("국민카드")
+    }
+
+    @Test
+    fun `카드번호를_입력하면_카드에_카드번호가_변경되어야한다`() {
+        // when
+        card = card.copy(cardNumber = "1234123412341234")
+
+        composeTestRule
+            .onNodeWithTag("PaymentCard_CardNumber", useUnmergedTree = true)
+            .assertTextEquals("1234 - 1234 - **** - ****")
+    }
+
+    @Test
+    fun `만료일을_입력하면_카드에_만료일이_변경되어야한다`() {
+        // when
+        card = card.copy(expiredDate = "1111")
+
+        composeTestRule
+            .onNodeWithTag("PaymentCard_ExpiredDate", useUnmergedTree = true)
+            .assertTextEquals("11 / 11")
+    }
+
+    @Test
+    fun `카드소유자를_입력하면_카드에_카드소유자가_변경되어야한다`() {
+        // when
+        card = card.copy(ownerName = "카드소유자")
+
+        composeTestRule
+            .onNodeWithTag("PaymentCard_OwnerName", useUnmergedTree = true)
+            .assertTextEquals("카드소유자")
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -133,8 +134,8 @@ private fun CardBankName(
 ) {
     CardText(
         text = bankName,
-        modifier = modifier,
         letterSpacing = (12.sp * 0.1),
+        modifier = modifier.testTag("PaymentCard_BankName")
     )
 }
 
@@ -156,8 +157,13 @@ private fun CardInfo(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        CardNumber(card.formatCardNumber())
-        CardNameAndExpiredDate(card.ownerName, card.formatExpiredDate())
+        CardNumber(
+            cardNumber = card.formatCardNumber(),
+        )
+        CardNameAndExpiredDate(
+            ownerName = card.ownerName,
+            expiredDate = card.formatExpiredDate(),
+        )
     }
 }
 
@@ -168,8 +174,8 @@ private fun CardNumber(
 ) {
     CardText(
         text = cardNumber,
-        modifier = modifier,
         letterSpacing = (12.sp * 0.17),
+        modifier = modifier.testTag("PaymentCard_CardNumber"),
     )
 }
 
@@ -186,11 +192,13 @@ private fun CardNameAndExpiredDate(
     ) {
         CardText(
             text = ownerName,
-            letterSpacing = (12.sp * 0.1)
+            letterSpacing = (12.sp * 0.1),
+            modifier = Modifier.testTag("PaymentCard_OwnerName"),
         )
         CardText(
             text = expiredDate,
-            letterSpacing = (12.sp * 0.08)
+            letterSpacing = (12.sp * 0.08),
+            modifier = Modifier.testTag("PaymentCard_ExpiredDate"),
         )
     }
 }
