@@ -1,17 +1,19 @@
 package nextstep.payments.newcard.model
 
 import nextstep.payments.R
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.Card
 
 
 data class NewCardUiState(
-    val bank: Bank? = null,
-    val cardNumber: String = "",
+    val card: Card = Card(
+        bank = null,
+        cardNumber = "",
+        expiredDate = "",
+        ownerName = "",
+        password = "",
+    ),
     val cardNumberValidation: Validation = Validation.Error(R.string.card_number_length_error),
-    val expiredDate: String = "",
     val expiredDateValidation: Validation = Validation.Error(R.string.date_length_error),
-    val ownerName: String = "",
-    val password: String = "",
     val passwordValidation: Validation = Validation.Error(R.string.password_length_error)
 )
 

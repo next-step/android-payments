@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import nextstep.payments.PaymentCardsRepository
 import nextstep.payments.R
 import nextstep.payments.common.model.Bank
-import nextstep.payments.common.model.Card
 import nextstep.payments.newcard.model.NewCardUiState
 import nextstep.payments.newcard.model.Validation
 
@@ -22,7 +21,7 @@ class NewCardViewModel(
     fun setBank(bank: Bank) {
         _uiState.update { prev ->
             prev.copy(
-                bank = bank,
+                card = prev.card.copy(bank = bank)
             )
         }
     }
@@ -30,7 +29,7 @@ class NewCardViewModel(
     fun setCardNumber(cardNumber: String) {
         _uiState.update { prev ->
             prev.copy(
-                cardNumber = cardNumber,
+                card = prev.card.copy(cardNumber = cardNumber),
                 cardNumberValidation = validateCardNumber(cardNumber)
             )
         }
@@ -47,7 +46,7 @@ class NewCardViewModel(
     fun setExpiredDate(expiredDate: String) {
         _uiState.update { prev ->
             prev.copy(
-                expiredDate = expiredDate,
+                card = prev.card.copy(expiredDate = expiredDate),
                 expiredDateValidation = validateExpiredDate(expiredDate)
             )
         }
@@ -64,14 +63,14 @@ class NewCardViewModel(
 
     fun setOwnerName(ownerName: String) {
         _uiState.update { prev ->
-            prev.copy(ownerName = ownerName)
+            prev.copy(card = prev.card.copy(ownerName = ownerName))
         }
     }
 
     fun setPassword(password: String) {
         _uiState.update { prev ->
             prev.copy(
-                password = password,
+                card = prev.card.copy(password = password),
                 passwordValidation = validatePassword(password)
             )
         }
@@ -86,14 +85,6 @@ class NewCardViewModel(
     }
 
     fun addCard() {
-        paymentCardsRepository.addCard(
-            Card(
-                bank = Bank.HANA,
-                cardNumber = _uiState.value.cardNumber,
-                expiredDate = _uiState.value.expiredDate,
-                ownerName = _uiState.value.ownerName,
-                password = _uiState.value.password
-            )
-        )
+        paymentCardsRepository.addCard(_uiState.value.card)
     }
 }
