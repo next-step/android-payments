@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.CardRepository
-import nextstep.payments.model.CreditCard
 
 class CardEditViewModel(
     private val cardRepository: CardRepository = CardRepository
@@ -23,35 +23,43 @@ class CardEditViewModel(
     }
 
     fun setNumber(cardNumber: String) {
-        _cardEditState.value = _cardEditState.value.copy(
-            editCard = _cardEditState.value.editCard.copy(
-                number = cardNumber
+        _cardEditState.update {
+            it.copy(
+                editCard = it.editCard.copy(
+                    number = cardNumber
+                )
             )
-        )
+        }
     }
 
     fun setDueDate(dueDate: String) {
-        _cardEditState.value = _cardEditState.value.copy(
-            editCard = _cardEditState.value.editCard.copy(
-                dueDate = dueDate
+        _cardEditState.update {
+            it.copy(
+                editCard = it.editCard.copy(
+                    dueDate = dueDate
+                )
             )
-        )
+        }
     }
 
     fun setName(name: String) {
-        _cardEditState.value = _cardEditState.value.copy(
-            editCard = _cardEditState.value.editCard.copy(
-                name = name
+        _cardEditState.update {
+            it.copy(
+                editCard = it.editCard.copy(
+                    name = name
+                )
             )
-        )
+        }
     }
 
     fun setPassword(password: String) {
-        _cardEditState.value = _cardEditState.value.copy(
-            editCard = _cardEditState.value.editCard.copy(
-                password = password
+        _cardEditState.update {
+            it.copy(
+                editCard = it.editCard.copy(
+                    password = password
+                )
             )
-        )
+        }
     }
 
     fun editCard() {
