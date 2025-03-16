@@ -14,7 +14,7 @@ import nextstep.payments.data.Card
 import nextstep.payments.repository.PaymentCardsRepository
 
 class EditCardViewModel(
-    private val initializedCard: Card,
+    val initializedCard: Card,
     private val repository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
     private val _cardUpdated = MutableStateFlow(false)
@@ -29,63 +29,33 @@ class EditCardViewModel(
     private val _isBottomSheetOpen = MutableStateFlow(false)
     val isBottomSheetOpen: StateFlow<Boolean> = _isBottomSheetOpen.asStateFlow()
 
-    private val _isCompleteButtonEnabled = MutableStateFlow(false)
-    val isCompleteButtonEnabled: StateFlow<Boolean> = _isCompleteButtonEnabled.asStateFlow()
-
     fun setCardNumber(cardNumber: String) {
-        _card.update {
-            it.copy(cardNumber = cardNumber)
-        }
-
-        updatedIsCompleteButtonEnabled()
+        _card.update { it.copy(cardNumber = cardNumber) }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _card.update {
-            it.copy(expiredDate = expiredDate)
-        }
-
-        updatedIsCompleteButtonEnabled()
+        _card.update { it.copy(expiredDate = expiredDate) }
     }
 
     fun setOwnerName(ownerName: String) {
-        _card.update {
-            it.copy(ownerName = ownerName)
-        }
-
-        updatedIsCompleteButtonEnabled()
+        _card.update { it.copy(ownerName = ownerName) }
     }
 
     fun setPassword(password: String) {
-        _card.update {
-            it.copy(password = password)
-        }
-
-        updatedIsCompleteButtonEnabled()
+        _card.update { it.copy(password = password) }
     }
 
     fun setBankType(bankType: BankType) {
-        _card.update {
-            it.copy(bankType = bankType)
-        }
-
-        updatedIsCompleteButtonEnabled()
-    }
-
-    private fun updatedIsCompleteButtonEnabled() {
-        _isCompleteButtonEnabled.update {
-            card.value != initializedCard
-        }
+        _card.update { it.copy(bankType = bankType) }
     }
 
     fun setBottomSheetOpen(isOpen: Boolean) {
-        _isBottomSheetOpen.value = isOpen
+        _isBottomSheetOpen.update { isOpen }
     }
 
     fun updateCard() {
         repository.updateCard(card = card.value)
-
-        _cardUpdated.value = true
+        _cardUpdated.update { true }
     }
 
     companion object {

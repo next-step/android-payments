@@ -32,42 +32,28 @@ class NewCardViewModel(
     private val _isBottomSheetOpen = MutableStateFlow(true)
     val isBottomSheetOpen: StateFlow<Boolean> = _isBottomSheetOpen.asStateFlow()
 
-    private val _isCompleteButtonEnabled = MutableStateFlow(false)
-    val isCompleteButtonEnabled: StateFlow<Boolean> = _isCompleteButtonEnabled.asStateFlow()
-
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
-        updatedIsCompleteButtonEnabled()
+        _cardNumber.update { cardNumber }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
-        updatedIsCompleteButtonEnabled()
+        _expiredDate.update { expiredDate }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
-        updatedIsCompleteButtonEnabled()
+        _ownerName.update { ownerName }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
-        updatedIsCompleteButtonEnabled()
+        _password.update { password }
     }
 
     fun setBankType(bankType: BankType) {
-        _bankType.value = bankType
-        updatedIsCompleteButtonEnabled()
+        _bankType.update { bankType }
     }
 
     fun setBottomSheetOpen(isOpen: Boolean) {
-        _isBottomSheetOpen.value = isOpen
-    }
-
-    private fun updatedIsCompleteButtonEnabled() {
-        _isCompleteButtonEnabled.update {
-            cardNumber.value.isNotEmpty() && expiredDate.value.isNotEmpty() && ownerName.value.isNotEmpty() && password.value.isNotEmpty() && bankType.value != null
-        }
+        _isBottomSheetOpen.update { isOpen }
     }
 
     fun addCard() {
@@ -79,6 +65,6 @@ class NewCardViewModel(
             bankType = bankType.value!!
         )
 
-        _cardAdded.value = true
+        _cardAdded.update { true }
     }
 }
