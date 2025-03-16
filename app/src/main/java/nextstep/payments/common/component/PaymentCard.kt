@@ -18,12 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.common.model.Bank
 import nextstep.payments.common.model.Card
 
 private object CardChipDefaults {
@@ -45,11 +47,22 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = CardDefaults.width, height = CardDefaults.height)
             .background(
-                color = Color(0xFF333333),
+                color = card?.bank?.color ?: Color(0xFF333333),
                 shape = RoundedCornerShape(CardDefaults.roundedCorner),
             )
-            .padding(horizontal = 14.dp, vertical = 16.dp)
+            .padding(horizontal = 14.dp, vertical = 15.dp)
     ) {
+        if (card != null) {
+            Text(
+                modifier = Modifier.align(Alignment.TopStart),
+                text = stringResource(card.bank.titleRes),
+                fontSize = 12.sp,
+                lineHeight = 12.sp,
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.W500,
+                color = Color.White,
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(paddingValues = CardChipDefaults.padding)
@@ -114,6 +127,7 @@ class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
+            bank = Bank.BC,
             cardNumber = "1111222233334444",
             expiredDate = "12/25",
             ownerName = "CREW",

@@ -10,4 +10,12 @@
     <string name="input_owner_name">카드에 표시된 이름을 입력하세요.</string>
     <string name="password">비밀번호</string>
     <string name="password_length_error">비밀번호를 입력해주세요.</string>
+    <string name="bc_name">BC카드</string>
+    <string name="shinhan_name">신한카드</string>
+    <string name="kakao_name">카카오뱅크</string>
+    <string name="hyundai_name">현대카드</string>
+    <string name="woori_name">우리은행</string>
+    <string name="lotte_name">롯데카드</string>
+    <string name="hana_name">하나카드</string>
+    <string name="kb_name">국민카드</string>
 </resources>

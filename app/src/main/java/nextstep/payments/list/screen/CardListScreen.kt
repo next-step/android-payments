@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.list.CardListViewModel
 import nextstep.payments.R
+import nextstep.payments.common.model.Bank
 import nextstep.payments.common.model.Card
 import nextstep.payments.list.component.CardListTopBar
 import nextstep.payments.list.model.CardUiState
@@ -100,6 +101,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Empty,
         CardUiState.One(
             Card(
+                bank = Bank.HYUNDAI,
                 cardNumber = "1111 - 2222 - **** - ****",
                 expiredDate = "12/25",
                 ownerName = "CREW",
@@ -109,6 +111,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Many(
             List(5) {
                 Card(
+                    bank = Bank.BC,
                     cardNumber = "1111 - 2222 - **** - ****",
                     expiredDate = "12/25",
                     ownerName = "CREW",
