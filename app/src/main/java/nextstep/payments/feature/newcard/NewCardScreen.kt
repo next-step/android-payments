@@ -78,7 +78,7 @@ fun NewCardScreen(
             onDismissRequest = {
                 isBottomSheetVisible = false
             },
-            onBankSelected = {
+            onClickBank = {
                 scope.launch {
                     viewModel.setBankType(it)
                     modalBottomSheetState.hide()
