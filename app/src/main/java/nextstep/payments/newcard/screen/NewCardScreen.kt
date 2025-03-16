@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,13 +28,14 @@ import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
 import nextstep.payments.common.model.Bank
 import nextstep.payments.common.model.Card
-import nextstep.payments.newcard.component.BankSelectBottomSheetContent
+import nextstep.payments.newcard.component.BankSelectBottomSheet
 import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.newcard.component.OwnerNameTextField
 import nextstep.payments.newcard.component.PasswordTextField
 import nextstep.payments.newcard.model.Validation
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCardScreen(
     modifier: Modifier = Modifier,
@@ -42,17 +43,28 @@ fun NewCardScreen(
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(true) }
 
     NewCardScreen(
         card = uiState.card,
         cardNumberValidation = uiState.cardNumberValidation,
         expiredDateValidation = uiState.expiredDateValidation,
         passwordValidation = uiState.passwordValidation,
-        setBank = viewModel::setBank,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        showBottomSheet = showBottomSheet,
+        onDismissRequest = { showBottomSheet = false },
+        sheetState = sheetState,
+        onClickBank = {
+            viewModel.setBank(it)
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) showBottomSheet = false
+            }
+        },
         onBack = onBack,
         onSave = {
             if (uiState.cardNumberValidation is Validation.Success
@@ -75,19 +87,18 @@ fun NewCardScreen(
     cardNumberValidation: Validation,
     expiredDateValidation: Validation,
     passwordValidation: Validation,
-    setBank: (Bank) -> Unit,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    showBottomSheet: Boolean,
+    onDismissRequest: () -> Unit,
+    sheetState: SheetState,
+    onClickBank: (Bank) -> Unit,
     onBack: () -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(true) }
-
     Scaffold(
         topBar = {
             NewCardTopBar(
@@ -139,35 +150,22 @@ fun NewCardScreen(
         }
 
         if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState
-            ) {
-                BankSelectBottomSheetContent(
-                    banks = Bank.entries,
-                    onClickBank = {
-                        setBank(it)
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) showBottomSheet = false
-                        }
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
+            BankSelectBottomSheet(
+                sheetState = sheetState,
+                onClickBank = onClickBank,
+                onDismissRequest = onDismissRequest,
+            )
         }
     }
 }
-
 
 @Preview
 @Composable
 private fun StatefulNewCardScreenPreview() {
     NewCardScreen(
         viewModel = NewCardViewModel().apply {
-            setCardNumber("0000 - 0000 - 0000 - 0000")
-            setExpiredDate("00 / 00")
+            setCardNumber("0000000000000000")
+            setExpiredDate("0000")
             setOwnerName("홍길동")
             setPassword("0000")
         },
@@ -175,26 +173,44 @@ private fun StatefulNewCardScreenPreview() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
+    var card by remember {
+        mutableStateOf(
+            Card(
+                bank = Bank.BC,
+                cardNumber = "0000000000000000",
+                expiredDate = "0000",
+                ownerName = "홍길동",
+                password = "0000",
+            )
+        )
+    }
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(true) }
+
     NewCardScreen(
-        card = Card(
-            bank = Bank.BC,
-            cardNumber = "0000 - 0000 - 0000 - 0000",
-            expiredDate = "00 / 00",
-            ownerName = "홍길동",
-            password = "0000",
-        ),
+        card = card,
         cardNumberValidation = Validation.Success,
         expiredDateValidation = Validation.Success,
         passwordValidation = Validation.Success,
-        setBank = {},
         setCardNumber = {},
         setExpiredDate = {},
         setOwnerName = {},
         setPassword = {},
         onSave = {},
-        onBack = {}
+        onBack = {},
+        showBottomSheet = showBottomSheet,
+        onDismissRequest = { showBottomSheet = false },
+        sheetState = sheetState,
+        onClickBank = {
+            card = card.copy(bank = it)
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) showBottomSheet = false
+            }
+        },
     )
 }
