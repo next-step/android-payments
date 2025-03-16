@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
 import nextstep.payments.newcard.model.Validation
 
-private const val EXPIRED_DATE_PLACEHOLDER = "0000 - 0000 - 0000 - 0000"
+private const val EXPIRED_DATE_PLACEHOLDER = "YY / MM"
 
 @Composable
 fun ExpiredDateTextField(
