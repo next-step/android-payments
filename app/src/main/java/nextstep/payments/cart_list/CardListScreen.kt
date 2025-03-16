@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.component.EnrollmentPaymentCard
-import nextstep.payments.component.PaymentListCard
+import nextstep.payments.component.PaymentCard
 import nextstep.payments.data.Card
 import nextstep.payments.data.dummyDataList
 
@@ -109,7 +109,7 @@ private fun CardListOneScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(36.dp),
     ) {
-        PaymentListCard(
+        PaymentCard(
             card = card,
             modifier = Modifier.clickable {
                 onCardClick(card)
@@ -134,7 +134,7 @@ private fun CardListManyScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(cardList) {
-            PaymentListCard(
+            PaymentCard(
                 card = it,
                 modifier = Modifier.clickable {
                     onCardClick(it)

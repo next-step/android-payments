@@ -22,7 +22,6 @@ class EditCardScreenTest {
     val composeTestRule = createComposeRule()
 
     private val initCard = Card(
-        id = 0,
         cardNumber = "1111222233334444",
         expiredDate = "1212",
         ownerName = "테스트",

@@ -30,32 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
-import nextstep.payments.data.dummyDataList
 
 @Composable
 fun PaymentCard(
-    modifier: Modifier = Modifier,
-    bankType: BankType? = null,
-) {
-    CardBackground(
-        backgroundColor = bankType?.cardColor ?: Color(0xFF333333),
-        modifier = modifier,
-    ) {
-        Spacer(modifier = Modifier.height(15.dp))
-
-        CardBankName(
-            bankName = bankType?.krName ?: "",
-            modifier = Modifier.padding(horizontal = 14.dp),
-        )
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        CardIcChipImage(modifier = Modifier.padding(horizontal = 14.dp))
-    }
-}
-
-@Composable
-fun PaymentListCard(
     card: Card,
     modifier: Modifier = Modifier,
 ) {
@@ -223,22 +200,28 @@ private fun CardText(
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardTypePreview() {
-    PaymentCard()
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PaymentCardTypeWithBankPreview() {
-    PaymentCard(
-        bankType = BankType.HANA
+    val card = Card(
+        cardNumber = "",
+        expiredDate = "",
+        ownerName = "",
+        password = "",
+        bankType = null
     )
+
+    PaymentCard(card = card)
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardListTypePreview() {
-    val card = dummyDataList.first()
-    PaymentListCard(
+    val card = Card(
+        cardNumber = "1234567890123456",
+        expiredDate = "1201",
+        ownerName = "홍길동",
+        password = "0000",
+        bankType = BankType.KB
+    )
+    PaymentCard(
         card = card,
     )
 }

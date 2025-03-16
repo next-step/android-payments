@@ -30,6 +30,7 @@ import nextstep.payments.component.BankSelectBottomSheet
 import nextstep.payments.component.CardTopAppBar
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.data.BankType
+import nextstep.payments.data.Card
 
 @Composable
 fun NewCardScreen(
@@ -123,10 +124,16 @@ fun NewCardScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
+                card = Card(
+                    cardNumber = cardNumber,
+                    expiredDate = expiredDate,
+                    ownerName = ownerName,
+                    password = password,
+                    bankType = bankType,
+                ),
                 modifier = Modifier.clickable {
                     setBottomSheetOpen(true)
                 },
-                bankType = bankType,
             )
 
             Spacer(modifier = Modifier.height(10.dp))

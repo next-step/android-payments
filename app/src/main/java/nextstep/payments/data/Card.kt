@@ -1,7 +1,9 @@
 package nextstep.payments.data
 
+import java.util.UUID
+
 data class Card(
-    val id: Int,
+    val id: String = UUID.randomUUID().toString(),
     val cardNumber: String,
     val expiredDate: String,
     val ownerName: String,
@@ -59,7 +61,6 @@ data class Card(
 
 val dummyDataList = arrayListOf(
     Card(
-        id = 0,
         cardNumber = "1234567890123456",
         expiredDate = "1201",
         ownerName = "홍길동",
@@ -67,7 +68,6 @@ val dummyDataList = arrayListOf(
         bankType = BankType.KB
     ),
     Card(
-        id = 1,
         cardNumber = "5678901234567890",
         expiredDate = "0101",
         ownerName = "김철수",
@@ -75,7 +75,6 @@ val dummyDataList = arrayListOf(
         bankType = BankType.SHINHAN
     ),
     Card(
-        id = 2,
         cardNumber = "9012345678901234",
         expiredDate = "0201",
         ownerName = "김민수",
@@ -83,7 +82,6 @@ val dummyDataList = arrayListOf(
         bankType = BankType.WOORI
     ),
     Card(
-        id = 3,
         cardNumber = "1111222233334444",
         expiredDate = "1212",
         ownerName = "김영식",

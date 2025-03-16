@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.component.BankSelectBottomSheet
 import nextstep.payments.component.CardTopAppBar
-import nextstep.payments.component.PaymentListCard
+import nextstep.payments.component.PaymentCard
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
 
@@ -107,11 +107,11 @@ fun EditCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentListCard(
+            PaymentCard(
+                card = card,
                 modifier = Modifier.clickable {
                     setBottomSheetOpen(true)
                 },
-                card = card,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -172,7 +172,6 @@ fun EditCardScreen(
 @Composable
 private fun StatefulEditCardScreenPreview() {
     val card = Card(
-        id = 0,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",
@@ -191,7 +190,6 @@ private fun StatefulEditCardScreenPreview() {
 @Composable
 private fun StatelessEditCardScreenPreview() {
     val card = Card(
-        id = 0,
         cardNumber = "0000 - 0000 - 0000 - 0000",
         expiredDate = "00 / 00",
         ownerName = "홍길동",

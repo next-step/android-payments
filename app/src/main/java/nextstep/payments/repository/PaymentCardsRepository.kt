@@ -15,7 +15,6 @@ object PaymentCardsRepository {
         bankType: BankType
     ) {
         val card = Card(
-            id = _cards.size,
             cardNumber = cardNumber,
             expiredDate = expiredDate,
             ownerName = ownerName,
@@ -31,7 +30,7 @@ object PaymentCardsRepository {
         _cards[index] = card
     }
 
-    fun getCard(id: Int): Card {
+    fun getCard(id: String): Card {
         return _cards.first { it.id == id }
     }
 }

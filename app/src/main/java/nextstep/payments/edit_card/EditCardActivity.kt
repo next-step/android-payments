@@ -13,7 +13,7 @@ class EditCardActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PaymentsTheme {
-                val cardId = intent.getIntExtra("card_id", -1)
+                val cardId = intent.getStringExtra("card_id") ?: ""
                 val repository = PaymentCardsRepository
 
                 val extras = MutableCreationExtras().apply {
