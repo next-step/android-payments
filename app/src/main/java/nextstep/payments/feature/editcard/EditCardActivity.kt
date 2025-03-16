@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class EditCardActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -18,7 +19,15 @@ class EditCardActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   
+                    EditCardScreen(
+                        onBackClick = {
+                            finish()
+                        },
+                        onSaveClick = {
+                            setResult(RESULT_OK)
+                            finish()
+                        }
+                    )
                 }
             }
         }
