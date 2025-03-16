@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.component.visiualtransformation.CardNumberTransformation
+import nextstep.payments.component.visiualtransformation.DueDateVisualTransformation
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -95,6 +97,7 @@ fun CardEditScreen(
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = CardNumberTransformation()
             )
 
             OutlinedTextField(
@@ -103,6 +106,7 @@ fun CardEditScreen(
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = DueDateVisualTransformation()
             )
 
             OutlinedTextField(

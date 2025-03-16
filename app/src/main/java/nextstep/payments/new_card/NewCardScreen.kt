@@ -26,6 +26,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.component.CardCompanyBottomSheet
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.component.visiualtransformation.CardNumberTransformation
+import nextstep.payments.component.visiualtransformation.DueDateVisualTransformation
 import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -106,6 +108,7 @@ fun NewCardScreen(
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = CardNumberTransformation()
             )
             
             OutlinedTextField(
@@ -114,6 +117,7 @@ fun NewCardScreen(
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
+                visualTransformation = DueDateVisualTransformation()
             )
             
             OutlinedTextField(
@@ -159,8 +163,8 @@ private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreen(
             card = CreditCard(
-                number = "1234-5678-1234-5678",
-                dueDate = "12 / 24",
+                number = "1234567812345678",
+                dueDate = "1224",
                 name = "홍길동",
                 password = "1234",
                 company = CardCompany.NONE
