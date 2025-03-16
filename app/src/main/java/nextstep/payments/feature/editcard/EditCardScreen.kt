@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -83,7 +84,8 @@ fun EditCardScreen(
                 }.invokeOnCompletion {
                     isBottomSheetVisible = false
                 }
-            }
+            },
+            modifier = Modifier.testTag("BankSelectBottomSheet")
         )
     }
 }
@@ -123,6 +125,7 @@ private fun EditCardScreen(
             PaymentCard(
                 card = card,
                 onClickPaymentCard = onClickPaymentCard,
+                modifier = Modifier.testTag("EditCardScreen_PaymentCard")
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -132,7 +135,7 @@ private fun EditCardScreen(
                 onValueChange = onCardNumberChanged,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("EditCardScreen_CardNumTextField"),
             )
 
             OutlinedTextField(
@@ -140,7 +143,7 @@ private fun EditCardScreen(
                 onValueChange = onExpiredDateChanged,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("EditCardScreen_ExpireDateTextField"),
             )
 
             OutlinedTextField(
@@ -148,7 +151,7 @@ private fun EditCardScreen(
                 onValueChange = onOwnerNameChanged,
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("EditCardScreen_OwnerNameTextField"),
             )
 
             OutlinedTextField(
@@ -156,7 +159,7 @@ private fun EditCardScreen(
                 onValueChange = onPasswordChanged,
                 label = { Text("비밀번호") },
                 placeholder = { Text("0000") },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("EditCardScreen_PasswordTextField"),
                 visualTransformation = PasswordVisualTransformation(),
             )
         }

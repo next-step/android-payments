@@ -17,6 +17,7 @@ import nextstep.payments.model.BankType
 fun BankSelectBottomSheet(
     modalBottomSheetState: SheetState,
     onDismissRequest: () -> Unit,
+    modifier : Modifier = Modifier,
     onClickBank: (BankType) -> Unit = {}
 ) {
     ModalBottomSheet(
@@ -24,7 +25,8 @@ fun BankSelectBottomSheet(
         onDismissRequest = onDismissRequest,
         dragHandle = {
             Box(modifier = Modifier.height(24.dp))
-        }
+        },
+        modifier = modifier
     ) {
         BankSelectRow(
             onClick = onClickBank
