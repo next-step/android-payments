@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -29,35 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.data.BankType
 import nextstep.payments.data.Card
-import nextstep.payments.data.dummyDataList
 
 @Composable
 fun PaymentCard(
-    modifier: Modifier = Modifier,
-    bankType: BankType? = null,
-) {
-    CardBackground(
-        backgroundColor = bankType?.cardColor ?: Color(0xFF333333),
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp),
-        ) {
-            Spacer(modifier = Modifier.height(15.dp))
-
-            CardBankName(bankName = bankType?.krName ?: "")
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            CardIcChipImage()
-        }
-    }
-}
-
-@Composable
-fun PaymentListCard(
     card: Card,
     modifier: Modifier = Modifier,
 ) {
@@ -65,23 +40,23 @@ fun PaymentListCard(
         backgroundColor = card.bankType?.cardColor ?: Color(0xFF333333),
         modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 14.dp),
-        ) {
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardBankName(bankName = card.bankType?.krName ?: "")
+        CardBankName(
+            bankName = card.bankType?.krName ?: "",
+            modifier = Modifier.padding(horizontal = 14.dp)
+        )
 
-            Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
-            CardIcChipImage()
+        CardIcChipImage(modifier = Modifier.padding(horizontal = 14.dp))
 
-            Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-            CardInfo(card = card)
-        }
+        CardInfo(
+            card = card,
+            modifier = Modifier.padding(horizontal = 14.dp),
+        )
     }
 }
 
@@ -96,16 +71,15 @@ fun EnrollmentPaymentCard(
             onClick()
         },
     ) {
-        Column(
+        Box(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 text = "+",
                 color = Color(0xFF575757),
                 fontSize = 34.sp,
                 fontWeight = FontWeight.W400,
+                modifier = Modifier.align(Alignment.Center),
             )
         }
     }
@@ -120,8 +94,7 @@ private fun CardBackground(
     Card(
         modifier = modifier
             .shadow(8.dp)
-            .size(208.dp, 124.dp)
-            .fillMaxWidth(),
+            .size(208.dp, 124.dp),
         shape = RoundedCornerShape(5.dp),
         colors = CardDefaults.cardColors(
             containerColor = backgroundColor,
@@ -138,8 +111,8 @@ private fun CardBankName(
 ) {
     CardText(
         text = bankName,
-        modifier = modifier,
         letterSpacing = (12.sp * 0.1),
+        modifier = modifier.testTag("PaymentCard_BankName")
     )
 }
 
@@ -161,8 +134,13 @@ private fun CardInfo(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        CardNumber(card.formatCardNumber())
-        CardNameAndExpiredDate(card.ownerName, card.formatExpiredDate())
+        CardNumber(
+            cardNumber = card.formatCardNumber(),
+        )
+        CardNameAndExpiredDate(
+            ownerName = card.ownerName,
+            expiredDate = card.formatExpiredDate(),
+        )
     }
 }
 
@@ -173,8 +151,8 @@ private fun CardNumber(
 ) {
     CardText(
         text = cardNumber,
-        modifier = modifier,
         letterSpacing = (12.sp * 0.17),
+        modifier = modifier.testTag("PaymentCard_CardNumber"),
     )
 }
 
@@ -191,11 +169,13 @@ private fun CardNameAndExpiredDate(
     ) {
         CardText(
             text = ownerName,
-            letterSpacing = (12.sp * 0.1)
+            letterSpacing = (12.sp * 0.1),
+            modifier = Modifier.testTag("PaymentCard_OwnerName"),
         )
         CardText(
             text = expiredDate,
-            letterSpacing = (12.sp * 0.08)
+            letterSpacing = (12.sp * 0.08),
+            modifier = Modifier.testTag("PaymentCard_ExpiredDate"),
         )
     }
 }
@@ -220,22 +200,28 @@ private fun CardText(
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardTypePreview() {
-    PaymentCard()
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PaymentCardTypeWithBankPreview() {
-    PaymentCard(
-        bankType = BankType.HANA
+    val card = Card(
+        cardNumber = "",
+        expiredDate = "",
+        ownerName = "",
+        password = "",
+        bankType = null
     )
+
+    PaymentCard(card = card)
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardListTypePreview() {
-    val card = dummyDataList.first()
-    PaymentListCard(
+    val card = Card(
+        cardNumber = "1234567890123456",
+        expiredDate = "1201",
+        ownerName = "홍길동",
+        password = "0000",
+        bankType = BankType.KB
+    )
+    PaymentCard(
         card = card,
     )
 }

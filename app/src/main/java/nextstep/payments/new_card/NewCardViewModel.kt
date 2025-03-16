@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import nextstep.payments.data.BankType
-import nextstep.payments.data.Card
 import nextstep.payments.repository.PaymentCardsRepository
 
 class NewCardViewModel(
@@ -33,43 +33,38 @@ class NewCardViewModel(
     val isBottomSheetOpen: StateFlow<Boolean> = _isBottomSheetOpen.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        _cardNumber.update { cardNumber }
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        _expiredDate.update { expiredDate }
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _ownerName.update { ownerName }
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        _password.update { password }
     }
 
     fun setBankType(bankType: BankType) {
-        _bankType.value = bankType
+        _bankType.update { bankType }
     }
 
     fun setBottomSheetOpen(isOpen: Boolean) {
-        _isBottomSheetOpen.value = isOpen
+        _isBottomSheetOpen.update { isOpen }
     }
 
     fun addCard() {
-        if (cardNumber.value.isEmpty() || expiredDate.value.isEmpty() || ownerName.value.isEmpty() || password.value.isEmpty()) {
-            return
-        }
-
-        val card = Card(
+        repository.addCard(
             cardNumber = cardNumber.value,
             expiredDate = expiredDate.value,
             ownerName = ownerName.value,
             password = password.value,
-            bankType = bankType.value
+            bankType = bankType.value!!
         )
 
-        repository.addCard(card)
-        _cardAdded.value = true
+        _cardAdded.update { true }
     }
 }

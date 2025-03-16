@@ -20,6 +20,7 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 onAddClick = {},
+                onCardClick = {},
                 cardListUiState = CardListUiState.Empty
             )
         }
@@ -40,6 +41,7 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 onAddClick = {},
+                onCardClick = {},
                 cardListUiState = CardListUiState.One(
                     card = dummyDataList.first()
                 )
@@ -62,6 +64,7 @@ class CardListScreenTest {
         composeTestRule.setContent {
             CardListScreen(
                 onAddClick = {},
+                onCardClick = {},
                 cardListUiState = CardListUiState.Many(
                     cards = dummyDataList
                 )

@@ -2,4 +2,5 @@
     <string name="app_name">Payments</string>
     <string name="title_activity_new_card">NewCardActivity</string>
     <string name="title_activity_card_list">CardListActivity</string>
+    <string name="title_activity_edit_card">EditCardActivity</string>
 </resources>

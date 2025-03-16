@@ -1,6 +1,9 @@
 package nextstep.payments.data
 
+import java.util.UUID
+
 data class Card(
+    val id: String = UUID.randomUUID().toString(),
     val cardNumber: String,
     val expiredDate: String,
     val ownerName: String,
@@ -8,11 +11,51 @@ data class Card(
     val bankType: BankType?,
 ) {
     fun formatCardNumber(): String {
-        return cardNumber.take(4) + " - " + cardNumber.drop(4).take(4) + " - **** - ****"
+        val first = cardNumber.take(4)
+        val second = cardNumber.drop(4).take(4)
+        val third = cardNumber.drop(8).take(4)
+        val fourth = cardNumber.drop(12).take(4)
+
+        val sb = StringBuilder()
+
+        sb.append(first)
+
+        if (first.length == 4 && second.isNotEmpty()) {
+            sb.append(" - ")
+        }
+
+        sb.append(second)
+
+        if (second.length == 4 && third.isNotEmpty()) {
+            sb.append(" - ")
+        }
+
+        sb.append(third.map { "*" }.joinToString(""))
+
+        if (third.length == 4 && fourth.isNotEmpty()) {
+            sb.append(" - ")
+        }
+
+        sb.append(fourth.map { "*" }.joinToString(""))
+
+        return sb.toString()
     }
 
     fun formatExpiredDate(): String {
-        return expiredDate.take(2) + " / " + expiredDate.drop(2)
+        val first = expiredDate.take(2)
+        val second = expiredDate.drop(2)
+
+        val sb = StringBuilder()
+
+        sb.append(first)
+
+        if (first.length == 2 && second.isNotEmpty()) {
+            sb.append(" / ")
+        }
+
+        sb.append(second)
+
+        return sb.toString()
     }
 }
 
