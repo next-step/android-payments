@@ -39,19 +39,10 @@ fun BankSelectBottomSheet(
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-//        onDismissRequest = {
-//            setShowBottomSheet(false)
-//        },
         sheetState = sheetState
     ) {
         BankSelectBottomSheetContent(
             banks = Bank.entries,
-//            onClickBank = {
-//                onClickBank(it)
-//                coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
-//                    if (!sheetState.isVisible) setShowBottomSheet(false)
-//                }
-//            },
             onClickBank = onClickBank,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
