@@ -31,7 +31,8 @@ class CardListScreenTest {
             PaymentsTheme {
                 CardListScreen(
                     state = state,
-                    onAddClick = {}
+                    onAddClick = {},
+                    onCardClick = {}
                 )
             }
         }
