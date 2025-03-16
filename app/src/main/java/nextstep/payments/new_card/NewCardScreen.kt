@@ -61,6 +61,11 @@ fun NewCardScreen(
     NewCardScreen(
         modifier = modifier,
         card = state.card,
+        saveEnabled = state.saveEnabled,
+        nameError = state.nameError,
+        numberError = state.numberError,
+        dueDateError = state.dueDateError,
+        passwordError = state.passwordError,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -76,6 +81,11 @@ fun NewCardScreen(
 @Composable
 fun NewCardScreen(
     card: CreditCard,
+    saveEnabled: Boolean,
+    nameError: Boolean,
+    numberError: Boolean,
+    dueDateError: Boolean,
+    passwordError: Boolean,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -86,7 +96,11 @@ fun NewCardScreen(
 ) {
 
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
+        topBar = { NewCardTopBar(
+            saveEnabled = saveEnabled,
+            onBackClick = onBackClick,
+            onSaveClick = onSaveClick
+        ) },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -108,7 +122,8 @@ fun NewCardScreen(
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = CardNumberTransformation()
+                visualTransformation = CardNumberTransformation(),
+                isError = card.number.isNotEmpty() && numberError
             )
             
             OutlinedTextField(
@@ -117,7 +132,8 @@ fun NewCardScreen(
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = DueDateVisualTransformation()
+                visualTransformation = DueDateVisualTransformation(),
+                isError = card.dueDate.isNotEmpty() && dueDateError
             )
             
             OutlinedTextField(
@@ -126,6 +142,7 @@ fun NewCardScreen(
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
+                isError = nameError
             )
             
             OutlinedTextField(
@@ -135,6 +152,7 @@ fun NewCardScreen(
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
+                isError = card.password.isNotEmpty() && passwordError
             )
         }
     }
@@ -169,6 +187,11 @@ private fun StatelessNewCardScreenPreview() {
                 password = "1234",
                 company = CardCompany.NONE
             ),
+            saveEnabled = true,
+            nameError = false,
+            numberError = false,
+            dueDateError = false,
+            passwordError = false,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},

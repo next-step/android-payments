@@ -19,6 +19,7 @@ fun NewCardTopBar(
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
+    saveEnabled: Boolean = true
 ) {
     TopAppBar(
         title = { Text("카드 추가") },
@@ -31,7 +32,10 @@ fun NewCardTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { onSaveClick() }) {
+            IconButton(
+                enabled = saveEnabled,
+                onClick = { onSaveClick() }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = "완료",

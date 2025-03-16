@@ -43,6 +43,10 @@ fun CardEditScreen(
         modifier = modifier,
         card = state.editCard,
         saveEnabled = state.saveEnabled,
+        nameError = state.nameError,
+        numberError = state.numberError,
+        dueDateError = state.dueDateError,
+        passwordError = state.passwordError,
         setNumber = viewModel::setNumber,
         setDueDate = viewModel::setDueDate,
         setName = viewModel::setName,
@@ -59,6 +63,10 @@ fun CardEditScreen(
 fun CardEditScreen(
     card: CreditCard,
     saveEnabled: Boolean,
+    nameError: Boolean,
+    numberError: Boolean,
+    dueDateError: Boolean,
+    passwordError: Boolean,
     setNumber: (String) -> Unit,
     setDueDate: (String) -> Unit,
     setName: (String) -> Unit,
@@ -97,7 +105,8 @@ fun CardEditScreen(
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = CardNumberTransformation()
+                visualTransformation = CardNumberTransformation(),
+                isError = card.number.isNotEmpty() && numberError
             )
 
             OutlinedTextField(
@@ -106,7 +115,8 @@ fun CardEditScreen(
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = DueDateVisualTransformation()
+                visualTransformation = DueDateVisualTransformation(),
+                isError = card.dueDate.isNotEmpty() && dueDateError
             )
 
             OutlinedTextField(
@@ -115,6 +125,7 @@ fun CardEditScreen(
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
+                isError = nameError
             )
 
             OutlinedTextField(
@@ -124,6 +135,7 @@ fun CardEditScreen(
                 placeholder = { Text("0000") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
+                isError = card.password.isNotEmpty() && passwordError
             )
         }
     }
@@ -137,6 +149,10 @@ private fun CardEditScreenPreview() {
         CardEditScreen(
             card = CreditCard.emptyCard,
             saveEnabled = false,
+            nameError = false,
+            numberError = false,
+            dueDateError = false,
+            passwordError = false,
             setNumber = {},
             setDueDate = {},
             setName = {},
