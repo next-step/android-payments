@@ -12,9 +12,10 @@ object CardRepository {
     }
 
     fun editCard(card: CreditCard) {
-        val targetCard = _cards.find { it.id == card.id } ?: return
-        val index = _cards.indexOf(targetCard)
-        _cards[index] = card
+        val index = _cards.indexOfFirst { it.id == card.id }
+        if (index >= 0) {
+            _cards[index] = card
+        }
     }
 
     fun getCard(cardId: String): CreditCard {
