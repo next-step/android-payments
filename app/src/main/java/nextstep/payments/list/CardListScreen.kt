@@ -32,6 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.R
 import nextstep.payments.component.EmptyPaymentCard
 import nextstep.payments.component.PaymentCard
+import nextstep.payments.edit.CardEditActivity
+import nextstep.payments.edit.CardEditActivity.Companion.KEY_CARD_ID
 import nextstep.payments.model.CreditCard
 import nextstep.payments.new_card.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -56,6 +58,12 @@ fun CardListScreen(
         onAddClick = {
             val intent = Intent(context, NewCardActivity::class.java)
             launcher.launch(intent)
+        },
+        onCardClick = {
+            val intent = Intent(context, CardEditActivity::class.java).apply {
+                putExtra(KEY_CARD_ID, it.id)
+            }
+            launcher.launch(intent)
         }
     )
 }
@@ -64,6 +72,7 @@ fun CardListScreen(
 fun CardListScreen(
     state: CardListState,
     onAddClick: () -> Unit,
+    onCardClick: (card: CreditCard) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -84,12 +93,14 @@ fun CardListScreen(
             is CardListState.Single -> SingleCardContent(
                 modifier = Modifier.padding(innerPadding),
                 card = state.card,
-                onAddClick = onAddClick
+                onAddClick = onAddClick,
+                onCardClick = onCardClick
             )
 
             is CardListState.Multiple -> MultipleCardContent(
                 modifier = Modifier.padding(innerPadding),
-                cards = state.cards
+                cards = state.cards,
+                onCardClick = onCardClick
             )
         }
     }
@@ -118,6 +129,7 @@ private fun EmptyCardContent(
 private fun SingleCardContent(
     card: CreditCard,
     onAddClick: () -> Unit,
+    onCardClick: (card: CreditCard) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -127,7 +139,10 @@ private fun SingleCardContent(
             .testTag("SingleCardContentColumn"),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        PaymentCard(card = card)
+        PaymentCard(
+            card = card,
+            onClick = { onCardClick(card) }
+        )
 
         Spacer(modifier = Modifier.height(30.dp))
 
@@ -138,6 +153,7 @@ private fun SingleCardContent(
 @Composable
 private fun MultipleCardContent(
     cards: List<CreditCard>,
+    onCardClick: (card: CreditCard) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -147,7 +163,10 @@ private fun MultipleCardContent(
         verticalArrangement = Arrangement.spacedBy(30.dp)
     ) {
         items(cards) {
-            PaymentCard(card = it)
+            PaymentCard(
+                card = it,
+                onClick = { onCardClick(it) }
+            )
         }
     }
 }
@@ -168,7 +187,8 @@ private fun CardListScreenPreview(@PreviewParameter(CardListStateProvider::class
     PaymentsTheme {
         CardListScreen(
             state = state,
-            onAddClick = {}
+            onAddClick = {},
+            onCardClick = {}
         )
     }
 }

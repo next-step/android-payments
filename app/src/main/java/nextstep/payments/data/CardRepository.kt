@@ -10,4 +10,16 @@ object CardRepository {
     fun addCard(card: CreditCard) {
         _cards.add(card)
     }
+
+    fun editCard(card: CreditCard) {
+        val index = _cards.indexOfFirst { it.id == card.id }
+        if (index >= 0) {
+            _cards[index] = card
+        }
+    }
+
+    fun getCard(cardId: String): CreditCard {
+        return _cards.find { it.id == cardId } ?: CreditCard.emptyCard
+    }
+
 }

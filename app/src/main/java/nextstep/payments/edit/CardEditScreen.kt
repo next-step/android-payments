@@ -1,4 +1,4 @@
-package nextstep.payments.new_card
+package nextstep.payments.edit
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,17 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -24,71 +19,57 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.component.CardCompanyBottomSheet
 import nextstep.payments.component.PaymentCard
 import nextstep.payments.component.visiualtransformation.CardNumberTransformation
 import nextstep.payments.component.visiualtransformation.DueDateVisualTransformation
-import nextstep.payments.model.CardCompany
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardScreen(
+fun CardEditScreen(
+    cardId: String,
     navigateToList: () -> Unit,
+    navigateToListWithEdit: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+    viewModel: CardEditViewModel = viewModel(),
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.cardEditState.collectAsStateWithLifecycle()
 
-    val sheetState = rememberModalBottomSheetState(confirmValueChange = { false })
-    var sheetVisible by remember { mutableStateOf(true) }
-
-    LaunchedEffect(key1 = state.card.company) {
-        if (state.card.company != CardCompany.NONE) {
-            sheetState.hide()
-            sheetVisible = false
-        }
+    LaunchedEffect(key1 = cardId) {
+        viewModel.initializeCard(cardId)
     }
 
-    if (sheetVisible) {
-        CardCompanyBottomSheet(
-            sheetState = sheetState,
-            onCompanyClick = viewModel::setCompany
-        )
-    }
-
-    NewCardScreen(
+    CardEditScreen(
         modifier = modifier,
-        card = state.card,
+        card = state.editCard,
         saveEnabled = state.saveEnabled,
         nameError = state.nameError,
         numberError = state.numberError,
         dueDateError = state.dueDateError,
         passwordError = state.passwordError,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
+        setNumber = viewModel::setNumber,
+        setDueDate = viewModel::setDueDate,
+        setName = viewModel::setName,
         setPassword = viewModel::setPassword,
         onBackClick = navigateToList,
         onSaveClick = {
-            viewModel.addCard()
-            navigateToList()
+            viewModel.editCard()
+            navigateToListWithEdit()
         }
     )
 }
 
 @Composable
-fun NewCardScreen(
+fun CardEditScreen(
     card: CreditCard,
     saveEnabled: Boolean,
     nameError: Boolean,
     numberError: Boolean,
     dueDateError: Boolean,
     passwordError: Boolean,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
+    setNumber: (String) -> Unit,
+    setDueDate: (String) -> Unit,
+    setName: (String) -> Unit,
     setPassword: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
@@ -96,11 +77,13 @@ fun NewCardScreen(
 ) {
 
     Scaffold(
-        topBar = { NewCardTopBar(
-            saveEnabled = saveEnabled,
-            onBackClick = onBackClick,
-            onSaveClick = onSaveClick
-        ) },
+        topBar = {
+            CardEditTopBar(
+                saveEnabled = saveEnabled,
+                onBackClick = onBackClick,
+                onSaveClick = onSaveClick
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -111,40 +94,40 @@ fun NewCardScreen(
                 .padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(14.dp))
-            
-            PaymentCard(card = CreditCard.emptyCard.copy(company = card.company))
-            
+
+            PaymentCard(card = card)
+
             Spacer(modifier = Modifier.height(10.dp))
-            
+
             OutlinedTextField(
                 value = card.number,
-                onValueChange = setCardNumber,
+                onValueChange = setNumber,
                 label = { Text("카드 번호") },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = CardNumberTransformation(),
                 isError = card.number.isNotEmpty() && numberError
             )
-            
+
             OutlinedTextField(
                 value = card.dueDate,
-                onValueChange = setExpiredDate,
+                onValueChange = setDueDate,
                 label = { Text("만료일") },
                 placeholder = { Text("MM / YY") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = DueDateVisualTransformation(),
                 isError = card.dueDate.isNotEmpty() && dueDateError
             )
-            
+
             OutlinedTextField(
                 value = card.name,
-                onValueChange = setOwnerName,
+                onValueChange = setName,
                 label = { Text("카드 소유자 이름(선택)") },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = nameError
             )
-            
+
             OutlinedTextField(
                 value = card.password,
                 onValueChange = setPassword,
@@ -161,40 +144,18 @@ fun NewCardScreen(
 
 @Preview
 @Composable
-private fun StatefulNewCardScreenPreview() {
+private fun CardEditScreenPreview() {
     PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("1234-5678-1234-5678")
-                setExpiredDate("12 / 24")
-                setOwnerName("홍길동")
-                setPassword("1234")
-            },
-            navigateToList = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun StatelessNewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            card = CreditCard(
-                number = "1234567812345678",
-                dueDate = "1224",
-                name = "홍길동",
-                password = "1234",
-                company = CardCompany.NONE
-            ),
-            saveEnabled = true,
+        CardEditScreen(
+            card = CreditCard.emptyCard,
+            saveEnabled = false,
             nameError = false,
             numberError = false,
             dueDateError = false,
             passwordError = false,
-            setCardNumber = {},
-            setExpiredDate = {},
-            setOwnerName = {},
+            setNumber = {},
+            setDueDate = {},
+            setName = {},
             setPassword = {},
             onBackClick = {},
             onSaveClick = {}
