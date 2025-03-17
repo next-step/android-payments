@@ -1,1 +1,16 @@
 # android-payments
+
+## 기능 요구 사항
+* 카드 추가 뷰를 구현한다.
+* 비밀번호는 노출되어서는 안 된다.
+  * (선택사항) 각 입력 항목별 유효성 검사를 진행한다.
+* 카드 번호와 만료일의 경우 입력할 때 자동으로 기호(-, /)가 삽입된다.
+* 카드 소유자 이름의 경우 입력 글자 제한이 30자이다.
+
+## 프로그래밍 요구 사항
+* 실제로 카드 데이터가 추가되는 기능에 대해서는 이 단계에서 고민하지 않아도 된다.
+* OutlinedTextField를 활용한다.
+* 힌트로 제공되는 사전 코드를 가능한 Stateless 컴포넌트로 리팩터링하여 테스트 가능하도록 구현한다.
+
+## 디자인 시안
+* [피그마](https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-Compose-%EB%AF%B8%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=504-335&t=ajo7AAilrRbRHOKj-0)
