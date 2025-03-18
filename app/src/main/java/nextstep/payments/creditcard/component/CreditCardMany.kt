@@ -30,7 +30,7 @@ fun CreditCardMany(
 private fun PaymentCards(cards: List<CardInfo>, modifier: Modifier = Modifier) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(36.dp), modifier = modifier) {
         items(cards, key = { it.number }) {
-            PaymentCard(creditCardType = it)
+            PaymentCard(creditCardType = it, Modifier.padding(horizontal = 76.dp))
         }
     }
 }
@@ -46,18 +46,21 @@ private fun PaymentCardPreview() {
                     "0421",
                     "김무현",
                     "1234",
+                    cardName = "신한카드"
                 ),
                 CardInfo(
                     "3234567812345678",
                     "0421",
                     "김무현",
-                    "1234"
+                    "1234",
+                    cardName = "신한카드"
                 ),
                 CardInfo(
                     "4234567812345678",
                     "0421",
                     "김무현",
-                    "1234"
+                    "1234",
+                    cardName = "신한카드"
                 )
             )
         )
@@ -69,7 +72,12 @@ private fun PaymentCardPreview() {
 private fun CreditCardManyPreview() {
     PaymentsTheme {
         CreditCardMany(
-            List(8) { it -> CardInfo("123456781234567$it", "0421", "김무현", "1234") }
+            List(8) { it ->
+                CardInfo(
+                    "123456781234567$it", "0421", "김무현", "1234",
+                    cardName = "신한카드"
+                )
+            }
         )
     }
 }

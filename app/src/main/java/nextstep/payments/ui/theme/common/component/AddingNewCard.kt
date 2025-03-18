@@ -3,7 +3,8 @@ package nextstep.payments.ui.theme.common.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,11 +24,12 @@ fun AddingNewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .height(height = 124.dp)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
             )
+            .fillMaxWidth()
             .clickable {
                 onClick()
             }

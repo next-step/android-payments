@@ -51,7 +51,8 @@ private class CreditCardUiStateProvider : PreviewParameterProvider<CreditCardUiS
                 number = "congue",
                 expiredDate = "eam",
                 ownerName = "Ronnie Curry",
-                password = "gubergren"
+                password = "gubergren",
+                "카드회사"
             )
         ),
         CreditCardUiState.Many(
@@ -60,14 +61,16 @@ private class CreditCardUiStateProvider : PreviewParameterProvider<CreditCardUiS
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",
-                    password = "gubergren"
+                    password = "gubergren",
+                    "카드회사"
                 ),
                 CardInfo(
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",
-                    password = "gubergren"
-                ),
+                    password = "gubergren",
+                    cardName = "gubergren",
+                    ),
             )
         )
     )

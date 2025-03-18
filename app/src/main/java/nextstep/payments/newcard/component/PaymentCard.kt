@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,16 +32,32 @@ fun PaymentCard(
     Column(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
             .background(
                 color = Color(0xFF333333),
                 shape = RoundedCornerShape(5.dp),
             )
     ) {
+        when (creditCardType) {
+            is CreditCardType.AddingCard -> {
+                CardCompanyName(creditCardType.cardName, Modifier.padding(vertical = 15.dp))
+            }
+
+            is CreditCardType.CardInfo -> {
+                CardCompanyName(creditCardType.cardName, Modifier.padding(vertical = 15.dp))
+            }
+
+            CreditCardType.NoCardType -> {
+                CardCompanyName("", Modifier.size(44.dp))
+            }
+        }
+
         Box(
             modifier = Modifier
-                .padding(start = 14.dp, bottom = 10.dp)
+                .padding(bottom = 10.dp)
+                .padding(start = 14.dp)
                 .size(width = 40.dp, height = 26.dp)
                 .background(
                     color = Color(0xFFCBBA64),
@@ -49,10 +66,13 @@ fun PaymentCard(
         )
         when (creditCardType) {
             is CreditCardType.CardInfo -> {
-                CreditCardInfo(cardInfo = creditCardType, Modifier.padding(horizontal = 14.dp))
+                CreditCardInfo(cardInfo = creditCardType,modifier = Modifier.padding(horizontal = 14.dp))
             }
 
-            CreditCardType.NoCardType -> Unit
+            is CreditCardType.AddingCard -> Unit
+            CreditCardType.NoCardType -> {
+                Spacer(modifier = Modifier.size(54.dp))
+            }
         }
     }
 }
@@ -136,17 +156,23 @@ private fun CardNumber(cardNumber: String) {
     }
 }
 
+@Composable
+fun CardCompanyName(name: String, modifier: Modifier = Modifier) {
+    Text(
+        name,
+        modifier = modifier,
+        color = Color.White,
+        fontSize = 12.sp
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
-            creditCardType = CreditCardType.CardInfo(
-                "1234567812345678",
-                "0421",
-                "김무현",
-                "1234"
-            )
+            creditCardType = CreditCardType.NoCardType,
+            Modifier.padding(horizontal = 76.dp)
         )
     }
 }
@@ -160,7 +186,8 @@ private fun CreditCardInfoPreview() {
                 "1234567812345678",
                 "0421",
                 "김무현",
-                "1234"
+                "1234",
+                "카드회사"
             )
         )
     }

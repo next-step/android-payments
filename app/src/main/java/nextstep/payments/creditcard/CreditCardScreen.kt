@@ -59,23 +59,23 @@ fun CreditCardScreen(
 fun CreditCardContent(
     uiState: CreditCardUiState,
     onNavigateToNewCard: () -> Unit,
-    modifier: Modifier = Modifier,
+
 ) {
     when (uiState) {
         CreditCardUiState.Empty -> CreditCardEmpty(
             onNavigateToNewCard = { onNavigateToNewCard() },
-            modifier = modifier
+
         )
 
         is CreditCardUiState.One -> CreditCardOne(
             onNavigateToNewCard = { onNavigateToNewCard() },
             card = uiState.card,
-            modifier = modifier
+
         )
 
         is CreditCardUiState.Many -> CreditCardMany(
             cards = uiState.cards,
-            modifier = modifier
+
         )
 
         CreditCardUiState.Loading -> Loading()

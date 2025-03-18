@@ -22,8 +22,13 @@ fun CreditCardOne(
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        PaymentCard(modifier = Modifier.padding(vertical = 12.dp), creditCardType = card)
-        AddingNewCard(modifier = Modifier.padding(vertical = 24.dp), onClick = { onNavigateToNewCard() })
+        PaymentCard(
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 76.dp),
+            creditCardType = card
+        )
+        AddingNewCard(
+            modifier = Modifier.padding(vertical = 24.dp, horizontal = 76.dp),
+            onClick = { onNavigateToNewCard() })
     }
 }
 
@@ -31,6 +36,11 @@ fun CreditCardOne(
 @Composable
 private fun CreditCardOnePreview() {
     PaymentsTheme {
-        CreditCardOne({}, CardInfo("1234567812345678", "0421", "김무현", "1234"))
+        CreditCardOne(
+            {}, CardInfo(
+                "1234567812345678", "0421", "김무현", "1234",
+                cardName = "신한카드"
+            )
+        )
     }
 }
