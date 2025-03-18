@@ -1,4 +1,4 @@
-package nextstep.payments.creditcard.component
+package nextstep.payments.ui.creditcard.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.model.CreditCardType.CardInfo
-import nextstep.payments.newcard.component.PaymentCard
+import nextstep.payments.ui.model.CreditCardType.CardInfo
+import nextstep.payments.ui.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 

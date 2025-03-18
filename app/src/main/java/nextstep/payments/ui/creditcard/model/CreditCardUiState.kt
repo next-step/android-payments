@@ -1,6 +1,6 @@
-package nextstep.payments.creditcard.model
+package nextstep.payments.ui.creditcard.model
 
-import nextstep.payments.model.CreditCardType
+import nextstep.payments.ui.model.CreditCardType
 
 sealed interface CreditCardUiState {
     data object Loading : CreditCardUiState

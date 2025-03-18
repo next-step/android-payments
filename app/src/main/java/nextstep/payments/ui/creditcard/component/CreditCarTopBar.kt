@@ -1,4 +1,4 @@
-package nextstep.payments.creditcard.component
+package nextstep.payments.ui.creditcard.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.model.CreditCardType.CardInfo
+import nextstep.payments.ui.creditcard.model.CreditCardUiState
+import nextstep.payments.ui.model.CreditCardType.CardInfo
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

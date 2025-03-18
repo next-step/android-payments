@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import nextstep.payments.newcard.NewCardScreen
+import nextstep.payments.ui.newcard.NewCardScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class NewCardActivity : ComponentActivity() {

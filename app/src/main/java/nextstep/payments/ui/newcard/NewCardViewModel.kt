@@ -1,11 +1,11 @@
-package nextstep.payments.newcard
+package nextstep.payments.ui.newcard
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.model.CreditCardType.CardInfo
+import nextstep.payments.ui.model.CreditCardType.CardInfo
 
 class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
     ViewModel() {

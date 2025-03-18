@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.creditcard.CreditCardContent
-import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.model.CreditCardType.CardInfo
+import nextstep.payments.ui.creditcard.CreditCardContent
+import nextstep.payments.ui.creditcard.model.CreditCardUiState
+import nextstep.payments.ui.model.CreditCardType.CardInfo
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -82,7 +82,8 @@ class CreditCardScreenTest {
             number = "1234123412341234",
             expiredDate = "0428",
             ownerName = "김무일",
-            password = "1234"
+            password = "1234",
+            cardName = "신한카드"
         )
         private val cards =
             List(2) { index ->
@@ -90,7 +91,8 @@ class CreditCardScreenTest {
                     number = "123412341234123$index",
                     expiredDate = "0428",
                     ownerName = if (index == 0) "김무일" else "김무이",
-                    password = "1234"
+                    password = "1234",
+                    cardName = "신한카드"
                 )
             }
     }

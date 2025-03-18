@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.component
+package nextstep.payments.ui.newcard.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import nextstep.payments.R
-import nextstep.payments.newcard.model.CardCompany
+import nextstep.payments.ui.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 private const val COLUMN_COUNT = 4

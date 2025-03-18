@@ -1,4 +1,4 @@
-package nextstep.payments.model
+package nextstep.payments.ui.model
 
 sealed class CreditCardType {
     data object NoCardType : CreditCardType()

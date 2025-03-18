@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
-import nextstep.payments.creditcard.CreditCardScreen
+import nextstep.payments.ui.creditcard.CreditCardScreen
 import nextstep.payments.ui.theme.PaymentsTheme
 
 class CreditCardActivity : ComponentActivity() {

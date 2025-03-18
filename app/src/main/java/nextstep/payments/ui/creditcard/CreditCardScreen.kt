@@ -1,4 +1,4 @@
-package nextstep.payments.creditcard
+package nextstep.payments.ui.creditcard
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -12,12 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.creditcard.component.CreditCardEmpty
-import nextstep.payments.creditcard.component.CreditCardMany
-import nextstep.payments.creditcard.component.CreditCardOne
-import nextstep.payments.creditcard.component.CreditCardTopBar
-import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.ui.theme.common.component.Loading
+import nextstep.payments.ui.creditcard.component.CreditCardEmpty
+import nextstep.payments.ui.creditcard.component.CreditCardMany
+import nextstep.payments.ui.creditcard.component.CreditCardOne
+import nextstep.payments.ui.creditcard.component.CreditCardTopBar
+import nextstep.payments.ui.creditcard.model.CreditCardUiState
+import nextstep.payments.ui.component.Loading
 
 
 @Composable
@@ -60,7 +60,7 @@ fun CreditCardContent(
     uiState: CreditCardUiState,
     onNavigateToNewCard: () -> Unit,
 
-) {
+    ) {
     when (uiState) {
         CreditCardUiState.Empty -> CreditCardEmpty(
             onNavigateToNewCard = { onNavigateToNewCard() },

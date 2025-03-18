@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.component
+package nextstep.payments.ui.newcard.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.model.CreditCardType
+import nextstep.payments.ui.model.CreditCardType
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable

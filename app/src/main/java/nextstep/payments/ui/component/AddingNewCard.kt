@@ -1,4 +1,4 @@
-package nextstep.payments.ui.theme.common.component
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

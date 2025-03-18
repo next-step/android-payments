@@ -1,4 +1,4 @@
-package nextstep.payments.ui.theme.common.component
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
