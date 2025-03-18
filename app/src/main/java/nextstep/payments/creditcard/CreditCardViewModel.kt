@@ -17,7 +17,7 @@ class CreditCardViewModel(private val repository: PaymentCardsRepository = Payme
         val cards = repository.getCardList()
         when (cards.size) {
             0 -> _uiState.value = CreditCardUiState.Empty
-            1 -> _uiState.value = CreditCardUiState.One(cards[0])
+            1 -> _uiState.value = CreditCardUiState.One(cards.first())
             else -> _uiState.value = CreditCardUiState.Many(cards)
         }
     }
