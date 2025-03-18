@@ -1,5 +1,7 @@
 package nextstep.payments.newcard.screen
 
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,9 +21,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.newcard.NewCardViewModel
@@ -33,6 +40,7 @@ import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.newcard.component.OwnerNameTextField
 import nextstep.payments.newcard.component.PasswordTextField
+import nextstep.payments.newcard.model.NewCardEvent
 import nextstep.payments.newcard.model.Validation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,10 +50,24 @@ fun NewCardScreen(
     viewModel: NewCardViewModel = viewModel(),
     onBack: () -> Unit,
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(true) }
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewModel.event.collect {
+                when (it) {
+                    is NewCardEvent.ShowToast -> {
+                        Toast.makeText(context, it.resId, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
     NewCardScreen(
         card = uiState.card,
@@ -56,24 +78,19 @@ fun NewCardScreen(
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
+        onClickCard = { showBottomSheet = true },
         showBottomSheet = showBottomSheet,
         onDismissRequest = { showBottomSheet = false },
         sheetState = sheetState,
-        onClickBank = {
-            viewModel.setBank(it)
+        onClickCardCompany = {
+            viewModel.setCardCompany(it)
             scope.launch { sheetState.hide() }.invokeOnCompletion {
                 if (!sheetState.isVisible) showBottomSheet = false
             }
         },
         onBack = onBack,
         onSave = {
-            if (uiState.cardNumberValidation is Validation.Success
-                && uiState.expiredDateValidation is Validation.Success
-                && uiState.passwordValidation is Validation.Success
-            ) {
-                viewModel.addCard()
-                onBack()
-            }
+            viewModel.addCard(onComplete = onBack)
         },
         modifier = modifier
     )
@@ -91,10 +108,11 @@ fun NewCardScreen(
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
     setPassword: (String) -> Unit,
+    onClickCard: () -> Unit,
     showBottomSheet: Boolean,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    onClickBank: (CardCompany) -> Unit,
+    onClickCardCompany: (CardCompany) -> Unit,
     onBack: () -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +135,10 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(cardCompany = card.cardCompany)
+            PaymentCard(
+                modifier = Modifier.clickable { onClickCard() },
+                cardCompany = card.cardCompany
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -152,7 +173,7 @@ fun NewCardScreen(
         if (showBottomSheet) {
             BankSelectBottomSheet(
                 sheetState = sheetState,
-                onClickBank = onClickBank,
+                onClickBank = onClickCardCompany,
                 onDismissRequest = onDismissRequest,
             )
         }
@@ -201,12 +222,13 @@ private fun StatelessNewCardScreenPreview() {
         setExpiredDate = {},
         setOwnerName = {},
         setPassword = {},
+        onClickCard = {},
         onSave = {},
         onBack = {},
         showBottomSheet = showBottomSheet,
         onDismissRequest = { showBottomSheet = false },
         sheetState = sheetState,
-        onClickBank = {
+        onClickCardCompany = {
             card = card.copy(cardCompany = it)
             scope.launch { sheetState.hide() }.invokeOnCompletion {
                 if (!sheetState.isVisible) showBottomSheet = false

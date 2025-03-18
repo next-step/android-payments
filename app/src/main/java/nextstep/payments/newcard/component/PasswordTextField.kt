@@ -31,9 +31,9 @@ fun PasswordTextField(
                 setPassword(it)
             }
         },
-        isError = validation !is Validation.Success,
+        isError = validation is Validation.Failure.Error,
         supportingText = {
-            if (validation is Validation.Error) {
+            if (validation is Validation.Failure.Error) {
                 Text(stringResource(validation.msgId))
             }
         },
