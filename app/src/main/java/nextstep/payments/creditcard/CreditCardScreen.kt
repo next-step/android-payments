@@ -56,7 +56,7 @@ fun CreditCardScreen(
 }
 
 @Composable
-private fun CreditCardContent(
+fun CreditCardContent(
     uiState: CreditCardUiState,
     onNavigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier,

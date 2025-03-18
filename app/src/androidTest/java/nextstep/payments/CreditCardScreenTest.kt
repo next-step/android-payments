@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.creditcard.CreditCardScreen
+import nextstep.payments.creditcard.CreditCardContent
 import nextstep.payments.creditcard.model.CreditCardUiState
 import nextstep.payments.model.CreditCardType.CardInfo
 import org.junit.Before
@@ -22,7 +22,7 @@ class CreditCardScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            CreditCardScreen(uiState = fakeUiState.value, onNavigateToNewCard = {})
+            CreditCardContent(uiState = fakeUiState.value, onNavigateToNewCard = {})
         }
     }
 
