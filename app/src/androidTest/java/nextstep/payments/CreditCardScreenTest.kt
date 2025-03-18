@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.creditcard.CreditCardScreen
 import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType.CardInfo
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -78,38 +78,20 @@ class CreditCardScreenTest {
     }
 
     companion object {
-        private val card = CreditCard(
-            number = "1234567812345678",
+        private val card = CardInfo(
+            number = "1234123412341234",
             expiredDate = "0428",
             ownerName = "김무일",
             password = "1234"
         )
         private val cards =
-            listOf(
-                CreditCard(
-                    number = "1234567812345678",
+            List(2) { index ->
+                CardInfo(
+                    number = "123412341234123$index",
                     expiredDate = "0428",
-                    ownerName = "김무일",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "2234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무이",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "3234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무삼",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "4234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무사",
+                    ownerName = if (index == 0) "김무일" else "김무이",
                     password = "1234"
                 )
-            )
+            }
     }
 }

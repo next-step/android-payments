@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.ui.theme.common.component.NewCard
+import nextstep.payments.ui.theme.common.component.AddingNewCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -22,7 +22,7 @@ fun CreditCardEmpty(onNavigateToNewCard: () -> Unit, modifier: Modifier = Modifi
             guideMessage = "새로운 카드를 등록해주세요",
             modifier = modifier.padding(vertical = 32.dp)
         )
-        NewCard(onClick = { onNavigateToNewCard() })
+        AddingNewCard(onClick = { onNavigateToNewCard() })
     }
 }
 

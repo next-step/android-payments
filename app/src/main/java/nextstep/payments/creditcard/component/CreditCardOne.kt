@@ -8,22 +8,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.ui.theme.common.component.NewCard
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType.CardInfo
+import nextstep.payments.ui.theme.common.component.AddingNewCard
 import nextstep.payments.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun CreditCardOne(
     onNavigateToNewCard: () -> Unit,
-    card: CreditCard,
+    card: CardInfo,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
-        PaymentCard(modifier = Modifier.padding(vertical = 12.dp), creditCard = card)
-        NewCard(modifier = Modifier.padding(vertical = 24.dp), onClick = { onNavigateToNewCard() })
+        PaymentCard(modifier = Modifier.padding(vertical = 12.dp), creditCardType = card)
+        AddingNewCard(modifier = Modifier.padding(vertical = 24.dp), onClick = { onNavigateToNewCard() })
     }
 }
 
@@ -31,6 +31,6 @@ fun CreditCardOne(
 @Composable
 private fun CreditCardOnePreview() {
     PaymentsTheme {
-        CreditCardOne({}, CreditCard("1234567812345678", "0421", "김무현", "1234"))
+        CreditCardOne({}, CardInfo("1234567812345678", "0421", "김무현", "1234"))
     }
 }

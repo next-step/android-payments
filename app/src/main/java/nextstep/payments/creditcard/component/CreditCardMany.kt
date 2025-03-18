@@ -9,14 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType.CardInfo
 import nextstep.payments.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
 @Composable
 fun CreditCardMany(
-    cards: List<CreditCard>,
+    cards: List<CardInfo>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -27,10 +27,10 @@ fun CreditCardMany(
 }
 
 @Composable
-private fun PaymentCards(cards: List<CreditCard>, modifier: Modifier = Modifier) {
+private fun PaymentCards(cards: List<CardInfo>, modifier: Modifier = Modifier) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(36.dp), modifier = modifier) {
         items(cards, key = { it.number }) {
-            PaymentCard(creditCard = it)
+            PaymentCard(creditCardType = it)
         }
     }
 }
@@ -41,19 +41,24 @@ private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCards(
             cards = listOf(
-                CreditCard(
+                CardInfo(
                     "2234567812345678",
                     "0421",
                     "김무현",
                     "1234",
                 ),
-                CreditCard(
+                CardInfo(
                     "3234567812345678",
                     "0421",
                     "김무현",
                     "1234"
                 ),
-                CreditCard("4234567812345678", "0421", "김무현", "1234")
+                CardInfo(
+                    "4234567812345678",
+                    "0421",
+                    "김무현",
+                    "1234"
+                )
             )
         )
     }
@@ -64,16 +69,7 @@ private fun PaymentCardPreview() {
 private fun CreditCardManyPreview() {
     PaymentsTheme {
         CreditCardMany(
-            listOf(
-                CreditCard("1234567812345678", "0421", "김무현", "1234"),
-                CreditCard("2234567812345678", "0421", "김무현", "1234"),
-                CreditCard("3234567812345678", "0421", "김무현", "1234"),
-                CreditCard("4234567812345678", "0421", "김무현", "1234"),
-                CreditCard("5234567812345678", "0421", "김무현", "1234"),
-                CreditCard("6234567812345678", "0421", "김무현", "1234"),
-                CreditCard("7234567812345678", "0421", "김무현", "1234"),
-                CreditCard("8234567812345678", "0421", "김무현", "1234")
-            )
+            List(8) { it -> CardInfo("123456781234567$it", "0421", "김무현", "1234") }
         )
     }
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType.CardInfo
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +47,7 @@ private class CreditCardUiStateProvider : PreviewParameterProvider<CreditCardUiS
         CreditCardUiState.Empty,
         CreditCardUiState.Loading,
         CreditCardUiState.One(
-            CreditCard(
+            CardInfo(
                 number = "congue",
                 expiredDate = "eam",
                 ownerName = "Ronnie Curry",
@@ -56,13 +56,13 @@ private class CreditCardUiStateProvider : PreviewParameterProvider<CreditCardUiS
         ),
         CreditCardUiState.Many(
             listOf(
-                CreditCard(
+                CardInfo(
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",
                     password = "gubergren"
                 ),
-                CreditCard(
+                CardInfo(
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",

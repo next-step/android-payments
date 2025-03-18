@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.repository.PaymentCardsRepository
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType.CardInfo
 
 class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
     ViewModel() {
@@ -45,7 +45,7 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
         // TODO when 문으로 각각 분기하여 에러내보내기
         if (cardNumber.value.length == 16 && expiredDate.value.length == 4 && password.value.length == 4 && ownerName.value.isNotEmpty()) {
             repository.addCard(
-                CreditCard(
+                CardInfo(
                     number = cardNumber.value,
                     expiredDate = expiredDate.value,
                     ownerName = ownerName.value,

@@ -20,13 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.model.CreditCard
+import nextstep.payments.model.CreditCardType
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCard(
+    creditCardType: CreditCardType,
     modifier: Modifier = Modifier,
-    creditCard: CreditCard? = null
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -47,24 +47,28 @@ fun PaymentCard(
                     shape = RoundedCornerShape(4.dp),
                 )
         )
-        creditCard?.let { cardInfo ->
-            CreditCardInfo(creditCard = cardInfo, Modifier.padding(horizontal = 14.dp))
+        when (creditCardType) {
+            is CreditCardType.CardInfo -> {
+                CreditCardInfo(cardInfo = creditCardType, Modifier.padding(horizontal = 14.dp))
+            }
+
+            CreditCardType.NoCardType -> Unit
         }
     }
 }
 
 @Composable
-private fun CreditCardInfo(creditCard: CreditCard, modifier: Modifier = Modifier) {
+private fun CreditCardInfo(cardInfo: CreditCardType.CardInfo, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        CardNumber(creditCard.number)
+        CardNumber(cardInfo.number)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CardOwnerName(creditCard.ownerName)
-            CardExpireDate(creditCard.expiredDate)
+            CardOwnerName(cardInfo.ownerName)
+            CardExpireDate(cardInfo.expiredDate)
         }
     }
 }
@@ -136,7 +140,14 @@ private fun CardNumber(cardNumber: String) {
 @Composable
 private fun PaymentCardPreview() {
     PaymentsTheme {
-        PaymentCard(creditCard = CreditCard("1234567812345678", "0421", "김무현", "1234"))
+        PaymentCard(
+            creditCardType = CreditCardType.CardInfo(
+                "1234567812345678",
+                "0421",
+                "김무현",
+                "1234"
+            )
+        )
     }
 }
 
@@ -144,6 +155,13 @@ private fun PaymentCardPreview() {
 @Composable
 private fun CreditCardInfoPreview() {
     PaymentsTheme {
-        CreditCardInfo(creditCard = CreditCard("1234567812345678", "0421", "김무현", "1234"))
+        CreditCardInfo(
+            cardInfo = CreditCardType.CardInfo(
+                "1234567812345678",
+                "0421",
+                "김무현",
+                "1234"
+            )
+        )
     }
 }

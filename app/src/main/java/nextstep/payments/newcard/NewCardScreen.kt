@@ -1,7 +1,6 @@
 package nextstep.payments.newcard
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -22,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nextstep.payments.model.CreditCardType.NoCardType
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.newcard.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
@@ -97,7 +97,7 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(NoCardType)
 
             Spacer(modifier = Modifier.height(10.dp))
 
