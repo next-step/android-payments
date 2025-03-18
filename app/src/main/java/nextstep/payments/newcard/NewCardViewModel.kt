@@ -25,6 +25,9 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
     private val _cardAdded = MutableStateFlow(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
 
+    private val _cardName = MutableStateFlow("")
+    val cardName: StateFlow<String> = _cardName.asStateFlow()
+
     fun setCardNumber(cardNumber: String) {
         _cardNumber.value = cardNumber
     }
@@ -49,7 +52,8 @@ class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentC
                     number = cardNumber.value,
                     expiredDate = expiredDate.value,
                     ownerName = ownerName.value,
-                    password = password.value
+                    password = password.value,
+                    cardName = cardName.value
                 )
             )
             _cardAdded.value = true
