@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun NewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun AddingNewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
@@ -45,6 +45,6 @@ fun NewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 private fun NewCardPreview() {
     PaymentsTheme {
-        NewCard({})
+        AddingNewCard({})
     }
 }
