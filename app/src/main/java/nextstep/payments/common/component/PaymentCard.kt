@@ -18,12 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
 
 private object CardChipDefaults {
@@ -36,8 +38,25 @@ private object CardChipDefaults {
 
 @Composable
 fun PaymentCard(
+    card: Card,
     modifier: Modifier = Modifier,
-    card: Card? = null,
+) {
+    PaymentCard(
+        modifier = modifier,
+        cardCompany = card.cardCompany,
+        cardNumber = card.cardNumber,
+        expiredDate = card.expiredDate,
+        ownerName = card.ownerName,
+    )
+}
+
+@Composable
+fun PaymentCard(
+    modifier: Modifier = Modifier,
+    cardCompany: CardCompany? = null,
+    cardNumber: String = "",
+    expiredDate: String = "",
+    ownerName: String = "",
 ) {
     Box(
         contentAlignment = Alignment.CenterStart,
@@ -45,11 +64,22 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = CardDefaults.width, height = CardDefaults.height)
             .background(
-                color = Color(0xFF333333),
+                color = cardCompany?.color ?: Color(0xFF333333),
                 shape = RoundedCornerShape(CardDefaults.roundedCorner),
             )
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
+        if (cardCompany != null) {
+            Text(
+                modifier = Modifier.align(Alignment.TopStart),
+                text = stringResource(cardCompany.titleRes),
+                fontSize = 12.sp,
+                lineHeight = 12.sp,
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.W500,
+                color = Color.White,
+            )
+        }
         Box(
             modifier = Modifier
                 .padding(paddingValues = CardChipDefaults.padding)
@@ -60,37 +90,42 @@ fun PaymentCard(
                 )
         )
 
-        if (card != null) {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-            ) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+        ) {
+            if (cardNumber.isNotEmpty()) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = maskCardNumber(card.cardNumber),
+                    text = maskCardNumber(cardNumber),
                     fontSize = 12.sp,
                     lineHeight = 14.06.sp,
                     letterSpacing = 2.04.sp,
                     fontWeight = FontWeight.W500,
                     color = Color.White,
                 )
-                Spacer(modifier = Modifier.height(2.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom
-                ) {
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                if (ownerName.isNotEmpty()) {
                     Text(
-                        text = card.ownerName,
+                        text = ownerName,
                         fontSize = 12.sp,
                         lineHeight = 14.06.sp,
                         letterSpacing = 1.2.sp,
                         fontWeight = FontWeight.W500,
                         color = Color.White,
                     )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                if (expiredDate.isNotEmpty()) {
                     Text(
-                        text = card.expiredDate,
+                        text = formatExpiredDate(expiredDate),
                         fontSize = 12.sp,
                         lineHeight = 14.06.sp,
                         letterSpacing = 0.96.sp,
@@ -110,12 +145,18 @@ private fun maskCardNumber(cardNumber: String): String {
     return masked.joinToString(separator = " - ")
 }
 
+private fun formatExpiredDate(expiredDate: String): String {
+    val numbers = expiredDate.chunked(2)
+    return numbers.joinToString(separator = " / ")
+}
+
 class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
+            cardCompany = CardCompany.BC,
             cardNumber = "1111222233334444",
-            expiredDate = "12/25",
+            expiredDate = "1225",
             ownerName = "CREW",
             password = "1234",
         )
@@ -128,7 +169,9 @@ private fun PaymentCardPreview(
     @PreviewParameter(CardPreviewParameterProvider::class) card: Card?
 ) {
     PaymentCard(
-        card = card
+        cardCompany = card?.cardCompany,
+        cardNumber = card?.cardNumber ?: "",
+        expiredDate = card?.expiredDate ?: "",
+        ownerName = card?.ownerName ?: "",
     )
 }
-

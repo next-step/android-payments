@@ -34,9 +34,9 @@ fun CardNumberTextField(
                 setCardNumber(number.filter { it.isDigit() }.take(16))
             }
         },
-        isError = validation !is Validation.Success,
+        isError = validation is Validation.Failure.Error,
         supportingText = {
-            if (validation is Validation.Error) {
+            if (validation is Validation.Failure.Error) {
                 Text(stringResource(validation.msgId))
             }
         },
