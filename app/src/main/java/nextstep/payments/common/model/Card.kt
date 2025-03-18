@@ -1,7 +1,7 @@
 package nextstep.payments.common.model
 
 data class Card(
-    val bank: Bank?,
+    val cardCompany: CardCompany?,
     val cardNumber: String,
     val expiredDate: String,
     val ownerName: String,

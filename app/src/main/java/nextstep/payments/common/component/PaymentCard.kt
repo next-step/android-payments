@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
 
 private object CardChipDefaults {
@@ -43,7 +43,7 @@ fun PaymentCard(
 ) {
     PaymentCard(
         modifier = modifier,
-        bank = card.bank,
+        cardCompany = card.cardCompany,
         cardNumber = card.cardNumber,
         expiredDate = card.expiredDate,
         ownerName = card.ownerName,
@@ -53,7 +53,7 @@ fun PaymentCard(
 @Composable
 fun PaymentCard(
     modifier: Modifier = Modifier,
-    bank: Bank? = null,
+    cardCompany: CardCompany? = null,
     cardNumber: String = "",
     expiredDate: String = "",
     ownerName: String = "",
@@ -64,15 +64,15 @@ fun PaymentCard(
             .shadow(8.dp)
             .size(width = CardDefaults.width, height = CardDefaults.height)
             .background(
-                color = bank?.color ?: Color(0xFF333333),
+                color = cardCompany?.color ?: Color(0xFF333333),
                 shape = RoundedCornerShape(CardDefaults.roundedCorner),
             )
             .padding(horizontal = 14.dp, vertical = 16.dp)
     ) {
-        if (bank != null) {
+        if (cardCompany != null) {
             Text(
                 modifier = Modifier.align(Alignment.TopStart),
-                text = stringResource(bank.titleRes),
+                text = stringResource(cardCompany.titleRes),
                 fontSize = 12.sp,
                 lineHeight = 12.sp,
                 letterSpacing = 1.2.sp,
@@ -154,7 +154,7 @@ class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
-            bank = Bank.BC,
+            cardCompany = CardCompany.BC,
             cardNumber = "1111222233334444",
             expiredDate = "1225",
             ownerName = "CREW",
@@ -169,7 +169,7 @@ private fun PaymentCardPreview(
     @PreviewParameter(CardPreviewParameterProvider::class) card: Card?
 ) {
     PaymentCard(
-        bank = card?.bank,
+        cardCompany = card?.cardCompany,
         cardNumber = card?.cardNumber ?: "",
         expiredDate = card?.expiredDate ?: "",
         ownerName = card?.ownerName ?: "",

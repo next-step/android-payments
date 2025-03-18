@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import nextstep.payments.R
 
-enum class Bank(
+enum class CardCompany(
     @StringRes val titleRes: Int,
     @DrawableRes val imageRes: Int,
     val color: Color

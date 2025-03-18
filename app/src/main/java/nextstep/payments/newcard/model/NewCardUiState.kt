@@ -6,7 +6,7 @@ import nextstep.payments.common.model.Card
 
 data class NewCardUiState(
     val card: Card = Card(
-        bank = null,
+        cardCompany = null,
         cardNumber = "",
         expiredDate = "",
         ownerName = "",

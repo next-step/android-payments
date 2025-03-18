@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.common.component.EmptyCard
 import nextstep.payments.common.component.PaymentCard
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
 
 @Composable
@@ -42,7 +42,7 @@ fun OneCardScreen(
 private fun OneCardScreenPreview() {
     OneCardScreen(
         card = Card(
-            bank = Bank.HYUNDAI,
+            cardCompany = CardCompany.HYUNDAI,
             cardNumber = "1111 - 2222 - **** - ****",
             expiredDate = "12/25",
             ownerName = "CREW",

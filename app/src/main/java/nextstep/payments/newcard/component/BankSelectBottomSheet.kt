@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +33,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 fun BankSelectBottomSheet(
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    onClickBank: (Bank) -> Unit,
+    onClickBank: (CardCompany) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ModalBottomSheet(
@@ -42,7 +42,7 @@ fun BankSelectBottomSheet(
         sheetState = sheetState
     ) {
         BankSelectBottomSheetContent(
-            banks = Bank.entries,
+            cardCompanies = CardCompany.entries,
             onClickBank = onClickBank,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -54,8 +54,8 @@ private const val MAX_ITEMS_ROW = 4
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun BankSelectBottomSheetContent(
-    banks: List<Bank>,
-    onClickBank: (Bank) -> Unit,
+    cardCompanies: List<CardCompany>,
+    onClickBank: (CardCompany) -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -64,9 +64,9 @@ private fun BankSelectBottomSheetContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         maxItemsInEachRow = MAX_ITEMS_ROW,
     ) {
-        banks.forEach {
+        cardCompanies.forEach {
             BankItem(
-                bank = it,
+                cardCompany = it,
                 onClick = { onClickBank(it) },
                 modifier = Modifier.width(68.dp)
             )
@@ -76,7 +76,7 @@ private fun BankSelectBottomSheetContent(
 
 @Composable
 fun BankItem(
-    bank: Bank,
+    cardCompany: CardCompany,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -85,12 +85,12 @@ fun BankItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(bank.imageRes),
+            painter = painterResource(cardCompany.imageRes),
             contentDescription = null
         )
         Spacer(modifier = Modifier.height(9.dp))
         Text(
-            text = stringResource(bank.titleRes),
+            text = stringResource(cardCompany.titleRes),
             fontWeight = FontWeight.W500,
             fontSize = 16.sp,
             lineHeight = 16.sp,

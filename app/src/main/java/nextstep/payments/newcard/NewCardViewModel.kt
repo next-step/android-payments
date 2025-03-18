@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import nextstep.payments.PaymentCardsRepository
 import nextstep.payments.R
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.newcard.model.NewCardUiState
 import nextstep.payments.newcard.model.Validation
 
@@ -18,10 +18,10 @@ class NewCardViewModel(
     private val _uiState = MutableStateFlow(NewCardUiState())
     val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
 
-    fun setBank(bank: Bank) {
+    fun setBank(cardCompany: CardCompany) {
         _uiState.update { prev ->
             prev.copy(
-                card = prev.card.copy(bank = bank)
+                card = prev.card.copy(cardCompany = cardCompany)
             )
         }
     }

@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import nextstep.payments.newcard.NewCardViewModel
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
-import nextstep.payments.common.model.Bank
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
 import nextstep.payments.newcard.component.BankSelectBottomSheet
 import nextstep.payments.newcard.component.CardNumberTextField
@@ -94,7 +94,7 @@ fun NewCardScreen(
     showBottomSheet: Boolean,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    onClickBank: (Bank) -> Unit,
+    onClickBank: (CardCompany) -> Unit,
     onBack: () -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +117,7 @@ fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(bank = card.bank)
+            PaymentCard(cardCompany = card.cardCompany)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -180,7 +180,7 @@ private fun StatelessNewCardScreenPreview() {
     var card by remember {
         mutableStateOf(
             Card(
-                bank = Bank.BC,
+                cardCompany = CardCompany.BC,
                 cardNumber = "0000000000000000",
                 expiredDate = "0000",
                 ownerName = "홍길동",
@@ -207,7 +207,7 @@ private fun StatelessNewCardScreenPreview() {
         onDismissRequest = { showBottomSheet = false },
         sheetState = sheetState,
         onClickBank = {
-            card = card.copy(bank = it)
+            card = card.copy(cardCompany = it)
             scope.launch { sheetState.hide() }.invokeOnCompletion {
                 if (!sheetState.isVisible) showBottomSheet = false
             }
