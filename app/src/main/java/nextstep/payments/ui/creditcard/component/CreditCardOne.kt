@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.model.CreditCardType.CardInfo
 import nextstep.payments.ui.component.AddingNewCard
-import nextstep.payments.ui.newcard.component.PaymentCard
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable

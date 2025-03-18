@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.ui.model.CreditCardType.NoCardType
 import nextstep.payments.ui.newcard.component.NewCardTopBar
-import nextstep.payments.ui.newcard.component.PaymentCard
+import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.newcard.component.SelectCardBottomSheet
 import nextstep.payments.ui.theme.PaymentsTheme
 
