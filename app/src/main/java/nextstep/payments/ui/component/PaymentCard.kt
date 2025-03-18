@@ -21,12 +21,91 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.R
 import nextstep.payments.ui.model.CreditCardType
+import nextstep.payments.ui.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
+
+@Composable
+fun PaymentCard(creditCardType: CreditCardType, modifier: Modifier = Modifier) {
+    when (creditCardType) {
+        is CreditCardType.AddingCard -> {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .shadow(8.dp)
+                    .background(
+                        color = Color(creditCardType.cardCompany.color),
+                        shape = RoundedCornerShape(5.dp),
+                    )
+                    .padding(horizontal = 14.dp, vertical = 14.dp)
+            ) {
+
+                CardCompanyName(
+                    name = creditCardType.cardCompany.name,
+                    modifier = Modifier.padding(bottom = 15.dp)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .size(width = 40.dp, height = 26.dp)
+                        .background(
+                            color = Color(0xFFCBBA64),
+                            shape = RoundedCornerShape(4.dp),
+                        )
+                )
+
+                Spacer(modifier = Modifier.size(54.dp))
+
+            }
+        }
+
+        is CreditCardType.RegisteredCard -> {
+
+            Column(
+                verticalArrangement = Arrangement.Center,
+                modifier = modifier
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .shadow(8.dp)
+                    .background(
+                        color = Color(creditCardType.cardCompany.color),
+                        shape = RoundedCornerShape(5.dp),
+                    )
+                    .padding(horizontal = 14.dp, vertical = 14.dp)
+            ) {
+
+                CardCompanyName(
+                    name = creditCardType.cardCompany.name,
+                    modifier = Modifier.padding(bottom = 15.dp)
+                )
+
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 10.dp)
+                        .size(width = 40.dp, height = 26.dp)
+                        .background(
+                            color = Color(0xFFCBBA64),
+                            shape = RoundedCornerShape(4.dp),
+                        )
+                )
+
+                CreditCardInfo(
+                    registeredCard = creditCardType
+                )
+            }
+
+        }
+    }
+}
 
 @Composable
 fun PaymentCard(
     creditCardType: CreditCardType,
+    cardName: String,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -36,28 +115,17 @@ fun PaymentCard(
             .fillMaxWidth()
             .shadow(8.dp)
             .background(
-                color = Color(0xFF333333),
+                color = Color(getCardColor(cardName)),
                 shape = RoundedCornerShape(5.dp),
             )
+            .padding(horizontal = 14.dp, vertical = 14.dp)
     ) {
-        when (creditCardType) {
-            is CreditCardType.AddingCard -> {
-                CardCompanyName(creditCardType.cardName, Modifier.padding(vertical = 15.dp))
-            }
 
-            is CreditCardType.CardInfo -> {
-                CardCompanyName(creditCardType.cardName, Modifier.padding(vertical = 15.dp))
-            }
-
-            CreditCardType.NoCardType -> {
-                CardCompanyName("", Modifier.size(44.dp))
-            }
-        }
+        CardCompanyName(name = cardName, modifier = Modifier.padding(bottom = 15.dp))
 
         Box(
             modifier = Modifier
                 .padding(bottom = 10.dp)
-                .padding(start = 14.dp)
                 .size(width = 40.dp, height = 26.dp)
                 .background(
                     color = Color(0xFFCBBA64),
@@ -65,30 +133,35 @@ fun PaymentCard(
                 )
         )
         when (creditCardType) {
-            is CreditCardType.CardInfo -> {
-                CreditCardInfo(cardInfo = creditCardType,modifier = Modifier.padding(horizontal = 14.dp))
+            is CreditCardType.RegisteredCard -> {
+                CreditCardInfo(
+                    registeredCard = creditCardType
+                )
             }
 
-            is CreditCardType.AddingCard -> Unit
-            CreditCardType.NoCardType -> {
+            is CreditCardType.AddingCard -> {
                 Spacer(modifier = Modifier.size(54.dp))
             }
+
         }
     }
 }
 
 @Composable
-private fun CreditCardInfo(cardInfo: CreditCardType.CardInfo, modifier: Modifier = Modifier) {
+private fun CreditCardInfo(
+    registeredCard: CreditCardType.RegisteredCard,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier) {
-        CardNumber(cardInfo.number)
+        CardNumber(registeredCard.number)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CardOwnerName(cardInfo.ownerName)
-            CardExpireDate(cardInfo.expiredDate)
+            CardOwnerName(registeredCard.ownerName)
+            CardExpireDate(registeredCard.expiredDate)
         }
     }
 }
@@ -159,7 +232,7 @@ private fun CardNumber(cardNumber: String) {
 @Composable
 fun CardCompanyName(name: String, modifier: Modifier = Modifier) {
     Text(
-        name,
+        text = name,
         modifier = modifier,
         color = Color.White,
         fontSize = 12.sp
@@ -171,24 +244,34 @@ fun CardCompanyName(name: String, modifier: Modifier = Modifier) {
 private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCard(
-            creditCardType = CreditCardType.NoCardType,
+            creditCardType = CreditCardType.AddingCard(CardCompany(R.drawable.ic_kakao, "카카오뱅크",0xF444444)),
+            cardName = "신한카드",
             Modifier.padding(horizontal = 76.dp)
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun CreditCardInfoPreview() {
     PaymentsTheme {
-        CreditCardInfo(
-            cardInfo = CreditCardType.CardInfo(
+        PaymentCard(
+            creditCardType = CreditCardType.RegisteredCard(
                 "1234567812345678",
                 "0421",
                 "김무현",
                 "1234",
-                "카드회사"
-            )
+                CardCompany(R.drawable.ic_kakao, "카카오뱅크",0xF444444)
+            ),
+            cardName = "신한카드",
+            Modifier.padding(horizontal = 76.dp)
         )
     }
+}
+
+private fun getCardColor(cardName: String): Long {
+    when (cardName) {
+
+    }
+    return 0xFFF04651
 }
