@@ -26,10 +26,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import nextstep.payments.ui.model.CreditCardType.NoCardType
+import nextstep.payments.R
 import nextstep.payments.ui.newcard.component.NewCardTopBar
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.model.CreditCardType
 import nextstep.payments.ui.newcard.component.SelectCardBottomSheet
+import nextstep.payments.ui.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -44,7 +46,7 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
-    val cardName by viewModel.password.collectAsStateWithLifecycle()
+    val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
     var showSelectCardBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(cardAdded) {
@@ -56,6 +58,7 @@ fun NewCardScreen(
     if (showSelectCardBottomSheet) {
         SelectCardBottomSheet(
             onCardClick = { company ->
+                viewModel.updateCardName(company)
                 showSelectCardBottomSheet = false
             }
         )
@@ -66,7 +69,7 @@ fun NewCardScreen(
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
-        cardName = cardName,
+        selectedCompany = selectedCard,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
@@ -82,7 +85,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
-    cardName: String,
+    selectedCompany: CardCompany,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -116,7 +119,10 @@ private fun NewCardScreen(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(NoCardType,Modifier.padding(horizontal = 76.dp))
+            PaymentCard(
+                creditCardType = CreditCardType.AddingCard(selectedCompany),
+                modifier = Modifier.padding(horizontal = 52.dp)
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -188,7 +194,7 @@ private fun StatelessNewCardScreenPreview() {
             setPassword = {},
             onSaveClick = {},
             onBackClick = {},
-            cardName = "Shawna Pruitt"
+            selectedCompany = CardCompany(R.drawable.ic_kakao, "카카오뱅크",0xF444444),
 
 
         )

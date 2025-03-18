@@ -14,8 +14,10 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import nextstep.payments.R
 import nextstep.payments.ui.creditcard.model.CreditCardUiState
-import nextstep.payments.ui.model.CreditCardType.CardInfo
+import nextstep.payments.ui.model.CreditCardType.RegisteredCard
+import nextstep.payments.ui.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,30 +49,30 @@ private class CreditCardUiStateProvider : PreviewParameterProvider<CreditCardUiS
         CreditCardUiState.Empty,
         CreditCardUiState.Loading,
         CreditCardUiState.One(
-            CardInfo(
+            RegisteredCard(
                 number = "congue",
                 expiredDate = "eam",
                 ownerName = "Ronnie Curry",
                 password = "gubergren",
-                "카드회사"
+                CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444)
             )
         ),
         CreditCardUiState.Many(
             listOf(
-                CardInfo(
+                RegisteredCard(
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",
                     password = "gubergren",
-                    "카드회사"
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444)
                 ),
-                CardInfo(
+                RegisteredCard(
                     number = "congue",
                     expiredDate = "eam",
                     ownerName = "Ronnie Curry",
                     password = "gubergren",
-                    cardName = "gubergren",
-                    ),
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444),
+                ),
             )
         )
     )

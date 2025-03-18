@@ -9,14 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.ui.model.CreditCardType.CardInfo
+import nextstep.payments.R
+import nextstep.payments.ui.model.CreditCardType.RegisteredCard
 import nextstep.payments.ui.component.PaymentCard
+import nextstep.payments.ui.newcard.model.CardCompany
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
 @Composable
 fun CreditCardMany(
-    cards: List<CardInfo>,
+    cards: List<RegisteredCard>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -27,10 +29,13 @@ fun CreditCardMany(
 }
 
 @Composable
-private fun PaymentCards(cards: List<CardInfo>, modifier: Modifier = Modifier) {
+private fun PaymentCards(cards: List<RegisteredCard>, modifier: Modifier = Modifier) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(36.dp), modifier = modifier) {
-        items(cards, key = { it.number }) {
-            PaymentCard(creditCardType = it, Modifier.padding(horizontal = 76.dp))
+        items(cards) {
+            PaymentCard(
+                creditCardType = it,
+                modifier = Modifier.padding(horizontal = 76.dp)
+            )
         }
     }
 }
@@ -41,26 +46,26 @@ private fun PaymentCardPreview() {
     PaymentsTheme {
         PaymentCards(
             cards = listOf(
-                CardInfo(
+                RegisteredCard(
                     "2234567812345678",
                     "0421",
                     "김무현",
                     "1234",
-                    cardName = "신한카드"
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xFF441444)
                 ),
-                CardInfo(
+                RegisteredCard(
                     "3234567812345678",
                     "0421",
                     "김무현",
                     "1234",
-                    cardName = "신한카드"
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xFF444144)
                 ),
-                CardInfo(
+                RegisteredCard(
                     "4234567812345678",
                     "0421",
                     "김무현",
                     "1234",
-                    cardName = "신한카드"
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xFF442444)
                 )
             )
         )
@@ -73,9 +78,9 @@ private fun CreditCardManyPreview() {
     PaymentsTheme {
         CreditCardMany(
             List(8) { it ->
-                CardInfo(
+                RegisteredCard(
                     "123456781234567$it", "0421", "김무현", "1234",
-                    cardName = "신한카드"
+                    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444)
                 )
             }
         )

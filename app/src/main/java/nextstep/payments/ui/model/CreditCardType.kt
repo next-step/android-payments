@@ -1,13 +1,14 @@
 package nextstep.payments.ui.model
 
+import nextstep.payments.ui.newcard.model.CardCompany
+
 sealed class CreditCardType {
-    data object NoCardType : CreditCardType()
-    data class AddingCard(val cardName: String) : CreditCardType()
-    data class CardInfo(
+    data class AddingCard(val cardCompany:  CardCompany) : CreditCardType()
+    data class RegisteredCard(
         val number: String,
         val expiredDate: String,
         val ownerName: String,
         val password: String,
-        val cardName: String
+        val cardCompany: CardCompany
     ) : CreditCardType()
 }
