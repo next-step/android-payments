@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.BankType
 
@@ -15,17 +17,29 @@ import nextstep.payments.model.BankType
 fun BankSelectBottomSheet(
     modalBottomSheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onBankSelected: (BankType) -> Unit = {}
+    modifier : Modifier = Modifier,
+    onClickBank: (BankType) -> Unit = {}
 ) {
     ModalBottomSheet(
         sheetState = modalBottomSheetState,
         onDismissRequest = onDismissRequest,
         dragHandle = {
             Box(modifier = Modifier.height(24.dp))
-        }
+        },
+        modifier = modifier
     ) {
         BankSelectRow(
-            onClick = onBankSelected
+            onClick = onClickBank
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun BankSelectBottomSheetPreview() {
+    BankSelectBottomSheet(
+        modalBottomSheetState = rememberStandardBottomSheetState(),
+        onDismissRequest = {},
+    )
 }

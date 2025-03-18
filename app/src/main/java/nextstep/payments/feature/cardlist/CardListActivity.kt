@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import nextstep.payments.feature.editcard.EditCardActivity
 import nextstep.payments.feature.newcard.NewCardActivity
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -36,6 +37,11 @@ class CardListActivity : ComponentActivity() {
                     CardListScreen(
                         onAddClick = {
                             val intent = Intent(this, NewCardActivity::class.java)
+                            launcher.launch(intent)
+                        },
+                        onClickPaymentCard = { card ->
+                            viewModel.selectCard(card)
+                            val intent = Intent(this, EditCardActivity::class.java)
                             launcher.launch(intent)
                         },
                         viewModel = viewModel

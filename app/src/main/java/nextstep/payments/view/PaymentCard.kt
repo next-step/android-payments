@@ -1,6 +1,7 @@
 package nextstep.payments.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -38,10 +39,12 @@ fun PaymentCard(
 fun PaymentCard(
     card: Card,
     modifier: Modifier = Modifier,
+    onClickPaymentCard: (Card) -> Unit,
 ) {
     CardFrame(
         backgroundColor = card.bankType?.toColor(),
         modifier = modifier
+            .clickable { onClickPaymentCard(card) }
     ) { boxScope ->
         boxScope.CardDetails(card)
     }
@@ -120,7 +123,8 @@ private fun PaymentCardText(
 private fun PaymentCardPreview() {
     Column {
         PaymentCard(
-            card = Card.mock
+            card = Card.mock,
+            onClickPaymentCard = {}
         )
         Spacer(modifier = Modifier.height(24.dp))
         PaymentCard(
