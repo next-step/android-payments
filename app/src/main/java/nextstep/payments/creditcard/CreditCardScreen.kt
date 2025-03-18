@@ -5,14 +5,17 @@ import android.content.Intent
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.creditcard.component.CreditCardEmpty
 import nextstep.payments.creditcard.component.CreditCardMany
 import nextstep.payments.creditcard.component.CreditCardOne
+import nextstep.payments.creditcard.component.CreditCardTopBar
 import nextstep.payments.creditcard.model.CreditCardUiState
 import nextstep.payments.ui.theme.common.component.Loading
 
@@ -43,11 +46,13 @@ fun CreditCardScreen(
     onNavigateToNewCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    CreditCardContent(
-        uiState = uiState,
-        onNavigateToNewCard = onNavigateToNewCard,
-        modifier = modifier
-    )
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+        CreditCardTopBar(uiState = uiState, onNavigateToNewCard = onNavigateToNewCard)
+        CreditCardContent(
+            uiState = uiState,
+            onNavigateToNewCard = onNavigateToNewCard,
+        )
+    }
 }
 
 @Composable
@@ -69,7 +74,6 @@ private fun CreditCardContent(
         )
 
         is CreditCardUiState.Many -> CreditCardMany(
-            onNavigateToNewCard = { onNavigateToNewCard() },
             cards = uiState.cards,
             modifier = modifier
         )
