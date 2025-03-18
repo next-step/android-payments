@@ -1,5 +1,6 @@
 package nextstep.payments.newcard
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.runtime.Composable
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -17,45 +18,61 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import nextstep.payments.model.CreditCardType.NoCardType
 import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.newcard.component.PaymentCard
+import nextstep.payments.newcard.component.SelectCardBottomSheet
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreen(
-    viewModel: NewCardViewModel,
-    onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
     navigateToCardList: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: NewCardViewModel = viewModel(),
 ) {
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
     val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardName by viewModel.password.collectAsStateWithLifecycle()
+    var showSelectCardBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(cardAdded) {
         if (cardAdded) navigateToCardList()
     }
-
+    LaunchedEffect(Unit) {
+        showSelectCardBottomSheet = true
+    }
+    if (showSelectCardBottomSheet) {
+        SelectCardBottomSheet(
+            onCardClick = { company ->
+                showSelectCardBottomSheet = false
+            }
+        )
+    }
     NewCardScreen(
         modifier = modifier,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
         password = password,
+        cardName = cardName,
         setCardNumber = viewModel::setCardNumber,
         setExpiredDate = viewModel::setExpiredDate,
         setOwnerName = viewModel::setOwnerName,
         setPassword = viewModel::setPassword,
-        onBackClick = { onBackClick() },
-        onSaveClick = { onSaveClick() }
+        onBackClick = { backDispatcher?.onBackPressed() },
+        onSaveClick = { viewModel.saveCard() }
     )
 }
 
@@ -65,6 +82,7 @@ private fun NewCardScreen(
     expiredDate: String,
     ownerName: String,
     password: String,
+    cardName: String,
     setCardNumber: (String) -> Unit,
     setExpiredDate: (String) -> Unit,
     setOwnerName: (String) -> Unit,
@@ -94,10 +112,11 @@ private fun NewCardScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp)
+
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(NoCardType)
+            PaymentCard(NoCardType,Modifier.padding(horizontal = 76.dp))
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -137,6 +156,7 @@ private fun NewCardScreen(
     }
 }
 
+
 @Preview
 @Composable
 private fun StatefulNewCardScreenPreview() {
@@ -149,8 +169,6 @@ private fun StatefulNewCardScreenPreview() {
                 setPassword("1234")
             },
             navigateToCardList = {},
-            onSaveClick = {},
-            onBackClick = {}
         )
     }
 }
@@ -169,7 +187,10 @@ private fun StatelessNewCardScreenPreview() {
             setOwnerName = {},
             setPassword = {},
             onSaveClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            cardName = "Shawna Pruitt"
+
+
         )
     }
 }
