@@ -54,7 +54,7 @@ fun PaymentCard(
 }
 
 @Composable
-fun CreditCardInfo(creditCard: CreditCard, modifier: Modifier = Modifier) {
+private fun CreditCardInfo(creditCard: CreditCard, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         CardNumber(creditCard.number)
         Spacer(modifier = Modifier.height(4.dp))
