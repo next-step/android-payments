@@ -1,5 +1,10 @@
 package nextstep.payments.creditcard
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,13 +19,33 @@ import nextstep.payments.ui.theme.common.component.Loading
 
 @Composable
 fun CreditCardScreen(
-    onNavigateToNewCard: () -> Unit,
+    onNavigateToNewCard: (ManagedActivityResultLauncher<Intent, androidx.activity.result.ActivityResult>) -> Unit,
     modifier: Modifier = Modifier,
-    uiState : CreditCardUiState
+    viewModel: CreditCardViewModel = viewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                viewModel.getCards()
+            }
+        }
+    CreditCardScreen(
+        uiState = uiState,
+        onNavigateToNewCard = { onNavigateToNewCard(launcher) },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun CreditCardScreen(
+    uiState: CreditCardUiState,
+    onNavigateToNewCard: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CreditCardContent(
         uiState = uiState,
-        onNavigateToNewCard = { onNavigateToNewCard() },
+        onNavigateToNewCard = onNavigateToNewCard,
         modifier = modifier
     )
 }
