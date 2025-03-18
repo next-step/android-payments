@@ -60,14 +60,14 @@ fun CardCompanyFlowRowList(onCardClick: (CardCompany) -> Unit) {
 }
 
 private val cardCompanyList = listOf(
-    CardCompany(R.drawable.ic_bc, "BC카드"),
-    CardCompany(R.drawable.ic_shinhan, "신한카드"),
-    CardCompany(R.drawable.ic_kakao, "카카오뱅크"),
-    CardCompany(R.drawable.ic_hyundae, "현대카드"),
-    CardCompany(R.drawable.ic_woori, "우리카드"),
-    CardCompany(R.drawable.ic_lotte, "롯데카드"),
-    CardCompany(R.drawable.ic_hana, "하나카드"),
-    CardCompany(R.drawable.ic_kb, "국민카드")
+    CardCompany(R.drawable.ic_bc, "BC카드", 0xFFF04651),
+    CardCompany(R.drawable.ic_shinhan, "신한카드", 0xFF0078FF),
+    CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xFFFFE600),
+    CardCompany(R.drawable.ic_hyundae, "현대카드", 0xFF000000),
+    CardCompany(R.drawable.ic_woori, "우리카드", 0xFFB2EBF2),
+    CardCompany(R.drawable.ic_lotte, "롯데카드", 0xFF008000),
+    CardCompany(R.drawable.ic_hana, "하나카드", 0xFF000080),
+    CardCompany(R.drawable.ic_kb, "국민카드", 0xFFF51)
 )
 
 @Preview(showBackground = true)
