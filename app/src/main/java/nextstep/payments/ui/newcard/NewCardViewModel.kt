@@ -20,21 +20,26 @@ class NewCardViewModel : ViewModel() {
     val password: StateFlow<String> = _password.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        if (cardNumber.length > 16) return
+        if (!NewCardInputValidator.validateCardNumber(cardNumber))
+            return
         _cardNumber.value = cardNumber
     }
 
     fun setExpiredDate(expiredDate: String) {
-        if (expiredDate.length > 4) return
+        if (!NewCardInputValidator.validateExpiredDate(expiredDate))
+            return
         _expiredDate.value = expiredDate
     }
 
     fun setOwnerName(ownerName: String) {
-        if (ownerName.length > 30) return
+        if (!NewCardInputValidator.validateOwnerName(ownerName))
+            return
         _ownerName.value = ownerName
     }
 
     fun setPassword(password: String) {
+        if (!NewCardInputValidator.validatePassword(password))
+            return
         _password.value = password
     }
 }
