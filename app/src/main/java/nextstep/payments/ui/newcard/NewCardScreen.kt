@@ -17,10 +17,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +32,7 @@ import nextstep.payments.ui.component.PaymentCard
 import nextstep.payments.ui.model.CreditCardType
 import nextstep.payments.ui.newcard.component.SelectCardBottomSheet
 import nextstep.payments.ui.newcard.model.CardCompany
+import nextstep.payments.ui.newcard.model.NewCardUiState
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -40,66 +41,39 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
     viewModel: NewCardViewModel = viewModel(),
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
-    val cardNumber by viewModel.cardNumber.collectAsStateWithLifecycle()
-    val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
-    val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
-    val password by viewModel.password.collectAsStateWithLifecycle()
-    val selectedCard by viewModel.selectedCard.collectAsStateWithLifecycle()
-    var showSelectCardBottomSheet by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(cardAdded) {
-        if (cardAdded) navigateToCardList()
+    LaunchedEffect(uiState.inputInValidMessage) {
+        if (uiState.inputInValidMessage.isNotEmpty()) {
+            snackbarHostState.showSnackbar(uiState.inputInValidMessage)
+        }
+    }
+    LaunchedEffect(uiState.cardAdded) {
+        if (uiState.cardAdded) navigateToCardList()
     }
     LaunchedEffect(Unit) {
-        showSelectCardBottomSheet = true
+        viewModel.showBottomSheet()
     }
-    if (showSelectCardBottomSheet) {
+    if (uiState.showSelectCardBottomSheet) {
         SelectCardBottomSheet(
             onCardClick = { company ->
                 viewModel.updateCardName(company)
-                showSelectCardBottomSheet = false
+                viewModel.hideBottomSheet()
             }
         )
     }
-    NewCardScreen(
-        modifier = modifier,
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
-        selectedCompany = selectedCard,
-        setCardNumber = viewModel::setCardNumber,
-        setExpiredDate = viewModel::setExpiredDate,
-        setOwnerName = viewModel::setOwnerName,
-        setPassword = viewModel::setPassword,
-        onBackClick = { backDispatcher?.onBackPressed() },
-        onSaveClick = { viewModel.saveCard() }
-    )
-}
 
-@Composable
-private fun NewCardScreen(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
-    selectedCompany: CardCompany,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
-    onBackClick: () -> Unit,
-    onSaveClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { Text(uiState.inputInValidMessage) }
+        },
         topBar = {
             NewCardTopBar(
-                modifier = modifier,
-                onBackClick = { onBackClick() },
-                onSaveClick = { onSaveClick() },
+                modifier = Modifier,
+                onBackClick = { backDispatcher?.onBackPressed() },
+                onSaveClick = viewModel::registerCard,
                 title = "카드 추가",
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconContentDescription = "뒤로 가기",
@@ -107,77 +81,100 @@ private fun NewCardScreen(
                 actionIconContentDescription = "완료"
             )
         },
+        content = { innerPadding ->
+            NewCardScreen(
+                modifier = modifier.padding(innerPadding),
+                uiState = uiState,
+                setCardNumber = viewModel::setCardNumber,
+                setExpiredDate = viewModel::setExpiredDate,
+                setOwnerName = viewModel::setOwnerName,
+                setPassword = viewModel::setPassword,
+            )
+        })
+}
+
+@Composable
+private fun NewCardScreen(
+    uiState: NewCardUiState,
+    setCardNumber: (String) -> Unit,
+    setExpiredDate: (String) -> Unit,
+    setOwnerName: (String) -> Unit,
+    setPassword: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-    ) { innerPadding ->
-        Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
+            .padding(horizontal = 24.dp)
 
-        ) {
-            Spacer(modifier = Modifier.height(14.dp))
+    ) {
+        Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard(
-                creditCardType = CreditCardType.AddingCard(selectedCompany),
-                modifier = Modifier.padding(horizontal = 52.dp)
-            )
+        PaymentCard(
+            creditCardType = CreditCardType.AddingCard(uiState.selectedCard),
+            modifier = Modifier.padding(horizontal = 52.dp)
+        )
 
-            Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                value = cardNumber,
-                onValueChange = setCardNumber,
-                label = { Text("카드 번호") },
-                placeholder = { Text("0000 - 0000 - 0000 - 0000") },
-                modifier = Modifier.fillMaxWidth(),
-            )
+        OutlinedTextField(
+            value = uiState.cardNumber,
+            onValueChange = setCardNumber,
+            label = { Text("카드 번호") },
+            placeholder = { Text("0000 - 0000 - 0000 - 0000") },
+            modifier = Modifier.fillMaxWidth(),
+        )
 
-            OutlinedTextField(
-                value = expiredDate,
-                onValueChange = setExpiredDate,
-                label = { Text("만료일") },
-                placeholder = { Text("MM / YY") },
-                modifier = Modifier.fillMaxWidth(),
-            )
+        OutlinedTextField(
+            value = uiState.expiredDate,
+            onValueChange = setExpiredDate,
+            label = { Text("만료일") },
+            placeholder = { Text("MM / YY") },
+            modifier = Modifier.fillMaxWidth(),
+        )
 
-            OutlinedTextField(
-                value = ownerName,
-                onValueChange = setOwnerName,
-                label = { Text("카드 소유자 이름(선택)") },
-                placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
-                modifier = Modifier.fillMaxWidth(),
-            )
+        OutlinedTextField(
+            value = uiState.ownerName,
+            onValueChange = setOwnerName,
+            label = { Text("카드 소유자 이름(선택)") },
+            placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
+            modifier = Modifier.fillMaxWidth(),
+        )
 
-            OutlinedTextField(
-                value = password,
-                onValueChange = setPassword,
-                label = { Text("비밀번호") },
-                placeholder = { Text("0000") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-            )
-        }
+        OutlinedTextField(
+            value = uiState.password,
+            onValueChange = setPassword,
+            label = { Text("비밀번호") },
+            placeholder = { Text("0000") },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+        )
     }
+
 }
 
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
+    val uiState = NewCardUiState(
+        cardAdded = false,
+        cardNumber = "1234 - 5678 - 9012 - 3456",
+        expiredDate = "12 / 25",
+        ownerName = "홍길동",
+        password = "1234",
+        selectedCard = CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444),
+        showSelectCardBottomSheet = false,
+        inputInValidMessage = "delicata"
+    )
     PaymentsTheme {
         NewCardScreen(
-            cardNumber = "1234 - 5678 - 9012 - 3456",
-            expiredDate = "12 / 25",
-            ownerName = "홍길동",
-            password = "1234",
+            uiState = uiState,
             setCardNumber = {},
             setExpiredDate = {},
             setOwnerName = {},
             setPassword = {},
-            onSaveClick = {},
-            onBackClick = {},
-            selectedCompany = CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444),
-            )
+        )
     }
 }

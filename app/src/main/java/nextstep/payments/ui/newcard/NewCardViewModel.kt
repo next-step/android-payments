@@ -1,6 +1,5 @@
 package nextstep.payments.ui.newcard
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -8,64 +7,70 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.data.repository.PaymentCardsRepository
 import nextstep.payments.ui.model.CreditCardType.RegisteredCard
 import nextstep.payments.ui.newcard.model.CardCompany
+import nextstep.payments.ui.newcard.model.NewCardUiState
 
 class NewCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
     ViewModel() {
 
-    private val _cardNumber = MutableStateFlow("")
-    val cardNumber: StateFlow<String> = _cardNumber.asStateFlow()
-
-    private val _expiredDate = MutableStateFlow("")
-    val expiredDate: StateFlow<String> = _expiredDate.asStateFlow()
-
-    private val _ownerName = MutableStateFlow("")
-    val ownerName: StateFlow<String> = _ownerName.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password: StateFlow<String> = _password.asStateFlow()
-
-    private val _cardAdded = MutableStateFlow(false)
-    val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
-
-    private val _selectedCard = MutableStateFlow(CardCompany(0, "", 0))
-    val selectedCard: StateFlow<CardCompany> = _selectedCard.asStateFlow()
+    private val _uiState = MutableStateFlow(NewCardUiState())
+    val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
 
     fun setCardNumber(cardNumber: String) {
-        _cardNumber.value = cardNumber
+        _uiState.value = _uiState.value.copy(cardNumber = cardNumber)
     }
 
     fun setExpiredDate(expiredDate: String) {
-        _expiredDate.value = expiredDate
+        _uiState.value = _uiState.value.copy(expiredDate = expiredDate)
     }
 
     fun setOwnerName(ownerName: String) {
-        _ownerName.value = ownerName
+        _uiState.value = _uiState.value.copy(ownerName = ownerName)
     }
 
     fun setPassword(password: String) {
-        _password.value = password
+        _uiState.value = _uiState.value.copy(password = password)
     }
 
     fun updateCardName(cardCompany: CardCompany) {
-        _selectedCard.value = cardCompany
+        _uiState.value = _uiState.value.copy(selectedCard = cardCompany)
     }
 
-    fun saveCard() {
-        // TODO when 문으로 각각 분기하여 에러내보내기
-        if (cardNumber.value.length == 1 && expiredDate.value.length == 4 && password.value.length == 4 && ownerName.value.isNotEmpty()) {
-            repository.addCard(
-                RegisteredCard(
-                    number = "12341234123412314",
-                    expiredDate = expiredDate.value,
-                    ownerName = ownerName.value,
-                    password = password.value,
-                    cardCompany = selectedCard.value
+    fun showBottomSheet() {
+        _uiState.value = _uiState.value.copy(showSelectCardBottomSheet = true)
+    }
+
+    fun hideBottomSheet() {
+        _uiState.value = _uiState.value.copy(showSelectCardBottomSheet = false)
+    }
+
+
+    fun registerCard() {
+        val currentUiState = _uiState.value
+        when {
+            currentUiState.cardNumber.length != 16 -> {
+                _uiState.value = currentUiState.copy(inputInValidMessage = "카드 번호는 16자리여야 합니다.")
+            }
+
+            currentUiState.expiredDate.length != 4 -> {
+                _uiState.value = currentUiState.copy(inputInValidMessage = "만료일은 4자리여야 합니다.")
+            }
+
+            currentUiState.password.length != 4 -> {
+                _uiState.value = currentUiState.copy(inputInValidMessage = "비밀번호는 4자리여야 합니다.")
+            }
+
+            else -> {
+                repository.addCard(
+                    RegisteredCard(
+                        number = currentUiState.cardNumber,
+                        expiredDate = currentUiState.expiredDate,
+                        ownerName = currentUiState.ownerName,
+                        password = currentUiState.password,
+                        cardCompany = currentUiState.selectedCard
+                    )
                 )
-            )
-            _cardAdded.value = true
-        } else {
-            Log.d("error", "saveCard error")
-            //TODO TextField에 오류 표시
+                _uiState.value = currentUiState.copy(cardAdded = true)
+            }
         }
     }
 }

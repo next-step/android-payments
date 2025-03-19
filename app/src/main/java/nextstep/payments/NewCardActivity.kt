@@ -18,7 +18,7 @@ class NewCardActivity : ComponentActivity() {
                     navigateToCardList = {
                         setResult(RESULT_OK)
                         finish()
-                    }
+                    },
                 )
             }
         }
