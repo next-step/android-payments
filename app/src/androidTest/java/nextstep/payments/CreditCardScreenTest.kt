@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import nextstep.payments.ui.creditcard.CreditCardContent
 import nextstep.payments.ui.creditcard.model.CreditCardUiState
 import nextstep.payments.ui.model.CreditCardType.RegisteredCard
+import nextstep.payments.ui.newcard.model.CardCompany
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -83,7 +84,12 @@ class CreditCardScreenTest {
             expiredDate = "0428",
             ownerName = "김무일",
             password = "1234",
-            cardName = "신한카드"
+            cardCompany = CardCompany(
+                imageId = 9652,
+                name = "Rosemary Richard",
+                color = 5265
+            ),
+
         )
         private val cards =
             List(2) { index ->
@@ -92,7 +98,12 @@ class CreditCardScreenTest {
                     expiredDate = "0428",
                     ownerName = if (index == 0) "김무일" else "김무이",
                     password = "1234",
-                    cardName = "신한카드"
+                    cardCompany = CardCompany(
+                        imageId = 9652,
+                        name = "Rosemary Richard",
+                        color = 5265
+                    ),
+
                 )
             }
     }

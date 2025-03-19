@@ -162,23 +162,6 @@ private fun NewCardScreen(
     }
 }
 
-
-@Preview
-@Composable
-private fun StatefulNewCardScreenPreview() {
-    PaymentsTheme {
-        NewCardScreen(
-            viewModel = NewCardViewModel().apply {
-                setCardNumber("1234 - 5678 - 9012 - 3456")
-                setExpiredDate("12 / 25")
-                setOwnerName("홍길동")
-                setPassword("1234")
-            },
-            navigateToCardList = {},
-        )
-    }
-}
-
 @Preview
 @Composable
 private fun StatelessNewCardScreenPreview() {
@@ -194,9 +177,7 @@ private fun StatelessNewCardScreenPreview() {
             setPassword = {},
             onSaveClick = {},
             onBackClick = {},
-            selectedCompany = CardCompany(R.drawable.ic_kakao, "카카오뱅크",0xF444444),
-
-
-        )
+            selectedCompany = CardCompany(R.drawable.ic_kakao, "카카오뱅크", 0xF444444),
+            )
     }
 }
