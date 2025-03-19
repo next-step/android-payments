@@ -50,7 +50,7 @@ fun CardCompanyFlowRowList(onCardClick: (CardCompany) -> Unit) {
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(37.dp),
-                    contentDescription = "회사이름",
+                    contentDescription = "${company.name} 아이콘",
                 )
                 Spacer(modifier = Modifier.size(9.dp))
                 Text(text = company.name)
