@@ -103,7 +103,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
             Card(
                 id = 0,
                 cardCompany = CardCompany.HYUNDAI,
-                cardNumber = "1111 - 2222 - **** - ****",
+                cardNumber = "11112222********",
                 expiredDate = "12/25",
                 ownerName = "CREW",
                 password = "1234",
@@ -114,7 +114,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
                 Card(
                     id = it,
                     cardCompany = CardCompany.BC,
-                    cardNumber = "1111 - 2222 - **** - ****",
+                    cardNumber = "11112222********",
                     expiredDate = "12/25",
                     ownerName = "CREW",
                     password = "1234",
