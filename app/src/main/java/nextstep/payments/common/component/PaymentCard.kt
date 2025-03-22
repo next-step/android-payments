@@ -154,6 +154,7 @@ class CardPreviewParameterProvider : PreviewParameterProvider<Card?> {
     override val values = sequenceOf(
         null,
         Card(
+            id = 0,
             cardCompany = CardCompany.BC,
             cardNumber = "1111222233334444",
             expiredDate = "1225",

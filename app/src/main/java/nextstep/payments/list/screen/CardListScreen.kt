@@ -101,6 +101,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Empty,
         CardUiState.One(
             Card(
+                id = 0,
                 cardCompany = CardCompany.HYUNDAI,
                 cardNumber = "1111 - 2222 - **** - ****",
                 expiredDate = "12/25",
@@ -111,6 +112,7 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Many(
             List(5) {
                 Card(
+                    id = it,
                     cardCompany = CardCompany.BC,
                     cardNumber = "1111 - 2222 - **** - ****",
                     expiredDate = "12/25",

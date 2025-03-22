@@ -42,6 +42,7 @@ fun OneCardScreen(
 private fun OneCardScreenPreview() {
     OneCardScreen(
         card = Card(
+            id = 0,
             cardCompany = CardCompany.HYUNDAI,
             cardNumber = "1111 - 2222 - **** - ****",
             expiredDate = "12/25",

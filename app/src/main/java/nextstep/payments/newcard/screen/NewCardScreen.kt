@@ -201,6 +201,7 @@ private fun StatelessNewCardScreenPreview() {
     var card by remember {
         mutableStateOf(
             Card(
+                id = 0,
                 cardCompany = CardCompany.BC,
                 cardNumber = "0000000000000000",
                 expiredDate = "0000",

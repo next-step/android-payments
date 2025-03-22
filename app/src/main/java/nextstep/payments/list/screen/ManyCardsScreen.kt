@@ -40,6 +40,7 @@ private fun ManyCardsScreenPreview() {
     ManyCardsScreen(
         cards = List(5) {
             Card(
+                id = it,
                 cardCompany = CardCompany.BC,
                 cardNumber = "1111 - 2222 - **** - ****",
                 expiredDate = "12/25",
