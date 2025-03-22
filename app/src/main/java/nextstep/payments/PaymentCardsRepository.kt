@@ -7,6 +7,12 @@ object PaymentCardsRepository {
     val cards: List<Card> get() = _cards.toList()
 
     fun addCard(card: Card) {
-        _cards.add(card)
+        val id = _cards.size
+        _cards.add(card.copy(id = id))
+    }
+
+    fun editCard(card: Card) {
+        val index = _cards.indexOfLast { card.id == it.id }
+        if (index != -1) _cards[index] = card
     }
 }
