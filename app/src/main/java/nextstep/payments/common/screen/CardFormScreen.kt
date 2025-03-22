@@ -21,9 +21,9 @@ import nextstep.payments.newcard.component.CardCompanySelectBottomSheet
 import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.common.component.CardFormTopBar
+import nextstep.payments.common.model.Validation
 import nextstep.payments.newcard.component.OwnerNameTextField
 import nextstep.payments.newcard.component.PasswordTextField
-import nextstep.payments.newcard.model.Validation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

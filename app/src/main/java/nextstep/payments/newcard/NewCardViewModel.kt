@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.update
 import nextstep.payments.PaymentCardsRepository
 import nextstep.payments.R
 import nextstep.payments.common.model.CardCompany
+import nextstep.payments.common.model.Validation
 import nextstep.payments.newcard.model.NewCardEvent
 import nextstep.payments.newcard.model.NewCardUiState
-import nextstep.payments.newcard.model.Validation
 
 class NewCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = PaymentCardsRepository
@@ -104,6 +104,8 @@ class NewCardViewModel(
                 paymentCardsRepository.addCard(_uiState.value.card)
                 onComplete?.invoke()
             }
+
+            Validation.Init -> Unit // nothing
         }
     }
 }

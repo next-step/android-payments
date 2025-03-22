@@ -33,9 +33,9 @@ import nextstep.payments.R
 import nextstep.payments.newcard.NewCardViewModel
 import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
+import nextstep.payments.common.model.Validation
 import nextstep.payments.common.screen.CardFormScreen
 import nextstep.payments.newcard.model.NewCardEvent
-import nextstep.payments.newcard.model.Validation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

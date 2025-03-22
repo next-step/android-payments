@@ -2,6 +2,7 @@ package nextstep.payments.newcard.model
 
 import nextstep.payments.R
 import nextstep.payments.common.model.Card
+import nextstep.payments.common.model.Validation
 
 
 data class NewCardUiState(
@@ -41,13 +42,4 @@ data class NewCardUiState(
             }
         }
     }
-}
-
-sealed class Validation {
-    sealed class Failure(val msgId: Int) : Validation() {
-        data object Empty : Failure(R.string.fill_input_field)
-        class Error(id: Int) : Failure(id)
-    }
-
-    data object Success : Validation()
 }
