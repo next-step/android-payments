@@ -1,5 +1,6 @@
-package nextstep.payments.newcard.component
+package nextstep.payments.common.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -10,16 +11,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardTopBar(
+fun CardFormTopBar(
+    title: String,
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
-        title = { Text("카드 추가") },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
                 Icon(
@@ -38,4 +42,17 @@ fun NewCardTopBar(
         },
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun CardFormTopBarPreview() {
+    PaymentsTheme {
+        CardFormTopBar(
+            title = "카드 추가",
+            onBackClick = {},
+            onSaveClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }

@@ -19,27 +19,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
+import nextstep.payments.R
 import nextstep.payments.newcard.NewCardViewModel
-import nextstep.payments.newcard.component.NewCardTopBar
-import nextstep.payments.common.component.PaymentCard
 import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
-import nextstep.payments.newcard.component.CardCompanySelectBottomSheet
-import nextstep.payments.newcard.component.CardNumberTextField
-import nextstep.payments.newcard.component.ExpiredDateTextField
-import nextstep.payments.newcard.component.OwnerNameTextField
-import nextstep.payments.newcard.component.PasswordTextField
+import nextstep.payments.common.screen.CardFormScreen
 import nextstep.payments.newcard.model.NewCardEvent
 import nextstep.payments.newcard.model.Validation
 
@@ -117,67 +111,25 @@ fun NewCardScreen(
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        topBar = {
-            NewCardTopBar(
-                onBackClick = onBack,
-                onSaveClick = onSave
-            )
-        },
+    CardFormScreen(
+        title = stringResource(R.string.add_card),
+        card = card,
+        cardNumberValidation = cardNumberValidation,
+        expiredDateValidation = expiredDateValidation,
+        passwordValidation = passwordValidation,
+        setCardNumber = setCardNumber,
+        setExpiredDate = setExpiredDate,
+        setOwnerName = setOwnerName,
+        setPassword = setPassword,
+        onClickCard = onClickCard,
+        showBottomSheet = showBottomSheet,
+        onDismissRequest = onDismissRequest,
+        sheetState = sheetState,
+        onClickCardCompany = onClickCardCompany,
+        onBack = onBack,
+        onSave = onSave,
         modifier = modifier
-    ) { innerPadding ->
-        Column(
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
-        ) {
-            Spacer(modifier = Modifier.height(14.dp))
-
-            PaymentCard(
-                modifier = Modifier.clickable { onClickCard() },
-                cardCompany = card.cardCompany
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            CardNumberTextField(
-                modifier = Modifier.fillMaxWidth(),
-                cardNumber = card.cardNumber,
-                validation = cardNumberValidation,
-                setCardNumber = setCardNumber
-            )
-
-            ExpiredDateTextField(
-                modifier = Modifier.fillMaxWidth(),
-                expiredDate = card.expiredDate,
-                validation = expiredDateValidation,
-                setExpiredDate = setExpiredDate
-            )
-
-            OwnerNameTextField(
-                modifier = Modifier.fillMaxWidth(),
-                ownerName = card.ownerName,
-                setOwnerName = setOwnerName
-            )
-
-            PasswordTextField(
-                modifier = Modifier.fillMaxWidth(),
-                password = card.password,
-                validation = passwordValidation,
-                setPassword = setPassword
-            )
-        }
-
-        if (showBottomSheet) {
-            CardCompanySelectBottomSheet(
-                sheetState = sheetState,
-                onClickCardCompany = onClickCardCompany,
-                onDismissRequest = onDismissRequest,
-            )
-        }
-    }
+    )
 }
 
 @Preview

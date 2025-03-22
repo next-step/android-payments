@@ -20,4 +20,5 @@
     <string name="lotte_name">롯데카드</string>
     <string name="hana_name">하나카드</string>
     <string name="kb_name">국민카드</string>
+    <string name="add_card">카드 추가</string>
 </resources>
