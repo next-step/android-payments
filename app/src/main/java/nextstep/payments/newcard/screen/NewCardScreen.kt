@@ -35,7 +35,7 @@ import nextstep.payments.newcard.component.NewCardTopBar
 import nextstep.payments.common.component.PaymentCard
 import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
-import nextstep.payments.newcard.component.BankSelectBottomSheet
+import nextstep.payments.newcard.component.CardCompanySelectBottomSheet
 import nextstep.payments.newcard.component.CardNumberTextField
 import nextstep.payments.newcard.component.ExpiredDateTextField
 import nextstep.payments.newcard.component.OwnerNameTextField
@@ -171,9 +171,9 @@ fun NewCardScreen(
         }
 
         if (showBottomSheet) {
-            BankSelectBottomSheet(
+            CardCompanySelectBottomSheet(
                 sheetState = sheetState,
-                onClickBank = onClickCardCompany,
+                onClickCardCompany = onClickCardCompany,
                 onDismissRequest = onDismissRequest,
             )
         }
