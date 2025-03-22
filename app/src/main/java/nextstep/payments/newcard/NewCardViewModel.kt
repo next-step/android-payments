@@ -1,14 +1,13 @@
 package nextstep.payments.newcard
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import nextstep.payments.PaymentCardsRepository
 import nextstep.payments.R
 import nextstep.payments.common.model.CardCompany
@@ -22,7 +21,10 @@ class NewCardViewModel(
     private val _uiState = MutableStateFlow(NewCardUiState())
     val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
 
-    private val _event = MutableSharedFlow<NewCardEvent>()
+    private val _event = MutableSharedFlow<NewCardEvent>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
     val event = _event.asSharedFlow()
 
     fun setCardCompany(cardCompany: CardCompany) {
@@ -95,9 +97,7 @@ class NewCardViewModel(
     fun addCard(onComplete: (() -> Unit)?) {
         when (val validation = _uiState.value.validateAllContents()) {
             is Validation.Failure -> {
-                viewModelScope.launch {
-                    _event.emit(NewCardEvent.ShowToast(validation.msgId))
-                }
+                _event.tryEmit(NewCardEvent.ShowToast(validation.msgId))
             }
 
             Validation.Success -> {
