@@ -1,5 +1,6 @@
 package nextstep.payments.list.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import nextstep.payments.common.model.Card
 @Composable
 fun ManyCardsScreen(
     cards: List<Card>,
+    onClickCard: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -27,7 +29,8 @@ fun ManyCardsScreen(
     ) {
         items(cards) { card ->
             PaymentCard(
-                card = card
+                card = card,
+                modifier = Modifier.clickable { onClickCard(card.id) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }
@@ -48,5 +51,6 @@ private fun ManyCardsScreenPreview() {
                 password = "1234",
             )
         },
+        onClickCard = {}
     )
 }
