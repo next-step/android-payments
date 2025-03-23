@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import nextstep.payments.NewCardViewModel
+import nextstep.payments.model.CreditCard
 
 @Composable
 fun NewCardScreen(
@@ -18,10 +19,12 @@ fun NewCardScreen(
     val password by viewModel.password.collectAsStateWithLifecycle()
 
     NewCardScreenContent(
-        cardNumber = cardNumber,
-        expiredDate = expiredDate,
-        ownerName = ownerName,
-        password = password,
+        card = CreditCard(
+            cardNumber = cardNumber,
+            expiredDate = expiredDate,
+            ownerName = ownerName,
+            password = password
+        ),
         onCardNumberChanged = viewModel::setCardNumber,
         onExpiredDateChanged = viewModel::setExpiredDate,
         onOwnerNameChanged = viewModel::setOwnerName,

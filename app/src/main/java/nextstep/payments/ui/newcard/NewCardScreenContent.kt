@@ -17,16 +17,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.R
+import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.newcard.visualtransformation.CreditCardNumberVisualTransformation
 import nextstep.payments.ui.newcard.visualtransformation.ExpirationDateVisualTransformation
+import nextstep.payments.ui.paymentcards.Card
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun NewCardScreenContent(
-    cardNumber: String,
-    expiredDate: String,
-    ownerName: String,
-    password: String,
+    card: Card,
     onCardNumberChanged: (String) -> Unit,
     onExpiredDateChanged: (String) -> Unit,
     onOwnerNameChanged: (String) -> Unit,
@@ -47,12 +46,16 @@ fun NewCardScreenContent(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
-            PaymentCard()
+            PaymentCard(
+                cardNumber = card.getFormattedCardNumber(),
+                expiredDate = card.getFormattedExpiredDate(),
+                ownerName = card.ownerName
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                value = cardNumber,
+                value = card.cardNumber,
                 onValueChange = onCardNumberChanged,
                 label = { Text(stringResource(R.string.new_card_card_number_label)) },
                 placeholder = { Text("0000 - 0000 - 0000 - 0000") },
@@ -61,7 +64,7 @@ fun NewCardScreenContent(
             )
 
             OutlinedTextField(
-                value = expiredDate,
+                value = card.expiredDate,
                 onValueChange = onExpiredDateChanged,
                 label = { Text(stringResource(R.string.new_card_expired_date_label)) },
                 placeholder = { Text("MM / YY") },
@@ -70,7 +73,7 @@ fun NewCardScreenContent(
             )
 
             OutlinedTextField(
-                value = ownerName,
+                value = card.ownerName,
                 onValueChange = onOwnerNameChanged,
                 label = { Text(stringResource(R.string.new_card_owner_name_label)) },
                 placeholder = { Text("카드에 표시된 이름을 입력하세요.") },
@@ -78,7 +81,7 @@ fun NewCardScreenContent(
             )
 
             OutlinedTextField(
-                value = password,
+                value = card.password,
                 onValueChange = onPasswordChanged,
                 label = { Text(stringResource(R.string.new_card_password_label)) },
                 placeholder = { Text("0000") },
@@ -94,10 +97,12 @@ fun NewCardScreenContent(
 private fun StatelessNewCardScreenPreview() {
     PaymentsTheme {
         NewCardScreenContent(
-            cardNumber = "1111-1111-1111-1111",
-            expiredDate = "12/01",
-            ownerName = "유재석",
-            password = "0000",
+            card = CreditCard(
+                cardNumber = "1234123412341234",
+                expiredDate = "1223",
+                ownerName = "유재석",
+                password = "1234"
+            ),
             onCardNumberChanged = {},
             onExpiredDateChanged = {},
             onOwnerNameChanged = {},

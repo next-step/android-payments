@@ -8,12 +8,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nextstep.payments.CreditCard
+import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.newcard.AddCard
 import nextstep.payments.ui.newcard.PaymentCard
 import nextstep.payments.ui.newcard.PaymentCardsTopBar
+import nextstep.payments.ui.newcard.visualtransformation.CreditCardNumberVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
@@ -37,7 +39,11 @@ fun PaymentCardsScreen(
                     AddCard()
                     return@items
                 }
-                PaymentCard()
+                PaymentCard(
+                    cardNumber = cards[index].getFormattedCardNumber(),
+                    expiredDate = cards[index].getFormattedExpiredDate(),
+                    ownerName = cards[index].ownerName
+                )
             }
         }
     }
@@ -49,10 +55,10 @@ private fun PaymentCardsScreenPreview() {
     PaymentsTheme {
         PaymentCardsScreen(
             cards = listOf(
-                CreditCard("","","",""),
-                CreditCard("","","",""),
-                CreditCard("","","",""),
-                CreditCard("","","","")
+                CreditCard("1111222233334444","0421","crew","1234"),
+                CreditCard("1111222233334444","0421","crew","1234"),
+                CreditCard("1111222233334444","0421","crew","1234"),
+                CreditCard("1111222233334444","0421","crew","1234"),
             )
         )
     }
