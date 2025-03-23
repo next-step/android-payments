@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.ValidationResult
 import nextstep.payments.ui.newcard.NewCardInputValidator
+import nextstep.payments.ui.paymentcards.Card
 
 class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository,
@@ -19,6 +20,24 @@ class NewCardViewModel(
     private var ownerNameValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
     private var expiredDateValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
     private var passwordValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
+
+    private fun resetValidationResults() {
+        cardNumberValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
+        ownerNameValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
+        expiredDateValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
+        passwordValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
+    }
+
+    private fun resetCardInput() {
+        _cardNumber.value = ""
+        _expiredDate.value = ""
+        _ownerName.value = ""
+        _password.value = ""
+    }
+
+    fun resetAddCard() {
+        _cardAdded.value = false
+    }
 
     fun addCard() {
         if (cardNumberValidateResult == ValidationResult.SUCCESS
@@ -36,6 +55,8 @@ class NewCardViewModel(
             )
         }
         _cardAdded.value = true
+        resetValidationResults()
+        resetCardInput()
     }
 
     private val _cardNumber = MutableStateFlow("")

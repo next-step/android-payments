@@ -36,6 +36,7 @@ fun NavigateScreen(
                 viewModel = newCardViewModel,
                 navigateToCardList = {
                     navController.popBackStack()
+                    newCardViewModel.resetAddCard()
                 },
             )
         }

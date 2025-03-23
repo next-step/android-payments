@@ -1,6 +1,8 @@
 package nextstep.payments.ui.newcard
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -17,6 +19,13 @@ fun NewCardScreen(
     val expiredDate by viewModel.expiredDate.collectAsStateWithLifecycle()
     val ownerName by viewModel.ownerName.collectAsStateWithLifecycle()
     val password by viewModel.password.collectAsStateWithLifecycle()
+    val cardAdded by viewModel.cardAdded.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cardAdded) {
+        if (cardAdded) {
+            navigateToCardList()
+        }
+    }
 
     NewCardScreenContent(
         card = CreditCard(
@@ -29,11 +38,8 @@ fun NewCardScreen(
         onExpiredDateChanged = viewModel::setExpiredDate,
         onOwnerNameChanged = viewModel::setOwnerName,
         onPasswordChanged = viewModel::setPassword,
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         navigateToCardList = navigateToCardList,
-        onSaveCard = {
-            viewModel.addCard()
-            navigateToCardList()
-        }
+        onSaveCard = { viewModel.addCard() }
     )
 }

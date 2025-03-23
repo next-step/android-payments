@@ -35,7 +35,7 @@ fun PaymentCardsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(36.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(cards.size + 1) { index ->
