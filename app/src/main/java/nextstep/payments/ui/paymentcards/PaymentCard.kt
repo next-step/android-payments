@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -29,7 +30,7 @@ fun PaymentCard(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        contentAlignment = Alignment.CenterStart,
+        contentAlignment = Alignment.BottomCenter,
         modifier = modifier
             .shadow(8.dp)
             .size(width = 208.dp, height = 124.dp)
@@ -41,7 +42,7 @@ fun PaymentCard(
         Column {
             Box(
                 modifier = Modifier
-                    .padding(start = 14.dp, bottom = 10.dp)
+                    .padding(start = 14.dp, bottom = 8.dp)
                     .size(width = 40.dp, height = 26.dp)
                     .background(
                         color = Color(0xFFCBBA64),
@@ -55,19 +56,25 @@ fun PaymentCard(
                     .padding(horizontal = 14.dp),
                 text = cardNumber,
                 color = Color.White,
-                letterSpacing = 0.17.em,
+                letterSpacing = 0.25.em,
                 fontSize = 12.sp,
-                maxLines = 1
+                maxLines = 1,
+                fontWeight = FontWeight.Bold
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 14.dp),
+                    .padding(start = 14.dp, end = 14.dp, bottom = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(ownerName, color = Color.White, fontSize = 12.sp)
-                Text(expiredDate, color = Color.White, fontSize = 12.sp)
+                Text(ownerName, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    expiredDate,
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

@@ -1,5 +1,6 @@
 package nextstep.payments
 
+import nextstep.payments.model.CreditCard
 import nextstep.payments.model.ValidationResult
 import nextstep.payments.ui.newcard.NewCardInputValidator
 import org.junit.Assert
@@ -34,5 +35,12 @@ class CreditCardNumberValidationTest {
         // 16자리보다 긴 경우
         cardNumber = "123456781234567812"
         Assert.assertTrue(NewCardInputValidator.validateCardNumber(cardNumber) == ValidationResult.INPUT_REJECTED)
+    }
+
+    @Test
+    fun `카드 번호가 16자리일 때 마스킹된 포맷으로 반환`() {
+        val expected = "1111-2222-****-****"
+        val result = CreditCard("1111222233334444","","","").getFormattedCardNumber()
+        Assert.assertEquals(expected, result)
     }
 }

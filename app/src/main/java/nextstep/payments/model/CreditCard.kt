@@ -7,10 +7,18 @@ data class CreditCard(
     override val password: String
 ) : Card {
     override fun getFormattedCardNumber(): String {
-        return cardNumber.chunked(4).joinToString("-")
+        return cardNumber.chunked(4)
+            .mapIndexed { index, part ->
+                if (index in 2..3) {
+                    "****"
+                } else {
+                    part
+                }
+            }
+            .joinToString("-")
     }
 
     override fun getFormattedExpiredDate(): String {
-        return expiredDate.chunked(2).joinToString("/")
+        return expiredDate.chunked(2).joinToString(" / ")
     }
 }
