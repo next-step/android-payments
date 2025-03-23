@@ -1,4 +1,4 @@
-package nextstep.payments.ui.paymentcards
+package nextstep.payments.model
 
 interface Card {
     val cardNumber: String

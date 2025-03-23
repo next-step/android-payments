@@ -20,7 +20,8 @@ import nextstep.payments.R
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.newcard.visualtransformation.CreditCardNumberVisualTransformation
 import nextstep.payments.ui.newcard.visualtransformation.ExpirationDateVisualTransformation
-import nextstep.payments.ui.paymentcards.Card
+import nextstep.payments.model.Card
+import nextstep.payments.ui.paymentcards.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable

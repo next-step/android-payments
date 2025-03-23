@@ -7,11 +7,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.ValidationResult
 import nextstep.payments.ui.newcard.NewCardInputValidator
-import nextstep.payments.ui.paymentcards.Card
+import nextstep.payments.model.Card
 
 class NewCardViewModel(
     private val repository: PaymentCardsRepository = PaymentCardsRepository,
 ) : ViewModel() {
+
+    private val _cards = MutableStateFlow<List<Card>>(repository.cards)
+    val cards: StateFlow<List<Card>> = _cards.asStateFlow()
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()

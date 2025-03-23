@@ -1,4 +1,4 @@
-package nextstep.payments.ui.newcard
+package nextstep.payments.ui.paymentcards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
