@@ -1,5 +1,6 @@
 package nextstep.payments.navigate
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -7,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import nextstep.payments.NewCardViewModel
-import nextstep.payments.PaymentCardsRepository
+import nextstep.payments.ui.CreditCardUiState
 import nextstep.payments.ui.newcard.NewCardScreen
 import nextstep.payments.ui.paymentcards.PaymentCardsScreen
 
@@ -25,10 +26,11 @@ fun NavigateScreen(
     ) {
         composable(Destination.PAYMENTS.name) {
             PaymentCardsScreen(
-                PaymentCardsRepository.cards,
+                uiState = CreditCardUiState.Empty,
                 onAddClick = {
                     navController.navigate(Destination.ADD_CARD.name)
-                }
+                },
+                modifier = Modifier.fillMaxSize()
             )
         }
         composable(Destination.ADD_CARD.name) {
