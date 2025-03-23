@@ -17,7 +17,7 @@ fun PaymentCardsScreen(
     onAddClick: () -> Unit = {},
 ) {
     Scaffold(
-        topBar = { PaymentCardsTopBar(uiState = uiState) },
+        topBar = { PaymentCardsTopBar(uiState = uiState, onAddClick = onAddClick) },
         modifier = modifier
     ) { innerPadding ->
         when (uiState) {
