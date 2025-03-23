@@ -5,9 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import nextstep.payments.creditcard.CreditCardScreen
-import nextstep.payments.creditcard.model.CreditCardUiState
-import nextstep.payments.model.CreditCard
+import nextstep.payments.ui.creditcard.CreditCardContent
+import nextstep.payments.ui.creditcard.model.CreditCardUiState
+import nextstep.payments.ui.model.CreditCardType.RegisteredCard
+import nextstep.payments.ui.newcard.model.CardCompany
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +23,7 @@ class CreditCardScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            CreditCardScreen(uiState = fakeUiState.value, onNavigateToNewCard = {})
+            CreditCardContent(uiState = fakeUiState.value, onNavigateToNewCard = {})
         }
     }
 
@@ -78,38 +79,32 @@ class CreditCardScreenTest {
     }
 
     companion object {
-        private val card = CreditCard(
-            number = "1234567812345678",
+        private val card = RegisteredCard(
+            number = "1234123412341234",
             expiredDate = "0428",
             ownerName = "김무일",
-            password = "1234"
+            password = "1234",
+            cardCompany = CardCompany(
+                imageId = 9652,
+                name = "Rosemary Richard",
+                color = 5265
+            ),
+
         )
         private val cards =
-            listOf(
-                CreditCard(
-                    number = "1234567812345678",
+            List(2) { index ->
+                RegisteredCard(
+                    number = "123412341234123$index",
                     expiredDate = "0428",
-                    ownerName = "김무일",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "2234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무이",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "3234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무삼",
-                    password = "1234"
-                ),
-                CreditCard(
-                    number = "4234567812345678",
-                    expiredDate = "0428",
-                    ownerName = "김무사",
-                    password = "1234"
+                    ownerName = if (index == 0) "김무일" else "김무이",
+                    password = "1234",
+                    cardCompany = CardCompany(
+                        imageId = 9652,
+                        name = "Rosemary Richard",
+                        color = 5265
+                    ),
+
                 )
-            )
+            }
     }
 }

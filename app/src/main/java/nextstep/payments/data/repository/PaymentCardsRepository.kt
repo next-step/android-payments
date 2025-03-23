@@ -1,17 +1,17 @@
 package nextstep.payments.data.repository
 
-import nextstep.payments.model.CreditCard
+import nextstep.payments.ui.model.CreditCardType.RegisteredCard
 
 object PaymentCardsRepository {
 
-    private val _Credit_cards = mutableListOf<CreditCard>()
-    private val creditCards: List<CreditCard> get() = _Credit_cards.toList()
+    private val _creditRegisteredCard = mutableListOf<RegisteredCard>()
+    val creditRegisteredCard: List<RegisteredCard> get() = _creditRegisteredCard.toList()
 
-    fun addCard(creditCard: CreditCard) {
-        _Credit_cards.add(creditCard)
+    fun addCard(creditCard: RegisteredCard) {
+        _creditRegisteredCard.add(creditCard)
     }
 
-    fun getCardList(): List<CreditCard> {
-        return creditCards
+    fun getCardList(): List<RegisteredCard> {
+        return _creditRegisteredCard
     }
 }

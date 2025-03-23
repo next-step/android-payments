@@ -1,9 +1,11 @@
-package nextstep.payments.ui.theme.common.component
+package nextstep.payments.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,16 +20,17 @@ import androidx.compose.ui.unit.dp
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
-fun NewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun AddingNewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
             .shadow(8.dp)
-            .size(width = 208.dp, height = 124.dp)
+            .height(height = 124.dp)
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
             )
+            .fillMaxWidth()
             .clickable {
                 onClick()
             }
@@ -43,8 +46,8 @@ fun NewCard(onClick: () -> Unit, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun NewCardPreview() {
+private fun AddingNewCardPreview() {
     PaymentsTheme {
-        NewCard({})
+        AddingNewCard({},modifier = Modifier.padding(horizontal = 76.dp))
     }
 }

@@ -1,10 +1,10 @@
-package nextstep.payments.creditcard
+package nextstep.payments.ui.creditcard
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import nextstep.payments.creditcard.model.CreditCardUiState
+import nextstep.payments.ui.creditcard.model.CreditCardUiState
 import nextstep.payments.data.repository.PaymentCardsRepository
 
 class CreditCardViewModel(private val repository: PaymentCardsRepository = PaymentCardsRepository) :
@@ -17,8 +17,10 @@ class CreditCardViewModel(private val repository: PaymentCardsRepository = Payme
         val cards = repository.getCardList()
         when (cards.size) {
             0 -> _uiState.value = CreditCardUiState.Empty
-            1 -> _uiState.value = CreditCardUiState.One(cards[0])
-            else -> _uiState.value = CreditCardUiState.Many(cards)
+            1 -> _uiState.value = CreditCardUiState.One(cards.first())
+            else ->{
+                _uiState.value = CreditCardUiState.Many(cards.toList())
+            }
         }
     }
 
