@@ -8,20 +8,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.newcard.AddCard
 import nextstep.payments.ui.newcard.PaymentCard
 import nextstep.payments.ui.newcard.PaymentCardsTopBar
-import nextstep.payments.ui.newcard.visualtransformation.CreditCardNumberVisualTransformation
 import nextstep.payments.ui.theme.PaymentsTheme
 
 @Composable
 fun PaymentCardsScreen(
     cards: List<Card>,
     modifier: Modifier = Modifier,
+    onAddClick: () -> Unit = {}
 ) {
     Scaffold(
         topBar = { PaymentCardsTopBar() },
@@ -36,7 +35,7 @@ fun PaymentCardsScreen(
         ) {
             items(cards.size + 1) { index ->
                 if (index == cards.size) {
-                    AddCard()
+                    AddCard(onClick = onAddClick)
                     return@items
                 }
                 PaymentCard(

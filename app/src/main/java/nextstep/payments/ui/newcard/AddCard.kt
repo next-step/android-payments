@@ -1,6 +1,7 @@
 package nextstep.payments.ui.newcard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,7 @@ import nextstep.payments.ui.theme.PaymentsTheme
 @Composable
 fun AddCard(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -26,7 +28,7 @@ fun AddCard(
             .background(
                 color = Color(0xFFE5E5E5),
                 shape = RoundedCornerShape(5.dp),
-            )
+            ).clickable(onClick = onClick)
     ) {
         Icon(
             imageVector = Icons.Filled.Add,

@@ -29,6 +29,11 @@ fun NewCardScreen(
         onExpiredDateChanged = viewModel::setExpiredDate,
         onOwnerNameChanged = viewModel::setOwnerName,
         onPasswordChanged = viewModel::setPassword,
-        modifier = modifier
+        modifier = modifier,
+        navigateToCardList = navigateToCardList,
+        onSaveCard = {
+            viewModel.addCard()
+            navigateToCardList()
+        }
     )
 }

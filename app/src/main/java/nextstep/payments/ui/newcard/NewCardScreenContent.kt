@@ -30,11 +30,18 @@ fun NewCardScreenContent(
     onExpiredDateChanged: (String) -> Unit,
     onOwnerNameChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    navigateToCardList: () -> Unit,
+    onSaveCard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
     Scaffold(
-        topBar = { NewCardTopBar(onBackClick = { /*TODO()*/ }, onSaveClick = { /*TODO()*/ }) },
+        topBar = {
+            NewCardTopBar(
+                onBackClick = navigateToCardList,
+                onSaveClick = onSaveCard
+            )
+        },
         modifier = modifier
     ) { innerPadding ->
         Column(
@@ -106,7 +113,9 @@ private fun StatelessNewCardScreenPreview() {
             onCardNumberChanged = {},
             onExpiredDateChanged = {},
             onOwnerNameChanged = {},
-            onPasswordChanged = {}
+            onPasswordChanged = {},
+            navigateToCardList = {},
+            onSaveCard = {}
         )
     }
 }
