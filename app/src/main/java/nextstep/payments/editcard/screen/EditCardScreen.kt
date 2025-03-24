@@ -1,4 +1,4 @@
-package nextstep.payments.newcard.screen
+package nextstep.payments.editcard.screen
 
 import android.widget.Toast
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,38 +22,39 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import nextstep.payments.R
-import nextstep.payments.newcard.NewCardViewModel
-import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
+import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Validation
 import nextstep.payments.common.screen.CardFormScreen
-import nextstep.payments.newcard.model.NewCardEvent
+import nextstep.payments.editcard.EditCardViewModel
+import nextstep.payments.editcard.model.EditCardEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardScreen(
-    modifier: Modifier = Modifier,
-    viewModel: NewCardViewModel = viewModel(),
+fun EditCardScreen(
+    cardId: Int,
     onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: EditCardViewModel = viewModel()
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(true) }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             viewModel.event.collect {
                 when (it) {
-                    is NewCardEvent.ShowToast -> {
+                    is EditCardEvent.ShowToast -> {
                         Toast.makeText(context, it.resId, Toast.LENGTH_SHORT).show()
                     }
 
-                    is NewCardEvent.Finish -> {
-                        it.resId?.let { res ->
-                            Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
+                    is EditCardEvent.Finish -> {
+                        it.noticeResId?.let { noticeRes ->
+                            Toast.makeText(context, noticeRes, Toast.LENGTH_SHORT).show()
                         }
                         onBack()
                     }
@@ -62,7 +63,11 @@ fun NewCardScreen(
         }
     }
 
-    NewCardScreen(
+    LaunchedEffect(Unit) {
+        viewModel.fetchCard(cardId)
+    }
+
+    EditCardScreen(
         card = uiState.card,
         cardNumberValidation = uiState.cardNumberValidation,
         expiredDateValidation = uiState.expiredDateValidation,
@@ -83,16 +88,15 @@ fun NewCardScreen(
         },
         onBack = onBack,
         onSave = {
-            viewModel.addCard()
+            viewModel.editCard()
         },
         modifier = modifier
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewCardScreen(
+fun EditCardScreen(
     card: Card,
     cardNumberValidation: Validation,
     expiredDateValidation: Validation,
@@ -111,7 +115,7 @@ fun NewCardScreen(
     modifier: Modifier = Modifier,
 ) {
     CardFormScreen(
-        title = stringResource(R.string.add_card),
+        title = stringResource(R.string.edit_card),
         card = card,
         cardNumberValidation = cardNumberValidation,
         expiredDateValidation = expiredDateValidation,
@@ -131,30 +135,16 @@ fun NewCardScreen(
     )
 }
 
-@Preview
-@Composable
-private fun StatefulNewCardScreenPreview() {
-    NewCardScreen(
-        viewModel = NewCardViewModel().apply {
-            setCardNumber("0000000000000000")
-            setExpiredDate("0000")
-            setOwnerName("홍길동")
-            setPassword("0000")
-        },
-        onBack = {}
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun StatelessNewCardScreenPreview() {
+private fun EditCardScreenPreview() {
     var card by remember {
         mutableStateOf(
             Card(
                 id = 0,
                 cardCompany = CardCompany.BC,
-                cardNumber = "0000000000000000",
+                cardNumber = "1234123412341234",
                 expiredDate = "0000",
                 ownerName = "홍길동",
                 password = "0000",
@@ -163,18 +153,18 @@ private fun StatelessNewCardScreenPreview() {
     }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(true) }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
-    NewCardScreen(
+    EditCardScreen(
         card = card,
-        cardNumberValidation = Validation.Success,
-        expiredDateValidation = Validation.Success,
-        passwordValidation = Validation.Success,
-        onCardNumberChange = {},
-        onExpiredDateChange = {},
-        onOwnerNameChange = {},
-        onPasswordChange = {},
-        onCardClick = {},
+        cardNumberValidation = Validation.Init,
+        expiredDateValidation = Validation.Init,
+        passwordValidation = Validation.Init,
+        onCardNumberChange = { card = card.copy(cardNumber = it) },
+        onExpiredDateChange = { card = card.copy(expiredDate = it) },
+        onOwnerNameChange = { card = card.copy(ownerName = it) },
+        onPasswordChange = { card = card.copy(password = it) },
+        onCardClick = { showBottomSheet = true },
         onSave = {},
         onBack = {},
         showBottomSheet = showBottomSheet,
@@ -188,3 +178,4 @@ private fun StatelessNewCardScreenPreview() {
         },
     )
 }
+

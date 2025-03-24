@@ -22,6 +22,7 @@ import nextstep.payments.list.CardListViewModel
 import nextstep.payments.R
 import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Card
+import nextstep.payments.editcard.EditCardActivity
 import nextstep.payments.list.component.CardListTopBar
 import nextstep.payments.list.model.CardUiState
 import nextstep.payments.newcard.NewCardActivity
@@ -40,8 +41,11 @@ fun CardListScreen(
 
     CardListScreen(
         uiState = uiState.value,
-        moveToAddCard = {
+        onAddCardClick = {
             launcher.launch(NewCardActivity.intent(context = context))
+        },
+        onCardClick = {
+            launcher.launch(EditCardActivity.intent(context = context, cardId = it))
         },
         modifier = modifier,
     )
@@ -50,7 +54,8 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     uiState: CardUiState,
-    moveToAddCard: () -> Unit,
+    onAddCardClick: () -> Unit,
+    onCardClick: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -62,7 +67,7 @@ fun CardListScreen(
                         Text(
                             modifier = Modifier
                                 .padding(end = 20.dp)
-                                .clickable { moveToAddCard() },
+                                .clickable { onAddCardClick() },
                             text = stringResource(R.string.add),
                             color = Color.Black,
                             fontWeight = FontWeight.W700,
@@ -78,17 +83,19 @@ fun CardListScreen(
         when (uiState) {
             CardUiState.Empty -> EmptyCardsScreen(
                 modifier = modifier.padding(innerPadding),
-                moveToAddCard = moveToAddCard,
+                onAddCardClick = onAddCardClick,
             )
 
             is CardUiState.One -> OneCardScreen(
                 modifier = modifier.padding(innerPadding),
                 card = uiState.card,
-                moveToAddCard = moveToAddCard,
+                onCardClick = onCardClick,
+                onAddCardClick = onAddCardClick,
             )
 
             is CardUiState.Many -> ManyCardsScreen(
                 modifier = modifier.padding(innerPadding),
+                onCardClick = onCardClick,
                 cards = uiState.cards
             )
         }
@@ -101,8 +108,9 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Empty,
         CardUiState.One(
             Card(
+                id = 0,
                 cardCompany = CardCompany.HYUNDAI,
-                cardNumber = "1111 - 2222 - **** - ****",
+                cardNumber = "11112222********",
                 expiredDate = "12/25",
                 ownerName = "CREW",
                 password = "1234",
@@ -111,8 +119,9 @@ private class UiStatePreviewParameterProvider : PreviewParameterProvider<CardUiS
         CardUiState.Many(
             List(5) {
                 Card(
+                    id = it,
                     cardCompany = CardCompany.BC,
-                    cardNumber = "1111 - 2222 - **** - ****",
+                    cardNumber = "11112222********",
                     expiredDate = "12/25",
                     ownerName = "CREW",
                     password = "1234",
@@ -129,6 +138,7 @@ private fun CardEmptyScreenPreview(
 ) {
     CardListScreen(
         uiState = uiState,
-        moveToAddCard = {},
+        onAddCardClick = {},
+        onCardClick = {}
     )
 }

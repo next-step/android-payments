@@ -1,4 +1,4 @@
-package nextstep.payments.newcard
+package nextstep.payments.editcard
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.BufferOverflow
@@ -12,20 +12,31 @@ import nextstep.payments.PaymentCardsRepository
 import nextstep.payments.R
 import nextstep.payments.common.model.CardCompany
 import nextstep.payments.common.model.Validation
-import nextstep.payments.newcard.model.NewCardEvent
-import nextstep.payments.newcard.model.NewCardUiState
+import nextstep.payments.editcard.model.EditCardEvent
+import nextstep.payments.editcard.model.EditCardUiState
 
-class NewCardViewModel(
+class EditCardViewModel(
     private val paymentCardsRepository: PaymentCardsRepository = PaymentCardsRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(NewCardUiState())
-    val uiState: StateFlow<NewCardUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(EditCardUiState())
+    val uiState: StateFlow<EditCardUiState> = _uiState.asStateFlow()
 
-    private val _event = MutableSharedFlow<NewCardEvent>(
+    private val _event = MutableSharedFlow<EditCardEvent>(
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val event = _event.asSharedFlow()
+
+    fun fetchCard(id: Int) {
+        val card = paymentCardsRepository.cards.find { it.id == id }
+        if (card == null) {
+            _event.tryEmit(EditCardEvent.Finish(R.string.notice_invalid_id))
+            return
+        }
+        _uiState.update {
+            EditCardUiState(card = card)
+        }
+    }
 
     fun setCardCompany(cardCompany: CardCompany) {
         _uiState.update { prev ->
@@ -94,18 +105,20 @@ class NewCardViewModel(
         }
     }
 
-    fun addCard() {
+    fun editCard() {
         when (val validation = _uiState.value.validateAllContents()) {
             is Validation.Failure -> {
-                _event.tryEmit(NewCardEvent.ShowToast(validation.msgId))
+                _event.tryEmit(EditCardEvent.ShowToast(validation.msgId))
             }
 
             Validation.Success -> {
-                paymentCardsRepository.addCard(_uiState.value.card)
-                _event.tryEmit(NewCardEvent.Finish(null))
+                paymentCardsRepository.editCard(_uiState.value.card)
+                _event.tryEmit(EditCardEvent.Finish(null))
             }
 
-            Validation.Init -> Unit // nothing
+            Validation.Init -> {
+                _event.tryEmit(EditCardEvent.ShowToast(R.string.value_nothing_changed))
+            }
         }
     }
 }

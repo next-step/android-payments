@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
-import nextstep.payments.newcard.model.Validation
+import nextstep.payments.common.model.Validation
 
 private const val EXPIRED_DATE_PLACEHOLDER = "YY / MM"
 

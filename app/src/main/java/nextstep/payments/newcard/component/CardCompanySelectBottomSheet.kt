@@ -31,10 +31,10 @@ import nextstep.payments.ui.theme.PaymentsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BankSelectBottomSheet(
+fun CardCompanySelectBottomSheet(
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    onClickBank: (CardCompany) -> Unit,
+    onClickCardCompany: (CardCompany) -> Unit,
     modifier: Modifier = Modifier
 ) {
     ModalBottomSheet(
@@ -42,9 +42,9 @@ fun BankSelectBottomSheet(
         onDismissRequest = onDismissRequest,
         sheetState = sheetState
     ) {
-        BankSelectBottomSheetContent(
+        CardCompanySelectBottomSheetContent(
             cardCompanies = CardCompany.entries,
-            onClickBank = onClickBank,
+            onClickCardCompany = onClickCardCompany,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
@@ -54,9 +54,9 @@ private const val MAX_ITEMS_ROW = 4
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun BankSelectBottomSheetContent(
+private fun CardCompanySelectBottomSheetContent(
     cardCompanies: List<CardCompany>,
-    onClickBank: (CardCompany) -> Unit,
+    onClickCardCompany: (CardCompany) -> Unit,
     modifier: Modifier = Modifier
 ) {
     FlowRow(
@@ -66,9 +66,9 @@ private fun BankSelectBottomSheetContent(
         maxItemsInEachRow = MAX_ITEMS_ROW,
     ) {
         cardCompanies.forEach {
-            BankItem(
+            CardCompanyItem(
                 cardCompany = it,
-                onClick = { onClickBank(it) },
+                onClick = { onClickCardCompany(it) },
                 modifier = Modifier.width(69.dp)
             )
         }
@@ -76,7 +76,7 @@ private fun BankSelectBottomSheetContent(
 }
 
 @Composable
-fun BankItem(
+fun CardCompanyItem(
     cardCompany: CardCompany,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -106,11 +106,11 @@ fun BankItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
-private fun BankSelectBottomSheetPreview() {
+private fun CardCompanySelectBottomSheetPreview() {
     PaymentsTheme {
-        BankSelectBottomSheet(
+        CardCompanySelectBottomSheet(
             sheetState = rememberModalBottomSheetState(),
-            onClickBank = {},
+            onClickCardCompany = {},
             onDismissRequest = {},
         )
     }

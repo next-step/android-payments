@@ -12,7 +12,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import nextstep.payments.R
-import nextstep.payments.newcard.model.Validation
+import nextstep.payments.common.model.Validation
 
 private const val PASSWORD_PLACEHOLDER = "0000"
 

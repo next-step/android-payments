@@ -2,10 +2,12 @@ package nextstep.payments.newcard.model
 
 import nextstep.payments.R
 import nextstep.payments.common.model.Card
+import nextstep.payments.common.model.Validation
 
 
 data class NewCardUiState(
     val card: Card = Card(
+        id = -1,
         cardCompany = null,
         cardNumber = "",
         expiredDate = "",
@@ -20,19 +22,19 @@ data class NewCardUiState(
     fun validateAllContents(): Validation {
         return when {
             cardCompanyValidation !is Validation.Success -> {
-                return cardCompanyValidation
+                cardCompanyValidation
             }
 
             cardNumberValidation !is Validation.Success -> {
-                return cardNumberValidation
+                cardNumberValidation
             }
 
             expiredDateValidation !is Validation.Success -> {
-                return expiredDateValidation
+                expiredDateValidation
             }
 
             passwordValidation !is Validation.Success -> {
-                return passwordValidation
+                passwordValidation
             }
 
             else -> {
@@ -40,13 +42,4 @@ data class NewCardUiState(
             }
         }
     }
-}
-
-sealed class Validation {
-    sealed class Failure(val msgId: Int) : Validation() {
-        data object Empty : Failure(R.string.fill_input_field)
-        class Error(id: Int) : Failure(id)
-    }
-
-    data object Success : Validation()
 }

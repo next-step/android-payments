@@ -18,7 +18,8 @@ import nextstep.payments.common.model.Card
 @Composable
 fun OneCardScreen(
     card: Card,
-    moveToAddCard: () -> Unit,
+    onCardClick: (id: Int) -> Unit,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -29,10 +30,11 @@ fun OneCardScreen(
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
         PaymentCard(
-            card = card
+            card = card,
+            modifier = Modifier.clickable { onCardClick(card.id) }
         )
         EmptyCard(
-            modifier = Modifier.clickable { moveToAddCard() }
+            modifier = Modifier.clickable { onAddCardClick() }
         )
     }
 }
@@ -42,12 +44,14 @@ fun OneCardScreen(
 private fun OneCardScreenPreview() {
     OneCardScreen(
         card = Card(
+            id = 0,
             cardCompany = CardCompany.HYUNDAI,
-            cardNumber = "1111 - 2222 - **** - ****",
+            cardNumber = "11112222********",
             expiredDate = "12/25",
             ownerName = "CREW",
             password = "1234",
         ),
-        moveToAddCard = {}
+        onAddCardClick = {},
+        onCardClick = {}
     )
 }

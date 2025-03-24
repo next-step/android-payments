@@ -17,11 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nextstep.payments.R
 import nextstep.payments.common.component.EmptyCard
-import nextstep.payments.common.model.Card
 
 @Composable
 fun EmptyCardsScreen(
-    moveToAddCard: () -> Unit,
+    onAddCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -39,7 +38,7 @@ fun EmptyCardsScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
         EmptyCard(
-            modifier = Modifier.clickable { moveToAddCard() }
+            modifier = Modifier.clickable { onAddCardClick() }
         )
     }
 }
@@ -48,7 +47,7 @@ fun EmptyCardsScreen(
 @Composable
 private fun EmptyCardsScreenPreview() {
     EmptyCardsScreen(
-        moveToAddCard = {}
+        onAddCardClick = {}
     )
 }
 
