@@ -41,10 +41,10 @@ fun CardListScreen(
 
     CardListScreen(
         uiState = uiState.value,
-        onClickAddCard = {
+        onAddCardClick = {
             launcher.launch(NewCardActivity.intent(context = context))
         },
-        onClickCard = {
+        onCardClick = {
             launcher.launch(EditCardActivity.intent(context = context, cardId = it))
         },
         modifier = modifier,
@@ -54,8 +54,8 @@ fun CardListScreen(
 @Composable
 fun CardListScreen(
     uiState: CardUiState,
-    onClickAddCard: () -> Unit,
-    onClickCard: (id: Int) -> Unit,
+    onAddCardClick: () -> Unit,
+    onCardClick: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -67,7 +67,7 @@ fun CardListScreen(
                         Text(
                             modifier = Modifier
                                 .padding(end = 20.dp)
-                                .clickable { onClickAddCard() },
+                                .clickable { onAddCardClick() },
                             text = stringResource(R.string.add),
                             color = Color.Black,
                             fontWeight = FontWeight.W700,
@@ -83,19 +83,19 @@ fun CardListScreen(
         when (uiState) {
             CardUiState.Empty -> EmptyCardsScreen(
                 modifier = modifier.padding(innerPadding),
-                moveToAddCard = onClickAddCard,
+                onAddCardClick = onAddCardClick,
             )
 
             is CardUiState.One -> OneCardScreen(
                 modifier = modifier.padding(innerPadding),
                 card = uiState.card,
-                onClickCard = onClickCard,
-                onClickAddCard = onClickAddCard,
+                onCardClick = onCardClick,
+                onAddCardClick = onAddCardClick,
             )
 
             is CardUiState.Many -> ManyCardsScreen(
                 modifier = modifier.padding(innerPadding),
-                onClickCard = onClickCard,
+                onCardClick = onCardClick,
                 cards = uiState.cards
             )
         }
@@ -138,7 +138,7 @@ private fun CardEmptyScreenPreview(
 ) {
     CardListScreen(
         uiState = uiState,
-        onClickAddCard = {},
-        onClickCard = {}
+        onAddCardClick = {},
+        onCardClick = {}
     )
 }

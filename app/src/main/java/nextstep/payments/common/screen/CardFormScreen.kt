@@ -33,15 +33,15 @@ fun CardFormScreen(
     cardNumberValidation: Validation,
     expiredDateValidation: Validation,
     passwordValidation: Validation,
-    setCardNumber: (String) -> Unit,
-    setExpiredDate: (String) -> Unit,
-    setOwnerName: (String) -> Unit,
-    setPassword: (String) -> Unit,
-    onClickCard: () -> Unit,
+    onCardNumberChange: (String) -> Unit,
+    onExpiredDateChange: (String) -> Unit,
+    onOwnerNameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onCardClick: () -> Unit,
     showBottomSheet: Boolean,
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    onClickCardCompany: (CardCompany) -> Unit,
+    onCardCompanyChange: (CardCompany) -> Unit,
     onBack: () -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
@@ -66,7 +66,7 @@ fun CardFormScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                modifier = Modifier.clickable { onClickCard() },
+                modifier = Modifier.clickable { onCardClick() },
                 cardCompany = card.cardCompany
             )
 
@@ -76,34 +76,34 @@ fun CardFormScreen(
                 modifier = Modifier.fillMaxWidth(),
                 cardNumber = card.cardNumber,
                 validation = cardNumberValidation,
-                setCardNumber = setCardNumber
+                setCardNumber = onCardNumberChange
             )
 
             ExpiredDateTextField(
                 modifier = Modifier.fillMaxWidth(),
                 expiredDate = card.expiredDate,
                 validation = expiredDateValidation,
-                setExpiredDate = setExpiredDate
+                setExpiredDate = onExpiredDateChange
             )
 
             OwnerNameTextField(
                 modifier = Modifier.fillMaxWidth(),
                 ownerName = card.ownerName,
-                setOwnerName = setOwnerName
+                setOwnerName = onOwnerNameChange
             )
 
             PasswordTextField(
                 modifier = Modifier.fillMaxWidth(),
                 password = card.password,
                 validation = passwordValidation,
-                setPassword = setPassword
+                setPassword = onPasswordChange
             )
         }
 
         if (showBottomSheet) {
             CardCompanySelectBottomSheet(
                 sheetState = sheetState,
-                onClickCardCompany = onClickCardCompany,
+                onClickCardCompany = onCardCompanyChange,
                 onDismissRequest = onDismissRequest,
             )
         }

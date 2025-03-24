@@ -19,7 +19,7 @@ import nextstep.payments.common.model.Card
 @Composable
 fun ManyCardsScreen(
     cards: List<Card>,
-    onClickCard: (id: Int) -> Unit,
+    onCardClick: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -30,7 +30,7 @@ fun ManyCardsScreen(
         items(cards) { card ->
             PaymentCard(
                 card = card,
-                modifier = Modifier.clickable { onClickCard(card.id) }
+                modifier = Modifier.clickable { onCardClick(card.id) }
             )
             Spacer(modifier = Modifier.height(36.dp))
         }
@@ -51,6 +51,6 @@ private fun ManyCardsScreenPreview() {
                 password = "1234",
             )
         },
-        onClickCard = {}
+        onCardClick = {}
     )
 }
