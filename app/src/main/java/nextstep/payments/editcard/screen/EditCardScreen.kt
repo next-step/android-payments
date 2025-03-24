@@ -53,7 +53,9 @@ fun EditCardScreen(
                     }
 
                     is EditCardEvent.Finish -> {
-                        Toast.makeText(context, it.noticeResId, Toast.LENGTH_SHORT).show()
+                        it.noticeResId?.let { noticeRes ->
+                            Toast.makeText(context, noticeRes, Toast.LENGTH_SHORT).show()
+                        }
                         onBack()
                     }
                 }
@@ -86,7 +88,7 @@ fun EditCardScreen(
         },
         onBack = onBack,
         onSave = {
-            viewModel.editCard(onComplete = onBack)
+            viewModel.editCard()
         },
         modifier = modifier
     )

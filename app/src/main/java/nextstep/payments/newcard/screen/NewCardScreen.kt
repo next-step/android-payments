@@ -50,6 +50,13 @@ fun NewCardScreen(
                     is NewCardEvent.ShowToast -> {
                         Toast.makeText(context, it.resId, Toast.LENGTH_SHORT).show()
                     }
+
+                    is NewCardEvent.Finish -> {
+                        it.resId?.let { res ->
+                            Toast.makeText(context, res, Toast.LENGTH_SHORT).show()
+                        }
+                        onBack()
+                    }
                 }
             }
         }
@@ -76,7 +83,7 @@ fun NewCardScreen(
         },
         onBack = onBack,
         onSave = {
-            viewModel.addCard(onComplete = onBack)
+            viewModel.addCard()
         },
         modifier = modifier
     )

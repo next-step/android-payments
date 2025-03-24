@@ -94,7 +94,7 @@ class NewCardViewModel(
         }
     }
 
-    fun addCard(onComplete: (() -> Unit)?) {
+    fun addCard() {
         when (val validation = _uiState.value.validateAllContents()) {
             is Validation.Failure -> {
                 _event.tryEmit(NewCardEvent.ShowToast(validation.msgId))
@@ -102,7 +102,7 @@ class NewCardViewModel(
 
             Validation.Success -> {
                 paymentCardsRepository.addCard(_uiState.value.card)
-                onComplete?.invoke()
+                _event.tryEmit(NewCardEvent.Finish(null))
             }
 
             Validation.Init -> Unit // nothing

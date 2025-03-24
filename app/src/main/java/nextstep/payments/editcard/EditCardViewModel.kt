@@ -105,7 +105,7 @@ class EditCardViewModel(
         }
     }
 
-    fun editCard(onComplete: (() -> Unit)?) {
+    fun editCard() {
         when (val validation = _uiState.value.validateAllContents()) {
             is Validation.Failure -> {
                 _event.tryEmit(EditCardEvent.ShowToast(validation.msgId))
@@ -113,7 +113,7 @@ class EditCardViewModel(
 
             Validation.Success -> {
                 paymentCardsRepository.editCard(_uiState.value.card)
-                onComplete?.invoke()
+                _event.tryEmit(EditCardEvent.Finish(null))
             }
 
             Validation.Init -> {
