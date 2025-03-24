@@ -20,26 +20,26 @@ data class EditCardUiState(
     fun validateAllContents(): Validation {
         return when {
             cardCompanyValidation is Validation.Failure -> {
-                return cardCompanyValidation
+                cardCompanyValidation
             }
 
             cardNumberValidation is Validation.Failure -> {
-                return cardNumberValidation
+                cardNumberValidation
             }
 
             expiredDateValidation is Validation.Failure -> {
-                return expiredDateValidation
+                expiredDateValidation
             }
 
             passwordValidation is Validation.Failure -> {
-                return passwordValidation
+                passwordValidation
             }
 
             cardCompanyValidation is Validation.Init &&
                     cardNumberValidation is Validation.Init &&
                     expiredDateValidation is Validation.Init &&
                     passwordValidation is Validation.Init -> {
-                return Validation.Init
+                Validation.Init
             }
 
             else -> {

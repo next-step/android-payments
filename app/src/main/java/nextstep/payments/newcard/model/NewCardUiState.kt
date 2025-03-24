@@ -22,19 +22,19 @@ data class NewCardUiState(
     fun validateAllContents(): Validation {
         return when {
             cardCompanyValidation !is Validation.Success -> {
-                return cardCompanyValidation
+                cardCompanyValidation
             }
 
             cardNumberValidation !is Validation.Success -> {
-                return cardNumberValidation
+                cardNumberValidation
             }
 
             expiredDateValidation !is Validation.Success -> {
-                return expiredDateValidation
+                expiredDateValidation
             }
 
             passwordValidation !is Validation.Success -> {
-                return passwordValidation
+                passwordValidation
             }
 
             else -> {
