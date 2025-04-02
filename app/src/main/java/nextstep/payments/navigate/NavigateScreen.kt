@@ -38,7 +38,12 @@ fun NavigateScreen(
             NewCardScreen(
                 viewModel = newCardViewModel,
                 navigateToCardList = {
-                    navController.popBackStack()
+//                    navController.popBackStack()
+                    navController.navigate(Destination.PAYMENTS.name) {
+                        popUpTo(Destination.PAYMENTS.name) {
+                            inclusive = false
+                        }
+                    }
                     newCardViewModel.resetAddCard()
                 },
             )
