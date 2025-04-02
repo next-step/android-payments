@@ -5,7 +5,4 @@ interface Card {
     val expiredDate: String
     val ownerName: String
     val password: String
-
-    fun getFormattedCardNumber(): String
-    fun getFormattedExpiredDate(): String
 }

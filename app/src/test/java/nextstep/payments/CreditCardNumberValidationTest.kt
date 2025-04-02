@@ -2,6 +2,7 @@ package nextstep.payments
 
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.ValidationResult
+import nextstep.payments.ui.CardInfoUiFormatter
 import nextstep.payments.ui.newcard.NewCardInputValidator
 import org.junit.Assert
 import org.junit.Test
@@ -40,7 +41,7 @@ class CreditCardNumberValidationTest {
     @Test
     fun `카드 번호가 16자리일 때 마스킹된 포맷으로 반환`() {
         val expected = "1111-2222-****-****"
-        val result = CreditCard("1111222233334444","","","").getFormattedCardNumber()
+        val result = CardInfoUiFormatter.getFormattedCardNumber(CreditCard("1111222233334444","","","").cardNumber)
         Assert.assertEquals(expected, result)
     }
 }

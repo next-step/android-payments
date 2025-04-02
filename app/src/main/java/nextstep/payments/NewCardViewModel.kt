@@ -1,16 +1,11 @@
 package nextstep.payments
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import nextstep.payments.model.CreditCard
 import nextstep.payments.model.ValidationResult
-import nextstep.payments.ui.CreditCardUiState
 import nextstep.payments.ui.newcard.NewCardInputValidator
 
 class NewCardViewModel(
@@ -19,20 +14,6 @@ class NewCardViewModel(
 
     private val _cardAdded = MutableStateFlow<Boolean>(false)
     val cardAdded: StateFlow<Boolean> = _cardAdded.asStateFlow()
-
-    val cardUiState: StateFlow<CreditCardUiState> = repository.cards.map { cards ->
-        if (cards.isEmpty()) {
-            CreditCardUiState.Empty
-        } else if (cards.size == 1) {
-            CreditCardUiState.One(cards.first() as CreditCard)
-        } else {
-            CreditCardUiState.Many(cards.map { it as CreditCard })
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(10_000),
-        initialValue = CreditCardUiState.Empty
-    )
 
     private var cardNumberValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED
     private var ownerNameValidateResult = ValidationResult.ADDITIONAL_INPUT_REQUIRED

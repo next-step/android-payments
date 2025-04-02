@@ -10,13 +10,17 @@ import nextstep.payments.ui.theme.PaymentsTheme
 class MainActivity : ComponentActivity() {
 
     private val newCardViewModel: NewCardViewModel by viewModels()
+    private val paymentCardViewModel: PaymentCardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             PaymentsTheme {
-                NavigateScreen(newCardViewModel)
+                NavigateScreen(
+                    newCardViewModel = newCardViewModel,
+                    paymentCardViewModel = paymentCardViewModel
+                )
             }
         }
     }

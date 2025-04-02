@@ -21,6 +21,8 @@ import nextstep.payments.model.CreditCard
 import nextstep.payments.ui.newcard.visualtransformation.CreditCardNumberVisualTransformation
 import nextstep.payments.ui.newcard.visualtransformation.ExpirationDateVisualTransformation
 import nextstep.payments.model.Card
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedCardNumber
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedExpiredDate
 import nextstep.payments.ui.paymentcards.PaymentCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -55,8 +57,8 @@ fun NewCardScreenContent(
             Spacer(modifier = Modifier.height(14.dp))
 
             PaymentCard(
-                cardNumber = card.getFormattedCardNumber(),
-                expiredDate = card.getFormattedExpiredDate(),
+                cardNumber = getFormattedCardNumber(card.cardNumber),
+                expiredDate = getFormattedExpiredDate(card.expiredDate),
                 ownerName = card.ownerName
             )
 

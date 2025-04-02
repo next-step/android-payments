@@ -9,6 +9,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.model.CreditCard
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedCardNumber
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedExpiredDate
 import nextstep.payments.ui.newcard.AddCard
 import nextstep.payments.ui.theme.PaymentsTheme
 
@@ -25,8 +27,8 @@ fun OneCardScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         PaymentCard(
-            cardNumber = card.getFormattedCardNumber(),
-            expiredDate = card.getFormattedExpiredDate(),
+            cardNumber = getFormattedCardNumber(card.cardNumber),
+            expiredDate = getFormattedExpiredDate(card.expiredDate),
             ownerName = card.ownerName
         )
         AddCard(onClick = onAddClick)

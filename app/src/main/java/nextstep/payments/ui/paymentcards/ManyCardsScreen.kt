@@ -1,7 +1,8 @@
 package nextstep.payments.ui.paymentcards
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -11,6 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.payments.model.Card
 import nextstep.payments.model.CreditCard
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedCardNumber
+import nextstep.payments.ui.CardInfoUiFormatter.getFormattedExpiredDate
 import nextstep.payments.ui.theme.PaymentsTheme
 
 
@@ -20,14 +23,18 @@ fun ManyCardsScreen(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier.padding(top = 12.dp),
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(36.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(cards) {
+        items(
+            items = cards,
+            key = { it.cardNumber }
+        ) {
             PaymentCard(
-                cardNumber = it.getFormattedCardNumber(),
-                expiredDate = it.getFormattedExpiredDate(),
+                cardNumber = getFormattedCardNumber(it.cardNumber),
+                expiredDate = getFormattedExpiredDate(it.expiredDate),
                 ownerName = it.ownerName
             )
         }
@@ -45,7 +52,8 @@ private fun ManyCardsScreenPreview() {
                 CreditCard("1111222233334444", "0421", "crew", "1234"),
                 CreditCard("1111222233334444", "0421", "crew", "1234"),
                 CreditCard("1111222233334444", "0421", "crew", "1234"),
-            )
+            ),
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
