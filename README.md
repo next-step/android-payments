@@ -24,3 +24,14 @@
 
 ## 디자인 시안
 * [피그마](https://www.figma.com/design/OhrMuSgyoqk6nBty3BBA1u/%ED%95%99%EC%8A%B5-%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-Compose-%EB%AF%B8%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=504-335&t=ajo7AAilrRbRHOKj-0)
+
+
+----------------------------------------------------------------------
+## [📌 2단계 리뷰 사항 반영]
+- [x] Main Screen 별로 ViewModel 나누기 (NewCardScreen, PaymentCardsScreen)
+- [x] 컴포저블 함수 사용 시, 모든 매개변수명 지정
+- [x] PaymentCardsTopBar에서 CreditCardUiState 의존성 제거
+- [x] Box 대신 Surface 사용하여 스타일 지정
+- [x] LazyColumn items에 Key 지정
+- [x] CardNumber, ExpiredDate 포맷팅을 UI 레이어에서 처리하도록 변경
+- [x] navigate 시 특정 Stack까지 Popup하는 기능을 이용하여 이동하도록 수정
