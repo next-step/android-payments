@@ -48,10 +48,10 @@ private fun ManyCardsScreenPreview() {
         ManyCardsScreen(
             cards = listOf(
                 CreditCard("1111222233334444", "0421", "crew", "1234"),
-                CreditCard("1111222233334444", "0421", "crew", "1234"),
-                CreditCard("1111222233334444", "0421", "crew", "1234"),
-                CreditCard("1111222233334444", "0421", "crew", "1234"),
-                CreditCard("1111222233334444", "0421", "crew", "1234"),
+                CreditCard("2222333344445555", "0421", "crew", "1234"),
+                CreditCard("3333444455556666", "0421", "crew", "1234"),
+                CreditCard("7777888899990000", "0421", "crew", "1234"),
+                CreditCard("1234567812345678", "0421", "crew", "1234"),
             ),
             modifier = Modifier.fillMaxSize()
         )
