@@ -7,6 +7,7 @@ import nextstep.payments.ui.new_card.CardType
 
 fun CardEntity.toUi(): CreditCard =
     CreditCard(
+        id = id,
         cardNumber = cardNumber,
         expiredDate = expiredDate,
         ownerName = ownerName,
@@ -40,3 +41,4 @@ fun CardTypeEntity.toUi(): CardType {
         CardTypeEntity.KB -> CardType.KB
     }
 }
+

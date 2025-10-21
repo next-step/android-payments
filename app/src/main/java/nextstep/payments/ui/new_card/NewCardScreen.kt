@@ -61,7 +61,7 @@ fun NewCardScreenRoot(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            NewCardEvent.CardAddSuccess -> {
+            NewCardEvent.CardAddSuccess, NewCardEvent.CardEditSuccess, NewCardEvent.NavigateBack -> {
                 navigateToCardList()
             }
 
@@ -73,15 +73,27 @@ fun NewCardScreenRoot(
                 ).show()
             }
 
-            NewCardEvent.NavigateBack -> {
-                navigateToCardList()
+            NewCardEvent.CardEditFail -> {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.card_list_edit_card_fail),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     val isAddEnabled by remember {
         derivedStateOf {
-            state.isValid(CardInputValidator)
+            !state.isCardValueSame(viewModel.originalState) && state.isValid(CardInputValidator)
+        }
+    }
+
+    val topBarTitle = remember {
+        if (viewModel.originalState == NewCardState.EMPTY) {
+            context.getString(R.string.new_card_top_bar_title)
+        } else {
+            context.getString(R.string.edit_card_top_bar_title)
         }
     }
 
@@ -89,6 +101,7 @@ fun NewCardScreenRoot(
         state = state,
         isAddEnabled = isAddEnabled,
         onAction = viewModel::onAction,
+        topBarTitle = topBarTitle,
         modifier = modifier,
     )
 }
@@ -98,6 +111,7 @@ internal fun NewCardScreen(
     state: NewCardState,
     isAddEnabled: Boolean,
     onAction: (NewCardAction) -> Unit,
+    topBarTitle: String,
     modifier: Modifier = Modifier,
 ) {
     val cardNumberTransformation = remember {
@@ -116,6 +130,7 @@ internal fun NewCardScreen(
                 onSaveClick = {
                     onAction(NewCardAction.OnAddCardClick)
                 },
+                title = topBarTitle,
                 isAddEnabled = isAddEnabled,
             )
         },
@@ -291,6 +306,7 @@ private fun NewCardScreenPreview() {
                 showBottomSheet = false,
             ),
             isAddEnabled = true,
+            topBarTitle = "카드 추가",
             onAction = { },
         )
     }
